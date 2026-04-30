@@ -173,10 +173,10 @@ function ProjectOrbitSection() {
         .po-section {
           position: relative;
           width: 100%;
-          min-height: 100vh;
+          min-height: 90vh;
           overflow: hidden;
           background: #ffffff;
-          padding: 40px 0 120px;
+          padding: 40px 0 100px;
         }
 
         .po-title {
@@ -214,9 +214,9 @@ function ProjectOrbitSection() {
         .po-canvas {
           position: absolute;
           top: 50%;
-          left: -410px;
-          width: 1000px;
-          height: 1000px;
+          left: -300px;
+          width: 700px;
+          height: 700px;
           transform: translateY(-50%);
           pointer-events: none;
           z-index: 1;
@@ -260,15 +260,15 @@ function ProjectOrbitSection() {
 
         .po-vector {
           position: absolute;
-          right: -30px;
-          bottom: 0;
-          width: 540px;
-          max-height: 900px;
+          right: -20px;
+          bottom: 40px;
+          width: 360px;
+          max-height: 540px;
           height: auto;
           object-fit: contain;
           z-index: 2;
           pointer-events: none;
-          opacity: 0.95;
+          opacity: 0.85;
         }
 
         .po-content {
@@ -378,8 +378,8 @@ function ProjectOrbitSection() {
         }
 
         @media (max-width: 1280px) {
-          .po-canvas { left: -360px; width: 720px; height: 720px; }
-          .po-vector { width: 480px; max-height: 600px; bottom: -80px; right: -10px; }
+          .po-canvas { left: -260px; width: 600px; height: 600px; }
+          .po-vector { width: 320px; max-height: 480px; bottom: 40px; right: -10px; }
         }
 
         @media (max-width: 1024px) {
@@ -1249,19 +1249,14 @@ export default function Page() {
         .service-card-icon { animation: serviceCardFloat 3.5s ease-in-out infinite; }
 
         .service-tab-btn {
-          background: #f1f1f1;
-          border: 1.5px solid #cfcfcf;
-          color: #333333;
-          box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
           transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
-          cursor: pointer;
         }
         .service-tab-btn:hover {
-          background: linear-gradient(135deg, #00fe4e 0%, #0adf54 100%);
+          background: #00fe4e;
           border-color: #00fe4e;
           color: #000;
           transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(0, 254, 78, 0.5), 0 0 0 6px rgba(0, 254, 78, 0.12);
+          box-shadow: 0 6px 18px rgba(0, 254, 78, 0.35);
         }
 
         @keyframes cardSpotlight {
@@ -1929,7 +1924,7 @@ export default function Page() {
             </p>
             <div data-reveal="up-sm" data-reveal-delay="280" className="mt-6 lg:mt-7 grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
               {["Training", "HR services", "Reports", "Surveys"].map((item) => (
-                <button key={item} className="service-tab-btn h-[48px] lg:h-[60px] rounded-[8px] text-[14px] lg:text-[16px] font-medium">
+                <button key={item} className="service-tab-btn h-[48px] lg:h-[60px] rounded-[8px] border border-[#dddddd] bg-white text-[14px] lg:text-[16px] font-medium text-black">
                   {item}
                 </button>
               ))}
