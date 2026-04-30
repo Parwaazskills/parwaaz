@@ -52,6 +52,12 @@ function ProjectOrbitSection() {
         transformOrigin: "50% 50%",
       });
 
+      const isMobile = window.innerWidth <= 768;
+
+      if (isMobile) {
+        return;
+      }
+
       slideEls.forEach((slide, index) => {
         gsap.set(slide, {
           opacity: index === 0 ? 1 : 0,
@@ -64,16 +70,15 @@ function ProjectOrbitSection() {
         });
       });
 
-      const isMobile = window.innerWidth <= 768;
-      const slideDuration = isMobile ? 400 : 1100;
+      const slideDuration = 1100;
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: isMobile ? "top 70%" : "top top",
+          start: "top top",
           end: `+=${slideEls.length * slideDuration}`,
           scrub: 1,
-          pin: !isMobile,
+          pin: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
@@ -386,39 +391,64 @@ function ProjectOrbitSection() {
         }
 
         @media (max-width: 768px) {
-          .po-section { padding: 28px 0 16px; min-height: 0; }
-          .po-title { margin-bottom: 12px; }
-          .po-title h2 { font-size: clamp(24px, 6.5vw, 34px); gap: 10px; }
+          .po-section { padding: 24px 0 8px; min-height: 0; }
+          .po-title { margin-bottom: 16px; }
+          .po-title h2 { font-size: clamp(24px, 6.5vw, 32px); gap: 10px; }
           .po-canvas {
-            top: 50%;
-            left: -90px;
-            width: 220px;
-            height: 220px;
-            opacity: 0.45;
+            top: auto;
+            bottom: 0;
+            left: -120px;
+            width: 200px;
+            height: 200px;
+            transform: none;
+            opacity: 0.3;
+            z-index: 1;
           }
           .po-vector {
-            right: -20px;
-            bottom: -10px;
-            width: 160px;
-            max-height: 240px;
-            opacity: 0.7;
+            right: -30px;
+            bottom: 0;
+            width: 130px;
+            max-height: 200px;
+            opacity: 0.55;
+            z-index: 2;
           }
-          .po-content { min-height: 0; padding: 0 20px; align-items: center; }
-          .po-slides { height: 220px; max-width: 100%; margin-right: 0; }
-          .po-slide-row { gap: 14px; }
-          .po-ball { width: 22px; height: 22px; min-width: 22px; margin-top: 8px; }
-          .po-slide-title { font-size: 26px; line-height: 1.1; margin-bottom: 10px; }
+          .po-content {
+            position: relative;
+            z-index: 5;
+            min-height: 0;
+            padding: 0 20px;
+            align-items: stretch;
+            justify-content: flex-start;
+          }
+          .po-slides {
+            position: relative;
+            height: auto;
+            min-height: 0;
+            max-width: 100%;
+            margin-right: 0;
+          }
+          .po-slide {
+            position: relative;
+            top: auto;
+            left: auto;
+            transform: none !important;
+          }
+          .po-slide:not(:first-child) {
+            display: none;
+          }
+          .po-slide-row { gap: 14px; align-items: flex-start; }
+          .po-ball { width: 20px; height: 20px; min-width: 20px; margin-top: 6px; }
+          .po-slide-title { font-size: 26px; line-height: 1.1; margin-bottom: 8px; }
           .po-slide-text { font-size: 13px; line-height: 1.55; }
         }
 
         @media (max-width: 480px) {
-          .po-section { padding: 24px 0 12px; min-height: 0; }
-          .po-title { padding: 0 16px; margin-bottom: 10px; }
+          .po-section { padding: 20px 0 8px; }
+          .po-title { padding: 0 16px; margin-bottom: 14px; }
           .po-title h2 { font-size: 22px; gap: 8px; }
-          .po-canvas { top: 50%; left: -80px; width: 190px; height: 190px; }
-          .po-vector { width: 140px; max-height: 210px; bottom: -10px; right: -10px; }
-          .po-content { min-height: 0; padding: 0 16px; }
-          .po-slides { height: 200px; }
+          .po-canvas { left: -110px; width: 180px; height: 180px; opacity: 0.28; }
+          .po-vector { width: 110px; max-height: 170px; bottom: 0; right: -20px; opacity: 0.5; }
+          .po-content { padding: 0 16px; }
           .po-slide-title { font-size: 22px; }
           .po-slide-text { font-size: 12.5px; line-height: 1.5; }
         }
@@ -1219,14 +1249,19 @@ export default function Page() {
         .service-card-icon { animation: serviceCardFloat 3.5s ease-in-out infinite; }
 
         .service-tab-btn {
+          background: #f1f1f1;
+          border: 1.5px solid #cfcfcf;
+          color: #333333;
+          box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
           transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
+          cursor: pointer;
         }
         .service-tab-btn:hover {
-          background: #00fe4e;
+          background: linear-gradient(135deg, #00fe4e 0%, #0adf54 100%);
           border-color: #00fe4e;
           color: #000;
           transform: translateY(-2px);
-          box-shadow: 0 6px 18px rgba(0, 254, 78, 0.35);
+          box-shadow: 0 8px 24px rgba(0, 254, 78, 0.5), 0 0 0 6px rgba(0, 254, 78, 0.12);
         }
 
         @keyframes cardSpotlight {
@@ -1503,21 +1538,7 @@ export default function Page() {
           flex-direction: column;
           align-items: center;
           gap: 18px;
-          background-clip: padding-box;
-          border: 2px solid transparent;
           overflow: hidden;
-        }
-        .contact-cta-box::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          border-radius: 20px;
-          padding: 2px;
-          background: linear-gradient(90deg, #00fe4e 0%, #050889 100%);
-          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-          -webkit-mask-composite: xor;
-          mask-composite: exclude;
-          pointer-events: none;
         }
         .contact-cta-box::after {
           content: '';
@@ -1908,7 +1929,7 @@ export default function Page() {
             </p>
             <div data-reveal="up-sm" data-reveal-delay="280" className="mt-6 lg:mt-7 grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
               {["Training", "HR services", "Reports", "Surveys"].map((item) => (
-                <button key={item} className="service-tab-btn h-[48px] lg:h-[60px] rounded-[8px] border border-[#dddddd] bg-white text-[14px] lg:text-[16px] font-medium text-black">
+                <button key={item} className="service-tab-btn h-[48px] lg:h-[60px] rounded-[8px] text-[14px] lg:text-[16px] font-medium">
                   {item}
                 </button>
               ))}
