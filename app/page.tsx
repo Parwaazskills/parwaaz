@@ -386,25 +386,25 @@ function ProjectOrbitSection() {
         }
 
         @media (max-width: 768px) {
-          .po-section { padding: 32px 0 24px; min-height: 540px; }
-          .po-title { margin-bottom: 16px; }
+          .po-section { padding: 28px 0 16px; min-height: 0; }
+          .po-title { margin-bottom: 12px; }
           .po-title h2 { font-size: clamp(24px, 6.5vw, 34px); gap: 10px; }
           .po-canvas {
-            top: 55%;
-            left: -100px;
-            width: 240px;
-            height: 240px;
-            opacity: 0.5;
+            top: 50%;
+            left: -90px;
+            width: 220px;
+            height: 220px;
+            opacity: 0.45;
           }
           .po-vector {
             right: -20px;
-            bottom: 0;
-            width: 180px;
-            max-height: 280px;
-            opacity: 0.8;
+            bottom: -10px;
+            width: 160px;
+            max-height: 240px;
+            opacity: 0.7;
           }
-          .po-content { min-height: 360px; padding: 0 20px; align-items: center; }
-          .po-slides { height: 260px; max-width: 100%; margin-right: 0; }
+          .po-content { min-height: 0; padding: 0 20px; align-items: center; }
+          .po-slides { height: 220px; max-width: 100%; margin-right: 0; }
           .po-slide-row { gap: 14px; }
           .po-ball { width: 22px; height: 22px; min-width: 22px; margin-top: 8px; }
           .po-slide-title { font-size: 26px; line-height: 1.1; margin-bottom: 10px; }
@@ -412,13 +412,13 @@ function ProjectOrbitSection() {
         }
 
         @media (max-width: 480px) {
-          .po-section { padding: 28px 0 20px; min-height: 500px; }
-          .po-title { padding: 0 16px; margin-bottom: 12px; }
+          .po-section { padding: 24px 0 12px; min-height: 0; }
+          .po-title { padding: 0 16px; margin-bottom: 10px; }
           .po-title h2 { font-size: 22px; gap: 8px; }
-          .po-canvas { top: 55%; left: -90px; width: 200px; height: 200px; }
-          .po-vector { width: 150px; max-height: 240px; bottom: 0; right: -10px; }
-          .po-content { min-height: 320px; padding: 0 16px; }
-          .po-slides { height: 230px; }
+          .po-canvas { top: 50%; left: -80px; width: 190px; height: 190px; }
+          .po-vector { width: 140px; max-height: 210px; bottom: -10px; right: -10px; }
+          .po-content { min-height: 0; padding: 0 16px; }
+          .po-slides { height: 200px; }
           .po-slide-title { font-size: 22px; }
           .po-slide-text { font-size: 12.5px; line-height: 1.5; }
         }
