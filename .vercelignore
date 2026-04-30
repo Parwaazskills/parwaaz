@@ -1,0 +1,9 @@
+@"
+node_modules
+.next
+.git
+*.exe
+*.Msixbundle
+*.msi
+.git_old_backup
+"@ | Out-File -FilePath .vercelignore -Encoding utf8
