@@ -379,13 +379,13 @@ function ProjectOrbitSection() {
 
         @media (max-width: 1280px) {
           .po-canvas { left: -260px; width: 600px; height: 600px; }
-          .po-vector { width: 65vw; right: -150px; bottom: -80px; max-height: 800px; opacity: 0.85; }
+          .po-vector { right: -250px; bottom: -100px; width: 800px; max-width: 50vw; max-height: 1000px; opacity: 0.85; }
         }
 
         @media (max-width: 1024px) {
           .po-section { padding: 40px 0 80px; min-height: 90vh; }
           .po-canvas { left: -280px; width: 560px; height: 560px; }
-          .po-vector { width: 70vw; right: -120px; bottom: -60px; max-height: 700px; opacity: 0.85; }
+          .po-vector { right: -250px; bottom: -100px; width: 800px; max-width: 50vw; max-height: 1000px; opacity: 0.85; }
           .po-content { padding: 0 24px 0 0; min-height: 55vh; }
           .po-slides { margin-right: 24px; max-width: 480px; height: 280px; }
         }
