@@ -174,9 +174,8 @@ function ProjectOrbitSection() {
           position: relative;
           width: 100%;
           min-height: 90vh;
-          overflow: hidden;
           background: #ffffff;
-          padding: 40px 0 100px;
+          padding: 40px 0 80px;
         }
 
         .po-title {
@@ -217,7 +216,7 @@ function ProjectOrbitSection() {
           left: -300px;
           width: 700px;
           height: 700px;
-          transform: translateY(-50%);
+          transform: translateY(-30%);
           pointer-events: none;
           z-index: 1;
         }
@@ -260,10 +259,11 @@ function ProjectOrbitSection() {
 
         .po-vector {
           position: absolute;
-          right: -20px;
-          bottom: 40px;
-          width: 360px;
-          max-height: 540px;
+          right: -250px;
+          bottom: -100px;
+          width: 800px;
+          max-width: 50vw;
+          max-height: 1000px;
           height: auto;
           object-fit: contain;
           z-index: 2;
@@ -309,9 +309,9 @@ function ProjectOrbitSection() {
 
         .po-ball {
           position: relative;
-          width: 28px;
-          height: 28px;
-          min-width: 28px;
+          width: 22px;
+          height: 22px;
+          min-width: 22px;
           margin-top: 14px;
           flex-shrink: 0;
         }
@@ -379,13 +379,13 @@ function ProjectOrbitSection() {
 
         @media (max-width: 1280px) {
           .po-canvas { left: -260px; width: 600px; height: 600px; }
-          .po-vector { width: 320px; max-height: 480px; bottom: 40px; right: -10px; }
+          .po-vector { width: 240px; max-height: 400px; bottom: 60px; right: 30px; opacity: 0.5; }
         }
 
         @media (max-width: 1024px) {
           .po-section { padding: 40px 0 80px; min-height: 90vh; }
           .po-canvas { left: -280px; width: 560px; height: 560px; }
-          .po-vector { width: 240px; max-height: 440px; bottom: -40px; right: -10px; }
+          .po-vector { width: 200px; max-height: 360px; bottom: 50px; right: 20px; opacity: 0.5; }
           .po-content { padding: 0 24px 0 0; min-height: 55vh; }
           .po-slides { margin-right: 24px; max-width: 480px; height: 280px; }
         }
@@ -437,7 +437,7 @@ function ProjectOrbitSection() {
             display: none;
           }
           .po-slide-row { gap: 14px; align-items: flex-start; }
-          .po-ball { width: 20px; height: 20px; min-width: 20px; margin-top: 6px; }
+          .po-ball { width: 18px; height: 18px; min-width: 18px; margin-top: 6px; }
           .po-slide-title { font-size: 26px; line-height: 1.1; margin-bottom: 8px; }
           .po-slide-text { font-size: 13px; line-height: 1.55; }
         }
@@ -484,10 +484,44 @@ export default function Page() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [heroServicesOpen, setHeroServicesOpen] = useState(false);
+  const [logoIndex, setLogoIndex] = useState(0);
   const ringRef = useRef<HTMLDivElement | null>(null);
   const dotRef = useRef<HTMLDivElement | null>(null);
   const cx = useRef(0); const cy = useRef(0);
   const rx = useRef(0); const ry = useRef(0);
+  const logoTrackRef = useRef<HTMLDivElement | null>(null);
+
+  const handleLogoPrev = () => {
+    setLogoIndex(prev => prev - 1);
+  };
+  const handleLogoNext = () => {
+    setLogoIndex(prev => prev + 1);
+  };
+
+  // Seamless infinite loop: array is tripled [A,B,C,D,E | A,B,C,D,E | A,B,C,D,E].
+  // We keep the visual "current" index inside the middle copy.
+  // When index drifts outside [0, len), wait for the slide to finish, then silently
+  // re-position to the equivalent slot in the middle copy without animating.
+  useEffect(() => {
+    const track = logoTrackRef.current;
+    if (!track) return;
+    const len = clientLogos.length;
+    if (logoIndex >= 0 && logoIndex < len) return;
+
+    const handle = setTimeout(() => {
+      const wrapped = ((logoIndex % len) + len) % len;
+      track.style.transition = 'none';
+      setLogoIndex(wrapped);
+      // force reflow then re-enable transition
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (logoTrackRef.current) logoTrackRef.current.style.transition = '';
+        });
+      });
+    }, 620);
+
+    return () => clearTimeout(handle);
+  }, [logoIndex]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -576,12 +610,17 @@ export default function Page() {
     }
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
+        const el = entry.target as HTMLElement;
+        const isCycleMode = el.dataset.revealMode === 'cycle';
         if (entry.isIntersecting) {
-          const el = entry.target as HTMLElement;
           const delay = el.dataset.revealDelay;
           if (delay) { el.style.transitionDelay = `${delay}ms`; }
           el.classList.add('is-visible');
-          observer.unobserve(el);
+          if (!isCycleMode) {
+            observer.unobserve(el);
+          }
+        } else if (isCycleMode) {
+          el.classList.remove('is-visible');
         }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
@@ -594,6 +633,78 @@ export default function Page() {
     });
     mo.observe(document.body, { childList: true, subtree: true });
     return () => { observer.disconnect(); mo.disconnect(); };
+  }, []);
+
+  // GSAP-style split-text reveal: wraps each letter in a span and staggers them in on scroll.
+  // Use by adding `data-text-split` to any element, e.g. <h2 data-text-split>...</h2>.
+  // Optional: data-text-split="words" to split by words instead of characters.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const splitElement = (el: HTMLElement) => {
+      if (el.dataset.textSplitProcessed) return;
+      const mode = el.dataset.textSplit === 'words' ? 'words' : 'chars';
+      const original = el.textContent || '';
+      el.dataset.textSplitOriginal = original;
+      el.textContent = '';
+      el.classList.add('text-split');
+      const tokens = mode === 'words' ? original.split(/(\s+)/) : Array.from(original);
+      tokens.forEach((token) => {
+        if (/^\s+$/.test(token)) {
+          el.appendChild(document.createTextNode(token));
+          return;
+        }
+        if (mode === 'chars' && token === ' ') {
+          el.appendChild(document.createTextNode(' '));
+          return;
+        }
+        const span = document.createElement('span');
+        span.className = 'text-split-token';
+        span.textContent = token;
+        el.appendChild(span);
+      });
+      el.dataset.textSplitProcessed = '1';
+    };
+
+    const animateElement = (el: HTMLElement) => {
+      const tokens = el.querySelectorAll<HTMLElement>('.text-split-token');
+      if (!tokens.length) return;
+      if (reduced) {
+        tokens.forEach(t => { t.style.opacity = '1'; t.style.transform = 'none'; });
+        return;
+      }
+      gsap.fromTo(
+        tokens,
+        { yPercent: 110, opacity: 0, rotate: 6 },
+        {
+          yPercent: 0,
+          opacity: 1,
+          rotate: 0,
+          duration: 0.9,
+          ease: 'power3.out',
+          stagger: 0.035,
+          overwrite: true,
+        }
+      );
+    };
+
+    const elements = Array.from(document.querySelectorAll<HTMLElement>('[data-text-split]'));
+    elements.forEach(splitElement);
+
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const el = entry.target as HTMLElement;
+        if (entry.isIntersecting && !el.dataset.textSplitAnimated) {
+          el.dataset.textSplitAnimated = '1';
+          animateElement(el);
+          obs.unobserve(el);
+        }
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
+
+    elements.forEach(el => obs.observe(el));
+    return () => obs.disconnect();
   }, []);
 
   return (
@@ -645,6 +756,13 @@ export default function Page() {
 
         [data-reveal] { opacity: 0; transform: translateY(40px); transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); will-change: opacity, transform; }
         [data-reveal="fade"] { transform: none; }
+
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+        .text-split { display: inline-block; overflow: hidden; line-height: 1.05; padding-bottom: 0.05em; }
+        .text-split-token { display: inline-block; opacity: 0; transform: translateY(110%); will-change: transform, opacity; }
+        @media (prefers-reduced-motion: reduce) { .text-split-token { opacity: 1 !important; transform: none !important; } }
         [data-reveal="up"] { transform: translateY(40px); }
         [data-reveal="up-sm"] { transform: translateY(20px); }
         [data-reveal="left"] { transform: translateX(-40px); }
@@ -670,50 +788,88 @@ export default function Page() {
         .pw-nav-wrapper {
           position: relative;
           z-index: 60;
+          margin-top: 16px;
         }
+        @media (min-width: 1024px) { .pw-nav-wrapper { margin-top: 20px; } }
 
         .pw-nav {
           position: relative;
           z-index: 50;
           width: 100%;
           height: 56px;
-          border-radius: 14px;
-          overflow: visible;
+          border-radius: 20px;
           display: flex;
           align-items: center;
-          background: rgba(8, 10, 14, 0.72);
-          backdrop-filter: blur(20px) saturate(140%);
-          -webkit-backdrop-filter: blur(20px) saturate(140%);
+          background: transparent;
           border: 1px solid rgba(255, 255, 255, 0.08);
           box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.06),
-            0 8px 32px rgba(0, 0, 0, 0.4);
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 14px 35px rgba(0, 0, 0, 0.4);
           animation: navIn .7s cubic-bezier(.2,.9,.3,1) both;
-          transition: border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+          transition: border-color 0.4s ease, box-shadow 0.5s ease;
+          isolation: isolate;
         }
-        .pw-nav::before {
+        /* Inner clipping wrapper for gradient + shimmer (so dropdowns aren't clipped) */
+        .pw-nav-bg {
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          overflow: hidden;
+          pointer-events: none;
+          z-index: 0;
+        }
+        .pw-nav-bg::before {
           content: '';
           position: absolute;
           inset: 0;
-          border-radius: 14px;
-          background: linear-gradient(90deg, #00FE4E 0%, rgba(12, 165, 59, 0.6) 20%, rgba(30, 30, 30, 0) 100%);
-          pointer-events: none;
+          background: linear-gradient(90deg,
+            #00FE4E 0%,
+            #00A340 12%,
+            #008A38 22%,
+            #0a4a28 35%,
+            #0d2418 50%,
+            #111418 65%,
+            #15181c 100%);
+        }
+        /* Shimmer wave - sweeps left-to-right on hover */
+        .pw-nav-bg::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: -40%;
+          width: 40%;
+          background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.1) 20%,
+            rgba(0, 254, 78, 0.45) 50%,
+            rgba(255, 255, 255, 0.1) 80%,
+            transparent 100%
+          );
+          filter: blur(8px);
           opacity: 0;
-          transform: translateX(-30%);
-          clip-path: inset(0 round 14px);
-          transition: opacity 0.5s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .pw-nav:hover .pw-nav-bg::after {
+          animation: navShimmer 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        @keyframes navShimmer {
+          0% { left: -40%; opacity: 0; }
+          15% { opacity: 1; }
+          85% { opacity: 1; }
+          100% { left: 100%; opacity: 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .pw-nav:hover .pw-nav-bg::after { animation: none; }
         }
         .pw-nav:hover {
-          background: rgba(8, 10, 14, 0.85);
-          border-color: rgba(0, 254, 78, 0.18);
+          border-color: rgba(0, 254, 78, 0.5);
           box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.08),
-            0 8px 32px rgba(0, 0, 0, 0.5),
-            0 0 24px rgba(0, 254, 78, 0.08);
-        }
-        .pw-nav:hover::before {
-          opacity: 1;
-          transform: translateX(0);
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            0 0 0 2px rgba(0, 254, 78, 0.18),
+            0 12px 28px rgba(0, 254, 78, 0.45),
+            0 24px 60px rgba(0, 254, 78, 0.28),
+            0 8px 24px rgba(0, 0, 0, 0.4);
         }
         @media (min-width: 1024px) { .pw-nav { height: 64px; } }
         .pw-glow-line {
@@ -725,11 +881,8 @@ export default function Page() {
           border-radius: 999px;
           background: linear-gradient(90deg, transparent 0%, rgba(0, 254, 78, 0.4) 50%, transparent 100%);
           pointer-events: none;
-          opacity: 0;
-          transition: opacity 0.5s ease;
+          opacity: 0.6;
         }
-        .pw-nav:hover ~ .pw-glow-line,
-        .pw-glow-line { opacity: 0.6; }
         .pw-logo-glow {
           position: absolute;
           left: -40px;
@@ -747,15 +900,15 @@ export default function Page() {
         .pw-nav:hover .pw-logo-glow { opacity: 1; }
         .pw-orb-wrap { position: absolute; left: 130px; top: 50%; width: 0; height: 0; pointer-events: none; z-index: 4; display: none; }
         @media (min-width: 1024px) { .pw-orb-wrap { display: block; } }
-        .pw-orb { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: rgba(0, 254, 78, 0.7); box-shadow: 0 0 6px rgba(0, 254, 78, 0.6); margin: -1.5px 0 0 -1.5px; opacity: 0.5; }
+        .pw-orb { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: rgba(255, 255, 255, 0.7); box-shadow: 0 0 6px rgba(255, 255, 255, 0.6); margin: -1.5px 0 0 -1.5px; opacity: 0.5; }
         .na { animation: orb1 5s linear infinite; }
         .nb { animation: orb2 7s linear infinite; }
         .nc { animation: orb3 9s linear infinite; }
         .pw-logo-zone { position: relative; z-index: 5; display: flex; align-items: center; padding: 0 16px; height: 100%; flex-shrink: 0; }
         @media (min-width: 1024px) { .pw-logo-zone { padding: 0 24px; min-width: 220px; } }
-        .pw-logo-zone img { height: 30px; width: auto; object-fit: contain; filter: brightness(1.05) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4)); transition: transform .35s, filter .35s; }
+        .pw-logo-zone img { height: 30px; width: auto; object-fit: contain; opacity: 1; filter: brightness(1.1) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5)); transition: transform .35s, filter .35s; }
         @media (min-width: 1024px) { .pw-logo-zone img { height: 36px; } }
-        .pw-logo-zone img:hover { transform: translateY(-2px) scale(1.05); filter: brightness(1.15) drop-shadow(0 4px 14px rgba(0, 254, 78, 0.45)); }
+        .pw-logo-zone img:hover { transform: translateY(-2px) scale(1.05); filter: brightness(1.2) drop-shadow(0 4px 14px rgba(0, 254, 78, 0.5)); }
         .pw-links { position: relative; z-index: 5; display: none; flex: 1; align-items: center; justify-content: center; gap: 12px; }
         @media (min-width: 1024px) { .pw-links { display: flex; } }
         .pw-link {
@@ -772,7 +925,7 @@ export default function Page() {
           border-radius: 999px;
           overflow: hidden;
           isolation: isolate;
-          transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .pw-link::before {
           content: '';
@@ -811,13 +964,22 @@ export default function Page() {
           transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
           flex-shrink: 0;
         }
-        .pw-link:hover { color: #00fe4e; }
+        .pw-link:hover {
+          color: #00fe4e;
+          transform: translateY(-2px);
+        }
         .pw-link:hover::before { opacity: 1; background-position: 0% 50%; }
-        .pw-link:hover::after { border-color: rgba(0, 254, 78, 0.25); box-shadow: inset 0 0 12px rgba(0, 254, 78, 0.08); }
+        .pw-link:hover::after {
+          border-color: rgba(255, 255, 255, 0.45);
+          box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.08), 0 0 12px rgba(0, 254, 78, 0.2);
+        }
         .pw-link:hover .pw-link-dot { opacity: 1; transform: scale(1); }
         .pw-link-active { color: #00fe4e; }
         .pw-link-active::before { opacity: 1; background-position: 0% 50%; background: linear-gradient(90deg, rgba(0, 254, 78, 0.22) 0%, rgba(0, 254, 78, 0.12) 100%); }
-        .pw-link-active::after { border-color: rgba(0, 254, 78, 0.3); box-shadow: inset 0 0 14px rgba(0, 254, 78, 0.1); }
+        .pw-link-active::after {
+          border-color: rgba(255, 255, 255, 0.55);
+          box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.1), 0 0 14px rgba(0, 254, 78, 0.25);
+        }
         .pw-link-active .pw-link-dot { opacity: 1; transform: scale(1); }
 
         .pw-link-dropdown-wrap { position: relative; }
@@ -1205,46 +1367,100 @@ export default function Page() {
         @media (min-width: 1024px) { .chatbox-wrap { margin-top: -90px; } }
 
         @keyframes chatboxSlideUp { from { opacity: 0; transform: translateY(40px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        .ea-card { overflow: hidden; border-radius: 20px; border: 2px solid #00fe4e; background: linear-gradient(180deg, rgba(121,181,181,.92) 0%, rgba(93,125,204,.92) 46%, rgba(21,25,145,.98) 100%); box-shadow: 0 0 26px rgba(0,254,78,.14), 0 20px 60px rgba(0,0,0,0.3); animation: chatboxSlideUp .8s cubic-bezier(.2,.9,.3,1) both; animation-delay: .3s; }
+        .ea-card {
+          position: relative;
+          overflow: hidden;
+          border-radius: 20px;
+          background: #000572;
+          background-image:
+            radial-gradient(ellipse 110% 80% at 50% 0%, rgba(117, 251, 105, 0.7) 0%, rgba(117, 251, 105, 0.35) 30%, rgba(117, 251, 105, 0.1) 55%, rgba(0, 5, 114, 0) 75%),
+            linear-gradient(180deg, rgba(117, 251, 105, 0.12) 0%, rgba(0, 5, 114, 0.95) 60%, #000572 100%);
+          border: 3px solid #00ff66;
+          box-shadow:
+            0 0 28px rgba(0, 255, 102, 0.28),
+            0 28px 80px rgba(0, 0, 0, 0.18);
+          animation: chatboxSlideUp .8s cubic-bezier(.2,.9,.3,1) both;
+          animation-delay: .3s;
+          transition: background-color 0.5s ease, background-image 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease;
+        }
+        .ea-card:hover {
+          background-color: #00033f;
+          background-image:
+            radial-gradient(ellipse 110% 80% at 50% 0%, rgba(117, 251, 105, 0.7) 0%, rgba(117, 251, 105, 0.35) 30%, rgba(117, 251, 105, 0.1) 55%, rgba(0, 3, 63, 0) 75%),
+            linear-gradient(180deg, rgba(117, 251, 105, 0.12) 0%, rgba(0, 3, 63, 0.97) 55%, #00033f 100%);
+          box-shadow:
+            0 0 36px rgba(0, 255, 102, 0.4),
+            0 32px 90px rgba(0, 0, 0, 0.3);
+        }
+        .ea-card::before {
+          content: none;
+        }
+
+        .wef-card {
+          position: relative;
+          background: #f8f8f8;
+          border-radius: 14px;
+          transition: box-shadow 0.4s ease, transform 0.4s ease;
+        }
+        .wef-card::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: 14px;
+          padding: 1px;
+          background: linear-gradient(90deg, #00FE4E 0%, #000572 100%);
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          pointer-events: none;
+          transition: padding 0.4s ease, filter 0.4s ease;
+        }
+        .wef-card:hover {
+          box-shadow: 0 0 0 4px rgba(0, 254, 78, 0.12), 0 12px 32px rgba(0, 5, 114, 0.18);
+          transform: translateY(-2px);
+        }
+        .wef-card:hover::before {
+          padding: 2px;
+          filter: drop-shadow(0 0 8px rgba(0, 254, 78, 0.5));
+        }
         .chatbox-btn:hover { transform: translateY(-3px) scale(1.05); }
         .ask-typing-wrap { display: flex; align-items: center; min-height: 40px; }
         .ask-typing { display: inline-block; color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 400; overflow: hidden; white-space: nowrap; border-right: 2px solid rgba(255,255,255,0.7); animation: askType 4.5s steps(14, end) infinite, askCaret 0.7s step-end infinite; max-width: 0; }
         @keyframes askType { 0%, 5% { max-width: 0; } 40%, 70% { max-width: 200px; } 95%, 100% { max-width: 0; } }
         @keyframes askCaret { 0%, 100% { border-color: transparent; } 50% { border-color: rgba(255,255,255,0.7); } }
 
-        @keyframes logoQ { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes logoF { 0%, 42%, 100% { transform: translateY(0) scale(1); opacity: .78; border-color: rgba(0,0,0,.18); } 12%, 28% { transform: translateY(-14px) scale(1.08); opacity: 1; border-color: rgba(0,254,78,.95); } }
-        .logo-shell { position: relative; overflow: hidden; width: 100%; padding: 20px 0 28px; mask-image: linear-gradient(90deg, transparent 0%, black 9%, black 91%, transparent 100%); }
-        .logo-track { display: flex; width: max-content; gap: 28px; animation: logoQ 32s linear infinite; will-change: transform; }
-        .logo-shell:hover .logo-track { animation-play-state: paused; }
+        .logo-shell { position: relative; overflow: hidden; padding: 20px 0 28px; width: 100vw; margin-left: calc(50% - 50vw); -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%); }
+        .logo-track { display: flex; width: max-content; gap: 28px; padding-left: 16px; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); will-change: transform; }
+        @media (min-width: 640px) { .logo-track { padding-left: 24px; } }
+        @media (min-width: 1024px) { .logo-track { padding-left: 32px; } }
         .logo-nav-wrap { display: flex; justify-content: center; margin-top: 8px; }
-        .logo-nav-btn { width: 84px; height: 60px; background: #ffffff; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 0 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.04); }
-        .logo-nav-arrow { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; padding: 0; transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+        .logo-nav-btn { width: 84px; height: 60px; background: #ffffff; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 0 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.04); transition: box-shadow 0.3s ease, border-color 0.3s ease; }
+        .logo-nav-btn:hover { box-shadow: 0 6px 18px rgba(0,254,78,0.18), 0 0 0 2px rgba(0,254,78,0.25); border-color: rgba(0,254,78,0.35); }
+        .logo-nav-arrow { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; padding: 0; color: #8e8e8e; border-radius: 8px; transition: color 0.25s ease, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.25s ease, filter 0.25s ease; }
         .logo-nav-arrow svg { width: 20px; height: 20px; transition: filter 0.25s ease; }
-        .logo-nav-arrow-prev { color: #8e8e8e; }
-        .logo-nav-arrow-prev:hover { color: #00fe4e; transform: translateX(-2px); }
+        .logo-nav-arrow-prev:hover { color: #00fe4e; transform: translateX(-2px); background: rgba(0,254,78,0.08); }
         .logo-nav-arrow-prev:hover svg { filter: drop-shadow(0 0 4px rgba(0,254,78,0.4)); }
-        .logo-nav-arrow-next { color: #00fe4e; filter: drop-shadow(0 0 6px rgba(0,254,78,0.45)); }
-        .logo-nav-arrow-next:hover { transform: translateX(2px); filter: drop-shadow(0 0 10px rgba(0,254,78,0.7)); }
+        .logo-nav-arrow-next:hover { color: #00fe4e; transform: translateX(2px); background: rgba(0,254,78,0.08); }
+        .logo-nav-arrow-next:hover svg { filter: drop-shadow(0 0 4px rgba(0,254,78,0.4)); }
         .logo-nav-arrow:active { transform: scale(0.92); }
-        .logo-card { width: clamp(140px, 18vw, 220px); height: clamp(90px, 11vw, 130px); flex: 0 0 auto; display: flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid rgba(0,0,0,.18); background: rgba(255,255,255,.96); transition: transform .35s, border-color .35s; animation: logoF 14s ease-in-out infinite; }
-        .logo-card:nth-child(2), .logo-card:nth-child(7) { animation-delay: 2.2s; }
-        .logo-card:nth-child(3), .logo-card:nth-child(8) { animation-delay: 4.4s; }
-        .logo-card:nth-child(4), .logo-card:nth-child(9) { animation-delay: 6.6s; }
-        .logo-card:nth-child(5), .logo-card:nth-child(10) { animation-delay: 8.8s; }
-        .logo-card:hover { transform: translateY(-16px) scale(1.1) !important; border-color: #00fe4e !important; }
+        .logo-card { width: clamp(140px, 18vw, 220px); height: clamp(90px, 11vw, 130px); flex: 0 0 auto; display: flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid rgba(0,0,0,.18); background: rgba(255,255,255,.96); transition: transform .35s cubic-bezier(0.4, 0, 0.2, 1), border-color .35s ease, box-shadow .35s ease; animation: logoF 14s ease-in-out infinite; }
+        .logo-card:nth-child(5n+2) { animation-delay: 2.2s; }
+        .logo-card:nth-child(5n+3) { animation-delay: 4.4s; }
+        .logo-card:nth-child(5n+4) { animation-delay: 6.6s; }
+        .logo-card:nth-child(5n+5) { animation-delay: 8.8s; }
+        .logo-card:hover { transform: translateY(-12px) scale(1.06) !important; border-color: #00fe4e !important; box-shadow: 0 14px 28px rgba(0,254,78,0.18); animation-play-state: paused; }
         .logo-card img { max-height: 60%; max-width: 70%; width: auto; object-fit: contain; }
 
         @keyframes pinPop { 0%, 18% { opacity: 0; transform: translateY(18px) scale(.82); } 38%, 100% { opacity: 1; transform: none; } }
 
         .service-card { transition: transform 0.45s cubic-bezier(0.2,0.9,0.3,1), box-shadow 0.45s cubic-bezier(0.2,0.9,0.3,1), border-color 0.45s cubic-bezier(0.2,0.9,0.3,1); cursor: pointer; will-change: transform; }
-        .service-card::before { content: ''; position: absolute; inset: 0; border-radius: 10px; background: radial-gradient(circle at top right, rgba(0,254,78,0.08), transparent 60%); opacity: 0; transition: opacity 0.45s ease; pointer-events: none; }
-        .service-card:hover { transform: translateY(-12px); box-shadow: 0 20px 50px rgba(0,254,78,0.15), 0 8px 20px rgba(0,0,0,0.06); border-color: #00fe4e !important; }
-        .service-card:hover::before { opacity: 1; }
+        .service-card::before { content: ''; position: absolute; inset: 0; border-radius: 10px; background: radial-gradient(circle at top right, rgba(0,254,78,0.06), transparent 60%); opacity: 0; transition: opacity 0.45s ease; pointer-events: none; }
+        .service-card:hover::before { opacity: 0; }
         .service-card-dark::before { background: radial-gradient(circle at top right, rgba(0,254,78,0.18), transparent 60%); }
         .service-card-dark:hover { transform: translateY(-12px); box-shadow: 0 20px 50px rgba(5,7,131,0.4), 0 0 0 1px rgba(0,254,78,0.5), 0 8px 20px rgba(0,0,0,0.2); }
         .service-card-icon { transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), color 0.45s ease; will-change: transform; }
-        .service-card:hover .service-card-icon { transform: translateY(-6px) scale(1.08) rotate(-4deg); color: #00fe4e !important; }
+        .service-card:hover .service-card-icon { transform: translateY(-4px) scale(1.05); }
         @keyframes serviceCardFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
         .service-card-icon { animation: serviceCardFloat 3.5s ease-in-out infinite; }
 
@@ -1264,125 +1480,66 @@ export default function Page() {
           box-shadow: 0 8px 24px rgba(0, 254, 78, 0.5), 0 0 0 6px rgba(0, 254, 78, 0.12);
         }
 
-        @keyframes cardSpotlight {
-          0%, 30% { background: #050783; border-color: #050783; }
-          40%, 100% { background: #ffffff; border-color: #00fe4e; }
-        }
-        @keyframes iconSpotlight {
-          0%, 30% { color: #ffffff; }
-          40%, 100% { color: #c9c9c9; }
-        }
-        @keyframes textSpotlight {
-          0%, 30% { color: #ffffff; }
-          40%, 100% { color: #000000; }
-        }
-        @keyframes bodySpotlight {
-          0%, 30% { color: rgba(255, 255, 255, 0.7); }
-          40%, 100% { color: #686868; }
-        }
-        @keyframes titleSpotlight {
-          0%, 30% { color: #ffffff; }
-          40%, 100% { color: #00d84f; }
-        }
-
         .service-card-cycle {
-          animation: cardSpotlight 9s ease-in-out infinite;
-          transition: transform 0.45s cubic-bezier(0.2,0.9,0.3,1), box-shadow 0.45s cubic-bezier(0.2,0.9,0.3,1);
+          background: #ffffff;
+          border-color: #e5e5e5;
+          transition: background 0.45s ease, border-color 0.45s ease, transform 0.45s cubic-bezier(0.2,0.9,0.3,1), box-shadow 0.45s cubic-bezier(0.2,0.9,0.3,1);
         }
-        .service-card-cycle-1 { animation-delay: 0s; }
-        .service-card-cycle-2 { animation-delay: 3s; }
-        .service-card-cycle-3 { animation-delay: 6s; }
+        .service-card-cycle .service-card-icon-cycle {
+          color: #d0d0d0;
+          transition: color 0.45s ease;
+        }
+        .service-card-cycle .service-card-eyebrow {
+          color: #1a1a1a;
+          font-weight: 500;
+          transition: color 0.45s ease;
+        }
+        .service-card-cycle .service-card-title {
+          background: linear-gradient(90deg, #00FE4E 0%, #000572 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          color: transparent;
+          transition: filter 0.45s ease, opacity 0.45s ease;
+        }
+        .service-card-cycle .service-card-body {
+          color: #6b6b6b;
+          transition: color 0.45s ease;
+        }
 
-        .service-card-cycle-1 .service-card-icon-cycle { animation: iconSpotlight 9s ease-in-out infinite; animation-delay: 0s; }
-        .service-card-cycle-2 .service-card-icon-cycle { animation: iconSpotlight 9s ease-in-out infinite; animation-delay: 3s; }
-        .service-card-cycle-3 .service-card-icon-cycle { animation: iconSpotlight 9s ease-in-out infinite; animation-delay: 6s; }
-
-        .service-card-cycle-1 .service-card-eyebrow { animation: textSpotlight 9s ease-in-out infinite; animation-delay: 0s; }
-        .service-card-cycle-2 .service-card-eyebrow { animation: textSpotlight 9s ease-in-out infinite; animation-delay: 3s; }
-        .service-card-cycle-3 .service-card-eyebrow { animation: textSpotlight 9s ease-in-out infinite; animation-delay: 6s; }
-
-        .service-card-cycle-1 .service-card-title { animation: titleSpotlight 9s ease-in-out infinite; animation-delay: 0s; }
-        .service-card-cycle-2 .service-card-title { animation: titleSpotlight 9s ease-in-out infinite; animation-delay: 3s; }
-        .service-card-cycle-3 .service-card-title { animation: titleSpotlight 9s ease-in-out infinite; animation-delay: 6s; }
-
-        .service-card-cycle-1 .service-card-body { animation: bodySpotlight 9s ease-in-out infinite; animation-delay: 0s; }
-        .service-card-cycle-2 .service-card-body { animation: bodySpotlight 9s ease-in-out infinite; animation-delay: 3s; }
-        .service-card-cycle-3 .service-card-body { animation: bodySpotlight 9s ease-in-out infinite; animation-delay: 6s; }
-
-        .service-card-cycle:hover,
-        .service-card-cycle:hover .service-card-icon-cycle,
-        .service-card-cycle:hover .service-card-eyebrow,
-        .service-card-cycle:hover .service-card-title,
+        .service-card-cycle:hover {
+          background: #050783;
+          border-color: #050783;
+          transform: translateY(-4px);
+          box-shadow: 0 12px 32px rgba(5, 7, 131, 0.18);
+        }
+        .service-card-cycle:hover .service-card-icon-cycle {
+          color: #ffffff;
+        }
+        .service-card-cycle:hover .service-card-eyebrow {
+          color: #ffffff;
+        }
+        .service-card-cycle:hover .service-card-title {
+          background: none;
+          -webkit-text-fill-color: #ffffff;
+          color: #ffffff;
+        }
         .service-card-cycle:hover .service-card-body {
-          animation-play-state: paused;
+          color: rgba(255, 255, 255, 0.78);
         }
 
-        @media (prefers-reduced-motion: reduce) {
-          .service-card-cycle,
-          .service-card-cycle .service-card-icon-cycle,
-          .service-card-cycle .service-card-eyebrow,
-          .service-card-cycle .service-card-title,
-          .service-card-cycle .service-card-body { animation: none; }
+        .stat-card {
+          position: relative;
+          background: #ffffff;
+          border: 1px solid #02E046;
+          border-radius: 10px;
+          cursor: default;
         }
-
-        .stat-card { position: relative; overflow: hidden; cursor: pointer; transition: transform 0.4s cubic-bezier(0.2,0.9,0.3,1), box-shadow 0.4s cubic-bezier(0.2,0.9,0.3,1), border-color 0.3s ease, background 0.4s ease; }
-        .stat-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(120deg, transparent, rgba(0,254,78,0.18), transparent); transition: left 0.7s cubic-bezier(0.2,0.9,0.3,1); }
-        .stat-card:hover::before { left: 100%; }
-        .stat-card:hover { transform: translateY(-8px); box-shadow: 0 18px 40px rgba(0,254,78,0.18), 0 6px 16px rgba(0,0,0,0.06); border-color: #00fe4e !important; }
-        .stat-card-active::before { background: linear-gradient(120deg, transparent, rgba(0,254,78,0.32), transparent); }
-        .stat-card-active:hover { transform: translateY(-8px); box-shadow: 0 18px 40px rgba(5,7,131,0.45), 0 0 0 1.5px rgba(0,254,78,0.6), 0 6px 16px rgba(0,0,0,0.2); background: #060a9a !important; }
-        .stat-card-icon { transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), color 0.3s ease; }
-        .stat-card:hover .stat-card-icon { transform: scale(1.2) rotate(8deg); color: #00fe4e !important; }
-        .stat-card-active:hover .stat-card-icon { color: #00fe4e !important; }
-        .stat-card-val { transition: color 0.3s ease, transform 0.4s ease; }
-        .stat-card:hover .stat-card-val { transform: scale(1.05); }
-        .stat-card:not(.stat-card-active):hover .stat-card-val { color: #050783; }
-
-        @keyframes statCardSpotlight {
-          0%, 20% { background: #050783; border-color: #050783; }
-          30%, 100% { background: #ffffff; border-color: #bdbdbd; }
+        .stat-card-icon {
+          color: #02E046;
         }
-        @keyframes statIconSpotlight {
-          0%, 20% { color: #ffffff; }
-          30%, 100% { color: #00fe4e; }
-        }
-        @keyframes statTextSpotlight {
-          0%, 20% { color: #ffffff; }
-          30%, 100% { color: #000000; }
-        }
-
-        .stat-card-cycle { animation: statCardSpotlight 8s ease-in-out infinite; }
-        .stat-card-cycle-1 { animation-delay: 0s; }
-        .stat-card-cycle-2 { animation-delay: 2s; }
-        .stat-card-cycle-3 { animation-delay: 4s; }
-        .stat-card-cycle-4 { animation-delay: 6s; }
-
-        .stat-card-cycle-1 .stat-card-icon-cycle { animation: statIconSpotlight 8s ease-in-out infinite; animation-delay: 0s; }
-        .stat-card-cycle-2 .stat-card-icon-cycle { animation: statIconSpotlight 8s ease-in-out infinite; animation-delay: 2s; }
-        .stat-card-cycle-3 .stat-card-icon-cycle { animation: statIconSpotlight 8s ease-in-out infinite; animation-delay: 4s; }
-        .stat-card-cycle-4 .stat-card-icon-cycle { animation: statIconSpotlight 8s ease-in-out infinite; animation-delay: 6s; }
-
-        .stat-card-cycle-1 .stat-card-val-cycle,
-        .stat-card-cycle-1 .stat-card-label-cycle { animation: statTextSpotlight 8s ease-in-out infinite; animation-delay: 0s; }
-        .stat-card-cycle-2 .stat-card-val-cycle,
-        .stat-card-cycle-2 .stat-card-label-cycle { animation: statTextSpotlight 8s ease-in-out infinite; animation-delay: 2s; }
-        .stat-card-cycle-3 .stat-card-val-cycle,
-        .stat-card-cycle-3 .stat-card-label-cycle { animation: statTextSpotlight 8s ease-in-out infinite; animation-delay: 4s; }
-        .stat-card-cycle-4 .stat-card-val-cycle,
-        .stat-card-cycle-4 .stat-card-label-cycle { animation: statTextSpotlight 8s ease-in-out infinite; animation-delay: 6s; }
-
-        .stat-card-cycle:hover,
-        .stat-card-cycle:hover .stat-card-icon-cycle,
-        .stat-card-cycle:hover .stat-card-val-cycle,
-        .stat-card-cycle:hover .stat-card-label-cycle {
-          animation-play-state: paused;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .stat-card-cycle,
-          .stat-card-cycle .stat-card-icon-cycle,
-          .stat-card-cycle .stat-card-val-cycle,
-          .stat-card-cycle .stat-card-label-cycle { animation: none; }
+        .stat-card-val {
+          color: #000000;
         }
 
         @keyframes pinPulse { 0%, 100% { box-shadow: 0 0 0 2px #00fe4e, 0 4px 10px rgba(0,0,0,0.12), 0 0 0 0 rgba(0,254,78,0.5); } 50% { box-shadow: 0 0 0 2px #00fe4e, 0 4px 10px rgba(0,0,0,0.12), 0 0 0 12px rgba(0,254,78,0); } }
@@ -1391,7 +1548,7 @@ export default function Page() {
         .marquee-shell { position: relative; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); overflow: hidden; padding: 6px 0; }
         .marquee-track { display: flex; width: max-content; gap: 60px; animation: marqueeScroll 28s linear infinite; will-change: transform; }
         .marquee-shell:hover .marquee-track { animation-play-state: paused; }
-        .marquee-text { flex-shrink: 0; font-family: var(--font-poppins), sans-serif; font-weight: 300; font-size: clamp(40px, 8vw, 110px); line-height: 1; letter-spacing: 0.02em; text-transform: uppercase; white-space: nowrap; background: linear-gradient(90deg, #d4ff3a 0%, #0adf54 18%, #050889 38%, #0a7a5f 58%, #0adf54 78%, #d4ff3a 100%); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; animation: gradientShift 8s linear infinite; }
+        .marquee-text { flex-shrink: 0; font-family: var(--font-poppins), sans-serif; font-weight: 300; font-size: clamp(40px, 8vw, 110px); line-height: 1; letter-spacing: 0.02em; text-transform: uppercase; white-space: nowrap; background: linear-gradient(90deg, #00FE4E 0%, #000572 50%, #00FE4E 100%); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; animation: gradientShift 8s linear infinite; }
         @keyframes gradientShift { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 
         .map-stage { position: relative; width: 100%; max-width: 1080px; height: clamp(220px, 38vw, 340px); margin: 24px auto 0; overflow: hidden; background: #fff; }
@@ -1515,13 +1672,12 @@ export default function Page() {
         .contact-cta-section {
           position: relative;
           z-index: 5;
-          background: #ffffff;
-          padding: 16px 0 48px;
-          margin-top: -120px;
-          overflow-x: hidden;
+          background: transparent;
+          padding: 0 0 100px;
+          margin-top: 55px;
         }
         .contact-cta-wrap {
-          max-width: 1280px;
+          max-width: 1320px;
           margin: 0 auto;
           padding: 0 32px;
           display: flex;
@@ -1530,15 +1686,18 @@ export default function Page() {
         .contact-cta-box {
           position: relative;
           width: 100%;
-          max-width: 600px;
-          padding: 28px 36px;
+          max-width: 720px;
+          min-height: 220px;
+          padding: 44px 56px;
           background: linear-gradient(135deg, #0a0e7a 0%, #050889 100%);
-          border-radius: 20px;
+          border-radius: 14px;
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 18px;
+          justify-content: center;
+          gap: 24px;
           overflow: hidden;
+          box-shadow: 0 20px 60px rgba(5, 7, 131, 0.25);
         }
         .contact-cta-box::after {
           content: '';
@@ -1554,11 +1713,12 @@ export default function Page() {
           position: relative;
           margin: 0;
           font-family: var(--font-poppins), sans-serif;
-          font-size: 16px;
+          font-size: 18px;
+          font-weight: 500;
           color: #ffffff;
           text-align: center;
           line-height: 1.5;
-          max-width: 600px;
+          max-width: 560px;
           z-index: 1;
         }
         .contact-cta-btn {
@@ -1587,20 +1747,25 @@ export default function Page() {
         }
         .contact-cta-btn:hover svg { transform: translateX(4px); }
         @media (max-width: 1024px) {
-          .contact-cta-section { margin-top: -80px; padding: 8px 0 36px; }
+          .po-section { padding: 40px 0 60px; }
+          .contact-cta-section { margin-top: 40px; padding: 0 0 80px; }
           .contact-cta-wrap { padding: 0 24px; }
-          .contact-cta-box { padding: 24px 28px; max-width: 520px; }
+          .contact-cta-box { padding: 40px 32px; min-height: 200px; gap: 20px; }
+          .contact-cta-text { font-size: 17px; }
         }
         @media (max-width: 768px) {
-          .contact-cta-section { margin-top: 0; padding: 8px 0 28px; }
+          .po-section { padding: 24px 0 40px; min-height: 0; }
+          .contact-cta-section { margin-top: 32px; padding: 0 0 60px; }
           .contact-cta-wrap { padding: 0 16px; }
-          .contact-cta-box { padding: 22px 22px; border-radius: 16px; }
-          .contact-cta-text { font-size: 14px; }
+          .contact-cta-box { padding: 32px 24px; border-radius: 12px; min-height: 180px; gap: 16px; }
+          .contact-cta-text { font-size: 15px; }
           .contact-cta-btn { height: 42px; padding: 0 22px 0 26px; font-size: 13px; }
         }
         @media (max-width: 480px) {
-          .contact-cta-section { margin-top: 0; padding: 4px 0 24px; }
-          .contact-cta-box { padding: 20px 18px; gap: 14px; }
+          .po-section { padding: 20px 0 32px; }
+          .contact-cta-section { margin-top: 24px; padding: 0 0 48px; }
+          .contact-cta-box { padding: 28px 20px; gap: 14px; min-height: 160px; }
+          .contact-cta-text { font-size: 14px; }
         }
 
         .site-footer { position: relative; background: #ffffff; padding: 40px 0 0; border-top: 1px solid rgba(0,0,0,0.06); }
@@ -1673,24 +1838,32 @@ export default function Page() {
 
         .team-section { position: relative; overflow: hidden; background: #fff; padding: 56px 0; }
         @media (min-width: 1024px) { .team-section { padding: 80px 0; } }
-        .team-bg-sphere { position: absolute; left: -8%; top: 50%; transform: translateY(-50%); width: 55%; max-width: 800px; aspect-ratio: 1 / 1; pointer-events: none; opacity: 0.55; z-index: 1; }
-        .team-bg-sphere img { width: 100%; height: 100%; object-fit: contain; }
-        @media (max-width: 768px) { .team-bg-sphere { left: -25%; width: 90%; opacity: 0.25; } }
         .team-bg-circuit { position: absolute; right: 2%; top: 50%; transform: translateY(-50%); width: 160px; height: 380px; pointer-events: none; opacity: 0.55; z-index: 1; }
         .team-bg-circuit svg { width: 100%; height: 100%; }
         @media (max-width: 1023px) { .team-bg-circuit { display: none; } }
         .team-title { font-family: var(--font-poppins), sans-serif; font-size: clamp(36px, 6.5vw, 72px); font-weight: 300; letter-spacing: 0.04em; line-height: 1; margin: 0; text-transform: uppercase; }
-        .team-row { position: relative; z-index: 10; display: grid; grid-template-columns: 200px 1fr; gap: 28px; align-items: center; }
-        .team-btn-col { display: flex; align-items: center; justify-content: center; }
-        .team-about-btn { height: 48px; padding: 0 32px; border-radius: 24px; background: #00fe4e; color: #000; font-size: 15px; font-weight: 500; box-shadow: 0 8px 24px rgba(0,254,78,0.35), 0 0 0 6px rgba(0,254,78,0.12); transition: transform 0.25s, box-shadow 0.25s; white-space: nowrap; cursor: pointer; border: none; }
+        .team-row { position: relative; z-index: 10; display: grid; grid-template-columns: 280px 1fr; gap: 32px; align-items: start; }
+        .team-btn-col { position: relative; display: flex; align-items: center; justify-content: center; min-height: 280px; }
+        .team-neptune-wrap { position: absolute; left: -200px; top: 50%; transform: translateY(-50%); width: 760px; height: 760px; pointer-events: none; z-index: 1; }
+        .team-neptune-wrap img { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; object-fit: contain; transform: translate(-50%, -50%); transform-origin: 50% 50%; animation: teamSphereRotate 60s linear infinite; will-change: transform; opacity: 0.85; }
+        .team-neptune-btn { position: absolute; left: calc(-200px + 380px); top: 50%; transform: translate(-50%, -50%); z-index: 5; }
+        @keyframes teamSphereRotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        @media (prefers-reduced-motion: reduce) { .team-neptune-wrap img { animation: none; } }
+        .team-about-btn { position: relative; z-index: 5; height: 48px; padding: 0 32px; border-radius: 24px; background: #00fe4e; color: #000; font-size: 15px; font-weight: 500; box-shadow: 0 8px 24px rgba(0,254,78,0.35), 0 0 0 6px rgba(0,254,78,0.12); transition: transform 0.25s, box-shadow 0.25s; white-space: nowrap; cursor: pointer; border: none; }
         .team-about-btn:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 12px 32px rgba(0,254,78,0.5), 0 0 0 8px rgba(0,254,78,0.18); }
         .team-cards-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-        .team-card { display: flex; flex-direction: column; }
+        .team-cards-col { position: relative; z-index: 10; grid-column: 2; }
+        .team-card { display: flex; flex-direction: column; align-items: stretch; }
+        .team-card-role { min-height: 32px; margin-top: 12px; font-size: 11px; line-height: 1.35; color: #000; text-align: center; display: flex; align-items: flex-start; justify-content: center; }
+        @media (min-width: 1024px) { .team-card-role { font-size: 12px; min-height: 34px; } }
+        .team-card-name { margin-top: 4px; font-size: 14px; font-weight: 700; color: #00b95a; text-align: center; letter-spacing: 0.02em; }
+        @media (min-width: 1024px) { .team-card-name { font-size: 16px; } }
+        .team-card-linkedin { margin: 12px auto 0; display: flex; height: 28px; width: 28px; align-items: center; justify-content: center; border-radius: 9999px; background: #0077b5; color: #fff; }
         .team-photo-frame { position: relative; width: 100%; aspect-ratio: 4 / 4.4; overflow: hidden; border-radius: 6px; background: #f0f0f0; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: transform 0.35s, box-shadow 0.35s; }
         .team-photo-frame:hover { transform: translateY(-6px); box-shadow: 0 12px 28px rgba(0,0,0,0.15); }
         .team-photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
-        @media (max-width: 1023px) { .team-row { grid-template-columns: 1fr; gap: 24px; } .team-btn-col { justify-content: flex-start; } .team-cards-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; } }
-        @media (max-width: 768px) { .team-cards-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
+        @media (max-width: 1023px) { .team-row { grid-template-columns: 1fr; gap: 24px; } .team-cards-col { grid-column: 1; } .team-neptune-wrap { width: 480px; height: 480px; left: 0; right: auto; top: 20%; } .team-neptune-btn { left: 240px; top: 20%; } .team-cards-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; } }
+        @media (max-width: 768px) { .team-neptune-wrap { display: none; } .team-neptune-btn { position: relative; left: auto; top: auto; transform: none; margin-bottom: 24px; } .team-cards-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
         @media (max-width: 480px) { .team-cards-grid { gap: 12px; } }
       `}</style>
 
@@ -1719,6 +1892,7 @@ export default function Page() {
             <div className="pw-nav-wrapper relative mb-4 lg:mb-5">
               <div className="pw-glow-line hidden lg:block" />
               <nav className="pw-nav">
+                <div className="pw-nav-bg" />
                 <div className="pw-logo-glow" />
                 <div className="pw-orb-wrap"><div className="pw-orb na" /><div className="pw-orb nb" /><div className="pw-orb nc" /></div>
                 <div className="pw-logo-zone"><img src="/parwaaz-logo.png" alt="Parwaaz" /></div>
@@ -1823,45 +1997,43 @@ export default function Page() {
         </section>
 
         <div className="chatbox-wrap">
-          <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
+          <div className="mx-auto w-full max-w-[1100px] px-3 sm:px-6">
             <div className="ea-card">
-              <div className="relative px-5 py-5 sm:px-7 sm:py-6">
-                <div className="absolute left-5 top-5 h-2 w-2 rounded-full bg-white/40" />
-                <div className="absolute right-5 top-5 h-2 w-2 rounded-full bg-white/40" />
+              <div className="relative px-4 py-4 sm:px-7 sm:py-6">
 
-                <div className="text-center mb-4">
-                  <h3 className="mb-1 font-bold leading-tight text-[#00fe4e]" style={{ fontSize: 'clamp(20px, 2.4vw, 28px)' }}>
+                <div className="text-center mb-3 sm:mb-4">
+                  <h3 className="mb-1 font-bold leading-tight text-[#00fe4e]" style={{ fontSize: 'clamp(18px, 5.2vw, 28px)' }}>
                     How Can We Assist You Today?
                   </h3>
-                  <p className="font-medium text-white/85" style={{ fontSize: 'clamp(10px, 0.9vw, 12px)' }}>
+                  <p className="font-medium text-white/85 px-2" style={{ fontSize: 'clamp(10px, 2.6vw, 12px)' }}>
                     Find answers to your questions instantly let AI do the work for you
                   </p>
                 </div>
 
-                <div className="bg-black rounded-[10px] overflow-hidden">
-                  <div className="px-4 py-4 sm:px-5 sm:py-5">
+                <div className="bg-black rounded-t-[10px] sm:rounded-t-[12px] overflow-hidden">
+                  <div className="px-3 py-3 sm:px-5 sm:py-5">
                     <div className="ask-typing-wrap">
                       <span className="ask-typing">Ask Anything...</span>
                     </div>
-                    <div className="flex items-center justify-between mt-4 sm:mt-5">
-                      <label className="chatbox-btn flex items-center justify-center w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] bg-white rounded-[7px] cursor-pointer">
+                    <div className="flex items-center justify-between mt-3 sm:mt-5">
+                      <label className="chatbox-btn flex items-center justify-center w-[32px] h-[32px] sm:w-[38px] sm:h-[38px] bg-white rounded-[7px] cursor-pointer">
                         <Plus className="h-4 w-4 text-black" />
                         <input type="file" accept="*/*" className="hidden" />
                       </label>
-                      <div className="flex gap-2">
-                        <button className="chatbox-btn flex items-center justify-center w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] bg-transparent border border-white/25 rounded-[7px]">
+                      <div className="flex gap-1.5 sm:gap-2">
+                        <button className="chatbox-btn flex items-center justify-center w-[32px] h-[32px] sm:w-[38px] sm:h-[38px] bg-transparent border border-white/25 rounded-[7px]">
                           <Mic className="h-4 w-4 text-white/80" />
                         </button>
-                        <button className="chatbox-btn flex items-center justify-center w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] bg-blue-500 rounded-[7px]">
+                        <button className="chatbox-btn flex items-center justify-center w-[32px] h-[32px] sm:w-[38px] sm:h-[38px] bg-blue-500 rounded-[7px]">
                           <ArrowUp className="h-4 w-4 text-white" />
                         </button>
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center justify-center flex-wrap lg:flex-nowrap gap-2 bg-[#2952a8] px-3 sm:px-4 py-3 overflow-x-auto">
+                  <div className="flex items-center justify-start sm:justify-center flex-nowrap gap-1.5 sm:gap-2 bg-[#2f58b3] px-2.5 sm:px-4 py-2.5 sm:py-3 overflow-x-auto scrollbar-hide">
                     {chips.map(({ label, icon: Icon }) => (
-                      <button key={label} className="flex h-[26px] sm:h-[28px] shrink-0 items-center gap-1.5 rounded-full bg-white px-3 text-[10px] sm:text-[11px] font-semibold text-[#4b4b4b] shadow-[0_2px_6px_rgba(0,0,0,0.12)] transition hover:-translate-y-0.5 whitespace-nowrap">
-                        <Icon className="h-[11px] w-[11px] text-[#00fe4e]" /><span>{label}</span>
+                      <button key={label} className="flex h-[24px] sm:h-[28px] shrink-0 items-center gap-1 sm:gap-1.5 rounded-full bg-white px-2.5 sm:px-3 text-[9px] sm:text-[11px] font-semibold text-[#4b4b4b] shadow-[0_2px_6px_rgba(0,0,0,0.12)] transition hover:-translate-y-0.5 whitespace-nowrap">
+                        <Icon className="h-[10px] w-[10px] sm:h-[11px] sm:w-[11px] text-[#00fe4e]" /><span>{label}</span>
                       </button>
                     ))}
                   </div>
@@ -1875,7 +2047,7 @@ export default function Page() {
       <section className="relative z-10 bg-white pt-10 lg:pt-14 pb-12">
         <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
 
-          <section data-reveal="up" className="rounded-[10px] border border-[#54ff9a] bg-[#f8f8f8] p-6 sm:p-8 lg:px-10 lg:py-7">
+          <section data-reveal="up" className="wef-card p-6 sm:p-8 lg:px-10 lg:py-7">
             <div className="grid items-center gap-6 lg:gap-10 md:grid-cols-[260px_1fr]">
               <div className="flex justify-center md:justify-start">
                 <img src="/wef-logo.png" alt="WEF" className="h-[90px] lg:h-[120px] w-auto object-contain" />
@@ -1887,7 +2059,7 @@ export default function Page() {
           </section>
 
           <section className="mt-10 lg:mt-14 grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-            <div data-reveal="left">
+            <div data-reveal="left" data-reveal-mode="cycle">
               <div className="rounded-[12px] bg-[#d9d9d9] p-6 sm:p-8 lg:px-10 lg:py-7">
                 <div className="flex items-start justify-between gap-6">
                   <div>
@@ -1899,16 +2071,16 @@ export default function Page() {
                 </div>
               </div>
               <div className="px-2 sm:px-6 lg:px-8 pt-5">
-                <p className="leading-[1.6] tracking-[-0.02em] text-[#222]" style={{ fontSize: 'clamp(14px, 1.5vw, 19px)' }}>
+                <p data-reveal="up-sm" data-reveal-mode="cycle" className="leading-[1.6] tracking-[-0.02em] text-[#222]" style={{ fontSize: 'clamp(14px, 1.5vw, 19px)' }}>
                   1. Parwaaz (پرواز) is a Persian word meaning flight — not just the physical act of flying, but the rise of spirit, the leap of ambition and uninterrupted flight.
                 </p>
-                <p className="mt-5 lg:mt-6 leading-[1.6] tracking-[-0.02em] text-[#333]" style={{ fontSize: 'clamp(14px, 1.5vw, 19px)' }}>
+                <p data-reveal="up-sm" data-reveal-mode="cycle" data-reveal-delay="150" className="mt-5 lg:mt-6 leading-[1.6] tracking-[-0.02em] text-[#333]" style={{ fontSize: 'clamp(14px, 1.5vw, 19px)' }}>
                   2. We chose this name because it reflects exactly what we do. AI and advanced technology are the defining forces of our era — and learning them is no longer optional, it is the difference between being left behind and leading the way.
                 </p>
               </div>
             </div>
-            <div data-reveal="right" data-reveal-delay="120" className="bg-[#040a96] p-6 sm:p-8 shadow-[0_0_0_1px_rgba(0,254,78,.45)] rounded-[12px] lg:rounded-none">
-              <p className="font-medium leading-[1.45] tracking-[-0.03em] text-white" style={{ fontSize: 'clamp(17px, 2.4vw, 26px)' }}>
+            <div data-reveal="right" data-reveal-mode="cycle" data-reveal-delay="120" className="bg-[#040a96] p-6 sm:p-8 shadow-[0_0_0_1px_rgba(0,254,78,.45)] rounded-[12px] lg:rounded-none">
+              <p data-reveal="fade" data-reveal-mode="cycle" data-reveal-delay="240" className="font-medium leading-[1.45] tracking-[-0.03em] text-white" style={{ fontSize: 'clamp(17px, 2.4vw, 26px)' }}>
                 We chose this name because it reflects exactly what we do. AI and advanced technology are the defining forces of our era — and learning them is no longer optional, it is the difference between being left behind and leading the way.
               </p>
             </div>
@@ -1935,25 +2107,25 @@ export default function Page() {
               ))}
             </div>
             <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-7">
-              <div data-reveal="zoom" data-reveal-delay="0" className="service-card service-card-cycle service-card-cycle-1 relative min-h-[300px] lg:h-[340px] rounded-[10px] border border-[#00fe4e] bg-white p-6 lg:p-9">
-                <FileText className="service-card-icon absolute right-6 top-5 lg:right-9 lg:top-7 h-[60px] w-[60px] lg:h-[76px] lg:w-[76px] service-card-icon-cycle" strokeWidth={1.4} />
-                <div className="service-card-eyebrow mt-[70px] lg:mt-[100px] text-[13px] font-medium">Coursera &amp;</div>
-                <h3 className="service-card-title mt-2 font-light leading-none tracking-[-0.03em]" style={{ fontSize: 'clamp(24px, 2.8vw, 32px)' }}>
+              <div data-reveal="zoom" data-reveal-delay="0" className="service-card service-card-cycle relative flex flex-col min-h-[340px] lg:min-h-[380px] rounded-[10px] border border-[#e5e5e5] p-8 lg:p-10">
+                <FileText className="service-card-icon absolute right-7 top-6 lg:right-10 lg:top-8 h-[64px] w-[64px] lg:h-[80px] lg:w-[80px] service-card-icon-cycle" strokeWidth={1.4} />
+                <div className="service-card-eyebrow mt-[70px] lg:mt-[90px] text-[14px]">Coursera &amp;</div>
+                <h3 className="service-card-title mt-2 font-medium leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(26px, 2.6vw, 32px)' }}>
                   Digital Learning
                 </h3>
-                <p className="service-card-body mt-4 lg:mt-5 text-[13px] leading-[1.7]">Empowering Pakistan&apos;s workforce with world-class skills through global partnerships like Coursera. Unlock new career opportunities with tailored programs designed for modern professionals.</p>
+                <p className="service-card-body mt-4 text-[14px] lg:text-[15px] leading-[1.7]">Empowering Pakistan&apos;s workforce with world-class skills through global partnerships like Coursera. Unlock new career opportunities with tailored programs designed for modern professionals.</p>
               </div>
-              <div data-reveal="zoom" data-reveal-delay="140" className="service-card service-card-cycle service-card-cycle-2 relative min-h-[300px] lg:h-[340px] rounded-[10px] border border-[#00fe4e] bg-white p-6 lg:p-9">
-                <Database className="service-card-icon absolute right-6 top-5 lg:right-9 lg:top-7 h-[60px] w-[60px] lg:h-[76px] lg:w-[76px] service-card-icon-cycle" strokeWidth={1.5} />
-                <div className="service-card-eyebrow mt-[70px] lg:mt-[100px] text-[13px] font-medium tracking-[0.08em]">International Recruitment</div>
-                <h3 className="service-card-title mt-2 font-light leading-none tracking-[-0.03em]" style={{ fontSize: 'clamp(24px, 2.8vw, 32px)' }}>&amp; Payroll</h3>
-                <p className="service-card-body mt-4 lg:mt-5 text-[13px] leading-[1.7]">Connecting top Pakistani talent with global opportunities. We provide comprehensive recruitment and manpower solutions to meet the needs of international partners.</p>
+              <div data-reveal="zoom" data-reveal-delay="140" className="service-card service-card-cycle relative flex flex-col min-h-[340px] lg:min-h-[380px] rounded-[10px] border border-[#e5e5e5] p-8 lg:p-10">
+                <Database className="service-card-icon absolute right-7 top-6 lg:right-10 lg:top-8 h-[64px] w-[64px] lg:h-[80px] lg:w-[80px] service-card-icon-cycle" strokeWidth={1.5} />
+                <div className="service-card-eyebrow mt-[70px] lg:mt-[90px] text-[14px]">International Recruitment</div>
+                <h3 className="service-card-title mt-2 font-medium leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(26px, 2.6vw, 32px)' }}>&amp; Payroll</h3>
+                <p className="service-card-body mt-4 text-[14px] lg:text-[15px] leading-[1.7]">Connecting top Pakistani talent with global opportunities. We provide comprehensive recruitment and manpower solutions to meet the needs of international partners.</p>
               </div>
-              <div data-reveal="zoom" data-reveal-delay="280" className="service-card service-card-cycle service-card-cycle-3 relative min-h-[300px] lg:h-[340px] rounded-[10px] border border-[#00fe4e] bg-white p-6 lg:p-9 md:col-span-2 lg:col-span-1">
-                <Code2 className="service-card-icon absolute right-6 top-5 lg:right-9 lg:top-7 h-[60px] w-[60px] lg:h-[76px] lg:w-[76px] service-card-icon-cycle" strokeWidth={1.4} />
-                <div className="service-card-eyebrow mt-[70px] lg:mt-[100px] text-[13px] font-medium">Payroll, Contract &amp; Visa Management</div>
-                <h3 className="service-card-title mt-2 font-light leading-none tracking-[-0.03em]" style={{ fontSize: 'clamp(24px, 2.8vw, 32px)' }}>Services</h3>
-                <p className="service-card-body mt-4 lg:mt-5 text-[13px] leading-[1.7]">Empowering Pakistan&apos;s workforce with world-class skills through global partnerships like Coursera. Unlock new career opportunities with tailored programs designed for modern professionals.</p>
+              <div data-reveal="zoom" data-reveal-delay="280" className="service-card service-card-cycle relative flex flex-col min-h-[340px] lg:min-h-[380px] rounded-[10px] border border-[#e5e5e5] p-8 lg:p-10 md:col-span-2 lg:col-span-1">
+                <Code2 className="service-card-icon absolute right-7 top-6 lg:right-10 lg:top-8 h-[64px] w-[64px] lg:h-[80px] lg:w-[80px] service-card-icon-cycle" strokeWidth={1.4} />
+                <div className="service-card-eyebrow mt-[70px] lg:mt-[90px] text-[14px]">Payroll, Contract &amp; Visa Management</div>
+                <h3 className="service-card-title mt-2 font-medium leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(26px, 2.6vw, 32px)' }}>Services</h3>
+                <p className="service-card-body mt-4 text-[14px] lg:text-[15px] leading-[1.7]">Empowering Pakistan&apos;s workforce with world-class skills through global partnerships like Coursera. Unlock new career opportunities with tailored programs designed for modern professionals.</p>
               </div>
             </div>
           </section>
@@ -1968,17 +2140,17 @@ export default function Page() {
               </div>
             </div>
             <p data-reveal="up-sm" data-reveal-delay="200" className="mt-3 lg:mt-4 leading-[1.4] text-black" style={{ fontSize: 'clamp(13px, 1.4vw, 16px)' }}>With enough data, the numbers speak for themselves.</p>
-            <div className="mt-6 lg:mt-7 grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-[60px] max-w-[1020px]">
+            <div className="mt-6 lg:mt-7 grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 max-w-[1280px]">
               {[
                 { icon: "☑", val: "1,000+", l1: "Successful", l2: "Placements" },
                 { icon: "▯", val: "12,000+", l1: "Specialized", l2: "Courses" },
                 { icon: "♟", val: "95%", l1: "Customer", l2: "Satisfaction" },
                 { icon: "◎", val: "5+", l1: "Countries", l2: "where we have clients" },
               ].map((s, i) => (
-                <div key={s.val} data-reveal="up" data-reveal-delay={i * 100} className={`stat-card stat-card-cycle stat-card-cycle-${i + 1} flex h-[130px] lg:h-[160px] flex-col items-center justify-center rounded-[4px] border border-[#bdbdbd] bg-white text-black`}>
-                  <div className="stat-card-icon stat-card-icon-cycle mb-2 lg:mb-3 text-[26px] lg:text-[34px]">{s.icon}</div>
-                  <div className="stat-card-val stat-card-val-cycle font-light leading-none" style={{ fontSize: 'clamp(26px, 3.2vw, 38px)' }}>{s.val}</div>
-                  <div className="stat-card-label stat-card-label-cycle mt-2 lg:mt-3 text-center leading-[1.05]" style={{ fontSize: 'clamp(12px, 1.3vw, 16px)' }}>
+                <div key={s.val} data-reveal="up" data-reveal-delay={i * 100} className="stat-card aspect-square flex flex-col items-center justify-center p-6">
+                  <div className="stat-card-icon mb-3 lg:mb-4" style={{ fontSize: 'clamp(28px, 3vw, 36px)' }}>{s.icon}</div>
+                  <div className="stat-card-val font-normal leading-none" style={{ fontSize: 'clamp(28px, 3.5vw, 44px)' }}>{s.val}</div>
+                  <div className="stat-card-label mt-3 lg:mt-4 text-center leading-[1.2] text-black" style={{ fontSize: 'clamp(13px, 1.3vw, 16px)' }}>
                     <div>{s.l1}</div><div>{s.l2}</div>
                   </div>
                 </div>
@@ -2015,20 +2187,20 @@ export default function Page() {
             </div>
             <p data-reveal="up-sm" data-reveal-delay="200" className="mt-3 lg:mt-4 text-[14px] lg:text-[15px] text-black">We work for a wide variety of clients in both the private and public sectors.</p>
             <div data-reveal="fade" data-reveal-delay="300" className="logo-shell mt-5 lg:mt-6">
-              <div className="logo-track">
-                {[...clientLogos, ...clientLogos].map((logo, i) => (
+              <div ref={logoTrackRef} className="logo-track" style={{ transform: `translateX(calc(${-(logoIndex + clientLogos.length)} * (clamp(140px, 18vw, 220px) + 28px)))` }}>
+                {[...clientLogos, ...clientLogos, ...clientLogos].map((logo, i) => (
                   <div key={logo.name + "-" + i} className="logo-card"><img src={logo.src} alt={logo.name} /></div>
                 ))}
               </div>
             </div>
             <div data-reveal="zoom" data-reveal-delay="400" className="logo-nav-wrap">
               <div className="logo-nav-btn">
-                <button className="logo-nav-arrow logo-nav-arrow-prev" aria-label="Previous">
+                <button onClick={handleLogoPrev} className="logo-nav-arrow logo-nav-arrow-prev" aria-label="Previous">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </button>
-                <button className="logo-nav-arrow logo-nav-arrow-next" aria-label="Next">
+                <button onClick={handleLogoNext} className="logo-nav-arrow logo-nav-arrow-next" aria-label="Next">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
@@ -2039,8 +2211,11 @@ export default function Page() {
         </div>
 
         <section className="team-section">
-          <div className="team-bg-sphere">
-            <img src="/Group.png" alt="" />
+          <div className="team-neptune-wrap" aria-hidden="true">
+            <img src="/neptune.svg" alt="" />
+          </div>
+          <div data-reveal="zoom" className="team-neptune-btn">
+            <button className="team-about-btn">About Team</button>
           </div>
           <div className="team-bg-circuit">
             <svg viewBox="0 0 200 400" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2055,33 +2230,32 @@ export default function Page() {
             </svg>
           </div>
           <div className="relative mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
-            <div data-reveal="up" className="relative z-10 mb-8 lg:mb-12">
-              <h2 className="team-title">
-                <span className="text-[#0adf54]">MEET</span>{" "}
-                <span className="text-[#0a7a5f]">OUR</span>{" "}
-                <span className="text-[#050889]">TEAM</span>
-              </h2>
-              <p className="mt-3 text-[14px] lg:text-[15px] text-black">
-                Our business experts come from businesses of all shapes and sizes.
-              </p>
-            </div>
             <div className="team-row">
-              <div data-reveal="left" className="team-btn-col">
-                <button className="team-about-btn">About Team</button>
-              </div>
-              <div className="team-cards-grid">
-                {teamMembers.map((m, i) => (
-                  <div key={m.name} data-reveal="up" data-reveal-delay={i * 110} className="team-card">
-                    <div className="team-photo-frame">
-                      <img src={m.img} alt={m.name} />
+              <div className="team-cards-col">
+                <div data-reveal="up" className="relative z-10 mb-8 lg:mb-12">
+                  <h2 className="team-title">
+                    <span className="text-[#0adf54]">MEET</span>{" "}
+                    <span className="text-[#0a7a5f]">OUR</span>{" "}
+                    <span className="text-[#050889]">TEAM</span>
+                  </h2>
+                  <p className="mt-3 text-[14px] lg:text-[15px] text-black">
+                    Our business experts come from businesses of all shapes and sizes.
+                  </p>
+                </div>
+                <div className="team-cards-grid">
+                  {teamMembers.map((m, i) => (
+                    <div key={m.name} data-reveal="up" data-reveal-delay={i * 110} className="team-card">
+                      <div className="team-photo-frame">
+                        <img src={m.img} alt={m.name} />
+                      </div>
+                      <div className="team-card-role">{m.role}</div>
+                      <div className="team-card-name">{m.name}</div>
+                      <div className="team-card-linkedin">
+                        <LinkedInSvg />
+                      </div>
                     </div>
-                    <div className="mt-3 text-[11px] lg:text-[12px] text-black text-center">{m.role}</div>
-                    <div className="mt-1 text-[14px] lg:text-[16px] font-bold text-[#00b95a] text-center tracking-wide">{m.name}</div>
-                    <div className="mx-auto mt-3 flex h-[28px] w-[28px] items-center justify-center rounded-full bg-[#0077b5] text-white">
-                      <LinkedInSvg />
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -2089,8 +2263,8 @@ export default function Page() {
 
         <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <section className="relative bg-white py-10 lg:py-16 overflow-hidden">
-            <h2 data-reveal="up-sm" className="text-center font-light uppercase leading-tight tracking-[0.04em]" style={{ fontSize: 'clamp(26px, 4.2vw, 44px)' }}>
-              <span className="text-[#0adf54]">Trusted By 14 Million</span> <span className="text-[#050889]">Professional</span>
+            <h2 className="text-center font-light uppercase leading-tight tracking-[0.04em]" style={{ fontSize: 'clamp(26px, 4.2vw, 44px)' }}>
+              <span data-text-split="words" className="text-[#0adf54]">Trusted By 14 Million</span> <span data-text-split="words" className="text-[#050889]">Professional</span>
             </h2>
             <p data-reveal="up-sm" data-reveal-delay="120" className="mt-3 text-center text-[13px] lg:text-[17px] text-black">Watch stories of success from around the world</p>
             <div data-reveal="zoom" data-reveal-delay="240" className="map-stage">
@@ -2120,7 +2294,7 @@ export default function Page() {
           <img src="/blink.svg" alt="" className="testimonials-blink testimonials-blink-right" />
           <div className="relative z-10 mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
             <div data-reveal="zoom" className="mx-auto flex h-[44px] w-[170px] items-center justify-center rounded-[50px] bg-[#00FE4E] border border-[#E4E6E8] text-[14px] font-semibold text-black">Testimonials</div>
-            <h2 data-reveal="up-sm" data-reveal-delay="120" className="testimonials-heading mt-4 lg:mt-5 text-center font-light uppercase leading-tight tracking-[0.04em]" style={{ fontSize: 'clamp(32px, 5.5vw, 60px)' }}>
+            <h2 data-text-split="words" className="testimonials-heading mt-4 lg:mt-5 text-center font-light uppercase leading-tight tracking-[0.04em]" style={{ fontSize: 'clamp(32px, 5.5vw, 60px)' }}>
               What Our Client Say
             </h2>
             <div data-reveal="up" data-reveal-delay="240" className="mx-auto mt-5 lg:mt-6 max-w-[560px] text-center">
@@ -2149,9 +2323,9 @@ export default function Page() {
         <section className="newsletter-section">
           <div className="newsletter-divider" />
           <div className="newsletter-inner">
-            <h2 data-reveal="up-sm" className="newsletter-title">
-              <span className="newsletter-title-a">Join The Future</span>{" "}
-              <span className="newsletter-title-b">Of Innovation</span>
+            <h2 className="newsletter-title">
+              <span data-text-split="words" className="newsletter-title-a">Join The Future</span>{" "}
+              <span data-text-split="words" className="newsletter-title-b">Of Innovation</span>
             </h2>
             <p data-reveal="up-sm" data-reveal-delay="120" className="newsletter-text">
               Making better things takes time. Drop us your email to stay in the know as we work to reduce our environmental impact. We&apos;ll share other exciting news and exclusive offers, too.
