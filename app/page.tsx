@@ -6,6 +6,7 @@ import {
   Mail, Phone, Search, Plus, Mic, ArrowUp, Menu, X,
   Lightbulb, Code2, FileText, GraduationCap,
   Database, Image as ImageIcon, MapPin,
+  CheckCircle2, BookOpen, Smile, Globe,
 } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -257,13 +258,32 @@ function ProjectOrbitSection() {
           z-index: -1;
         }
 
+        .parwaaz-list {
+          list-style: decimal;
+          list-style-position: outside;
+          padding-left: 1.5em;
+          counter-reset: parwaaz-counter;
+        }
+        .parwaaz-list li {
+          padding-left: 0.5em;
+        }
+        .parwaaz-list li::marker {
+          color: #050889;
+          font-weight: 600;
+        }
+        @media (min-width: 1024px) {
+          .parwaaz-list {
+            padding-left: 1.8em;
+          }
+        }
+
         .po-vector {
           position: absolute;
           right: -250px;
           bottom: -100px;
-          width: 800px;
-          max-width: 50vw;
-          max-height: 1000px;
+          width: 600px;
+          max-width: 60vw;
+          max-height: 1100px;
           height: auto;
           object-fit: contain;
           z-index: 2;
@@ -379,13 +399,13 @@ function ProjectOrbitSection() {
 
         @media (max-width: 1280px) {
           .po-canvas { top: 50%; left: -300px; width: 700px; height: 700px; transform: translateY(-30%); }
-          .po-vector { right: -250px; bottom: -100px; width: 800px; max-width: 50vw; max-height: 1000px; opacity: 0.85; }
+          .po-vector { right: -250px; bottom: -100px; width: 600px; max-width: 60vw; max-height: 1100px; opacity: 0.85; }
         }
 
         @media (max-width: 1024px) {
           .po-section { padding: 40px 0 80px; min-height: 90vh; }
           .po-canvas { top: 50%; left: -300px; width: 700px; height: 700px; transform: translateY(-30%); }
-          .po-vector { right: -250px; bottom: -100px; width: 800px; max-width: 50vw; max-height: 1000px; opacity: 0.85; }
+          .po-vector { right: -250px; bottom: -100px; width: 600px; max-width: 60vw; max-height: 1100px; opacity: 0.85; }
           .po-content { padding: 0 24px 0 0; min-height: 55vh; }
           .po-slides { margin-right: 24px; max-width: 480px; height: 280px; }
         }
@@ -485,17 +505,55 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [heroServicesOpen, setHeroServicesOpen] = useState(false);
   const [logoIndex, setLogoIndex] = useState(0);
+  const [testimonialIndex, setTestimonialIndex] = useState(0);
+  const [testimonialDir, setTestimonialDir] = useState<'next' | 'prev'>('next');
   const ringRef = useRef<HTMLDivElement | null>(null);
   const dotRef = useRef<HTMLDivElement | null>(null);
   const cx = useRef(0); const cy = useRef(0);
   const rx = useRef(0); const ry = useRef(0);
   const logoTrackRef = useRef<HTMLDivElement | null>(null);
 
+  const testimonials = [
+    {
+      name: "Sara Mohamed",
+      img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=faces",
+      stars: 5,
+      text: "I've been using the hotel booking system for several years now, and it's become my go-to platform for planning my trips. The interface is user-friendly and I appreciate the detailed information and real-time availability of hotels.",
+    },
+    {
+      name: "Ahmed Khan",
+      img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces",
+      stars: 5,
+      text: "Parwaaz transformed our hiring process. Their international recruitment expertise and dedication to quality candidates is unmatched. The team is professional, responsive, and truly understands our business needs.",
+    },
+    {
+      name: "Fatima Hassan",
+      img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=faces",
+      stars: 5,
+      text: "The Coursera partnership opened up incredible learning opportunities for our team. World-class courses combined with personalized guidance made all the difference in our professional development journey.",
+    },
+    {
+      name: "Bilal Ahmad",
+      img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces",
+      stars: 5,
+      text: "Outstanding service and remarkable attention to detail. Parwaaz delivered exactly what they promised, on time and within budget. I highly recommend them for any digital transformation initiative.",
+    },
+  ];
+
   const handleLogoPrev = () => {
     setLogoIndex(prev => prev - 1);
   };
   const handleLogoNext = () => {
     setLogoIndex(prev => prev + 1);
+  };
+
+  const handleTestimonialPrev = () => {
+    setTestimonialDir('prev');
+    setTestimonialIndex(prev => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+  const handleTestimonialNext = () => {
+    setTestimonialDir('next');
+    setTestimonialIndex(prev => (prev + 1) % testimonials.length);
   };
 
   // Seamless infinite loop: array is tripled [A,B,C,D,E | A,B,C,D,E | A,B,C,D,E].
@@ -635,11 +693,9 @@ export default function Page() {
     return () => { observer.disconnect(); mo.disconnect(); };
   }, []);
 
-  // GSAP-style split-text reveal: wraps each letter in a span and staggers them in on scroll.
-  // Use by adding `data-text-split` to any element, e.g. <h2 data-text-split>...</h2>.
-  // Optional: data-text-split="words" to split by words instead of characters.
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const splitElement = (el: HTMLElement) => {
@@ -667,44 +723,85 @@ export default function Page() {
       el.dataset.textSplitProcessed = '1';
     };
 
-    const animateElement = (el: HTMLElement) => {
+    const splitTriggers: ScrollTrigger[] = [];
+    const paragraphTriggers: ScrollTrigger[] = [];
+
+    const splitElements = Array.from(document.querySelectorAll<HTMLElement>('[data-text-split]'));
+    splitElements.forEach(splitElement);
+
+    splitElements.forEach((el) => {
       const tokens = el.querySelectorAll<HTMLElement>('.text-split-token');
       if (!tokens.length) return;
       if (reduced) {
         tokens.forEach(t => { t.style.opacity = '1'; t.style.transform = 'none'; });
         return;
       }
-      gsap.fromTo(
-        tokens,
-        { yPercent: 110, opacity: 0, rotate: 6 },
-        {
-          yPercent: 0,
-          opacity: 1,
-          rotate: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          stagger: 0.035,
-          overwrite: true,
-        }
-      );
-    };
-
-    const elements = Array.from(document.querySelectorAll<HTMLElement>('[data-text-split]'));
-    elements.forEach(splitElement);
-
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const el = entry.target as HTMLElement;
-        if (entry.isIntersecting && !el.dataset.textSplitAnimated) {
-          el.dataset.textSplitAnimated = '1';
-          animateElement(el);
-          obs.unobserve(el);
-        }
+      gsap.set(tokens, { yPercent: 110, opacity: 0, rotate: 6 });
+      const tween = gsap.to(tokens, {
+        yPercent: 0,
+        opacity: 1,
+        rotate: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        stagger: 0.035,
+        paused: true,
+        overwrite: 'auto',
       });
-    }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
+      const st = ScrollTrigger.create({
+        trigger: el,
+        start: 'top 85%',
+        once: true,
+        onEnter: () => tween.play(),
+      });
+      splitTriggers.push(st);
+    });
 
-    elements.forEach(el => obs.observe(el));
-    return () => obs.disconnect();
+    const paragraphs = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-mwg-reveal="paragraph"]')
+    );
+    paragraphs.forEach((p) => {
+      if (p.dataset.mwgProcessed) return;
+      p.dataset.mwgProcessed = '1';
+      if (reduced) {
+        p.style.opacity = '1';
+        p.style.transform = 'none';
+        return;
+      }
+      gsap.set(p, { y: 30, opacity: 0 });
+      const tween = gsap.to(p, {
+        y: 0,
+        opacity: 1,
+        duration: 0.95,
+        ease: 'power3.out',
+        paused: true,
+        overwrite: 'auto',
+      });
+      const st = ScrollTrigger.create({
+        trigger: p,
+        start: 'top 88%',
+        once: true,
+        onEnter: () => tween.play(),
+      });
+      paragraphTriggers.push(st);
+    });
+
+    return () => {
+      splitTriggers.forEach(t => t.kill());
+      paragraphTriggers.forEach(t => t.kill());
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const nav = document.querySelector<HTMLElement>(".pw-nav");
+    if (!nav) return;
+    const move = (e: MouseEvent) => {
+      const rect = nav.getBoundingClientRect();
+      nav.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+      nav.style.setProperty("--my", `${e.clientY - rect.top}px`);
+    };
+    nav.addEventListener("mousemove", move);
+    return () => nav.removeEventListener("mousemove", move);
   }, []);
 
   return (
@@ -793,122 +890,117 @@ export default function Page() {
         @media (min-width: 1024px) { .pw-nav-wrapper { margin-top: 20px; } }
 
         .pw-nav {
+          --mx: 50%;
+          --my: 50%;
           position: relative;
           z-index: 50;
           width: 100%;
-          height: 56px;
+          height: 64px !important;
           border-radius: 20px;
           display: flex;
           align-items: center;
-          background: transparent;
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.08),
-            0 14px 35px rgba(0, 0, 0, 0.4);
+          background: linear-gradient(
+            90deg,
+            #00ff66 0%,
+            #00c653 22%,
+            #0a6c3f 38%,
+            #032d1e 55%,
+            #021722 75%,
+            #001326 100%
+          ) !important;
+          border: none !important;
+          outline: none !important;
+          box-shadow: none !important;
           animation: navIn .7s cubic-bezier(.2,.9,.3,1) both;
-          transition: border-color 0.4s ease, box-shadow 0.5s ease;
+          transition: transform 0.35s ease, filter 0.35s ease;
           isolation: isolate;
+          overflow: visible;
         }
-        /* Inner clipping wrapper for gradient + shimmer (so dropdowns aren't clipped) */
-        .pw-nav-bg {
+        @media (min-width: 1024px) {
+          .pw-nav {
+            height: 80px !important;
+          }
+        }
+
+        .pw-nav::before {
+          content: "";
           position: absolute;
           inset: 0;
           border-radius: inherit;
-          overflow: hidden;
-          pointer-events: none;
-          z-index: 0;
-        }
-        .pw-nav-bg::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(90deg,
-            #00FE4E 0%,
-            #00A340 12%,
-            #008A38 22%,
-            #0a4a28 35%,
-            #0d2418 50%,
-            #111418 65%,
-            #15181c 100%);
-        }
-        /* Shimmer wave - sweeps left-to-right on hover */
-        .pw-nav-bg::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: -40%;
-          width: 40%;
-          background: linear-gradient(
-            90deg,
-            transparent 0%,
-            rgba(255, 255, 255, 0.1) 20%,
-            rgba(0, 254, 78, 0.45) 50%,
-            rgba(255, 255, 255, 0.1) 80%,
-            transparent 100%
+          background: radial-gradient(
+            circle at var(--mx) var(--my),
+            rgba(0, 254, 78, 0.46),
+            rgba(0, 254, 78, 0.16) 24%,
+            transparent 56%
           );
-          filter: blur(8px);
           opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.35s ease;
+          z-index: 1;
         }
-        .pw-nav:hover .pw-nav-bg::after {
-          animation: navShimmer 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+
+        .pw-nav:hover::before {
+          opacity: 1;
         }
-        @keyframes navShimmer {
-          0% { left: -40%; opacity: 0; }
-          15% { opacity: 1; }
-          85% { opacity: 1; }
-          100% { left: 100%; opacity: 0; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .pw-nav:hover .pw-nav-bg::after { animation: none; }
-        }
+
         .pw-nav:hover {
-          border-color: rgba(0, 254, 78, 0.5);
-          box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.12),
-            0 0 0 2px rgba(0, 254, 78, 0.18),
-            0 12px 28px rgba(0, 254, 78, 0.45),
-            0 24px 60px rgba(0, 254, 78, 0.28),
-            0 8px 24px rgba(0, 0, 0, 0.4);
+          transform: translateY(-1px);
+          filter: drop-shadow(0 0 18px rgba(0, 254, 78, 0.34));
         }
-        @media (min-width: 1024px) { .pw-nav { height: 64px; } }
+
+        .pw-nav::after {
+          display: none !important;
+          content: none !important;
+        }
+
+        .pw-nav-bg,
+        .pw-nav-bg::before,
+        .pw-nav-bg::after,
+        .pw-logo-glow,
         .pw-glow-line {
-          position: absolute;
-          left: 20%;
-          right: 20%;
-          top: -1px;
-          height: 1px;
-          border-radius: 999px;
-          background: linear-gradient(90deg, transparent 0%, rgba(0, 254, 78, 0.4) 50%, transparent 100%);
-          pointer-events: none;
-          opacity: 0.6;
+          display: none !important;
+          opacity: 0 !important;
+          box-shadow: none !important;
+          filter: none !important;
         }
-        .pw-logo-glow {
-          position: absolute;
-          left: -40px;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 240px;
-          height: 160px;
-          border-radius: 50%;
-          background: radial-gradient(ellipse at center, rgba(0, 254, 78, 0.4) 0%, rgba(0, 254, 78, 0.15) 40%, transparent 75%);
-          pointer-events: none;
-          opacity: 0;
-          filter: blur(12px);
-          transition: opacity 0.4s ease;
-        }
-        .pw-nav:hover .pw-logo-glow { opacity: 1; }
         .pw-orb-wrap { position: absolute; left: 130px; top: 50%; width: 0; height: 0; pointer-events: none; z-index: 4; display: none; }
         @media (min-width: 1024px) { .pw-orb-wrap { display: block; } }
         .pw-orb { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: rgba(255, 255, 255, 0.7); box-shadow: 0 0 6px rgba(255, 255, 255, 0.6); margin: -1.5px 0 0 -1.5px; opacity: 0.5; }
         .na { animation: orb1 5s linear infinite; }
         .nb { animation: orb2 7s linear infinite; }
         .nc { animation: orb3 9s linear infinite; }
-        .pw-logo-zone { position: relative; z-index: 5; display: flex; align-items: center; padding: 0 16px; height: 100%; flex-shrink: 0; }
-        @media (min-width: 1024px) { .pw-logo-zone { padding: 0 24px; min-width: 220px; } }
-        .pw-logo-zone img { height: 30px; width: auto; object-fit: contain; opacity: 1; filter: brightness(1.1) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5)); transition: transform .35s, filter .35s; }
-        @media (min-width: 1024px) { .pw-logo-zone img { height: 36px; } }
-        .pw-logo-zone img:hover { transform: translateY(-2px) scale(1.05); filter: brightness(1.2) drop-shadow(0 4px 14px rgba(0, 254, 78, 0.5)); }
+        .pw-logo-zone {
+          position: relative;
+          z-index: 5;
+          display: flex;
+          align-items: center;
+          padding: 0 16px;
+          height: 100%;
+          flex-shrink: 0;
+        }
+        @media (min-width: 1024px) {
+          .pw-logo-zone {
+            padding: 0 44px;
+            min-width: 320px;
+          }
+        }
+        .pw-logo-zone img {
+          height: 38px !important;
+          width: auto;
+          object-fit: contain;
+          opacity: 1 !important;
+          filter: brightness(0) invert(1) !important;
+          mix-blend-mode: normal !important;
+        }
+        @media (min-width: 1024px) {
+          .pw-logo-zone img {
+            height: 48px !important;
+          }
+        }
+        .pw-logo-zone img:hover {
+          transform: none !important;
+          filter: brightness(0) invert(1) !important;
+        }
         .pw-links { position: relative; z-index: 5; display: none; flex: 1; align-items: center; justify-content: center; gap: 12px; }
         @media (min-width: 1024px) { .pw-links { display: flex; } }
         .pw-link {
@@ -925,62 +1017,23 @@ export default function Page() {
           border-radius: 999px;
           overflow: hidden;
           isolation: isolate;
-          transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+          transition: color 0.25s ease, transform 0.25s ease;
         }
-        .pw-link::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          z-index: -1;
-          border-radius: 999px;
-          background: linear-gradient(90deg,
-            rgba(0, 254, 78, 0) 0%,
-            rgba(0, 254, 78, 0.18) 35%,
-            rgba(0, 254, 78, 0.28) 50%,
-            rgba(0, 254, 78, 0.18) 65%,
-            rgba(0, 254, 78, 0) 100%);
-          background-size: 220% 100%;
-          background-position: 100% 50%;
-          opacity: 0;
-          transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
-        }
+        .pw-link::before,
         .pw-link::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          z-index: -1;
-          border-radius: 999px;
-          border: 1px solid transparent;
-          transition: border-color 0.4s ease, box-shadow 0.4s ease;
+          display: none !important;
+          content: none !important;
         }
         .pw-link-dot {
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          background: #00fe4e;
-          box-shadow: 0 0 10px rgba(0, 254, 78, 0.95), 0 0 18px rgba(0, 254, 78, 0.45);
-          opacity: 0;
-          transform: scale(0);
-          transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-          flex-shrink: 0;
+          display: none !important;
         }
         .pw-link:hover {
           color: #00fe4e;
           transform: translateY(-2px);
         }
-        .pw-link:hover::before { opacity: 1; background-position: 0% 50%; }
-        .pw-link:hover::after {
-          border-color: rgba(255, 255, 255, 0.45);
-          box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.08), 0 0 12px rgba(0, 254, 78, 0.2);
+        .pw-link-active {
+          color: #00fe4e;
         }
-        .pw-link:hover .pw-link-dot { opacity: 1; transform: scale(1); }
-        .pw-link-active { color: #00fe4e; }
-        .pw-link-active::before { opacity: 1; background-position: 0% 50%; background: linear-gradient(90deg, rgba(0, 254, 78, 0.22) 0%, rgba(0, 254, 78, 0.12) 100%); }
-        .pw-link-active::after {
-          border-color: rgba(255, 255, 255, 0.55);
-          box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.1), 0 0 14px rgba(0, 254, 78, 0.25);
-        }
-        .pw-link-active .pw-link-dot { opacity: 1; transform: scale(1); }
 
         .pw-link-dropdown-wrap { position: relative; }
         .pw-link-chevron {
@@ -1399,29 +1452,99 @@ export default function Page() {
         .wef-card {
           position: relative;
           background: #f8f8f8;
-          border-radius: 14px;
-          transition: box-shadow 0.4s ease, transform 0.4s ease;
+          border-radius: 8px;
+          isolation: isolate;
         }
+        @media (max-width: 850px) {
+          .parwaaz-row {
+            grid-template-columns: 1fr !important;
+            max-width: 515px !important;
+            gap: 24px !important;
+          }
+          .parwaaz-blue {
+            width: 100% !important;
+            max-width: 296px;
+            margin-inline: auto;
+          }
+        }
+        @media (max-width: 768px) {
+          .wef-card {
+            flex-direction: column !important;
+            gap: 14px !important;
+            padding: 22px !important;
+            text-align: center;
+          }
+          .wef-card > div:first-child {
+            width: auto !important;
+          }
+          .wef-card img {
+            height: 82px !important;
+          }
+          .wef-card p {
+            font-size: 15px !important;
+            line-height: 1.5 !important;
+          }
+        }
+        .parwaaz-list-item::marker {
+          color: #050889;
+          font-weight: 600;
+        }
+        /* Static gradient border (default, idle state) */
         .wef-card::before {
           content: '';
           position: absolute;
           inset: 0;
-          border-radius: 14px;
+          border-radius: 8px;
           padding: 1px;
           background: linear-gradient(90deg, #00FE4E 0%, #000572 100%);
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           -webkit-mask-composite: xor;
           mask-composite: exclude;
           pointer-events: none;
-          transition: padding 0.4s ease, filter 0.4s ease;
+          z-index: 1;
+          opacity: 1;
+          transition: opacity 0.3s ease;
         }
-        .wef-card:hover {
-          box-shadow: 0 0 0 4px rgba(0, 254, 78, 0.12), 0 12px 32px rgba(0, 5, 114, 0.18);
-          transform: translateY(-2px);
-        }
-        .wef-card:hover::before {
+        /* Traveling green glow outline — only visible on hover */
+        .wef-card::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: 8px;
           padding: 2px;
-          filter: drop-shadow(0 0 8px rgba(0, 254, 78, 0.5));
+          background: conic-gradient(
+            from var(--wef-angle, 0deg),
+            transparent 0%,
+            transparent 60%,
+            rgba(0, 254, 78, 0.4) 75%,
+            #00fe4e 85%,
+            rgba(0, 254, 78, 0.4) 95%,
+            transparent 100%
+          );
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          pointer-events: none;
+          z-index: 2;
+          opacity: 0;
+          transition: opacity 0.35s ease;
+          filter: drop-shadow(0 0 6px rgba(0, 254, 78, 0.6));
+        }
+        @property --wef-angle {
+          syntax: '<angle>';
+          initial-value: 0deg;
+          inherits: false;
+        }
+        @keyframes wefBorderTravel {
+          to { --wef-angle: 360deg; }
+        }
+        .wef-card:hover::after {
+          opacity: 1;
+          animation: wefBorderTravel 2.4s linear infinite;
+        }
+        /* Fallback for browsers without @property — fade glow in/out */
+        @supports not (background: conic-gradient(from 0deg, red, blue)) {
+          .wef-card::after { display: none; }
         }
         .chatbox-btn:hover { transform: translateY(-3px) scale(1.05); }
         .ask-typing-wrap { display: flex; align-items: center; min-height: 40px; }
@@ -1429,9 +1552,8 @@ export default function Page() {
         @keyframes askType { 0%, 5% { max-width: 0; } 40%, 70% { max-width: 200px; } 95%, 100% { max-width: 0; } }
         @keyframes askCaret { 0%, 100% { border-color: transparent; } 50% { border-color: rgba(255,255,255,0.7); } }
 
-        @keyframes logoF { 0%, 42%, 100% { transform: translateY(0) scale(1); opacity: .78; border-color: rgba(0,0,0,.18); } 12%, 28% { transform: translateY(-14px) scale(1.08); opacity: 1; border-color: rgba(0,254,78,.95); } }
-        .logo-shell { position: relative; overflow: hidden; padding: 20px 0 28px; width: 100vw; margin-left: calc(50% - 50vw); -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%); }
-        .logo-track { display: flex; width: max-content; gap: 28px; padding-left: 16px; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); will-change: transform; }
+        .logo-shell { position: relative; overflow: hidden; padding: 24px 0 32px; width: 100vw; margin-left: calc(50% - 50vw); -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%); }
+        .logo-track { display: flex; width: max-content; gap: 32px; padding-left: 16px; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); will-change: transform; }
         @media (min-width: 640px) { .logo-track { padding-left: 24px; } }
         @media (min-width: 1024px) { .logo-track { padding-left: 32px; } }
         .logo-nav-wrap { display: flex; justify-content: center; margin-top: 8px; }
@@ -1444,13 +1566,34 @@ export default function Page() {
         .logo-nav-arrow-next:hover { color: #00fe4e; transform: translateX(2px); background: rgba(0,254,78,0.08); }
         .logo-nav-arrow-next:hover svg { filter: drop-shadow(0 0 4px rgba(0,254,78,0.4)); }
         .logo-nav-arrow:active { transform: scale(0.92); }
-        .logo-card { width: clamp(140px, 18vw, 220px); height: clamp(90px, 11vw, 130px); flex: 0 0 auto; display: flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid rgba(0,0,0,.18); background: rgba(255,255,255,.96); transition: transform .35s cubic-bezier(0.4, 0, 0.2, 1), border-color .35s ease, box-shadow .35s ease; animation: logoF 14s ease-in-out infinite; }
-        .logo-card:nth-child(5n+2) { animation-delay: 2.2s; }
-        .logo-card:nth-child(5n+3) { animation-delay: 4.4s; }
-        .logo-card:nth-child(5n+4) { animation-delay: 6.6s; }
-        .logo-card:nth-child(5n+5) { animation-delay: 8.8s; }
-        .logo-card:hover { transform: translateY(-12px) scale(1.06) !important; border-color: #00fe4e !important; box-shadow: 0 14px 28px rgba(0,254,78,0.18); animation-play-state: paused; }
-        .logo-card img { max-height: 60%; max-width: 70%; width: auto; object-fit: contain; }
+        .logo-card {
+          width: clamp(150px, 16vw, 200px);
+          height: clamp(80px, 9vw, 110px);
+          flex: 0 0 auto;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 10px;
+          border: none;
+          background: #ffffff;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+          transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.35s ease;
+        }
+        .logo-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 254, 78, 0.12);
+        }
+        .logo-card img {
+          max-height: 55%;
+          max-width: 70%;
+          width: auto;
+          object-fit: contain;
+          filter: grayscale(0.15);
+          transition: filter 0.3s ease;
+        }
+        .logo-card:hover img {
+          filter: grayscale(0);
+        }
 
         @keyframes pinPop { 0%, 18% { opacity: 0; transform: translateY(18px) scale(.82); } 38%, 100% { opacity: 1; transform: none; } }
 
@@ -1548,43 +1691,135 @@ export default function Page() {
         .marquee-shell { position: relative; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); overflow: hidden; padding: 6px 0; }
         .marquee-track { display: flex; width: max-content; gap: 60px; animation: marqueeScroll 28s linear infinite; will-change: transform; }
         .marquee-shell:hover .marquee-track { animation-play-state: paused; }
-        .marquee-text { flex-shrink: 0; font-family: var(--font-poppins), sans-serif; font-weight: 300; font-size: clamp(40px, 8vw, 110px); line-height: 1; letter-spacing: 0.02em; text-transform: uppercase; white-space: nowrap; background: linear-gradient(90deg, #00FE4E 0%, #000572 50%, #00FE4E 100%); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; animation: gradientShift 8s linear infinite; }
+        .marquee-text {
+          flex-shrink: 0;
+          font-family: var(--font-poppins), sans-serif;
+          font-weight: 400;
+          font-size: clamp(40px, 8vw, 110px);
+          line-height: 1;
+          letter-spacing: 0.01em;
+          text-transform: uppercase;
+          white-space: nowrap;
+          background: linear-gradient(
+            90deg,
+            #04B93F 0%,
+            #04B93F 12%,
+            #038936 30%,
+            #0a5a30 55%,
+            #050889 80%,
+            #050889 100%
+          );
+          background-size: 200% 100%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          color: transparent;
+          animation: gradientShift 12s linear infinite;
+        }
         @keyframes gradientShift { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 
-        .map-stage { position: relative; width: 100%; max-width: 1080px; height: clamp(220px, 38vw, 340px); margin: 24px auto 0; overflow: hidden; background: #fff; }
-        .map-stage::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(0,0,0,.13) 2px, transparent 2.6px); background-size: 13px 13px; mask-image: radial-gradient(ellipse at center, black 45%, transparent 76%); opacity: .48; pointer-events: none; }
-        .map-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: .82; filter: grayscale(1) contrast(.9) brightness(1.12); }
-        .map-pin { position: absolute; z-index: 5; width: clamp(110px, 14vw, 154px); height: clamp(56px, 7vw, 74px); display: flex; align-items: center; gap: 10px; padding: 11px 14px; background: rgba(216,216,216,.94); border-radius: 4px; box-shadow: 0 10px 28px rgba(0,0,0,.08); animation: pinPop .9s cubic-bezier(.2,.9,.25,1) both; transition: transform .28s; }
-        .map-pin:hover { transform: translateY(-7px) scale(1.035); }
-        .map-pin::after { content: ''; position: absolute; left: 38px; bottom: -16px; width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 17px solid rgba(216,216,216,.94); }
-        .map-pin-icon { position: relative; width: clamp(44px, 5.5vw, 56px); height: clamp(44px, 5.5vw, 56px); flex: 0 0 auto; border-radius: 50%; background: #ffffff; box-shadow: 0 0 0 2.5px #00fe4e, 0 4px 12px rgba(0,0,0,0.12); padding: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden; animation: pinPulse 2.4s ease-in-out infinite; }
-        .map-pin-icon img { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); }
-        .map-pin:hover .map-pin-icon img { transform: scale(1.12); }
-        .map-pin:hover .map-pin-icon { box-shadow: 0 0 0 2.5px #00fe4e, 0 6px 18px rgba(0,254,78,0.35), 0 4px 12px rgba(0,0,0,0.15); }
-        .map-pin-title { font-size: clamp(13px, 1.5vw, 17px); line-height: 1; color: #111; font-weight: 500; }
-        .map-pin-link { display: inline-block; margin-top: 5px; font-size: 8px; color: #050889; text-decoration: underline; font-weight: 700; }
-        .pin-lhr { left: 8%; top: 10%; animation-delay: .05s; }
-        .pin-isl { left: 40%; top: 38%; animation-delay: .22s; }
-        .pin-khi { right: 14%; top: 22%; animation-delay: .38s; }
-        .pin-fsd { left: 22%; bottom: 12%; animation-delay: .56s; }
-
-        .testimonials-section { position: relative; padding: 56px 0 64px; background: #ffffff; }
-        .testimonials-heading {
-          background: linear-gradient(90deg, #00FE4E 0%, #000572 100%);
+        .trusted-heading {
+          background: linear-gradient(
+            90deg,
+            #00FE4E 0%,
+            #000572 100%
+          );
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
           color: transparent;
         }
-        @media (max-width: 1024px) { .testimonials-section { padding: 48px 0 56px; } }
-        @media (max-width: 768px) { .testimonials-section { padding: 40px 0 48px; } }
-        @media (max-width: 480px) { .testimonials-section { padding: 32px 0 40px; } }
+        @media (max-width: 768px) {
+          .trusted-heading {
+            white-space: normal !important;
+          }
+        }
+        .map-stage { position: relative; width: 100%; max-width: 1080px; height: clamp(220px, 38vw, 340px); margin: 24px auto 0; overflow: hidden; background: #fff; }
+        .map-stage::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(0,0,0,.13) 2px, transparent 2.6px); background-size: 13px 13px; mask-image: radial-gradient(ellipse at center, black 45%, transparent 76%); opacity: .48; pointer-events: none; }
+        .map-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: .82; filter: grayscale(1) contrast(.9) brightness(1.12); }
+        .map-pin { position: absolute; z-index: 5; min-width: clamp(120px, 14vw, 160px); display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #ffffff; border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04); animation: pinPop .9s cubic-bezier(.2,.9,.25,1) both; transition: transform .28s, box-shadow .28s; }
+        .map-pin:hover { transform: translateY(-7px) scale(1.035); box-shadow: 0 14px 32px rgba(0,254,78,0.18), 0 0 0 1px rgba(0,254,78,0.3); }
+        .map-pin::after { content: ''; position: absolute; left: 22px; bottom: -10px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 12px solid #ffffff; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.06)); }
+        .map-pin-icon { position: relative; width: clamp(34px, 4.2vw, 42px); height: clamp(34px, 4.2vw, 42px); flex: 0 0 auto; border-radius: 50%; background: #00fe4e; box-shadow: 0 0 0 2px rgba(0,254,78,0.25), 0 2px 6px rgba(0,0,0,0.12); display: flex; align-items: center; justify-content: center; overflow: hidden; animation: pinPulse 2.4s ease-in-out infinite; }
+        .map-pin-icon img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+        .map-pin:hover .map-pin-icon img { transform: scale(1.12); }
+        .map-pin-text { display: flex; flex-direction: column; min-width: 0; }
+        .map-pin-title { font-size: clamp(13px, 1.5vw, 15px); line-height: 1.1; color: #111; font-weight: 600; }
+        .map-pin-link { display: inline-block; margin-top: 3px; font-size: 10px; color: #050889; text-decoration: underline; font-weight: 600; }
+        .pin-lhr { left: 8%; top: 10%; animation-delay: .05s; }
+        .pin-isl { left: 40%; top: 38%; animation-delay: .22s; }
+        .pin-khi { right: 14%; top: 22%; animation-delay: .38s; }
+        .pin-fsd { left: 22%; bottom: 12%; animation-delay: .56s; }
+
+        .testimonials-section { position: relative; padding: 88px 0 80px; background: #ffffff; }
+        .testimonials-pill-avatar {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid #00FE4E;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+          flex-shrink: 0;
+        }
+        .testimonials-heading {
+          background: linear-gradient(
+            90deg,
+            #00FE4E 0%,
+            #000572 100%
+          );
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          color: transparent;
+        }
+        @media (max-width: 1024px) { .testimonials-section { padding: 56px 0 64px; } }
+        @media (max-width: 768px) { .testimonials-section { padding: 44px 0 52px; } }
+        @media (max-width: 480px) { .testimonials-section { padding: 36px 0 44px; } }
+
+        .testimonial-stage {
+          position: relative;
+          width: 100%;
+          max-width: 640px;
+          margin: 30px auto;
+          min-height: 240px;
+        }
+        @media (max-width: 768px) { .testimonial-stage { min-height: 260px; } }
+        @media (max-width: 480px) { .testimonial-stage { min-height: 300px; } }
+
+        .testimonial-slide {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          opacity: 0;
+          pointer-events: none;
+          transform: translateY(40px) scale(0.96);
+          transition:
+            opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+            transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+          will-change: transform, opacity;
+        }
+        .testimonial-slide.is-active {
+          opacity: 1;
+          pointer-events: auto;
+          transform: translateY(0) scale(1);
+          transition-delay: 0.1s;
+        }
+        .testimonial-slide.dir-prev:not(.is-active) {
+          transform: translateY(-40px) scale(0.96);
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .testimonial-slide,
+          .testimonial-slide.is-active {
+            transition: opacity 0.2s ease;
+            transform: none;
+          }
+        }
         .testimonials-blink { position: absolute; top: 50%; width: clamp(240px, 28vw, 420px); height: auto; pointer-events: none; z-index: 1; animation: blinkTwinkle 3.2s ease-in-out infinite; }
         .testimonials-blink-left { left: -60px; transform: translateY(-50%); }
         .testimonials-blink-right { right: -60px; transform: translateY(-50%) scaleX(-1); animation-delay: 1.6s; }
         @keyframes blinkTwinkle { 0%, 100% { opacity: 0.55; filter: brightness(1); } 25% { opacity: 0.9; filter: brightness(1.15) drop-shadow(0 0 6px rgba(0,254,78,0.25)); } 50% { opacity: 0.7; filter: brightness(1.05) drop-shadow(0 0 4px rgba(0,254,78,0.15)); } 75% { opacity: 1; filter: brightness(1.2) drop-shadow(0 0 8px rgba(0,254,78,0.3)); } }
-        .testimonials-avatar { object-position: center 75%; box-shadow: 0 4px 16px rgba(0,0,0,0.1), 0 0 0 4px rgba(0,254,78,0.12); transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .testimonials-avatar:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(0,0,0,0.14), 0 0 0 6px rgba(0,254,78,0.18); }
+        .testimonials-avatar { object-position: center 75%; box-shadow: 0 4px 16px rgba(0,0,0,0.1), 0 0 0 3px rgba(0,254,78,0.12); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .testimonials-avatar:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(0,0,0,0.14), 0 0 0 5px rgba(0,254,78,0.18); }
         .testimonials-nav-wrap { display: flex; justify-content: center; margin-top: 24px; }
         .testimonials-nav-btn { width: 84px; height: 60px; background: #ffffff; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 0 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.05); }
         .testimonials-nav-arrow {
@@ -1618,9 +1853,30 @@ export default function Page() {
         .newsletter-section { position: relative; background: #ffffff; padding: 0 24px 64px; }
         .newsletter-divider { width: 100%; max-width: 720px; height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(0,254,78,0.6) 50%, transparent 100%); margin: 0 auto 48px; }
         .newsletter-inner { max-width: 760px; margin: 0 auto; text-align: center; }
-        .newsletter-title { margin: 0; font-family: var(--font-poppins), sans-serif; font-size: clamp(26px, 4vw, 42px); font-weight: 400; letter-spacing: 0.02em; text-transform: uppercase; line-height: 1.15; }
-        .newsletter-title-a { background: linear-gradient(135deg, #0adf54 0%, #0a7a5f 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-        .newsletter-title-b { background: linear-gradient(135deg, #0a7a5f 0%, #050889 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .newsletter-title {
+          margin: 0;
+          font-family: 'Inter', sans-serif;
+          font-size: clamp(22px, 3.4vw, 42px);
+          font-weight: 400;
+          letter-spacing: 0px;
+          text-transform: uppercase;
+          line-height: 1;
+          white-space: nowrap;
+          background: linear-gradient(
+            90deg,
+            #00FE4E 0%,
+            #000572 100%
+          );
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          color: transparent;
+        }
+        @media (max-width: 640px) {
+          .newsletter-title {
+            white-space: normal;
+          }
+        }
         .newsletter-text { margin: 18px auto 0; max-width: 620px; font-size: 13px; line-height: 1.65; color: rgba(0,0,0,0.7); }
         .newsletter-form { display: flex; flex-direction: row; gap: 12px; max-width: 620px; margin: 28px auto 0; }
         .newsletter-input { flex: 1; height: 52px; padding: 0 22px; border-radius: 10px; border: 1.5px solid rgba(0,254,78,0.35); background: #ffffff; font-size: 14px; color: #000; outline: none; transition: border-color 0.25s ease, box-shadow 0.25s ease; }
@@ -1673,8 +1929,8 @@ export default function Page() {
           position: relative;
           z-index: 5;
           background: transparent;
-          padding: 0 0 100px;
-          margin-top: 55px;
+          padding: 10px 0 110px;
+          margin-top: 110px;
         }
         .contact-cta-wrap {
           max-width: 1320px;
@@ -1686,8 +1942,8 @@ export default function Page() {
         .contact-cta-box {
           position: relative;
           width: 100%;
-          max-width: 720px;
-          min-height: 220px;
+          max-width: 820px;
+          min-height: 270px;
           padding: 44px 56px;
           background: linear-gradient(135deg, #0a0e7a 0%, #050889 100%);
           border-radius: 14px;
@@ -1865,6 +2121,77 @@ export default function Page() {
         @media (max-width: 1023px) { .team-row { grid-template-columns: 1fr; gap: 24px; } .team-cards-col { grid-column: 1; } .team-neptune-wrap { width: 480px; height: 480px; left: 0; right: auto; top: 20%; } .team-neptune-btn { left: 240px; top: 20%; } .team-cards-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; } }
         @media (max-width: 768px) { .team-neptune-wrap { display: none; } .team-neptune-btn { position: relative; left: auto; top: auto; transform: none; margin-bottom: 24px; } .team-cards-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
         @media (max-width: 480px) { .team-cards-grid { gap: 12px; } }
+
+        /* ---- Mobile overrides (≤768px) ---- */
+        @media (max-width: 768px) {
+          .hero-bg {
+            min-height: 920px;
+            background-position: center top;
+          }
+          .pw-nav-wrapper {
+            margin-top: 14px;
+            padding: 0 14px;
+          }
+          .pw-nav {
+            height: 56px !important;
+            border-radius: 18px;
+          }
+          .pw-logo-zone img {
+            height: 30px;
+          }
+          .hero-robot-mobile {
+            margin-top: 22px;
+            width: 72%;
+            max-width: 260px;
+          }
+          .hero-stack h1 {
+            font-size: 30px !important;
+            line-height: 0.95 !important;
+          }
+          .hero-stack h2 {
+            font-size: 18px !important;
+          }
+          .hero-stack p {
+            font-size: 12px !important;
+            line-height: 1.45 !important;
+          }
+          .hero-stack .hero-btn {
+            width: 100%;
+            height: 48px;
+          }
+          .chatbox-wrap {
+            margin-top: -40px !important;
+            padding: 0 14px;
+          }
+          .ea-card {
+            width: 100% !important;
+            border-radius: 16px !important;
+          }
+          .ea-card h3 {
+            font-size: 22px !important;
+            line-height: 1.1 !important;
+          }
+          .ea-card p {
+            font-size: 11px !important;
+            max-width: 260px;
+            margin-inline: auto;
+          }
+          .ea-pc {
+            min-height: 120px !important;
+            padding: 18px !important;
+            align-items: flex-start !important;
+          }
+          .ea-pt {
+            font-size: 14px !important;
+          }
+          .chatbox-btn {
+            width: 34px !important;
+            height: 34px !important;
+          }
+          .ea-card button {
+            font-size: 10px !important;
+          }
+        }
       `}</style>
 
       <div className="hero-stack">
@@ -1890,15 +2217,15 @@ export default function Page() {
             </div>
 
             <div className="pw-nav-wrapper relative mb-4 lg:mb-5">
-              <div className="pw-glow-line hidden lg:block" />
               <nav className="pw-nav">
                 <div className="pw-nav-bg" />
+                <div className="pw-glow-line" />
                 <div className="pw-logo-glow" />
                 <div className="pw-orb-wrap"><div className="pw-orb na" /><div className="pw-orb nb" /><div className="pw-orb nc" /></div>
                 <div className="pw-logo-zone"><img src="/parwaaz-logo.png" alt="Parwaaz" /></div>
                 <div className="pw-links">
                   {[
-                    { l: "Home", a: false, hasDropdown: false },
+                    { l: "Home", a: true, hasDropdown: false },
                     { l: "About", a: false, hasDropdown: false },
                     { l: "Services", a: false, hasDropdown: true },
                     { l: "Contact", a: false, hasDropdown: false },
@@ -2045,46 +2372,58 @@ export default function Page() {
       </div>
 
       <section className="relative z-10 bg-white pt-10 lg:pt-14 pb-12">
-        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
-
-          <section data-reveal="up" className="wef-card p-6 sm:p-8 lg:px-10 lg:py-7">
-            <div className="grid items-center gap-6 lg:gap-10 md:grid-cols-[260px_1fr]">
-              <div className="flex justify-center md:justify-start">
-                <img src="/wef-logo.png" alt="WEF" className="h-[90px] lg:h-[120px] w-auto object-contain" />
-              </div>
-              <p className="max-w-[780px] text-[#8c8c93] leading-[1.3] text-center md:text-left" style={{ fontSize: 'clamp(16px, 2.2vw, 26px)' }}>
-                Closing the Skills Gap in Pakistan, Parwaaz is the exclusive partner for the World Economic Forum in Pakistan
-              </p>
+        <section data-reveal="up" className="mt-[64px] mx-auto w-full max-w-[1410px] px-4 sm:px-6 lg:px-0">
+          <div className="wef-card mx-auto flex min-h-[150px] w-full max-w-[1120px] items-center gap-[42px] rounded-[8px] bg-[#f8f8f8] px-[54px] py-[28px]">
+            <div className="flex w-[290px] shrink-0 items-center justify-center">
+              <img src="/wef-logo.png" alt="World Economic Forum" className="h-[118px] w-auto object-contain" />
             </div>
-          </section>
+            <p className="max-w-[740px] text-[24px] font-light leading-[1.28] tracking-[-0.02em] text-[#8c8c93]">
+              Closing the Skills Gap in Pakistan, Parwaaz is the exclusive partner for the World Economic Forum in Pakistan
+            </p>
+          </div>
 
-          <section className="mt-10 lg:mt-14 grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-            <div data-reveal="left" data-reveal-mode="cycle">
-              <div className="rounded-[12px] bg-[#d9d9d9] p-6 sm:p-8 lg:px-10 lg:py-7">
-                <div className="flex items-start justify-between gap-6">
+          <div className="parwaaz-row mx-auto mt-[64px] grid w-full max-w-[970px] grid-cols-[515px_296px] items-start gap-[18px]">
+            <div>
+              <div data-reveal="left" data-reveal-mode="cycle" className="h-[138px] w-full rounded-[8px] bg-[#d9d9d9] px-[42px] py-[26px]">
+                <div className="flex h-full items-start justify-between gap-6">
                   <div>
-                    <h3 className="font-extrabold leading-none tracking-[-0.04em] text-[#050889]" style={{ fontSize: 'clamp(30px, 3.8vw, 46px)' }}>Par.waaz</h3>
-                    <div className="mt-3 font-medium text-black" style={{ fontSize: 'clamp(15px, 1.9vw, 21px)' }}>flight or flying</div>
-                    <div className="mt-3 font-medium text-black" style={{ fontSize: 'clamp(15px, 1.9vw, 21px)' }}>(پرواز)</div>
+                    <h3 className="text-[42px] font-extrabold leading-[0.95] tracking-[-0.045em] text-[#050889]">
+                      Par.waaz
+                    </h3>
+                    <div className="mt-[10px] text-[18px] font-medium leading-none text-black">
+                      flight or flying
+                    </div>
+                    <div className="mt-[10px] text-[18px] font-medium leading-none text-black">
+                      (پرواز)
+                    </div>
                   </div>
-                  <img src="/iran-flag.png" alt="flag" className="mt-1 h-[28px] w-[44px] lg:h-[34px] lg:w-[54px] rounded-[6px] object-cover flex-shrink-0" />
+                  <img
+                    src="/iran-flag.png"
+                    alt="flag"
+                    className="mt-[2px] h-[30px] w-[48px] rounded-[5px] object-cover"
+                  />
                 </div>
               </div>
-              <div className="px-2 sm:px-6 lg:px-8 pt-5">
-                <p data-reveal="up-sm" data-reveal-mode="cycle" className="leading-[1.6] tracking-[-0.02em] text-[#222]" style={{ fontSize: 'clamp(14px, 1.5vw, 19px)' }}>
-                  1. Parwaaz (پرواز) is a Persian word meaning flight — not just the physical act of flying, but the rise of spirit, the leap of ambition and uninterrupted flight.
-                </p>
-                <p data-reveal="up-sm" data-reveal-mode="cycle" data-reveal-delay="150" className="mt-5 lg:mt-6 leading-[1.6] tracking-[-0.02em] text-[#333]" style={{ fontSize: 'clamp(14px, 1.5vw, 19px)' }}>
-                  2. We chose this name because it reflects exactly what we do. AI and advanced technology are the defining forces of our era — and learning them is no longer optional, it is the difference between being left behind and leading the way.
-                </p>
+              <div className="pt-[18px] pl-[34px] pr-[10px]">
+                <ol className="list-decimal space-y-[24px] text-[16px] font-light leading-[1.62] tracking-[-0.01em] text-[#222]">
+                  <li data-mwg-reveal="paragraph" className="parwaaz-list-item">
+                    Parwaaz (پرواز) is a Persian word meaning flight — not just the physical act of flying, but the rise of spirit, the leap of ambition and uninterrupted flight.
+                  </li>
+                  <li data-mwg-reveal="paragraph" className="parwaaz-list-item">
+                    We chose this name because it reflects exactly what we do. AI and advanced technology are the defining forces of our era — and learning them is no longer optional, it is the difference between being left behind and leading the way.
+                  </li>
+                </ol>
               </div>
             </div>
-            <div data-reveal="right" data-reveal-mode="cycle" data-reveal-delay="120" className="bg-[#040a96] p-6 sm:p-8 shadow-[0_0_0_1px_rgba(0,254,78,.45)] rounded-[12px] lg:rounded-none">
-              <p data-reveal="fade" data-reveal-mode="cycle" data-reveal-delay="240" className="font-medium leading-[1.45] tracking-[-0.03em] text-white" style={{ fontSize: 'clamp(17px, 2.4vw, 26px)' }}>
+            <div data-reveal="right" data-reveal-mode="cycle" data-reveal-delay="120" className="parwaaz-blue h-[296px] w-[296px] rounded-[8px] border border-[#00FE4E] bg-[#000572] px-[24px] py-[22px]">
+              <p className="m-0 text-[16px] font-light leading-[1.58] tracking-[-0.01em] text-white">
                 We chose this name because it reflects exactly what we do. AI and advanced technology are the defining forces of our era — and learning them is no longer optional, it is the difference between being left behind and leading the way.
               </p>
             </div>
-          </section>
+          </div>
+        </section>
+
+        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
 
           <section className="mt-14 lg:mt-20 pb-12 lg:pb-16">
             <div data-reveal="up-sm" className="mb-3 lg:mb-4 text-[12px] lg:text-[13px] font-semibold uppercase tracking-[0.08em] text-black">Our Services</div>
@@ -2131,7 +2470,7 @@ export default function Page() {
           </section>
 
           <section className="mt-10 lg:mt-14 pb-12 lg:pb-20">
-            <h3 data-reveal="up-sm" className="font-light leading-none tracking-[-0.03em] text-black" style={{ fontSize: 'clamp(28px, 4vw, 44px)' }}>Why Choose Us</h3>
+            <h3 data-text-split="words" className="font-light leading-none tracking-[-0.03em] text-black" style={{ fontSize: 'clamp(28px, 4vw, 44px)' }}>Why Choose Us</h3>
             <div data-reveal="fade" data-reveal-delay="100" className="marquee-shell mt-3 lg:mt-5">
               <div className="marquee-track">
                 <span className="marquee-text">Let The Numbers Speak!</span>
@@ -2142,13 +2481,13 @@ export default function Page() {
             <p data-reveal="up-sm" data-reveal-delay="200" className="mt-3 lg:mt-4 leading-[1.4] text-black" style={{ fontSize: 'clamp(13px, 1.4vw, 16px)' }}>With enough data, the numbers speak for themselves.</p>
             <div className="mt-6 lg:mt-7 grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 max-w-[1280px]">
               {[
-                { icon: "☑", val: "1,000+", l1: "Successful", l2: "Placements" },
-                { icon: "▯", val: "12,000+", l1: "Specialized", l2: "Courses" },
-                { icon: "♟", val: "95%", l1: "Customer", l2: "Satisfaction" },
-                { icon: "◎", val: "5+", l1: "Countries", l2: "where we have clients" },
+                { Icon: CheckCircle2, val: "1,000+", l1: "Successful", l2: "Placements" },
+                { Icon: BookOpen, val: "12,000+", l1: "Specialized", l2: "Courses" },
+                { Icon: Smile, val: "95%", l1: "Customer", l2: "Satisfaction" },
+                { Icon: Globe, val: "5+", l1: "Countries", l2: "where we have clients" },
               ].map((s, i) => (
                 <div key={s.val} data-reveal="up" data-reveal-delay={i * 100} className="stat-card aspect-square flex flex-col items-center justify-center p-6">
-                  <div className="stat-card-icon mb-3 lg:mb-4" style={{ fontSize: 'clamp(28px, 3vw, 36px)' }}>{s.icon}</div>
+                  <s.Icon className="stat-card-icon mb-3 lg:mb-4" strokeWidth={1.6} style={{ width: 'clamp(34px, 3.4vw, 44px)', height: 'clamp(34px, 3.4vw, 44px)' }} />
                   <div className="stat-card-val font-normal leading-none" style={{ fontSize: 'clamp(28px, 3.5vw, 44px)' }}>{s.val}</div>
                   <div className="stat-card-label mt-3 lg:mt-4 text-center leading-[1.2] text-black" style={{ fontSize: 'clamp(13px, 1.3vw, 16px)' }}>
                     <div>{s.l1}</div><div>{s.l2}</div>
@@ -2187,7 +2526,7 @@ export default function Page() {
             </div>
             <p data-reveal="up-sm" data-reveal-delay="200" className="mt-3 lg:mt-4 text-[14px] lg:text-[15px] text-black">We work for a wide variety of clients in both the private and public sectors.</p>
             <div data-reveal="fade" data-reveal-delay="300" className="logo-shell mt-5 lg:mt-6">
-              <div ref={logoTrackRef} className="logo-track" style={{ transform: `translateX(calc(${-(logoIndex + clientLogos.length)} * (clamp(140px, 18vw, 220px) + 28px)))` }}>
+              <div ref={logoTrackRef} className="logo-track" style={{ transform: `translateX(calc(${-(logoIndex + clientLogos.length)} * (clamp(150px, 16vw, 200px) + 32px)))` }}>
                 {[...clientLogos, ...clientLogos, ...clientLogos].map((logo, i) => (
                   <div key={logo.name + "-" + i} className="logo-card"><img src={logo.src} alt={logo.name} /></div>
                 ))}
@@ -2263,8 +2602,8 @@ export default function Page() {
 
         <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <section className="relative bg-white py-10 lg:py-16 overflow-hidden">
-            <h2 className="text-center font-light uppercase leading-tight tracking-[0.04em]" style={{ fontSize: 'clamp(26px, 4.2vw, 44px)' }}>
-              <span data-text-split="words" className="text-[#0adf54]">Trusted By 14 Million</span> <span data-text-split="words" className="text-[#050889]">Professional</span>
+            <h2 data-reveal="up-sm" className="trusted-heading text-center uppercase" style={{ fontSize: 'clamp(28px, 4.4vw, 56px)', fontWeight: 400, lineHeight: '1', letterSpacing: '0px', fontFamily: 'Inter, sans-serif', whiteSpace: 'nowrap' }}>
+              Trusted By 14 Million Professional
             </h2>
             <p data-reveal="up-sm" data-reveal-delay="120" className="mt-3 text-center text-[13px] lg:text-[17px] text-black">Watch stories of success from around the world</p>
             <div data-reveal="zoom" data-reveal-delay="240" className="map-stage">
@@ -2279,7 +2618,7 @@ export default function Page() {
                   <div className="map-pin-icon">
                     <img src={pin.img} alt={pin.city} />
                   </div>
-                  <div>
+                  <div className="map-pin-text">
                     <div className="map-pin-title">{pin.city}</div>
                     <div className="map-pin-link">Detail</div>
                   </div>
@@ -2293,24 +2632,41 @@ export default function Page() {
           <img src="/blink.svg" alt="" className="testimonials-blink testimonials-blink-left" />
           <img src="/blink.svg" alt="" className="testimonials-blink testimonials-blink-right" />
           <div className="relative z-10 mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
-            <div data-reveal="zoom" className="mx-auto flex h-[44px] w-[170px] items-center justify-center rounded-[50px] bg-[#00FE4E] border border-[#E4E6E8] text-[14px] font-semibold text-black">Testimonials</div>
-            <h2 data-text-split="words" className="testimonials-heading mt-4 lg:mt-5 text-center font-light uppercase leading-tight tracking-[0.04em]" style={{ fontSize: 'clamp(32px, 5.5vw, 60px)' }}>
+            <div data-reveal="zoom" className="testimonials-pill mx-auto flex h-[48px] w-[173px] items-center gap-[8px] rounded-[50px] bg-[#00FE4E] border border-[#E4E6E8] pl-[6px] pr-[18px]">
+              <div className="flex items-center">
+                <img src={testimonials[0].img} alt="" className="testimonials-pill-avatar" style={{ zIndex: 3 }} />
+                <img src={testimonials[1].img} alt="" className="testimonials-pill-avatar -ml-[12px]" style={{ zIndex: 2 }} />
+                <img src={testimonials[2].img} alt="" className="testimonials-pill-avatar -ml-[12px]" style={{ zIndex: 1 }} />
+              </div>
+              <span className="text-[14px] font-semibold text-black leading-none">Testimonials</span>
+            </div>
+            <h2 data-reveal="up-sm" className="testimonials-heading mt-14 lg:mt-[72px] text-center uppercase" style={{ fontSize: 'clamp(32px, 5vw, 64px)', fontWeight: 400, lineHeight: '1', letterSpacing: '0px', fontFamily: 'Inter, sans-serif' }}>
               What Our Client Say
             </h2>
-            <div data-reveal="up" data-reveal-delay="240" className="mx-auto mt-5 lg:mt-6 max-w-[560px] text-center">
-              <img src="/testimonial-user.png" alt="Client" className="testimonials-avatar mx-auto h-[64px] w-[64px] rounded-full object-cover" />
-              <div className="mt-4 text-[14px] font-bold text-[#050889]">Sara Mohamed</div>
-              <div className="mt-1 text-[13px] text-[#ffc400] tracking-[0.2em]">★★★★★</div>
-              <p className="mt-4 lg:mt-5 text-[13px] lg:text-[14px] leading-[1.7] text-black/80 max-w-[520px] mx-auto">I&apos;ve been using the hotel booking system for several years now, and it&apos;s become my go-to platform for planning my trips. The interface is user-friendly and I appreciate the detailed information and real-time availability of hotels.</p>
+            <div className="testimonial-stage mt-24 lg:mt-[140px]">
+              {testimonials.map((t, i) => (
+                <div
+                  key={i}
+                  className={`testimonial-slide ${i === testimonialIndex ? 'is-active' : ''} dir-${testimonialDir}`}
+                  aria-hidden={i !== testimonialIndex}
+                >
+                  <img src={t.img} alt={t.name} className="testimonials-avatar mx-auto h-[44px] w-[44px] lg:h-[48px] lg:w-[48px] rounded-full object-cover" />
+                  <div className="mt-3 lg:mt-4 text-[14px] lg:text-[15px] font-bold text-[#050889] text-center">{t.name}</div>
+                  <div className="mt-1 text-[11px] text-[#ffc400] tracking-[0.18em] text-center">{'★'.repeat(t.stars)}</div>
+                  <p className="mt-4 lg:mt-5 text-[13px] lg:text-[15px] leading-[1.65] text-black/75 max-w-[640px] mx-auto text-center">
+                    {t.text}
+                  </p>
+                </div>
+              ))}
             </div>
             <div data-reveal="zoom" data-reveal-delay="360" className="testimonials-nav-wrap">
               <div className="testimonials-nav-btn">
-                <button className="testimonials-nav-arrow testimonials-nav-arrow-prev" aria-label="Previous testimonial">
+                <button onClick={handleTestimonialPrev} className="testimonials-nav-arrow testimonials-nav-arrow-prev" aria-label="Previous testimonial">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </button>
-                <button className="testimonials-nav-arrow testimonials-nav-arrow-next" aria-label="Next testimonial">
+                <button onClick={handleTestimonialNext} className="testimonials-nav-arrow testimonials-nav-arrow-next" aria-label="Next testimonial">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
@@ -2323,9 +2679,8 @@ export default function Page() {
         <section className="newsletter-section">
           <div className="newsletter-divider" />
           <div className="newsletter-inner">
-            <h2 className="newsletter-title">
-              <span data-text-split="words" className="newsletter-title-a">Join The Future</span>{" "}
-              <span data-text-split="words" className="newsletter-title-b">Of Innovation</span>
+            <h2 data-reveal="up-sm" className="newsletter-title">
+              Join The Future Of Innovation
             </h2>
             <p data-reveal="up-sm" data-reveal-delay="120" className="newsletter-text">
               Making better things takes time. Drop us your email to stay in the know as we work to reduce our environmental impact. We&apos;ll share other exciting news and exclusive offers, too.
