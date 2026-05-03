@@ -44,88 +44,116 @@ function ProjectOrbitSection() {
     const slideEls = slideRefs.current.filter(Boolean) as HTMLDivElement[];
     if (!section || !orbit || slideEls.length === 0) return;
 
-    const ctx = gsap.context(() => {
-      gsap.to(orbit, {
-        rotation: 360,
-        duration: 90,
-        repeat: -1,
-        ease: "none",
-        transformOrigin: "50% 50%",
-      });
+    let ctx: gsap.Context | null = null;
 
-      const isMobile = window.innerWidth <= 768;
-
-      if (isMobile) {
-        return;
-      }
-
-      slideEls.forEach((slide, index) => {
-        gsap.set(slide, {
-          opacity: index === 0 ? 1 : 0,
-          x: index === 0 ? 0 : -100,
-          y: index === 0 ? 0 : 280,
-          rotation: index === 0 ? 0 : 32,
-          scale: index === 0 ? 1 : 0.85,
-          filter: index === 0 ? "blur(0px)" : "blur(6px)",
-          transformOrigin: "-380px 50%",
+    const setup = () => {
+      if (ctx) ctx.revert();
+      ctx = gsap.context(() => {
+        gsap.set(orbit, { xPercent: -50, yPercent: -50 });
+        gsap.to(orbit, {
+          rotation: 360,
+          duration: 90,
+          repeat: -1,
+          ease: "none",
+          transformOrigin: "50% 50%",
         });
-      });
 
-      const slideDuration = 1100;
+        const isMobile = window.innerWidth <= 768;
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: `+=${slideEls.length * slideDuration}`,
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
+        if (isMobile) {
+          return;
+        }
 
-      for (let i = 1; i < slideEls.length; i++) {
-        const prev = slideEls[i - 1];
-        const next = slideEls[i];
-        if (!prev || !next) continue;
+        slideEls.forEach((slide, index) => {
+          gsap.set(slide, {
+            opacity: index === 0 ? 1 : 0,
+            x: index === 0 ? 0 : -100,
+            y: index === 0 ? 0 : 280,
+            rotation: index === 0 ? 0 : 32,
+            scale: index === 0 ? 1 : 0.85,
+            filter: index === 0 ? "blur(0px)" : "blur(6px)",
+            transformOrigin: "-380px 50%",
+          });
+        });
 
-        tl.to(prev, {
-          opacity: 0,
-          x: 80,
-          y: -260,
-          rotation: -32,
-          scale: 0.85,
-          filter: "blur(6px)",
-          duration: 1.2,
-          ease: "power3.inOut",
-        }, i);
+        const slideDuration = 1100;
 
-        tl.fromTo(next, {
-          opacity: 0,
-          x: -100,
-          y: 280,
-          rotation: 32,
-          scale: 0.85,
-          filter: "blur(6px)",
-          transformOrigin: "-380px 50%",
-        }, {
-          opacity: 1,
-          x: 0,
-          y: 0,
-          rotation: 0,
-          scale: 1,
-          filter: "blur(0px)",
-          duration: 1.2,
-          ease: "power3.inOut",
-        }, i + 0.02);
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: `+=${slideEls.length * slideDuration}`,
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        for (let i = 1; i < slideEls.length; i++) {
+          const prev = slideEls[i - 1];
+          const next = slideEls[i];
+          if (!prev || !next) continue;
+
+          tl.to(prev, {
+            opacity: 0,
+            x: 80,
+            y: -260,
+            rotation: -32,
+            scale: 0.85,
+            filter: "blur(6px)",
+            duration: 1.2,
+            ease: "power3.inOut",
+          }, i);
+
+          tl.fromTo(next, {
+            opacity: 0,
+            x: -100,
+            y: 280,
+            rotation: 32,
+            scale: 0.85,
+            filter: "blur(6px)",
+            transformOrigin: "-380px 50%",
+          }, {
+            opacity: 1,
+            x: 0,
+            y: 0,
+            rotation: 0,
+            scale: 1,
+            filter: "blur(0px)",
+            duration: 1.2,
+            ease: "power3.inOut",
+          }, i + 0.02);
+        }
+
+        ScrollTrigger.refresh();
+      }, section);
+    };
+
+    setup();
+
+    let resizeTimer: ReturnType<typeof setTimeout> | null = null;
+    let lastWidth = window.innerWidth;
+    const onResize = () => {
+      const w = window.innerWidth;
+      const wasMobile = lastWidth <= 768;
+      const isMobile = w <= 768;
+      if (wasMobile !== isMobile) {
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          setup();
+          ScrollTrigger.refresh();
+        }, 200);
       }
+      lastWidth = w;
+    };
+    window.addEventListener('resize', onResize);
 
-      const refreshTimeout = setTimeout(() => ScrollTrigger.refresh(), 100);
-      return () => clearTimeout(refreshTimeout);
-    }, section);
-
-    return () => ctx.revert();
+    return () => {
+      window.removeEventListener('resize', onResize);
+      if (resizeTimer) clearTimeout(resizeTimer);
+      if (ctx) ctx.revert();
+    };
   }, []);
 
   return (
@@ -170,7 +198,7 @@ function ProjectOrbitSection() {
         </div>
       </div>
 
-      <style jsx>{`
+      <style jsx global>{`
         .po-section {
           position: relative;
           width: 100%;
@@ -227,7 +255,6 @@ function ProjectOrbitSection() {
           left: 50%;
           width: 130%;
           height: 130%;
-          transform: translate(-50%, -50%);
           will-change: transform;
         }
         .po-rings img {
@@ -411,8 +438,8 @@ function ProjectOrbitSection() {
         }
 
         @media (max-width: 768px) {
-          .po-section { padding: 24px 0 8px; min-height: 0; }
-          .po-title { margin-bottom: 16px; }
+          .po-section { padding: 28px 0 24px; min-height: 0; }
+          .po-title { margin-bottom: 20px; }
           .po-title h2 { font-size: clamp(24px, 6.5vw, 32px); gap: 10px; }
           .po-canvas {
             top: auto;
@@ -421,7 +448,7 @@ function ProjectOrbitSection() {
             width: 200px;
             height: 200px;
             transform: none;
-            opacity: 0.3;
+            opacity: 0.25;
             z-index: 1;
           }
           .po-vector {
@@ -429,7 +456,7 @@ function ProjectOrbitSection() {
             bottom: 0;
             width: 130px;
             max-height: 200px;
-            opacity: 0.55;
+            opacity: 0.5;
             z-index: 2;
           }
           .po-content {
@@ -446,15 +473,17 @@ function ProjectOrbitSection() {
             min-height: 0;
             max-width: 100%;
             margin-right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
           }
           .po-slide {
             position: relative;
             top: auto;
             left: auto;
+            opacity: 1 !important;
             transform: none !important;
-          }
-          .po-slide:not(:first-child) {
-            display: none;
+            filter: none !important;
           }
           .po-slide-row { gap: 14px; align-items: flex-start; }
           .po-ball { width: 18px; height: 18px; min-width: 18px; margin-top: 6px; }
@@ -463,12 +492,13 @@ function ProjectOrbitSection() {
         }
 
         @media (max-width: 480px) {
-          .po-section { padding: 20px 0 8px; }
-          .po-title { padding: 0 16px; margin-bottom: 14px; }
+          .po-section { padding: 24px 0 20px; }
+          .po-title { padding: 0 16px; margin-bottom: 16px; }
           .po-title h2 { font-size: 22px; gap: 8px; }
-          .po-canvas { left: -110px; width: 180px; height: 180px; opacity: 0.28; }
-          .po-vector { width: 110px; max-height: 170px; bottom: 0; right: -20px; opacity: 0.5; }
+          .po-canvas { left: -110px; width: 180px; height: 180px; opacity: 0.22; }
+          .po-vector { width: 110px; max-height: 170px; bottom: 0; right: -20px; opacity: 0.45; }
           .po-content { padding: 0 16px; }
+          .po-slides { gap: 22px; }
           .po-slide-title { font-size: 22px; }
           .po-slide-text { font-size: 12.5px; line-height: 1.5; }
         }
@@ -583,55 +613,88 @@ export default function Page() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    if (window.matchMedia('(pointer: coarse)').matches) return;
-    const ring = ringRef.current; const dot = dotRef.current;
-    if (!ring || !dot) return;
-    let af = 0;
-    let initialized = false;
+    const mql = window.matchMedia('(pointer: fine)');
 
-    const move = (e: MouseEvent) => {
-      cx.current = e.clientX; cy.current = e.clientY;
-      if (!initialized) {
-        rx.current = e.clientX;
-        ry.current = e.clientY;
-        ring.style.opacity = '1';
-        dot.style.opacity = '1';
-        initialized = true;
-      }
-      dot.style.transform = `translate3d(${e.clientX}px,${e.clientY}px,0) translate(-50%,-50%)`;
-    };
-    const loop = () => {
-      rx.current += (cx.current - rx.current) * 0.18;
-      ry.current += (cy.current - ry.current) * 0.18;
-      ring.style.transform = `translate3d(${rx.current}px,${ry.current}px,0) translate(-50%,-50%)`;
+    let cleanup: (() => void) | null = null;
+
+    const attachCursor = () => {
+      if (cleanup) return;
+      const ring = ringRef.current;
+      const dot = dotRef.current;
+      if (!ring || !dot) return;
+      let af = 0;
+      let initialized = false;
+
+      const move = (e: MouseEvent) => {
+        cx.current = e.clientX;
+        cy.current = e.clientY;
+        if (!initialized) {
+          rx.current = e.clientX;
+          ry.current = e.clientY;
+          ring.style.opacity = '1';
+          dot.style.opacity = '1';
+          initialized = true;
+        }
+        dot.style.transform = `translate3d(${e.clientX}px,${e.clientY}px,0) translate(-50%,-50%)`;
+      };
+      const loop = () => {
+        rx.current += (cx.current - rx.current) * 0.18;
+        ry.current += (cy.current - ry.current) * 0.18;
+        ring.style.transform = `translate3d(${rx.current}px,${ry.current}px,0) translate(-50%,-50%)`;
+        af = requestAnimationFrame(loop);
+      };
+      const handleEnter = (e: Event) => {
+        const target = e.target as HTMLElement;
+        if (target.closest && target.closest("a,button,input,textarea,select,label,[role='button']")) {
+          document.body.classList.add("pw-ca");
+        }
+      };
+      const handleLeave = (e: Event) => {
+        const target = e.target as HTMLElement;
+        if (target.closest && target.closest("a,button,input,textarea,select,label,[role='button']")) {
+          document.body.classList.remove("pw-ca");
+        }
+      };
+
+      ring.style.opacity = '0';
+      dot.style.opacity = '0';
+      window.addEventListener("mousemove", move, { passive: true });
+      document.addEventListener("mouseover", handleEnter, { passive: true });
+      document.addEventListener("mouseout", handleLeave, { passive: true });
       af = requestAnimationFrame(loop);
-    };
 
-    const handleEnter = (e: Event) => {
-      const target = e.target as HTMLElement;
-      if (target.closest && target.closest("a,button,input,textarea,select,label,[role='button']")) {
-        document.body.classList.add("pw-ca");
-      }
-    };
-    const handleLeave = (e: Event) => {
-      const target = e.target as HTMLElement;
-      if (target.closest && target.closest("a,button,input,textarea,select,label,[role='button']")) {
+      cleanup = () => {
+        window.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseover", handleEnter);
+        document.removeEventListener("mouseout", handleLeave);
+        cancelAnimationFrame(af);
         document.body.classList.remove("pw-ca");
+        ring.style.opacity = '0';
+        dot.style.opacity = '0';
+      };
+    };
+
+    const detachCursor = () => {
+      if (cleanup) {
+        cleanup();
+        cleanup = null;
       }
     };
 
-    ring.style.opacity = '0';
-    dot.style.opacity = '0';
-    window.addEventListener("mousemove", move, { passive: true });
-    document.addEventListener("mouseover", handleEnter, { passive: true });
-    document.addEventListener("mouseout", handleLeave, { passive: true });
-    af = requestAnimationFrame(loop);
+    const handleChange = (e: MediaQueryListEvent | MediaQueryList) => {
+      if (e.matches) {
+        attachCursor();
+      } else {
+        detachCursor();
+      }
+    };
+
+    handleChange(mql);
+    mql.addEventListener('change', handleChange);
+
     return () => {
-      window.removeEventListener("mousemove", move);
-      document.removeEventListener("mouseover", handleEnter);
-      document.removeEventListener("mouseout", handleLeave);
-      cancelAnimationFrame(af);
-      document.body.classList.remove("pw-ca");
+      mql.removeEventListener('change', handleChange);
+      detachCursor();
     };
   }, []);
 
@@ -681,7 +744,7 @@ export default function Page() {
           el.classList.remove('is-visible');
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    }, { threshold: 0.05, rootMargin: '0px 0px 0px 0px' });
     const targets = document.querySelectorAll<HTMLElement>('[data-reveal]');
     targets.forEach(el => observer.observe(el));
     const mo = new MutationObserver(() => {
@@ -785,7 +848,15 @@ export default function Page() {
       paragraphTriggers.push(st);
     });
 
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 250);
+    const onLoad = () => ScrollTrigger.refresh();
+    window.addEventListener('load', onLoad);
+
     return () => {
+      clearTimeout(refreshTimer);
+      window.removeEventListener('load', onLoad);
       splitTriggers.forEach(t => t.kill());
       paragraphTriggers.forEach(t => t.kill());
     };
@@ -885,9 +956,16 @@ export default function Page() {
         .pw-nav-wrapper {
           position: relative;
           z-index: 60;
-          margin-top: 16px;
+          margin-top: 8px;
         }
-        @media (min-width: 1024px) { .pw-nav-wrapper { margin-top: 20px; } }
+        @media (min-width: 1024px) {
+          .pw-nav-wrapper {
+            margin-top: -10px;
+            width: min(1320px, calc(100vw - 34px));
+            margin-left: auto;
+            margin-right: auto;
+          }
+        }
 
         .pw-nav {
           --mx: 50%;
@@ -896,7 +974,7 @@ export default function Page() {
           z-index: 50;
           width: 100%;
           height: 64px !important;
-          border-radius: 20px;
+          border-radius: 24px;
           display: flex;
           align-items: center;
           background: linear-gradient(
@@ -918,7 +996,7 @@ export default function Page() {
         }
         @media (min-width: 1024px) {
           .pw-nav {
-            height: 80px !important;
+            height: 72px !important;
           }
         }
 
@@ -1402,6 +1480,8 @@ export default function Page() {
         .hero-stack { position: relative; width: 100%; }
         .hero-bg { position: relative; width: 100%; background: #000; background-image: url(/back-image.png); background-size: cover; background-position: center bottom; background-repeat: no-repeat; z-index: 1; overflow: visible; }
         .hero-robot-wrap { position: absolute; right: 4%; top: 100px; width: 38%; max-width: 420px; aspect-ratio: 1 / 1; pointer-events: none; z-index: 5; }
+        @media (max-width: 768px) { .hero-robot-wrap { right: 2%; top: 180px; width: 50%; max-width: 280px; opacity: 0.65; } }
+        @media (max-width: 480px) { .hero-robot-wrap { right: 0%; top: 200px; width: 55%; max-width: 230px; opacity: 0.55; } }
         @media (min-width: 1024px) { .hero-robot-wrap { right: 6%; top: 120px; width: 36%; max-width: 480px; } }
         @media (min-width: 1280px) { .hero-robot-wrap { right: 8%; top: 130px; width: 38%; max-width: 540px; } }
         @media (min-width: 1536px) { .hero-robot-wrap { right: 10%; max-width: 580px; } }
@@ -1473,6 +1553,8 @@ export default function Page() {
             gap: 14px !important;
             padding: 22px !important;
             text-align: center;
+            max-width: 350px !important;
+            margin-inline: auto !important;
           }
           .wef-card > div:first-child {
             width: auto !important;
@@ -1481,8 +1563,11 @@ export default function Page() {
             height: 82px !important;
           }
           .wef-card p {
-            font-size: 15px !important;
+            font-size: 14px !important;
             line-height: 1.5 !important;
+          }
+          .parwaaz-row {
+            max-width: 350px !important;
           }
         }
         .parwaaz-list-item::marker {
@@ -2011,17 +2096,6 @@ export default function Page() {
         }
         @media (max-width: 768px) {
           .po-section { padding: 24px 0 40px; min-height: 0; }
-          .contact-cta-section { margin-top: 32px; padding: 0 0 60px; }
-          .contact-cta-wrap { padding: 0 16px; }
-          .contact-cta-box { padding: 32px 24px; border-radius: 12px; min-height: 180px; gap: 16px; }
-          .contact-cta-text { font-size: 15px; }
-          .contact-cta-btn { height: 42px; padding: 0 22px 0 26px; font-size: 13px; }
-        }
-        @media (max-width: 480px) {
-          .po-section { padding: 20px 0 32px; }
-          .contact-cta-section { margin-top: 24px; padding: 0 0 48px; }
-          .contact-cta-box { padding: 28px 20px; gap: 14px; min-height: 160px; }
-          .contact-cta-text { font-size: 14px; }
         }
 
         .site-footer { position: relative; background: #ffffff; padding: 40px 0 0; border-top: 1px solid rgba(0,0,0,0.06); }
@@ -2119,77 +2193,140 @@ export default function Page() {
         .team-photo-frame:hover { transform: translateY(-6px); box-shadow: 0 12px 28px rgba(0,0,0,0.15); }
         .team-photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
         @media (max-width: 1023px) { .team-row { grid-template-columns: 1fr; gap: 24px; } .team-cards-col { grid-column: 1; } .team-neptune-wrap { width: 480px; height: 480px; left: 0; right: auto; top: 20%; } .team-neptune-btn { left: 240px; top: 20%; } .team-cards-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; } }
-        @media (max-width: 768px) { .team-neptune-wrap { display: none; } .team-neptune-btn { position: relative; left: auto; top: auto; transform: none; margin-bottom: 24px; } .team-cards-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
+        @media (max-width: 768px) { .team-neptune-wrap { width: 280px; height: 280px; left: -80px; top: 8%; opacity: 0.6; } .team-neptune-btn { position: relative; left: auto; top: auto; transform: none; margin-bottom: 24px; } .team-cards-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
         @media (max-width: 480px) { .team-cards-grid { gap: 12px; } }
 
-        /* ---- Mobile overrides (≤768px) ---- */
         @media (max-width: 768px) {
           .hero-bg {
-            min-height: 920px;
-            background-position: center top;
+            min-height: 760px !important;
+            background-size: cover !important;
+            background-position: center top !important;
+            overflow: hidden !important;
+            padding-bottom: 40px !important;
           }
-          .pw-nav-wrapper {
-            margin-top: 14px;
-            padding: 0 14px;
-          }
-          .pw-nav {
-            height: 56px !important;
-            border-radius: 18px;
-          }
-          .pw-logo-zone img {
-            height: 30px;
-          }
+
           .hero-robot-mobile {
-            margin-top: 22px;
-            width: 72%;
-            max-width: 260px;
+            width: 66% !important;
+            max-width: 220px !important;
+            margin: 26px auto 26px !important;
           }
+
+          .hero-stack {
+            padding: 0 18px !important;
+          }
+
           .hero-stack h1 {
             font-size: 30px !important;
             line-height: 0.95 !important;
           }
+
           .hero-stack h2 {
-            font-size: 18px !important;
+            font-size: 17px !important;
           }
+
           .hero-stack p {
-            font-size: 12px !important;
+            font-size: 11.5px !important;
             line-height: 1.45 !important;
           }
-          .hero-stack .hero-btn {
-            width: 100%;
-            height: 48px;
+
+          .hero-btn {
+            width: 100% !important;
+            max-width: 330px !important;
+            height: 46px !important;
           }
+
           .chatbox-wrap {
-            margin-top: -40px !important;
-            padding: 0 14px;
+            margin-top: 20px !important;
+            padding: 0 18px !important;
           }
+
           .ea-card {
             width: 100% !important;
+            max-width: 350px !important;
+            margin: 0 auto !important;
+            min-height: auto !important;
             border-radius: 16px !important;
           }
-          .ea-card h3 {
-            font-size: 22px !important;
-            line-height: 1.1 !important;
-          }
-          .ea-card p {
-            font-size: 11px !important;
-            max-width: 260px;
-            margin-inline: auto;
-          }
+
           .ea-pc {
-            min-height: 120px !important;
-            padding: 18px !important;
-            align-items: flex-start !important;
+            height: 145px !important;
+            min-height: 145px !important;
+            padding: 16px !important;
           }
-          .ea-pt {
-            font-size: 14px !important;
+
+          .ea-card .flex-wrap {
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            overflow-x: auto !important;
+            gap: 8px !important;
+            justify-content: flex-start !important;
+            padding: 10px 12px !important;
           }
-          .chatbox-btn {
-            width: 34px !important;
-            height: 34px !important;
+
+          .ea-card .flex-wrap button {
+            flex: 0 0 auto !important;
+            white-space: nowrap !important;
+            height: 24px !important;
+            font-size: 9px !important;
+            padding: 0 10px !important;
           }
-          .ea-card button {
-            font-size: 10px !important;
+        }
+
+        @media (max-width: 768px) {
+          .po-section {
+            position: relative !important;
+            overflow: hidden !important;
+            padding: 36px 0 56px !important;
+            min-height: auto !important;
+          }
+          .po-canvas {
+            display: block !important;
+            position: absolute !important;
+            top: 72px !important;
+            left: -150px !important;
+            bottom: auto !important;
+            width: 360px !important;
+            height: 360px !important;
+            opacity: 0.55 !important;
+            transform: none !important;
+            z-index: 1 !important;
+          }
+          .po-rings,
+          .po-solid {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+          }
+          .po-rings img,
+          .po-solid {
+            filter: contrast(1.8) brightness(0.72) opacity(0.95) !important;
+          }
+          .po-content {
+            position: relative !important;
+            z-index: 5 !important;
+            padding: 0 22px !important;
+          }
+          .po-slides {
+            height: auto !important;
+            max-width: 100% !important;
+          }
+          .po-slide {
+            position: relative !important;
+            display: block !important;
+            opacity: 1 !important;
+            transform: none !important;
+            filter: none !important;
+            margin-bottom: 18px !important;
+          }
+          .po-slide:not(:first-child) {
+            display: block !important;
+          }
+          .po-vector {
+            width: 140px !important;
+            right: -34px !important;
+            bottom: 54px !important;
+            opacity: 0.55 !important;
+            z-index: 2 !important;
           }
         }
       `}</style>
@@ -2198,7 +2335,7 @@ export default function Page() {
         <section className="hero-bg">
           <div className="relative mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 pt-3 pb-[70px] sm:pb-[120px] lg:pb-[180px]">
 
-            <div className="hidden md:block hero-robot-wrap">
+            <div className="hero-robot-wrap">
               <div className="hero-robot-glow" />
               <img src="/robot.png" alt="Robot" className="hero-robot-img robot-float" />
             </div>
@@ -2313,11 +2450,6 @@ export default function Page() {
                   <button className="hero-btn hero-btn-primary h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium">Our Services</button>
                   <button className="hero-btn hero-btn-secondary h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium">Get Started</button>
                 </div>
-              </div>
-
-              <div className="md:hidden order-first hero-robot-mobile">
-                <div className="hero-robot-glow" />
-                <img src="/robot.png" alt="Robot" className="hero-robot-img robot-float" />
               </div>
             </div>
           </div>
@@ -2470,7 +2602,7 @@ export default function Page() {
           </section>
 
           <section className="mt-10 lg:mt-14 pb-12 lg:pb-20">
-            <h3 data-text-split="words" className="font-light leading-none tracking-[-0.03em] text-black" style={{ fontSize: 'clamp(28px, 4vw, 44px)' }}>Why Choose Us</h3>
+          <h3 data-reveal="up-sm" className="font-light leading-none tracking-[-0.03em] text-black" style={{ fontSize: 'clamp(28px, 4vw, 44px)' }}>Why Choose Us</h3>
             <div data-reveal="fade" data-reveal-delay="100" className="marquee-shell mt-3 lg:mt-5">
               <div className="marquee-track">
                 <span className="marquee-text">Let The Numbers Speak!</span>
