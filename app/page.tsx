@@ -38,6 +38,9 @@ function ProjectOrbitSection() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
+    // Fix for mobile pin/scrub flakiness — takes over scroll handling
+    // to prevent native scroll momentum from interfering with pinned timelines
+    ScrollTrigger.normalizeScroll(true);
 
     const section = sectionRef.current;
     const orbit = orbitRef.current;
@@ -60,30 +63,32 @@ function ProjectOrbitSection() {
 
         const isMobile = window.innerWidth <= 768;
 
-        if (isMobile) {
-          return;
-        }
+        const swingOrigin = isMobile ? "-80px 50%" : "-380px 50%";
+        const swingX = isMobile ? -25 : -100;
+        const swingY = isMobile ? 60 : 280;
+        const exitX = isMobile ? 20 : 80;
+        const exitY = isMobile ? -55 : -260;
 
         slideEls.forEach((slide, index) => {
           gsap.set(slide, {
             opacity: index === 0 ? 1 : 0,
-            x: index === 0 ? 0 : -100,
-            y: index === 0 ? 0 : 280,
+            x: index === 0 ? 0 : swingX,
+            y: index === 0 ? 0 : swingY,
             rotation: index === 0 ? 0 : 32,
             scale: index === 0 ? 1 : 0.85,
             filter: index === 0 ? "blur(0px)" : "blur(6px)",
-            transformOrigin: "-380px 50%",
+            transformOrigin: swingOrigin,
           });
         });
 
-        const slideDuration = 1100;
+        const slideDuration = isMobile ? 1800 : 1100;
 
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: `+=${slideEls.length * slideDuration}`,
-            scrub: 1,
+            end: `+=${(slideEls.length - 1) * slideDuration}`,
+            scrub: isMobile ? 1.2 : 1,
             pin: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,
@@ -97,8 +102,8 @@ function ProjectOrbitSection() {
 
           tl.to(prev, {
             opacity: 0,
-            x: 80,
-            y: -260,
+            x: exitX,
+            y: exitY,
             rotation: -32,
             scale: 0.85,
             filter: "blur(6px)",
@@ -108,12 +113,12 @@ function ProjectOrbitSection() {
 
           tl.fromTo(next, {
             opacity: 0,
-            x: -100,
-            y: 280,
+            x: swingX,
+            y: swingY,
             rotation: 32,
             scale: 0.85,
             filter: "blur(6px)",
-            transformOrigin: "-380px 50%",
+            transformOrigin: swingOrigin,
           }, {
             opacity: 1,
             x: 0,
@@ -126,7 +131,8 @@ function ProjectOrbitSection() {
           }, i + 0.02);
         }
 
-        ScrollTrigger.refresh();
+        // Don't call ScrollTrigger.refresh() here — page-level useEffect already does this
+        // and calling it inside setup() can cause duplicate triggers
       }, section);
     };
 
@@ -205,6 +211,7 @@ function ProjectOrbitSection() {
           min-height: 90vh;
           background: #ffffff;
           padding: 40px 0 80px;
+          overflow: visible;
         }
 
         .po-title {
@@ -438,69 +445,74 @@ function ProjectOrbitSection() {
         }
 
         @media (max-width: 768px) {
-          .po-section { padding: 28px 0 24px; min-height: 0; }
-          .po-title { margin-bottom: 20px; }
-          .po-title h2 { font-size: clamp(24px, 6.5vw, 32px); gap: 10px; }
+          .po-section { padding: 40px 0 60px; min-height: 100vh; overflow: visible; }
+          .po-title { margin-bottom: 28px; }
+          .po-title h2 { font-size: clamp(28px, 7vw, 38px); gap: 10px; }
           .po-canvas {
-            top: auto;
-            bottom: 0;
-            left: -120px;
-            width: 200px;
-            height: 200px;
-            transform: none;
-            opacity: 0.25;
+            position: absolute;
+            top: 50%;
+            left: -180px;
+            width: 460px;
+            height: 460px;
+            transform: translateY(-30%);
+            opacity: 0.85;
             z-index: 1;
           }
           .po-vector {
-            right: -30px;
-            bottom: 0;
-            width: 130px;
-            max-height: 200px;
-            opacity: 0.5;
+            position: absolute;
+            right: -90px;
+            bottom: -60px;
+            width: 280px;
+            opacity: 0.85;
+            max-width: none;
+            max-height: none;
             z-index: 2;
           }
           .po-content {
             position: relative;
             z-index: 5;
-            min-height: 0;
-            padding: 0 20px;
-            align-items: stretch;
-            justify-content: flex-start;
+            min-height: 70vh;
+            padding: 0 20px 0 0;
+            align-items: center;
+            justify-content: flex-end;
           }
           .po-slides {
             position: relative;
-            height: auto;
-            min-height: 0;
-            max-width: 100%;
-            margin-right: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 28px;
+            width: 100%;
+            max-width: 280px;
+            margin-right: 12px;
+            margin-left: auto;
+            height: 320px;
+            perspective: 1200px;
+            z-index: 10;
           }
           .po-slide {
-            position: relative;
-            top: auto;
-            left: auto;
-            opacity: 1 !important;
-            transform: none !important;
-            filter: none !important;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            z-index: 10;
           }
-          .po-slide-row { gap: 14px; align-items: flex-start; }
-          .po-ball { width: 18px; height: 18px; min-width: 18px; margin-top: 6px; }
+          .po-slide-row { gap: 12px; align-items: flex-start; justify-content: flex-start; }
+          .po-ball { width: 16px; height: 16px; min-width: 16px; margin-top: 8px; }
+          .po-slide-content { text-align: left; }
           .po-slide-title { font-size: 26px; line-height: 1.1; margin-bottom: 8px; }
-          .po-slide-text { font-size: 13px; line-height: 1.55; }
+          .po-slide-text { font-size: 12px; line-height: 1.55; max-width: none; margin: 0; }
         }
 
         @media (max-width: 480px) {
-          .po-section { padding: 24px 0 20px; }
-          .po-title { padding: 0 16px; margin-bottom: 16px; }
-          .po-title h2 { font-size: 22px; gap: 8px; }
-          .po-canvas { left: -110px; width: 180px; height: 180px; opacity: 0.22; }
-          .po-vector { width: 110px; max-height: 170px; bottom: 0; right: -20px; opacity: 0.45; }
-          .po-content { padding: 0 16px; }
-          .po-slides { gap: 22px; }
+          .po-section { padding: 32px 0 48px; min-height: 100vh; }
+          .po-title { padding: 0 16px; margin-bottom: 22px; }
+          .po-title h2 { font-size: 26px; gap: 8px; }
+          .po-canvas { left: -160px; width: 400px; height: 400px; opacity: 0.82; }
+          .po-vector { width: 220px; right: -80px; bottom: -50px; opacity: 0.8; }
+          .po-content { padding: 0 16px 0 0; min-height: 65vh; }
+          .po-slides { max-width: 240px; margin-right: 8px; height: 300px; }
+          .po-slide-row { gap: 10px; }
+          .po-ball { width: 14px; height: 14px; min-width: 14px; margin-top: 6px; }
           .po-slide-title { font-size: 22px; }
-          .po-slide-text { font-size: 12.5px; line-height: 1.5; }
+          .po-slide-text { font-size: 11.5px; line-height: 1.5; }
         }
       `}</style>
     </section>
@@ -531,6 +543,7 @@ const teamMembers = [
 
 export default function Page() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [heroServicesOpen, setHeroServicesOpen] = useState(false);
@@ -848,10 +861,17 @@ export default function Page() {
       paragraphTriggers.push(st);
     });
 
-    const refreshTimer = setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 250);
-    const onLoad = () => ScrollTrigger.refresh();
+    // Only refresh ScrollTrigger if user hasn't scrolled yet.
+    // Refreshing after the user has scrolled into a pinned section
+    // causes the timeline to fast-forward to current scroll position,
+    // which makes pinned slides flash by instantly.
+    const safeRefresh = () => {
+      if (window.scrollY < 50) {
+        ScrollTrigger.refresh();
+      }
+    };
+    const refreshTimer = setTimeout(safeRefresh, 250);
+    const onLoad = () => safeRefresh();
     window.addEventListener('load', onLoad);
 
     return () => {
@@ -1480,17 +1500,15 @@ export default function Page() {
         .hero-stack { position: relative; width: 100%; }
         .hero-bg { position: relative; width: 100%; background: #000; background-image: url(/back-image.png); background-size: cover; background-position: center bottom; background-repeat: no-repeat; z-index: 1; overflow: visible; }
         .hero-robot-wrap { position: absolute; right: 4%; top: 100px; width: 38%; max-width: 420px; aspect-ratio: 1 / 1; pointer-events: none; z-index: 5; }
-        @media (max-width: 768px) { .hero-robot-wrap { right: 2%; top: 180px; width: 50%; max-width: 280px; opacity: 0.65; } }
-        @media (max-width: 480px) { .hero-robot-wrap { right: 0%; top: 200px; width: 55%; max-width: 230px; opacity: 0.55; } }
         @media (min-width: 1024px) { .hero-robot-wrap { right: 6%; top: 120px; width: 36%; max-width: 480px; } }
         @media (min-width: 1280px) { .hero-robot-wrap { right: 8%; top: 130px; width: 38%; max-width: 540px; } }
         @media (min-width: 1536px) { .hero-robot-wrap { right: 10%; max-width: 580px; } }
         .hero-robot-mobile {
           position: relative;
-          width: 70%;
-          max-width: 260px;
+          width: 78%;
+          max-width: 280px;
           aspect-ratio: 1 / 1;
-          margin: 0 auto 8px;
+          margin: 28px auto 8px;
           z-index: 5;
         }
         .hero-robot-glow { position: absolute; inset: 20%; border-radius: 50%; background: radial-gradient(circle, rgba(78,121,255,.28), transparent 70%); filter: blur(48px); }
@@ -1768,6 +1786,19 @@ export default function Page() {
         }
         .stat-card-val {
           color: #000000;
+        }
+        @media (max-width: 768px) {
+          .stat-card {
+            width: 160px !important;
+            height: 160px !important;
+            aspect-ratio: auto !important;
+            padding: 12px !important;
+            margin: 0 auto !important;
+          }
+          .stat-card-label {
+            font-size: 11px !important;
+            line-height: 1.2 !important;
+          }
         }
 
         @keyframes pinPulse { 0%, 100% { box-shadow: 0 0 0 2px #00fe4e, 0 4px 10px rgba(0,0,0,0.12), 0 0 0 0 rgba(0,254,78,0.5); } 50% { box-shadow: 0 0 0 2px #00fe4e, 0 4px 10px rgba(0,0,0,0.12), 0 0 0 12px rgba(0,254,78,0); } }
@@ -2088,14 +2119,10 @@ export default function Page() {
         }
         .contact-cta-btn:hover svg { transform: translateX(4px); }
         @media (max-width: 1024px) {
-          .po-section { padding: 40px 0 60px; }
           .contact-cta-section { margin-top: 40px; padding: 0 0 80px; }
           .contact-cta-wrap { padding: 0 24px; }
           .contact-cta-box { padding: 40px 32px; min-height: 200px; gap: 20px; }
           .contact-cta-text { font-size: 17px; }
-        }
-        @media (max-width: 768px) {
-          .po-section { padding: 24px 0 40px; min-height: 0; }
         }
 
         .site-footer { position: relative; background: #ffffff; padding: 40px 0 0; border-top: 1px solid rgba(0,0,0,0.06); }
@@ -2193,149 +2220,15 @@ export default function Page() {
         .team-photo-frame:hover { transform: translateY(-6px); box-shadow: 0 12px 28px rgba(0,0,0,0.15); }
         .team-photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
         @media (max-width: 1023px) { .team-row { grid-template-columns: 1fr; gap: 24px; } .team-cards-col { grid-column: 1; } .team-neptune-wrap { width: 480px; height: 480px; left: 0; right: auto; top: 20%; } .team-neptune-btn { left: 240px; top: 20%; } .team-cards-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; } }
-        @media (max-width: 768px) { .team-neptune-wrap { width: 280px; height: 280px; left: -80px; top: 8%; opacity: 0.6; } .team-neptune-btn { position: relative; left: auto; top: auto; transform: none; margin-bottom: 24px; } .team-cards-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
+        @media (max-width: 768px) { .team-neptune-wrap { width: 320px; height: 320px; left: -50px; top: 0; transform: none; opacity: 0.7; } .team-neptune-btn { position: absolute; left: 95px; top: 160px; transform: translate(-50%, -50%); margin-bottom: 0; z-index: 10; } .team-about-btn { height: 38px !important; padding: 0 22px !important; font-size: 13px !important; border-radius: 20px !important; box-shadow: 0 6px 18px rgba(0,254,78,0.3), 0 0 0 4px rgba(0,254,78,0.1) !important; } .team-cards-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } .team-row { padding-top: 320px !important; } }
         @media (max-width: 480px) { .team-cards-grid { gap: 12px; } }
-
-        @media (max-width: 768px) {
-          .hero-bg {
-            min-height: 760px !important;
-            background-size: cover !important;
-            background-position: center top !important;
-            overflow: hidden !important;
-            padding-bottom: 40px !important;
-          }
-
-          .hero-robot-mobile {
-            width: 66% !important;
-            max-width: 220px !important;
-            margin: 26px auto 26px !important;
-          }
-
-          .hero-stack {
-            padding: 0 18px !important;
-          }
-
-          .hero-stack h1 {
-            font-size: 30px !important;
-            line-height: 0.95 !important;
-          }
-
-          .hero-stack h2 {
-            font-size: 17px !important;
-          }
-
-          .hero-stack p {
-            font-size: 11.5px !important;
-            line-height: 1.45 !important;
-          }
-
-          .hero-btn {
-            width: 100% !important;
-            max-width: 330px !important;
-            height: 46px !important;
-          }
-
-          .chatbox-wrap {
-            margin-top: 20px !important;
-            padding: 0 18px !important;
-          }
-
-          .ea-card {
-            width: 100% !important;
-            max-width: 350px !important;
-            margin: 0 auto !important;
-            min-height: auto !important;
-            border-radius: 16px !important;
-          }
-
-          .ea-pc {
-            height: 145px !important;
-            min-height: 145px !important;
-            padding: 16px !important;
-          }
-
-          .ea-card .flex-wrap {
-            flex-direction: row !important;
-            flex-wrap: nowrap !important;
-            overflow-x: auto !important;
-            gap: 8px !important;
-            justify-content: flex-start !important;
-            padding: 10px 12px !important;
-          }
-
-          .ea-card .flex-wrap button {
-            flex: 0 0 auto !important;
-            white-space: nowrap !important;
-            height: 24px !important;
-            font-size: 9px !important;
-            padding: 0 10px !important;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .po-section {
-            position: relative !important;
-            overflow: hidden !important;
-            padding: 36px 0 56px !important;
-            min-height: auto !important;
-          }
-          .po-canvas {
-            display: block !important;
-            position: absolute !important;
-            top: 72px !important;
-            left: -150px !important;
-            bottom: auto !important;
-            width: 360px !important;
-            height: 360px !important;
-            opacity: 0.55 !important;
-            transform: none !important;
-            z-index: 1 !important;
-          }
-          .po-rings,
-          .po-solid {
-            display: block !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-          }
-          .po-rings img,
-          .po-solid {
-            filter: contrast(1.8) brightness(0.72) opacity(0.95) !important;
-          }
-          .po-content {
-            position: relative !important;
-            z-index: 5 !important;
-            padding: 0 22px !important;
-          }
-          .po-slides {
-            height: auto !important;
-            max-width: 100% !important;
-          }
-          .po-slide {
-            position: relative !important;
-            display: block !important;
-            opacity: 1 !important;
-            transform: none !important;
-            filter: none !important;
-            margin-bottom: 18px !important;
-          }
-          .po-slide:not(:first-child) {
-            display: block !important;
-          }
-          .po-vector {
-            width: 140px !important;
-            right: -34px !important;
-            bottom: 54px !important;
-            opacity: 0.55 !important;
-            z-index: 2 !important;
-          }
-        }
       `}</style>
 
       <div className="hero-stack">
         <section className="hero-bg">
           <div className="relative mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 pt-3 pb-[70px] sm:pb-[120px] lg:pb-[180px]">
 
-            <div className="hero-robot-wrap">
+            <div className="hero-robot-wrap hidden lg:block">
               <div className="hero-robot-glow" />
               <img src="/robot.png" alt="Robot" className="hero-robot-img robot-float" />
             </div>
@@ -2423,10 +2316,63 @@ export default function Page() {
               </nav>
 
               {mobileNavOpen && (
-                <div className="lg:hidden mt-3 rounded-2xl border border-[#00fe4e]/30 bg-black/95 backdrop-blur p-5 space-y-3">
-                  {["Home", "About", "Services", "Contact"].map(l => (
-                    <Link key={l} href="#" onClick={() => setMobileNavOpen(false)} className="block text-white text-base font-semibold hover:text-[#00fe4e] py-1">{l}</Link>
-                  ))}
+                <div className="lg:hidden mt-3 rounded-2xl border border-[#00fe4e]/30 bg-black/95 backdrop-blur p-5 space-y-1">
+                  <Link href="#" onClick={() => setMobileNavOpen(false)} className="block text-white text-base font-semibold hover:text-[#00fe4e] py-2">Home</Link>
+                  <Link href="#" onClick={() => setMobileNavOpen(false)} className="block text-white text-base font-semibold hover:text-[#00fe4e] py-2">About</Link>
+
+                  <button
+                    onClick={() => setMobileServicesOpen(v => !v)}
+                    className="flex w-full items-center justify-between py-2 text-base font-semibold text-white hover:text-[#00fe4e]"
+                    aria-expanded={mobileServicesOpen}
+                  >
+                    <span>Services</span>
+                    <svg
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      className="h-4 w-4 transition-transform duration-300"
+                      style={{ transform: mobileServicesOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+                    >
+                      <path d="M5 8L10 13L15 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </button>
+
+                  <div
+                    className="overflow-hidden transition-all duration-300 ease-out"
+                    style={{
+                      maxHeight: mobileServicesOpen ? "1000px" : "0px",
+                      opacity: mobileServicesOpen ? 1 : 0,
+                    }}
+                  >
+                    <div className="pl-3 pt-1 pb-2 space-y-3">
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#00fe4e] mb-1.5">Marketing &amp; Branding</div>
+                        <div className="space-y-1">
+                          {["International Events", "Domestic Events", "Webinars", "Meetups", "Tech Export Marketing", "Tech Connect"].map(item => (
+                            <Link key={item} href="#" onClick={() => { setMobileNavOpen(false); setMobileServicesOpen(false); }} className="block py-1 text-[13px] text-white/80 hover:text-[#00fe4e]">{item}</Link>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#00fe4e] mb-1.5">HR Skills &amp; Capacity</div>
+                        <div className="space-y-1">
+                          {["SLED Program", "GAIN Network", "ICT Training Roadmap", "ILMS", "PM's Skills Initiative", "INSPIRE Program"].map(item => (
+                            <Link key={item} href="#" onClick={() => { setMobileNavOpen(false); setMobileServicesOpen(false); }} className="block py-1 text-[13px] text-white/80 hover:text-[#00fe4e]">{item}</Link>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#00fe4e] mb-1.5">Infrastructure</div>
+                        <div className="space-y-1">
+                          {["STPs", "IT Parks", "NCSP Centres"].map(item => (
+                            <Link key={item} href="#" onClick={() => { setMobileNavOpen(false); setMobileServicesOpen(false); }} className="block py-1 text-[13px] text-white/80 hover:text-[#00fe4e]">{item}</Link>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Link href="#" onClick={() => setMobileNavOpen(false)} className="block text-white text-base font-semibold hover:text-[#00fe4e] py-2">Contact</Link>
+
                   <div className="pt-3 mt-3 border-t border-white/10 space-y-2 text-white/80 text-sm">
                     <div className="flex items-center gap-2"><Mail className="h-4 w-4 text-[#00fe4e]" />+92 300 2855800</div>
                     <div className="flex items-center gap-2"><Phone className="h-4 w-4 text-[#00fe4e]" />+92 300 2855800</div>
@@ -2449,6 +2395,10 @@ export default function Page() {
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                   <button className="hero-btn hero-btn-primary h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium">Our Services</button>
                   <button className="hero-btn hero-btn-secondary h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium">Get Started</button>
+                </div>
+                <div className="hero-robot-mobile lg:hidden">
+                  <div className="hero-robot-glow" />
+                  <img src="/robot.png" alt="Robot" className="hero-robot-img robot-float" />
                 </div>
               </div>
             </div>
@@ -2602,7 +2552,7 @@ export default function Page() {
           </section>
 
           <section className="mt-10 lg:mt-14 pb-12 lg:pb-20">
-          <h3 data-reveal="up-sm" className="font-light leading-none tracking-[-0.03em] text-black" style={{ fontSize: 'clamp(28px, 4vw, 44px)' }}>Why Choose Us</h3>
+            <h3 data-reveal="up-sm" className="font-light leading-none tracking-[-0.03em] text-black" style={{ fontSize: 'clamp(28px, 4vw, 44px)' }}>Why Choose Us</h3>
             <div data-reveal="fade" data-reveal-delay="100" className="marquee-shell mt-3 lg:mt-5">
               <div className="marquee-track">
                 <span className="marquee-text">Let The Numbers Speak!</span>
