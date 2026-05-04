@@ -7,6 +7,9 @@ import {
   Lightbulb, Code2, FileText, GraduationCap,
   Database, Image as ImageIcon, MapPin,
   CheckCircle2, BookOpen, Smile, Globe,
+  Users, Briefcase, Award, BarChart3, PieChart, LineChart,
+  ClipboardList, Target, MessageSquare, TrendingUp,
+  Play, Share2,
 } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -292,35 +295,16 @@ function ProjectOrbitSection() {
           z-index: -1;
         }
 
-        .parwaaz-list {
-          list-style: decimal;
-          list-style-position: outside;
-          padding-left: 1.5em;
-          counter-reset: parwaaz-counter;
-        }
-        .parwaaz-list li {
-          padding-left: 0.5em;
-        }
-        .parwaaz-list li::marker {
-          color: #050889;
-          font-weight: 600;
-        }
-        @media (min-width: 1024px) {
-          .parwaaz-list {
-            padding-left: 1.8em;
-          }
-        }
-
         .po-vector {
           position: absolute;
-          right: -250px;
-          bottom: -100px;
-          width: 600px;
-          max-width: 60vw;
-          max-height: 1100px;
+          right: -100px;
+          bottom: -230px;
+          width: 450px;
+          max-width: 30vw;
+          max-height: 900px;
           height: auto;
           object-fit: contain;
-          z-index: 2;
+          z-index: 5;
           pointer-events: none;
           opacity: 0.85;
         }
@@ -433,13 +417,13 @@ function ProjectOrbitSection() {
 
         @media (max-width: 1280px) {
           .po-canvas { top: 50%; left: -300px; width: 700px; height: 700px; transform: translateY(-30%); }
-          .po-vector { right: -250px; bottom: -100px; width: 600px; max-width: 60vw; max-height: 1100px; opacity: 0.85; }
+          .po-vector { right: -100px; bottom: -230px; width: 450px; max-width: 30vw; max-height: 900px; opacity: 0.85; }
         }
 
         @media (max-width: 1024px) {
           .po-section { padding: 40px 0 80px; min-height: 90vh; }
           .po-canvas { top: 50%; left: -300px; width: 700px; height: 700px; transform: translateY(-30%); }
-          .po-vector { right: -250px; bottom: -100px; width: 600px; max-width: 60vw; max-height: 1100px; opacity: 0.85; }
+          .po-vector { right: -100px; bottom: -230px; width: 450px; max-width: 30vw; max-height: 900px; opacity: 0.85; }
           .po-content { padding: 0 24px 0 0; min-height: 55vh; }
           .po-slides { margin-right: 24px; max-width: 480px; height: 280px; }
         }
@@ -541,6 +525,80 @@ const teamMembers = [
   { name: "SALMAN FAIZ", role: "Digital Marketing Consultant", img: "/team-salman.png" },
 ];
 
+const successStories = [
+  {
+    city: "Lahore",
+    img: "/minar.png",
+    category: "DIGITAL LEARNING",
+    quote: "The Coursera partnership opened doors I never thought possible. From a small startup to leading a fintech team — Parwaaz changed everything.",
+    name: "Aisha Tariq",
+    role: "Coursera Learning Program · Senior Product Manager",
+    url: "https://www.mygreatlearning.com/alumni",
+  },
+  {
+    city: "Islamabad",
+    img: "/faisal-mosque.png",
+    category: "WORKFORCE DEVELOPMENT",
+    quote: "Parwaaz's SLED program gave me skills the global market actually pays for. I now lead an international remote engineering team.",
+    name: "Hamza Raza",
+    role: "SLED Program Graduate · Engineering Lead",
+    url: "https://www.mygreatlearning.com/alumni",
+  },
+  {
+    city: "Karachi",
+    img: "/mazar.png",
+    category: "INTERNATIONAL RECRUITMENT",
+    quote: "Through Parwaaz I found a role in Dubai within 6 weeks. The mentorship, the visa support, the placement — it was end-to-end excellence.",
+    name: "Sara Mohammed",
+    role: "International Placement · Senior Data Analyst",
+    url: "https://www.mygreatlearning.com/alumni",
+  },
+  {
+    city: "Faisalabad",
+    img: "/clock-tower.png",
+    category: "TECH BOOTCAMP",
+    quote: "I came in as a textile engineer. I left as a full-stack developer with three job offers. That's the Parwaaz difference.",
+    name: "Bilal Ahmad",
+    role: "Tech Bootcamp Graduate · Full-Stack Developer",
+    url: "https://www.mygreatlearning.com/alumni",
+  },
+];
+
+const servicesData: Record<string, { eyebrow: string; title: string; body: string; icon: any; btn: string }[]> = {
+  Training: [
+    { eyebrow: "Coursera &", title: "Digital Learning", body: "World-class skills through global partnerships like Coursera. Tailored programs for modern professionals.", icon: FileText, btn: "Learn More" },
+    { eyebrow: "International Recruitment", title: "& Payroll", body: "Connecting top Pakistani talent with global opportunities through end-to-end recruitment and manpower solutions.", icon: Database, btn: "Learn More" },
+    { eyebrow: "Payroll, Contract & Visa Management", title: "Services", body: "Streamlined payroll, contract administration and visa processing for cross-border teams.", icon: Code2, btn: "Learn More" },
+    { eyebrow: "Leadership &", title: "Executive Coaching", body: "One-on-one coaching for managers and executives. Build the skills to lead high-performing teams with confidence.", icon: GraduationCap, btn: "Learn More" },
+    { eyebrow: "Technical &", title: "Bootcamp Programs", body: "Intensive hands-on bootcamps in software, data and AI. Build production-ready skills in weeks, not years.", icon: Lightbulb, btn: "Learn More" },
+    { eyebrow: "Certified &", title: "Compliance Training", body: "ISO, HSE and industry-certified compliance training that keeps your workforce safe and your business audit-ready.", icon: BookOpen, btn: "Learn More" },
+  ],
+  "HR services": [
+    { eyebrow: "Talent Acquisition &", title: "Recruitment", body: "End-to-end recruitment from sourcing to onboarding. Build high-performing teams aligned with your goals.", icon: Users, btn: "Get Started" },
+    { eyebrow: "Performance &", title: "Employee Engagement", body: "Boost productivity with engagement programs, performance reviews and culture-building that drives retention.", icon: Award, btn: "Get Started" },
+    { eyebrow: "Compensation &", title: "Benefits Strategy", body: "Design competitive packages and benefits programs to attract and retain top talent in your industry.", icon: Briefcase, btn: "Get Started" },
+    { eyebrow: "HR Policy &", title: "Compliance Audit", body: "Review HR policies, contracts and procedures for legal compliance. Stay aligned with labor laws and best practices.", icon: ClipboardList, btn: "Get Started" },
+    { eyebrow: "Learning &", title: "Development Programs", body: "Custom L&D roadmaps tied to business goals. Upskill your people and build internal pipelines for key roles.", icon: GraduationCap, btn: "Get Started" },
+    { eyebrow: "HR Tech &", title: "HRIS Implementation", body: "Modernize HR with the right HRIS, ATS and payroll tools. We handle selection, setup and team training.", icon: Database, btn: "Get Started" },
+  ],
+  Reports: [
+    { eyebrow: "Market Intelligence &", title: "Industry Reports", body: "Detailed market analysis covering trends, competitive landscape and growth opportunities backed by data.", icon: BarChart3, btn: "Download Sample" },
+    { eyebrow: "Financial Performance", title: "Analytics", body: "Comprehensive reports with revenue analysis, profitability insights and forecasting tailored to your KPIs.", icon: LineChart, btn: "Download Sample" },
+    { eyebrow: "Workforce &", title: "HR Analytics", body: "Workforce trends, productivity metrics and engagement scores via detailed analytics dashboards.", icon: PieChart, btn: "Download Sample" },
+    { eyebrow: "Competitor &", title: "Benchmark Reports", body: "Side-by-side comparisons with industry leaders. Spot gaps, replicate wins and sharpen your competitive edge.", icon: Target, btn: "Download Sample" },
+    { eyebrow: "Diversity &", title: "Inclusion Reports", body: "Track DEI metrics across hiring, pay and promotion. Quantify progress and identify where to focus next.", icon: CheckCircle2, btn: "Download Sample" },
+    { eyebrow: "Training Impact &", title: "ROI Reports", body: "Measure the business impact of every training program. Connect learning spend to performance outcomes.", icon: TrendingUp, btn: "Download Sample" },
+  ],
+  Surveys: [
+    { eyebrow: "Employee", title: "Satisfaction Surveys", body: "Measure morale, engagement and culture fit. Get actionable insights to improve workplace experience.", icon: MessageSquare, btn: "Run Survey" },
+    { eyebrow: "Customer Experience &", title: "NPS Surveys", body: "Track satisfaction with NPS, CSAT and feedback collection systems built for modern businesses.", icon: Target, btn: "Run Survey" },
+    { eyebrow: "Market Research &", title: "Consumer Insights", body: "Large-scale research surveys to validate ideas, understand consumer behavior and identify opportunities.", icon: ClipboardList, btn: "Run Survey" },
+    { eyebrow: "Pulse &", title: "Quick-Check Surveys", body: "Short, frequent surveys to take the team's pulse on morale, focus and blockers without survey fatigue.", icon: Smile, btn: "Run Survey" },
+    { eyebrow: "Exit &", title: "Offboarding Surveys", body: "Capture honest feedback from departing employees. Spot retention issues before they cost you more talent.", icon: Users, btn: "Run Survey" },
+    { eyebrow: "Brand &", title: "Reputation Tracking", body: "Monitor how your brand is perceived in the market. Track sentiment, awareness and advocacy over time.", icon: Globe, btn: "Run Survey" },
+  ],
+};
+
 export default function Page() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
@@ -551,6 +609,27 @@ export default function Page() {
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [testimonialDir, setTestimonialDir] = useState<'next' | 'prev'>('next');
   const [heroBgIndex, setHeroBgIndex] = useState(0);
+  const [activeServiceTab, setActiveServiceTab] = useState<keyof typeof servicesData>("Training");
+  const [serviceAnimKey, setServiceAnimKey] = useState(0);
+  const [servicePage, setServicePage] = useState(0); // 0 = cards 0-2, 1 = cards 3-5
+  const [activeStory, setActiveStory] = useState(2); // 0=Lahore, 1=Islamabad, 2=Karachi (default), 3=Faisalabad
+  const [storyAnimKey, setStoryAnimKey] = useState(0);
+
+  // Auto-rotate active story every 6s — pauses if user hovers the section
+  const [storyHoverPaused, setStoryHoverPaused] = useState(false);
+  useEffect(() => {
+    if (storyHoverPaused) return;
+    const interval = setInterval(() => {
+      setActiveStory(prev => (prev + 1) % 4);
+      setStoryAnimKey(k => k + 1);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [storyHoverPaused]);
+
+  // Reset to page 0 when switching tabs
+  useEffect(() => {
+    setServicePage(0);
+  }, [activeServiceTab]);
 
   const heroBackgrounds = ["/back-image.png", "/bg.png", "/bg2.png"];
 
@@ -1609,18 +1688,6 @@ export default function Page() {
           border-radius: 8px;
           isolation: isolate;
         }
-        @media (max-width: 850px) {
-          .parwaaz-row {
-            grid-template-columns: 1fr !important;
-            max-width: 515px !important;
-            gap: 24px !important;
-          }
-          .parwaaz-blue {
-            width: 100% !important;
-            max-width: 296px;
-            margin-inline: auto;
-          }
-        }
         @media (max-width: 768px) {
           .wef-card {
             flex-direction: column !important;
@@ -1640,13 +1707,6 @@ export default function Page() {
             font-size: 14px !important;
             line-height: 1.5 !important;
           }
-          .parwaaz-row {
-            max-width: 350px !important;
-          }
-        }
-        .parwaaz-list-item::marker {
-          color: #050889;
-          font-weight: 600;
         }
         /* Static gradient border (default, idle state) */
         .wef-card::before {
@@ -1754,8 +1814,6 @@ export default function Page() {
           filter: grayscale(0);
         }
 
-        @keyframes pinPop { 0%, 18% { opacity: 0; transform: translateY(18px) scale(.82); } 38%, 100% { opacity: 1; transform: none; } }
-
         .service-card { transition: transform 0.45s cubic-bezier(0.2,0.9,0.3,1), box-shadow 0.45s cubic-bezier(0.2,0.9,0.3,1), border-color 0.45s cubic-bezier(0.2,0.9,0.3,1); cursor: pointer; will-change: transform; }
         .service-card::before { content: ''; position: absolute; inset: 0; border-radius: 10px; background: radial-gradient(circle at top right, rgba(0,254,78,0.06), transparent 60%); opacity: 0; transition: opacity 0.45s ease; pointer-events: none; }
         .service-card:hover::before { opacity: 0; }
@@ -1779,8 +1837,75 @@ export default function Page() {
           border-color: #00fe4e;
           color: #000;
           transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(0, 254, 78, 0.5), 0 0 0 6px rgba(0, 254, 78, 0.12);
         }
+        .service-tab-btn.is-active {
+          background: #00fe4e;
+          border-color: #00fe4e;
+          color: #000;
+        }
+
+        @keyframes serviceCardSlideIn {
+          from { opacity: 0; transform: translateX(60px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+        .service-card-anim {
+          opacity: 0;
+          animation: serviceCardSlideIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .services-nav-wrap {
+          display: flex;
+          justify-content: center;
+        }
+        .services-nav-btn {
+          width: 84px;
+          height: 60px;
+          background: #ffffff;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+          padding: 0 6px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+          border: 1px solid rgba(0,0,0,0.04);
+        }
+        .services-nav-arrow {
+          width: 32px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          color: #8e8e8e;
+          border-radius: 8px;
+          transition: color 0.25s ease, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.25s ease, filter 0.25s ease;
+        }
+        .services-nav-arrow svg {
+          width: 20px;
+          height: 20px;
+          transition: filter 0.25s ease;
+        }
+        .services-nav-arrow-prev:hover {
+          color: #00fe4e;
+          transform: translateX(-2px);
+          background: rgba(0,254,78,0.08);
+        }
+        .services-nav-arrow-prev:hover svg {
+          filter: drop-shadow(0 0 4px rgba(0,254,78,0.4));
+        }
+        .services-nav-arrow-next:hover {
+          color: #00fe4e;
+          transform: translateX(2px);
+          background: rgba(0,254,78,0.08);
+        }
+        .services-nav-arrow-next:hover svg {
+          filter: drop-shadow(0 0 4px rgba(0,254,78,0.4));
+        }
+        .services-nav-arrow:active { transform: scale(0.92); }
 
         .service-card-cycle {
           background: #ffffff;
@@ -1857,8 +1982,6 @@ export default function Page() {
           }
         }
 
-        @keyframes pinPulse { 0%, 100% { box-shadow: 0 0 0 2px #00fe4e, 0 4px 10px rgba(0,0,0,0.12), 0 0 0 0 rgba(0,254,78,0.5); } 50% { box-shadow: 0 0 0 2px #00fe4e, 0 4px 10px rgba(0,0,0,0.12), 0 0 0 12px rgba(0,254,78,0); } }
-
         @keyframes marqueeScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .marquee-shell { position: relative; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); overflow: hidden; padding: 6px 0; }
         .marquee-track { display: flex; width: max-content; gap: 60px; animation: marqueeScroll 28s linear infinite; will-change: transform; }
@@ -1890,38 +2013,515 @@ export default function Page() {
         }
         @keyframes gradientShift { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 
-        .trusted-heading {
-          background: linear-gradient(
-            90deg,
-            #00FE4E 0%,
-            #000572 100%
-          );
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          color: transparent;
+        .parwaaz-section {
+          padding: 80px 40px;
         }
         @media (max-width: 768px) {
-          .trusted-heading {
-            white-space: normal !important;
+          .parwaaz-section {
+            padding: 56px 20px;
+          }
+          .parwaaz-blue-card {
+            padding: 24px 22px 28px 22px !important;
+          }
+          .parwaaz-blue-card p {
+            font-size: 16px !important;
+            line-height: 1.6 !important;
+          }
+          .parwaaz-blue-card img {
+            width: 110px !important;
+            margin-bottom: 16px !important;
+          }
+          .parwaaz-numbered-list {
+            font-size: 16px !important;
+            line-height: 1.6 !important;
           }
         }
-        .map-stage { position: relative; width: 100%; max-width: 1080px; height: clamp(220px, 38vw, 340px); margin: 24px auto 0; overflow: hidden; background: #fff; }
-        .map-stage::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(0,0,0,.13) 2px, transparent 2.6px); background-size: 13px 13px; mask-image: radial-gradient(ellipse at center, black 45%, transparent 76%); opacity: .48; pointer-events: none; }
-        .map-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: .82; filter: grayscale(1) contrast(.9) brightness(1.12); }
-        .map-pin { position: absolute; z-index: 5; min-width: clamp(120px, 14vw, 160px); display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #ffffff; border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04); animation: pinPop .9s cubic-bezier(.2,.9,.25,1) both; transition: transform .28s, box-shadow .28s; }
-        .map-pin:hover { transform: translateY(-7px) scale(1.035); box-shadow: 0 14px 32px rgba(0,254,78,0.18), 0 0 0 1px rgba(0,254,78,0.3); }
-        .map-pin::after { content: ''; position: absolute; left: 22px; bottom: -10px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 12px solid #ffffff; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.06)); }
-        .map-pin-icon { position: relative; width: clamp(34px, 4.2vw, 42px); height: clamp(34px, 4.2vw, 42px); flex: 0 0 auto; border-radius: 50%; background: #00fe4e; box-shadow: 0 0 0 2px rgba(0,254,78,0.25), 0 2px 6px rgba(0,0,0,0.12); display: flex; align-items: center; justify-content: center; overflow: hidden; animation: pinPulse 2.4s ease-in-out infinite; }
-        .map-pin-icon img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); }
-        .map-pin:hover .map-pin-icon img { transform: scale(1.12); }
-        .map-pin-text { display: flex; flex-direction: column; min-width: 0; }
-        .map-pin-title { font-size: clamp(13px, 1.5vw, 15px); line-height: 1.1; color: #111; font-weight: 600; }
-        .map-pin-link { display: inline-block; margin-top: 3px; font-size: 10px; color: #050889; text-decoration: underline; font-weight: 600; }
-        .pin-lhr { left: 8%; top: 10%; animation-delay: .05s; }
-        .pin-isl { left: 40%; top: 38%; animation-delay: .22s; }
-        .pin-khi { right: 14%; top: 22%; animation-delay: .38s; }
-        .pin-fsd { left: 22%; bottom: 12%; animation-delay: .56s; }
+        @media (max-width: 480px) {
+          .parwaaz-section {
+            padding: 44px 16px;
+          }
+          .parwaaz-blue-card {
+            padding: 22px 18px 24px 18px !important;
+          }
+          .parwaaz-blue-card p {
+            font-size: 15px !important;
+          }
+        }
+
+        .parwaaz-numbered-list li::marker {
+          color: #0a1970;
+          font-weight: 700;
+        }
+
+        /* === SUCCESS STORIES MAP SECTION === */
+        .success-stories-section {
+          position: relative;
+          padding: 80px 0 60px;
+          background: #ffffff;
+          overflow: hidden;
+        }
+        @media (max-width: 768px) {
+          .success-stories-section { padding: 56px 0 40px; }
+        }
+
+        /* Map stage with floating cards */
+        .success-map-stage {
+          position: relative;
+          width: 100%;
+          max-width: 1080px;
+          height: clamp(380px, 44vw, 540px);
+          margin: 36px auto 0;
+          overflow: visible;
+        }
+        @media (max-width: 768px) {
+          .success-map-stage {
+            height: 260px;
+            margin-top: 20px;
+          }
+          /* Mobile: show cards on map but smaller and tighter */
+          .success-map-stage .ssm-card {
+            padding: 5px 8px 5px 5px;
+            gap: 6px;
+            border-radius: 7px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.04);
+            transform: scale(1);
+          }
+          .success-map-stage .ssm-card::after {
+            left: 14px;
+            bottom: -7px;
+            border-left-width: 6px;
+            border-right-width: 6px;
+            border-top-width: 8px;
+          }
+          .success-map-stage .ssm-card-img-wrap {
+            width: 24px;
+            height: 24px;
+            padding: 1.5px;
+          }
+          .success-map-stage .ssm-card-city {
+            font-size: 10px;
+            line-height: 1.05;
+          }
+          .success-map-stage .ssm-card-watch {
+            font-size: 7px;
+            gap: 2px;
+            letter-spacing: 0.06em;
+          }
+          .success-map-stage .ssm-card-watch svg {
+            width: 7px;
+            height: 7px;
+          }
+          /* Tighter mobile positions — cluster cards within the smaller map */
+          .success-map-stage .ssm-pos-lhr { left: 8%; top: 16%; }
+          .success-map-stage .ssm-pos-isl { left: 38%; top: 4%; }
+          .success-map-stage .ssm-pos-khi { left: 62%; top: 22%; }
+          .success-map-stage .ssm-pos-fsd { left: 22%; top: 56%; }
+          /* Active/hover scaling reduced on mobile to prevent overflow */
+          .success-map-stage .ssm-card-active {
+            animation: ssmCardPopInMobile 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          }
+          .success-map-stage .ssm-card:hover {
+            transform: translateY(-3px) scale(1.03);
+          }
+        }
+        @keyframes ssmCardPopInMobile {
+          0% { transform: scale(1); }
+          40% { transform: scale(1.14); }
+          70% { transform: scale(1.02); }
+          100% { transform: scale(1.06); }
+        }
+        .success-map-img {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          opacity: 0.9;
+          filter: grayscale(1) contrast(1.05) brightness(0.96);
+          pointer-events: none;
+        }
+        .success-map-dots {
+          position: absolute;
+          inset: 0;
+          background-image: radial-gradient(circle, rgba(0,0,0,0.18) 1.4px, transparent 2px);
+          background-size: 12px 12px;
+          mask-image: radial-gradient(ellipse at center, black 50%, transparent 80%);
+          opacity: 0.5;
+          pointer-events: none;
+        }
+
+        /* Floating card */
+        @keyframes ssmCardFloat {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-9px); }
+        }
+        @keyframes ssmCardPopIn {
+          0% { transform: scale(1); }
+          40% { transform: scale(1.18); }
+          70% { transform: scale(1.04); }
+          100% { transform: scale(1.08); }
+        }
+        .ssm-card {
+          position: absolute;
+          z-index: 5;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 10px 16px 10px 10px;
+          background: #ffffff;
+          border-radius: 10px;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.04);
+          cursor: pointer;
+          border: none;
+          transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s, background 0.35s;
+          animation: ssmCardFloat 5s ease-in-out infinite;
+          will-change: transform;
+        }
+        .ssm-card::after {
+          content: '';
+          position: absolute;
+          left: 26px;
+          bottom: -10px;
+          width: 0;
+          height: 0;
+          border-left: 9px solid transparent;
+          border-right: 9px solid transparent;
+          border-top: 11px solid #ffffff;
+          filter: drop-shadow(0 4px 6px rgba(0,0,0,0.06));
+          transition: border-top-color 0.35s, filter 0.35s;
+        }
+        .ssm-card:hover {
+          transform: translateY(-10px) scale(1.04);
+          box-shadow: 0 18px 36px rgba(0, 254, 78, 0.18), 0 0 0 1px rgba(0, 254, 78, 0.4);
+          animation-play-state: paused;
+        }
+        .ssm-card:hover .ssm-card-img-wrap {
+          box-shadow: 0 0 0 3px rgba(0, 254, 78, 0.5), 0 4px 12px rgba(0, 254, 78, 0.35);
+        }
+
+        /* Active card — pop in with bounce, then settle */
+        .ssm-card-active {
+          z-index: 10;
+          box-shadow: 0 14px 36px rgba(0, 254, 78, 0.22), 0 0 0 2px rgba(0, 254, 78, 0.5);
+          animation: ssmCardPopIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        .ssm-card-active::after {
+          filter: drop-shadow(0 4px 8px rgba(0, 254, 78, 0.3));
+        }
+        .ssm-card-active .ssm-card-img-wrap {
+          box-shadow: 0 0 0 3px #00FE4E, 0 4px 14px rgba(0, 254, 78, 0.45);
+        }
+        .ssm-card-active:hover {
+          transform: scale(1.12) translateY(-6px);
+        }
+
+        .ssm-card-img-wrap {
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+          overflow: hidden;
+          flex-shrink: 0;
+          background: linear-gradient(135deg, #00FE4E 0%, #0adf54 100%);
+          padding: 2px;
+          transition: box-shadow 0.35s;
+        }
+        .ssm-card-img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          object-fit: cover;
+          display: block;
+          background: #fff;
+        }
+        .ssm-card-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+        .ssm-card-city {
+          font-family: var(--font-poppins), sans-serif;
+          font-size: 14px;
+          font-weight: 700;
+          color: #050505;
+          line-height: 1.1;
+          letter-spacing: -0.01em;
+        }
+        .ssm-card-watch {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-family: var(--font-poppins), sans-serif;
+          font-size: 10px;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          color: #000572;
+          text-decoration: underline;
+          text-underline-offset: 2px;
+        }
+        .ssm-card-watch svg { color: #00FE4E; }
+
+        /* Card map positions — desktop only */
+        .ssm-pos-lhr { left: 28%; top: 18%; }
+        .ssm-pos-isl { left: 46%; top: 8%; }
+        .ssm-pos-khi { left: 60%; top: 26%; }
+        .ssm-pos-fsd { left: 36%; top: 50%; }
+
+        /* Mobile horizontal scroll cards */
+        .ssm-mobile-scroll {
+          display: none;
+          gap: 12px;
+          overflow-x: auto;
+          padding: 24px 4px 8px;
+          margin: 12px -16px 0;
+          padding-left: 16px;
+          padding-right: 16px;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+        .ssm-mobile-scroll::-webkit-scrollbar { display: none; }
+        @media (max-width: 768px) {
+          .ssm-mobile-scroll { display: flex; }
+        }
+        .ssm-card-mobile {
+          flex: 0 0 auto;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 10px 14px 10px 10px;
+          background: #ffffff;
+          border-radius: 10px;
+          box-shadow: 0 6px 18px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+          cursor: pointer;
+          border: none;
+          transition: transform 0.3s, box-shadow 0.3s;
+          min-width: 160px;
+        }
+        .ssm-card-mobile.ssm-card-active {
+          box-shadow: 0 8px 22px rgba(0, 254, 78, 0.22), 0 0 0 2px rgba(0, 254, 78, 0.5);
+        }
+        .ssm-card-mobile.ssm-card-active .ssm-card-img-wrap {
+          box-shadow: 0 0 0 3px #00FE4E, 0 4px 14px rgba(0, 254, 78, 0.45);
+        }
+
+        /* Black testimonial panel */
+        @keyframes ssmPanelFadeIn {
+          from { opacity: 0; transform: translateY(14px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes ssmThumbScale {
+          from { transform: scale(0.96); }
+          to { transform: scale(1); }
+        }
+        .ssm-panel {
+          width: 100%;
+          background: #050505;
+          border-radius: 24px;
+          overflow: hidden;
+          box-shadow: 0 30px 70px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.05);
+          position: relative;
+        }
+        .ssm-panel::before {
+          content: '';
+          position: absolute;
+          top: -40%;
+          right: -10%;
+          width: 50%;
+          height: 180%;
+          background: radial-gradient(ellipse, rgba(0, 254, 78, 0.10) 0%, transparent 60%);
+          pointer-events: none;
+        }
+        .ssm-panel-inner {
+          position: relative;
+          z-index: 1;
+          display: grid;
+          grid-template-columns: 1.05fr 1fr;
+          gap: 0;
+          align-items: stretch;
+          animation: ssmPanelFadeIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        @media (max-width: 900px) {
+          .ssm-panel-inner { grid-template-columns: 1fr; }
+        }
+        .ssm-panel-video {
+          position: relative;
+          padding: 28px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 360px;
+        }
+        @media (max-width: 900px) {
+          .ssm-panel-video { padding: 20px 20px 0; min-height: 240px; }
+        }
+        .ssm-panel-video-link {
+          position: relative;
+          display: block;
+          width: 100%;
+          height: 100%;
+          min-height: 320px;
+          border-radius: 16px;
+          overflow: hidden;
+          cursor: pointer;
+          animation: ssmThumbScale 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+          transition: transform 0.4s;
+        }
+        @media (max-width: 900px) {
+          .ssm-panel-video-link { min-height: 220px; }
+        }
+        .ssm-panel-video-link:hover { transform: scale(1.015); }
+        .ssm-panel-thumb {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          filter: brightness(0.85) saturate(1.1);
+        }
+        .ssm-panel-thumb-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, rgba(0,5,114,0.35) 0%, rgba(0,0,0,0.15) 50%, rgba(0,254,78,0.20) 100%);
+        }
+        .ssm-panel-play {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          width: 76px;
+          height: 76px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #00FE4E 0%, #0adf54 100%);
+          color: #050505;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 12px 32px rgba(0, 254, 78, 0.45), 0 0 0 8px rgba(0, 254, 78, 0.18);
+          transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s;
+        }
+        .ssm-panel-play svg { margin-left: 4px; }
+        .ssm-panel-video-link:hover .ssm-panel-play {
+          transform: translate(-50%, -50%) scale(1.08);
+          box-shadow: 0 16px 40px rgba(0, 254, 78, 0.6), 0 0 0 12px rgba(0, 254, 78, 0.22);
+        }
+
+        .ssm-panel-content {
+          padding: 44px 48px 44px 32px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          color: #ffffff;
+        }
+        @media (max-width: 900px) {
+          .ssm-panel-content { padding: 28px 24px 32px; }
+        }
+        .ssm-panel-tag {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          align-self: flex-start;
+          background: #FFD400;
+          color: #050505;
+          font-family: var(--font-poppins), sans-serif;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          padding: 6px 12px;
+          border-radius: 4px;
+          text-transform: uppercase;
+        }
+        .ssm-panel-tag-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #050505;
+          animation: ssmCardFloat 1.2s ease-in-out infinite;
+        }
+        .ssm-panel-category {
+          margin-top: 18px;
+          font-family: var(--font-poppins), sans-serif;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: 0.16em;
+          color: #00FE4E;
+          text-transform: uppercase;
+        }
+        .ssm-panel-quote {
+          margin: 14px 0 22px;
+          font-family: var(--font-poppins), sans-serif;
+          font-size: clamp(20px, 2.2vw, 26px);
+          font-weight: 500;
+          line-height: 1.4;
+          letter-spacing: -0.015em;
+          color: #ffffff;
+          quotes: none;
+        }
+        .ssm-panel-person {
+          margin-top: auto;
+          padding-top: 18px;
+          border-top: 1px solid rgba(255,255,255,0.12);
+        }
+        .ssm-panel-name {
+          font-family: var(--font-poppins), sans-serif;
+          font-size: 16px;
+          font-weight: 700;
+          color: #ffffff;
+          letter-spacing: -0.01em;
+        }
+        .ssm-panel-role {
+          margin-top: 4px;
+          font-family: var(--font-poppins), sans-serif;
+          font-size: 12px;
+          font-weight: 400;
+          color: rgba(255,255,255,0.62);
+          letter-spacing: 0.02em;
+        }
+        .ssm-panel-share {
+          margin-top: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+        }
+        .ssm-panel-share-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 9px 16px;
+          border-radius: 999px;
+          background: rgba(255,255,255,0.08);
+          border: 1px solid rgba(255,255,255,0.14);
+          color: #ffffff;
+          font-family: var(--font-poppins), sans-serif;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: 0.04em;
+          text-decoration: none;
+          transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.3s;
+        }
+        .ssm-panel-share-btn:hover {
+          background: rgba(0,254,78,0.18);
+          border-color: rgba(0,254,78,0.5);
+          color: #00FE4E;
+          transform: translateY(-1px);
+        }
+        .ssm-panel-pagination {
+          display: flex;
+          gap: 6px;
+        }
+        .ssm-panel-dot {
+          width: 22px;
+          height: 4px;
+          border-radius: 2px;
+          background: rgba(255,255,255,0.18);
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          transition: background 0.3s, width 0.3s;
+        }
+        .ssm-panel-dot.is-active {
+          background: #00FE4E;
+          width: 32px;
+          box-shadow: 0 0 12px rgba(0,254,78,0.5);
+        }
+        .ssm-panel-dot:hover:not(.is-active) {
+          background: rgba(255,255,255,0.4);
+        }
 
         .testimonials-section { position: relative; padding: 88px 0 80px; background: #ffffff; }
         .testimonials-pill-avatar {
@@ -2291,11 +2891,6 @@ export default function Page() {
           ))}
           <div className="relative mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 pt-3 pb-[70px] sm:pb-[120px] lg:pb-[180px]">
 
-            <div className="hero-robot-wrap hidden lg:block">
-              <div className="hero-robot-glow" />
-              <img src="/robot.png" alt="Robot" className="hero-robot-img robot-float" />
-            </div>
-
             <div className="hidden lg:flex items-center justify-end gap-5 text-[12px] font-semibold text-white/90 mb-3">
               <div className="flex items-center gap-2"><Mail className="h-3.5 w-3.5 text-[#00fe4e]" /><span>+92 300 2855800</span></div>
               <span className="text-white/35">|</span>
@@ -2459,10 +3054,6 @@ export default function Page() {
                   <button className="hero-btn hero-btn-primary h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium">Our Services</button>
                   <button className="hero-btn hero-btn-secondary h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium">Get Started</button>
                 </div>
-                <div className="hero-robot-mobile lg:hidden">
-                  <div className="hero-robot-glow" />
-                  <img src="/robot.png" alt="Robot" className="hero-robot-img robot-float" />
-                </div>
               </div>
             </div>
           </div>
@@ -2537,45 +3128,94 @@ export default function Page() {
             </p>
           </div>
 
-          <div className="parwaaz-row mx-auto mt-[64px] grid w-full max-w-[970px] grid-cols-[515px_296px] items-start gap-[18px]">
-            <div>
-              <div data-reveal="left" data-reveal-mode="cycle" className="h-[138px] w-full rounded-[8px] bg-[#d9d9d9] px-[42px] py-[26px]">
-                <div className="flex h-full items-start justify-between gap-6">
-                  <div>
-                    <h3 className="text-[42px] font-extrabold leading-[0.95] tracking-[-0.045em] text-[#050889]">
-                      Par.waaz
-                    </h3>
-                    <div className="mt-[10px] text-[18px] font-medium leading-none text-black">
-                      flight or flying
-                    </div>
-                    <div className="mt-[10px] text-[18px] font-medium leading-none text-black">
-                      (پرواز)
-                    </div>
-                  </div>
-                  <img
-                    src="/iran-flag.png"
-                    alt="flag"
-                    className="mt-[2px] h-[30px] w-[48px] rounded-[5px] object-cover"
-                  />
+          <section className="parwaaz-section w-full bg-white">
+            <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 items-start gap-y-[34px] lg:grid-cols-[544px_583px] lg:gap-x-[64px]">
+
+              <div>
+                <div data-reveal="left" data-reveal-mode="cycle" className="relative w-full" style={{ width: '100%', maxWidth: '544px', height: '120px', padding: '28px 32px', borderRadius: '16px', background: '#d9d9d9' }}>
+                  <h2 style={{ fontSize: '42px', fontWeight: 800, color: '#0a1970', lineHeight: 1, letterSpacing: '-0.025em', margin: 0 }}>
+                    Par.waaz
+                  </h2>
+
+                  <p style={{ fontSize: '18px', color: '#000', marginTop: '4px', lineHeight: 1.2, fontWeight: 500 }}>
+                    flight or flying
+                  </p>
+
+                  <p
+                    dir="rtl"
+                    style={{
+                      position: 'absolute',
+                      right: '32px',
+                      bottom: '20px',
+                      fontSize: '18px',
+                      color: '#000',
+                      lineHeight: 1.2,
+                      margin: 0,
+                    }}
+                  >
+                    (پرواز)
+                  </p>
                 </div>
-              </div>
-              <div className="pt-[18px] pl-[34px] pr-[10px]">
-                <ol className="list-decimal space-y-[24px] text-[16px] font-light leading-[1.62] tracking-[-0.01em] text-[#222]">
-                  <li data-mwg-reveal="paragraph" className="parwaaz-list-item">
+
+                <ol
+                  className="parwaaz-numbered-list"
+                  style={{
+                    marginTop: '32px',
+                    maxWidth: '500px',
+                    fontFamily: 'var(--font-montserrat), Montserrat, sans-serif',
+                    fontSize: '20px',
+                    fontWeight: 400,
+                    lineHeight: 1.7,
+                    letterSpacing: '0',
+                    color: '#000000',
+                    listStyle: 'decimal',
+                    listStylePosition: 'outside',
+                    paddingLeft: '28px',
+                  }}
+                >
+                  <li data-reveal="up" data-reveal-mode="cycle" style={{ paddingLeft: '8px' }}>
                     Parwaaz (پرواز) is a Persian word meaning flight — not just the physical act of flying, but the rise of spirit, the leap of ambition and uninterrupted flight.
-                  </li>
-                  <li data-mwg-reveal="paragraph" className="parwaaz-list-item">
-                    We chose this name because it reflects exactly what we do. AI and advanced technology are the defining forces of our era — and learning them is no longer optional, it is the difference between being left behind and leading the way.
                   </li>
                 </ol>
               </div>
+
+              <div
+                data-reveal="right"
+                data-reveal-mode="cycle"
+                data-reveal-delay="120"
+                className="parwaaz-blue-card"
+                style={{
+                  width: '100%',
+                  maxWidth: '393px',
+                  height: '400px',
+                  padding: '32px 32px 36px 32px',
+                  borderRadius: '20px',
+                  background: '#000572',
+                  alignSelf: 'flex-start',
+                }}
+              >
+                <img
+                  src="/parwaaz-logo.png"
+                  alt="Parwaaz"
+                  style={{
+                    display: 'block',
+                    width: '160px',
+                    height: 'auto',
+                    marginTop: 0,
+                    marginLeft: 0,
+                    marginBottom: '20px',
+                  }}
+                />
+                <p style={{ fontSize: '20px', lineHeight: 1.7, color: '#ffffff', fontWeight: 400, margin: 0 }}>
+                  We chose this name because it reflects exactly what we do.
+                </p>
+                <p style={{ fontSize: '20px', lineHeight: 1.7, color: '#ffffff', fontWeight: 400, margin: '20px 0 0 0' }}>
+                  AI and advanced technology are the defining forces of our era - it is the difference between being left behind and leading the way.
+                </p>
+              </div>
+
             </div>
-            <div data-reveal="right" data-reveal-mode="cycle" data-reveal-delay="120" className="parwaaz-blue h-[296px] w-[296px] rounded-[8px] border border-[#00FE4E] bg-[#000572] px-[24px] py-[22px]">
-              <p className="m-0 text-[16px] font-light leading-[1.58] tracking-[-0.01em] text-white">
-                We chose this name because it reflects exactly what we do. AI and advanced technology are the defining forces of our era — and learning them is no longer optional, it is the difference between being left behind and leading the way.
-              </p>
-            </div>
-          </div>
+          </section>
         </section>
 
         <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
@@ -2594,32 +3234,66 @@ export default function Page() {
               Transforming businesses with AI-powered technology and intelligent automation
             </p>
             <div data-reveal="up-sm" data-reveal-delay="280" className="mt-6 lg:mt-7 grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
-              {["Training", "HR services", "Reports", "Surveys"].map((item) => (
-                <button key={item} className="service-tab-btn h-[48px] lg:h-[60px] rounded-[8px] text-[14px] lg:text-[16px] font-medium">
+              {(Object.keys(servicesData) as (keyof typeof servicesData)[]).map((item) => (
+                <button
+                  key={item}
+                  onClick={() => {
+                    setActiveServiceTab(item);
+                    setServiceAnimKey(k => k + 1);
+                  }}
+                  className={`service-tab-btn h-[48px] lg:h-[60px] rounded-[8px] text-[14px] lg:text-[16px] font-medium ${activeServiceTab === item ? 'is-active' : ''}`}
+                >
                   {item}
                 </button>
               ))}
             </div>
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-7">
-              <div data-reveal="zoom" data-reveal-delay="0" className="service-card service-card-cycle relative flex flex-col min-h-[340px] lg:min-h-[380px] rounded-[10px] border border-[#e5e5e5] p-8 lg:p-10">
-                <FileText className="service-card-icon absolute right-7 top-6 lg:right-10 lg:top-8 h-[64px] w-[64px] lg:h-[80px] lg:w-[80px] service-card-icon-cycle" strokeWidth={1.4} />
-                <div className="service-card-eyebrow mt-[70px] lg:mt-[90px] text-[14px]">Coursera &amp;</div>
-                <h3 className="service-card-title mt-2 font-medium leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(26px, 2.6vw, 32px)' }}>
-                  Digital Learning
-                </h3>
-                <p className="service-card-body mt-4 text-[14px] lg:text-[15px] leading-[1.7]">Empowering Pakistan&apos;s workforce with world-class skills through global partnerships like Coursera. Unlock new career opportunities with tailored programs designed for modern professionals.</p>
-              </div>
-              <div data-reveal="zoom" data-reveal-delay="140" className="service-card service-card-cycle relative flex flex-col min-h-[340px] lg:min-h-[380px] rounded-[10px] border border-[#e5e5e5] p-8 lg:p-10">
-                <Database className="service-card-icon absolute right-7 top-6 lg:right-10 lg:top-8 h-[64px] w-[64px] lg:h-[80px] lg:w-[80px] service-card-icon-cycle" strokeWidth={1.5} />
-                <div className="service-card-eyebrow mt-[70px] lg:mt-[90px] text-[14px]">International Recruitment</div>
-                <h3 className="service-card-title mt-2 font-medium leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(26px, 2.6vw, 32px)' }}>&amp; Payroll</h3>
-                <p className="service-card-body mt-4 text-[14px] lg:text-[15px] leading-[1.7]">Connecting top Pakistani talent with global opportunities. We provide comprehensive recruitment and manpower solutions to meet the needs of international partners.</p>
-              </div>
-              <div data-reveal="zoom" data-reveal-delay="280" className="service-card service-card-cycle relative flex flex-col min-h-[340px] lg:min-h-[380px] rounded-[10px] border border-[#e5e5e5] p-8 lg:p-10 md:col-span-2 lg:col-span-1">
-                <Code2 className="service-card-icon absolute right-7 top-6 lg:right-10 lg:top-8 h-[64px] w-[64px] lg:h-[80px] lg:w-[80px] service-card-icon-cycle" strokeWidth={1.4} />
-                <div className="service-card-eyebrow mt-[70px] lg:mt-[90px] text-[14px]">Payroll, Contract &amp; Visa Management</div>
-                <h3 className="service-card-title mt-2 font-medium leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(26px, 2.6vw, 32px)' }}>Services</h3>
-                <p className="service-card-body mt-4 text-[14px] lg:text-[15px] leading-[1.7]">Empowering Pakistan&apos;s workforce with world-class skills through global partnerships like Coursera. Unlock new career opportunities with tailored programs designed for modern professionals.</p>
+            <div key={`${activeServiceTab}-${servicePage}-${serviceAnimKey}`} className="services-cards-track mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-7 items-stretch">
+              {servicesData[activeServiceTab].slice(servicePage * 3, servicePage * 3 + 3).map((card, i) => {
+                const Icon = card.icon;
+                return (
+                  <div
+                    key={`${activeServiceTab}-${servicePage}-${i}`}
+                    className={`service-card service-card-cycle service-card-anim relative flex flex-col min-h-[440px] lg:aspect-square lg:min-h-0 rounded-[14px] border border-[#e5e5e5] p-7 lg:p-8 overflow-hidden ${i === 2 ? 'md:col-span-2 lg:col-span-1' : ''}`}
+                    style={{ animationDelay: `${i * 120}ms` }}
+                  >
+                    <Icon className="service-card-icon absolute right-7 top-6 lg:right-8 lg:top-8 h-[60px] w-[60px] lg:h-[80px] lg:w-[80px] service-card-icon-cycle" strokeWidth={1.4} />
+                    <div className="service-card-eyebrow mt-[60px] lg:mt-[90px] text-[13px] lg:text-[14px]">{card.eyebrow}</div>
+                    <h3 className="service-card-title mt-2 font-medium leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(24px, 2.4vw, 30px)' }}>
+                      {card.title}
+                    </h3>
+                    <p className="service-card-body mt-3 lg:mt-4 text-[13px] lg:text-[14px] leading-[1.55]">{card.body}</p>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="services-nav-wrap mt-7 lg:mt-9">
+              <div className="services-nav-btn">
+                <button
+                  onClick={() => {
+                    const totalPages = Math.ceil(servicesData[activeServiceTab].length / 3);
+                    setServicePage(p => (p - 1 + totalPages) % totalPages);
+                    setServiceAnimKey(k => k + 1);
+                  }}
+                  className="services-nav-arrow services-nav-arrow-prev"
+                  aria-label="Previous cards"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+                <button
+                  onClick={() => {
+                    const totalPages = Math.ceil(servicesData[activeServiceTab].length / 3);
+                    setServicePage(p => (p + 1) % totalPages);
+                    setServiceAnimKey(k => k + 1);
+                  }}
+                  className="services-nav-arrow services-nav-arrow-next"
+                  aria-label="Next cards"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
               </div>
             </div>
           </section>
@@ -2755,33 +3429,129 @@ export default function Page() {
           </div>
         </section>
 
-        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
-          <section className="relative bg-white py-10 lg:py-16 overflow-hidden">
-            <h2 data-reveal="up-sm" className="trusted-heading text-center uppercase" style={{ fontSize: 'clamp(28px, 4.4vw, 56px)', fontWeight: 400, lineHeight: '1', letterSpacing: '0px', fontFamily: 'Inter, sans-serif', whiteSpace: 'nowrap' }}>
-              Trusted By 14 Million Professional
+        {/* === Success Stories Map Section === */}
+        <section
+          className="success-stories-section"
+          onMouseEnter={() => setStoryHoverPaused(true)}
+          onMouseLeave={() => setStoryHoverPaused(false)}
+        >
+          <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
+            <div data-reveal="up-sm" className="text-[12px] font-semibold uppercase tracking-[0.08em] text-black text-center">
+              Success Stories
+            </div>
+            <h2 data-reveal="up-sm" data-reveal-delay="100" className="mt-3 text-center font-light leading-[1] tracking-[-0.02em] uppercase" style={{ fontSize: 'clamp(28px, 4.4vw, 56px)', fontFamily: 'Inter, sans-serif' }}>
+              <span style={{ background: 'linear-gradient(90deg, #00FE4E 0%, #000572 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                Hear From Our Alumni
+              </span>
             </h2>
-            <p data-reveal="up-sm" data-reveal-delay="120" className="mt-3 text-center text-[13px] lg:text-[17px] text-black">Watch stories of success from around the world</p>
-            <div data-reveal="zoom" data-reveal-delay="240" className="map-stage">
-              <img src="/world-map.png" alt="World map" className="world-map.png" />
-              {[
-                { city: "Lahore", cls: "pin-lhr", img: "/minar.png" },
-                { city: "Islamabad", cls: "pin-isl", img: "/faisal-mosque.png" },
-                { city: "Karachi", cls: "pin-khi", img: "/mazar.png" },
-                { city: "Faisalabad", cls: "pin-fsd", img: "/clock-tower.png" },
-              ].map(pin => (
-                <div key={pin.city} className={`map-pin ${pin.cls}`}>
-                  <div className="map-pin-icon">
-                    <img src={pin.img} alt={pin.city} />
+            <p data-reveal="up-sm" data-reveal-delay="200" className="mt-3 text-center text-[13px] lg:text-[15px] text-black/70">
+              Watch stories of success from across Pakistan
+            </p>
+
+            {/* Floating cards over dotted map */}
+            <div data-reveal="zoom" data-reveal-delay="300" className="success-map-stage">
+              <img src="/world-map.png" alt="" className="success-map-img" />
+              <div className="success-map-dots" aria-hidden="true" />
+
+              {successStories.map((story, i) => {
+                const isActive = i === activeStory;
+                const positions = ['ssm-pos-lhr', 'ssm-pos-isl', 'ssm-pos-khi', 'ssm-pos-fsd'];
+                return (
+                  <button
+                    key={isActive ? `${story.city}-${storyAnimKey}` : story.city}
+                    onClick={() => { setActiveStory(i); setStoryAnimKey(k => k + 1); }}
+                    className={`ssm-card ${positions[i]} ${isActive ? 'ssm-card-active' : ''}`}
+                    aria-pressed={isActive}
+                    aria-label={`Watch ${story.city} success story`}
+                    style={{ animationDelay: `${i * 0.6}s` }}
+                  >
+                    <div className="ssm-card-img-wrap">
+                      <img src={story.img} alt={story.city} className="ssm-card-img" />
+                    </div>
+                    <div className="ssm-card-text">
+                      <div className="ssm-card-city">{story.city}</div>
+                      <div className="ssm-card-watch">
+                        <span>WATCH NOW</span>
+                        <Play size={10} fill="currentColor" />
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Mobile horizontal scroll cards (shown only on mobile) */}
+            <div className="ssm-mobile-scroll">
+              {successStories.map((story, i) => {
+                const isActive = i === activeStory;
+                return (
+                  <button
+                    key={isActive ? `${story.city}-${storyAnimKey}-m` : `${story.city}-m`}
+                    onClick={() => { setActiveStory(i); setStoryAnimKey(k => k + 1); }}
+                    className={`ssm-card-mobile ${isActive ? 'ssm-card-active' : ''}`}
+                  >
+                    <div className="ssm-card-img-wrap">
+                      <img src={story.img} alt={story.city} className="ssm-card-img" />
+                    </div>
+                    <div className="ssm-card-text">
+                      <div className="ssm-card-city">{story.city}</div>
+                      <div className="ssm-card-watch">
+                        <span>WATCH NOW</span>
+                        <Play size={10} fill="currentColor" />
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Black testimonial panel — content swaps with animation */}
+            <div data-reveal="up" data-reveal-delay="400" className="ssm-panel mt-12 lg:mt-16">
+              <div key={`story-${storyAnimKey}`} className="ssm-panel-inner">
+                <div className="ssm-panel-video">
+                  <a href={successStories[activeStory].url} target="_blank" rel="noopener noreferrer" className="ssm-panel-video-link">
+                    <img src={successStories[activeStory].img} alt="" className="ssm-panel-thumb" />
+                    <div className="ssm-panel-thumb-overlay" />
+                    <div className="ssm-panel-play">
+                      <Play size={26} fill="currentColor" />
+                    </div>
+                  </a>
+                </div>
+                <div className="ssm-panel-content">
+                  <div className="ssm-panel-tag">
+                    <span className="ssm-panel-tag-dot" />
+                    FEATURED STORY
                   </div>
-                  <div className="map-pin-text">
-                    <div className="map-pin-title">{pin.city}</div>
-                    <div className="map-pin-link">Detail</div>
+                  <div className="ssm-panel-category">{successStories[activeStory].category}</div>
+                  <blockquote className="ssm-panel-quote">
+                    “{successStories[activeStory].quote}”
+                  </blockquote>
+                  <div className="ssm-panel-person">
+                    <div className="ssm-panel-name">{successStories[activeStory].name}</div>
+                    <div className="ssm-panel-role">{successStories[activeStory].role}</div>
+                  </div>
+                  <div className="ssm-panel-share">
+                    <a href={successStories[activeStory].url} target="_blank" rel="noopener noreferrer" className="ssm-panel-share-btn" aria-label="Share story">
+                      <Share2 size={16} />
+                      <span>Share</span>
+                    </a>
+                    <div className="ssm-panel-pagination">
+                      {successStories.map((_, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => { setActiveStory(idx); setStoryAnimKey(k => k + 1); }}
+                          className={`ssm-panel-dot ${idx === activeStory ? 'is-active' : ''}`}
+                          aria-label={`Show ${successStories[idx].city} story`}
+                        />
+                      ))}
+                    </div>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
+        {/* === End Success Stories Map Section === */}
 
         <section className="testimonials-section relative overflow-hidden bg-white">
           <img src="/blink.svg" alt="" className="testimonials-blink testimonials-blink-left" />
