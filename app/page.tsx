@@ -550,6 +550,17 @@ export default function Page() {
   const [logoIndex, setLogoIndex] = useState(0);
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [testimonialDir, setTestimonialDir] = useState<'next' | 'prev'>('next');
+  const [heroBgIndex, setHeroBgIndex] = useState(0);
+
+  const heroBackgrounds = ["/back-image.png", "/bg.png", "/bg2.png"];
+
+  // Auto-rotate hero background every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHeroBgIndex(prev => (prev + 1) % heroBackgrounds.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
   const ringRef = useRef<HTMLDivElement | null>(null);
   const dotRef = useRef<HTMLDivElement | null>(null);
   const cx = useRef(0); const cy = useRef(0);
@@ -1498,7 +1509,52 @@ export default function Page() {
         }
 
         .hero-stack { position: relative; width: 100%; }
-        .hero-bg { position: relative; width: 100%; background: #000; background-image: url(/back-image.png); background-size: cover; background-position: center bottom; background-repeat: no-repeat; z-index: 1; overflow: visible; }
+        .hero-bg { position: relative; width: 100%; background: #000; z-index: 1; overflow: visible; }
+        .hero-bg-layer {
+          position: absolute;
+          inset: 0;
+          background-size: cover;
+          background-position: center bottom;
+          background-repeat: no-repeat;
+          opacity: 0;
+          transition: opacity 1.2s ease-in-out;
+          z-index: 0;
+          pointer-events: none;
+        }
+        .hero-bg-layer.is-active { opacity: 1; }
+        .hero-bg-dots {
+          position: absolute;
+          left: 50%;
+          bottom: 24px;
+          transform: translateX(-50%);
+          display: flex;
+          gap: 10px;
+          z-index: 6;
+        }
+        @media (min-width: 1024px) {
+          .hero-bg-dots {
+            left: 0;
+            bottom: auto;
+            top: 540px;
+            transform: none;
+            margin-left: 32px;
+          }
+        }
+        .hero-bg-dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.35);
+          border: none;
+          padding: 0;
+          cursor: pointer;
+          transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hero-bg-dot:hover { background: rgba(255, 255, 255, 0.55); }
+        .hero-bg-dot.is-active {
+          background: #00fe4e;
+          box-shadow: 0 0 12px rgba(0, 254, 78, 0.6);
+        }
         .hero-robot-wrap { position: absolute; right: 4%; top: 100px; width: 38%; max-width: 420px; aspect-ratio: 1 / 1; pointer-events: none; z-index: 5; }
         @media (min-width: 1024px) { .hero-robot-wrap { right: 6%; top: 120px; width: 36%; max-width: 480px; } }
         @media (min-width: 1280px) { .hero-robot-wrap { right: 8%; top: 130px; width: 38%; max-width: 540px; } }
@@ -2226,6 +2282,13 @@ export default function Page() {
 
       <div className="hero-stack">
         <section className="hero-bg">
+          {heroBackgrounds.map((bg, i) => (
+            <div
+              key={bg}
+              className={`hero-bg-layer ${i === heroBgIndex ? 'is-active' : ''}`}
+              style={{ backgroundImage: `url(${bg})` }}
+            />
+          ))}
           <div className="relative mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 pt-3 pb-[70px] sm:pb-[120px] lg:pb-[180px]">
 
             <div className="hero-robot-wrap hidden lg:block">
@@ -2402,6 +2465,16 @@ export default function Page() {
                 </div>
               </div>
             </div>
+          </div>
+          <div className="hero-bg-dots">
+            {heroBackgrounds.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setHeroBgIndex(i)}
+                className={`hero-bg-dot ${i === heroBgIndex ? 'is-active' : ''}`}
+                aria-label={`Show banner ${i + 1}`}
+              />
+            ))}
           </div>
         </section>
 
