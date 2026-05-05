@@ -9,7 +9,7 @@ import {
   CheckCircle2, BookOpen, Smile, Globe,
   Users, Briefcase, Award, BarChart3, PieChart, LineChart,
   ClipboardList, Target, MessageSquare, TrendingUp,
-  Play, Share2,
+  Play,
 } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -528,39 +528,43 @@ const teamMembers = [
 const successStories = [
   {
     city: "Lahore",
+    x: "40%",
+    y: "38%",
     img: "/minar.png",
-    category: "DIGITAL LEARNING",
-    quote: "The Coursera partnership opened doors I never thought possible. From a small startup to leading a fintech team — Parwaaz changed everything.",
+    video: "/minar.png",
     name: "Aisha Tariq",
-    role: "Coursera Learning Program · Senior Product Manager",
-    url: "https://www.mygreatlearning.com/alumni",
+    role: "Senior Product Manager",
+    text: "The Coursera partnership opened doors I never thought possible. From a small startup to leading a fintech team — Parwaaz changed everything.",
   },
   {
     city: "Islamabad",
+    x: "55%",
+    y: "25%",
     img: "/faisal-mosque.png",
-    category: "WORKFORCE DEVELOPMENT",
-    quote: "Parwaaz's SLED program gave me skills the global market actually pays for. I now lead an international remote engineering team.",
-    name: "Hamza Raza",
-    role: "SLED Program Graduate · Engineering Lead",
-    url: "https://www.mygreatlearning.com/alumni",
+    video: "/faisal-mosque.png",
+    name: "Ali Khan",
+    role: "Software Engineer",
+    text: "This program gave me real-world skills and confidence to grow internationally.",
   },
   {
     city: "Karachi",
+    x: "65%",
+    y: "55%",
     img: "/mazar.png",
-    category: "INTERNATIONAL RECRUITMENT",
-    quote: "Through Parwaaz I found a role in Dubai within 6 weeks. The mentorship, the visa support, the placement — it was end-to-end excellence.",
-    name: "Sara Mohammed",
-    role: "International Placement · Senior Data Analyst",
-    url: "https://www.mygreatlearning.com/alumni",
+    video: "/mazar.png",
+    name: "Sara Ahmed",
+    role: "UX Designer",
+    text: "The exposure and mentorship helped me break into global design roles.",
   },
   {
     city: "Faisalabad",
+    x: "50%",
+    y: "45%",
     img: "/clock-tower.png",
-    category: "TECH BOOTCAMP",
-    quote: "I came in as a textile engineer. I left as a full-stack developer with three job offers. That's the Parwaaz difference.",
-    name: "Bilal Ahmad",
-    role: "Tech Bootcamp Graduate · Full-Stack Developer",
-    url: "https://www.mygreatlearning.com/alumni",
+    video: "/clock-tower.png",
+    name: "Usman Raza",
+    role: "Data Analyst",
+    text: "From learning basics to handling enterprise data — huge transformation.",
   },
 ];
 
@@ -612,31 +616,49 @@ export default function Page() {
   const [activeServiceTab, setActiveServiceTab] = useState<keyof typeof servicesData>("Training");
   const [serviceAnimKey, setServiceAnimKey] = useState(0);
   const [servicePage, setServicePage] = useState(0); // 0 = cards 0-2, 1 = cards 3-5
-  const [activeStory, setActiveStory] = useState(2); // 0=Lahore, 1=Islamabad, 2=Karachi (default), 3=Faisalabad
-  const [storyAnimKey, setStoryAnimKey] = useState(0);
+  const [active, setActive] = useState(0);
+  const testimonialRef = useRef<HTMLDivElement | null>(null);
 
-  // Auto-rotate active story every 6s — pauses if user hovers the section
-  const [storyHoverPaused, setStoryHoverPaused] = useState(false);
-  useEffect(() => {
-    if (storyHoverPaused) return;
-    const interval = setInterval(() => {
-      setActiveStory(prev => (prev + 1) % 4);
-      setStoryAnimKey(k => k + 1);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, [storyHoverPaused]);
+  const handleStoryClick = (index: number) => {
+    setActive(index);
+    setTimeout(() => {
+      testimonialRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 100);
+  };
 
   // Reset to page 0 when switching tabs
   useEffect(() => {
     setServicePage(0);
   }, [activeServiceTab]);
 
-  const heroBackgrounds = ["/back-image.png", "/bg.png", "/bg2.png"];
+  const heroSlides = [
+    {
+      title: "Delivering Digital Experience",
+      subtitle: "That Make The World Better",
+      desc: "Connecting you the right tools, People, and Creative Strategies to elevate your business in South Asia, Middle East and beyond.",
+      bg: "/back-image.png",
+    },
+    {
+      title: "Innovate Your Future",
+      subtitle: "With Smart Solutions",
+      desc: "Empowering businesses with modern technology and scalable architecture.",
+      bg: "/bg.png",
+    },
+    {
+      title: "Build Smarter Systems",
+      subtitle: "Scale Without Limits",
+      desc: "We help you create future-ready digital products that grow with your business.",
+      bg: "/bg2.png",
+    },
+  ];
 
   // Auto-rotate hero background every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setHeroBgIndex(prev => (prev + 1) % heroBackgrounds.length);
+      setHeroBgIndex(prev => (prev + 1) % heroSlides.length);
     }, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -1652,6 +1674,17 @@ export default function Page() {
         @media (min-width: 640px) { .chatbox-wrap { margin-top: -90px; } }
         @media (min-width: 1024px) { .chatbox-wrap { margin-top: -90px; } }
 
+        @keyframes heroSlideUp {
+          0% { opacity: 0; transform: translateY(40px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        .hero-anim-slide-up {
+          animation: heroSlideUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        .hero-anim-delay-1 { animation-delay: 0.1s; }
+        .hero-anim-delay-2 { animation-delay: 0.2s; }
+        .hero-anim-delay-3 { animation-delay: 0.3s; }
+
         @keyframes chatboxSlideUp { from { opacity: 0; transform: translateY(40px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
         .ea-card {
           position: relative;
@@ -2053,476 +2086,6 @@ export default function Page() {
           font-weight: 700;
         }
 
-        /* === SUCCESS STORIES MAP SECTION === */
-        .success-stories-section {
-          position: relative;
-          padding: 80px 0 60px;
-          background: #ffffff;
-          overflow: hidden;
-        }
-        @media (max-width: 768px) {
-          .success-stories-section { padding: 56px 0 40px; }
-        }
-
-        /* Map stage with floating cards */
-        .success-map-stage {
-          position: relative;
-          width: 100%;
-          max-width: 1080px;
-          height: clamp(380px, 44vw, 540px);
-          margin: 36px auto 0;
-          overflow: visible;
-        }
-        @media (max-width: 768px) {
-          .success-map-stage {
-            height: 260px;
-            margin-top: 20px;
-          }
-          /* Mobile: show cards on map but smaller and tighter */
-          .success-map-stage .ssm-card {
-            padding: 5px 8px 5px 5px;
-            gap: 6px;
-            border-radius: 7px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.04);
-            transform: scale(1);
-          }
-          .success-map-stage .ssm-card::after {
-            left: 14px;
-            bottom: -7px;
-            border-left-width: 6px;
-            border-right-width: 6px;
-            border-top-width: 8px;
-          }
-          .success-map-stage .ssm-card-img-wrap {
-            width: 24px;
-            height: 24px;
-            padding: 1.5px;
-          }
-          .success-map-stage .ssm-card-city {
-            font-size: 10px;
-            line-height: 1.05;
-          }
-          .success-map-stage .ssm-card-watch {
-            font-size: 7px;
-            gap: 2px;
-            letter-spacing: 0.06em;
-          }
-          .success-map-stage .ssm-card-watch svg {
-            width: 7px;
-            height: 7px;
-          }
-          /* Tighter mobile positions — cluster cards within the smaller map */
-          .success-map-stage .ssm-pos-lhr { left: 8%; top: 16%; }
-          .success-map-stage .ssm-pos-isl { left: 38%; top: 4%; }
-          .success-map-stage .ssm-pos-khi { left: 62%; top: 22%; }
-          .success-map-stage .ssm-pos-fsd { left: 22%; top: 56%; }
-          /* Active/hover scaling reduced on mobile to prevent overflow */
-          .success-map-stage .ssm-card-active {
-            animation: ssmCardPopInMobile 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-          }
-          .success-map-stage .ssm-card:hover {
-            transform: translateY(-3px) scale(1.03);
-          }
-        }
-        @keyframes ssmCardPopInMobile {
-          0% { transform: scale(1); }
-          40% { transform: scale(1.14); }
-          70% { transform: scale(1.02); }
-          100% { transform: scale(1.06); }
-        }
-        .success-map-img {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          opacity: 0.9;
-          filter: grayscale(1) contrast(1.05) brightness(0.96);
-          pointer-events: none;
-        }
-        .success-map-dots {
-          position: absolute;
-          inset: 0;
-          background-image: radial-gradient(circle, rgba(0,0,0,0.18) 1.4px, transparent 2px);
-          background-size: 12px 12px;
-          mask-image: radial-gradient(ellipse at center, black 50%, transparent 80%);
-          opacity: 0.5;
-          pointer-events: none;
-        }
-
-        /* Floating card */
-        @keyframes ssmCardFloat {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-9px); }
-        }
-        @keyframes ssmCardPopIn {
-          0% { transform: scale(1); }
-          40% { transform: scale(1.18); }
-          70% { transform: scale(1.04); }
-          100% { transform: scale(1.08); }
-        }
-        .ssm-card {
-          position: absolute;
-          z-index: 5;
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 10px 16px 10px 10px;
-          background: #ffffff;
-          border-radius: 10px;
-          box-shadow: 0 8px 24px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.04);
-          cursor: pointer;
-          border: none;
-          transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s, background 0.35s;
-          animation: ssmCardFloat 5s ease-in-out infinite;
-          will-change: transform;
-        }
-        .ssm-card::after {
-          content: '';
-          position: absolute;
-          left: 26px;
-          bottom: -10px;
-          width: 0;
-          height: 0;
-          border-left: 9px solid transparent;
-          border-right: 9px solid transparent;
-          border-top: 11px solid #ffffff;
-          filter: drop-shadow(0 4px 6px rgba(0,0,0,0.06));
-          transition: border-top-color 0.35s, filter 0.35s;
-        }
-        .ssm-card:hover {
-          transform: translateY(-10px) scale(1.04);
-          box-shadow: 0 18px 36px rgba(0, 254, 78, 0.18), 0 0 0 1px rgba(0, 254, 78, 0.4);
-          animation-play-state: paused;
-        }
-        .ssm-card:hover .ssm-card-img-wrap {
-          box-shadow: 0 0 0 3px rgba(0, 254, 78, 0.5), 0 4px 12px rgba(0, 254, 78, 0.35);
-        }
-
-        /* Active card — pop in with bounce, then settle */
-        .ssm-card-active {
-          z-index: 10;
-          box-shadow: 0 14px 36px rgba(0, 254, 78, 0.22), 0 0 0 2px rgba(0, 254, 78, 0.5);
-          animation: ssmCardPopIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-        .ssm-card-active::after {
-          filter: drop-shadow(0 4px 8px rgba(0, 254, 78, 0.3));
-        }
-        .ssm-card-active .ssm-card-img-wrap {
-          box-shadow: 0 0 0 3px #00FE4E, 0 4px 14px rgba(0, 254, 78, 0.45);
-        }
-        .ssm-card-active:hover {
-          transform: scale(1.12) translateY(-6px);
-        }
-
-        .ssm-card-img-wrap {
-          width: 38px;
-          height: 38px;
-          border-radius: 50%;
-          overflow: hidden;
-          flex-shrink: 0;
-          background: linear-gradient(135deg, #00FE4E 0%, #0adf54 100%);
-          padding: 2px;
-          transition: box-shadow 0.35s;
-        }
-        .ssm-card-img {
-          width: 100%;
-          height: 100%;
-          border-radius: 50%;
-          object-fit: cover;
-          display: block;
-          background: #fff;
-        }
-        .ssm-card-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-        .ssm-card-city {
-          font-family: var(--font-poppins), sans-serif;
-          font-size: 14px;
-          font-weight: 700;
-          color: #050505;
-          line-height: 1.1;
-          letter-spacing: -0.01em;
-        }
-        .ssm-card-watch {
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          font-family: var(--font-poppins), sans-serif;
-          font-size: 10px;
-          font-weight: 600;
-          letter-spacing: 0.08em;
-          color: #000572;
-          text-decoration: underline;
-          text-underline-offset: 2px;
-        }
-        .ssm-card-watch svg { color: #00FE4E; }
-
-        /* Card map positions — desktop only */
-        .ssm-pos-lhr { left: 28%; top: 18%; }
-        .ssm-pos-isl { left: 46%; top: 8%; }
-        .ssm-pos-khi { left: 60%; top: 26%; }
-        .ssm-pos-fsd { left: 36%; top: 50%; }
-
-        /* Mobile horizontal scroll cards */
-        .ssm-mobile-scroll {
-          display: none;
-          gap: 12px;
-          overflow-x: auto;
-          padding: 24px 4px 8px;
-          margin: 12px -16px 0;
-          padding-left: 16px;
-          padding-right: 16px;
-          scrollbar-width: none;
-          -ms-overflow-style: none;
-        }
-        .ssm-mobile-scroll::-webkit-scrollbar { display: none; }
-        @media (max-width: 768px) {
-          .ssm-mobile-scroll { display: flex; }
-        }
-        .ssm-card-mobile {
-          flex: 0 0 auto;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          padding: 10px 14px 10px 10px;
-          background: #ffffff;
-          border-radius: 10px;
-          box-shadow: 0 6px 18px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
-          cursor: pointer;
-          border: none;
-          transition: transform 0.3s, box-shadow 0.3s;
-          min-width: 160px;
-        }
-        .ssm-card-mobile.ssm-card-active {
-          box-shadow: 0 8px 22px rgba(0, 254, 78, 0.22), 0 0 0 2px rgba(0, 254, 78, 0.5);
-        }
-        .ssm-card-mobile.ssm-card-active .ssm-card-img-wrap {
-          box-shadow: 0 0 0 3px #00FE4E, 0 4px 14px rgba(0, 254, 78, 0.45);
-        }
-
-        /* Black testimonial panel */
-        @keyframes ssmPanelFadeIn {
-          from { opacity: 0; transform: translateY(14px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes ssmThumbScale {
-          from { transform: scale(0.96); }
-          to { transform: scale(1); }
-        }
-        .ssm-panel {
-          width: 100%;
-          background: #050505;
-          border-radius: 24px;
-          overflow: hidden;
-          box-shadow: 0 30px 70px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.05);
-          position: relative;
-        }
-        .ssm-panel::before {
-          content: '';
-          position: absolute;
-          top: -40%;
-          right: -10%;
-          width: 50%;
-          height: 180%;
-          background: radial-gradient(ellipse, rgba(0, 254, 78, 0.10) 0%, transparent 60%);
-          pointer-events: none;
-        }
-        .ssm-panel-inner {
-          position: relative;
-          z-index: 1;
-          display: grid;
-          grid-template-columns: 1.05fr 1fr;
-          gap: 0;
-          align-items: stretch;
-          animation: ssmPanelFadeIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-        }
-        @media (max-width: 900px) {
-          .ssm-panel-inner { grid-template-columns: 1fr; }
-        }
-        .ssm-panel-video {
-          position: relative;
-          padding: 28px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          min-height: 360px;
-        }
-        @media (max-width: 900px) {
-          .ssm-panel-video { padding: 20px 20px 0; min-height: 240px; }
-        }
-        .ssm-panel-video-link {
-          position: relative;
-          display: block;
-          width: 100%;
-          height: 100%;
-          min-height: 320px;
-          border-radius: 16px;
-          overflow: hidden;
-          cursor: pointer;
-          animation: ssmThumbScale 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-          transition: transform 0.4s;
-        }
-        @media (max-width: 900px) {
-          .ssm-panel-video-link { min-height: 220px; }
-        }
-        .ssm-panel-video-link:hover { transform: scale(1.015); }
-        .ssm-panel-thumb {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          filter: brightness(0.85) saturate(1.1);
-        }
-        .ssm-panel-thumb-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(135deg, rgba(0,5,114,0.35) 0%, rgba(0,0,0,0.15) 50%, rgba(0,254,78,0.20) 100%);
-        }
-        .ssm-panel-play {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          width: 76px;
-          height: 76px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #00FE4E 0%, #0adf54 100%);
-          color: #050505;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 12px 32px rgba(0, 254, 78, 0.45), 0 0 0 8px rgba(0, 254, 78, 0.18);
-          transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s;
-        }
-        .ssm-panel-play svg { margin-left: 4px; }
-        .ssm-panel-video-link:hover .ssm-panel-play {
-          transform: translate(-50%, -50%) scale(1.08);
-          box-shadow: 0 16px 40px rgba(0, 254, 78, 0.6), 0 0 0 12px rgba(0, 254, 78, 0.22);
-        }
-
-        .ssm-panel-content {
-          padding: 44px 48px 44px 32px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          color: #ffffff;
-        }
-        @media (max-width: 900px) {
-          .ssm-panel-content { padding: 28px 24px 32px; }
-        }
-        .ssm-panel-tag {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          align-self: flex-start;
-          background: #FFD400;
-          color: #050505;
-          font-family: var(--font-poppins), sans-serif;
-          font-size: 11px;
-          font-weight: 700;
-          letter-spacing: 0.14em;
-          padding: 6px 12px;
-          border-radius: 4px;
-          text-transform: uppercase;
-        }
-        .ssm-panel-tag-dot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: #050505;
-          animation: ssmCardFloat 1.2s ease-in-out infinite;
-        }
-        .ssm-panel-category {
-          margin-top: 18px;
-          font-family: var(--font-poppins), sans-serif;
-          font-size: 12px;
-          font-weight: 600;
-          letter-spacing: 0.16em;
-          color: #00FE4E;
-          text-transform: uppercase;
-        }
-        .ssm-panel-quote {
-          margin: 14px 0 22px;
-          font-family: var(--font-poppins), sans-serif;
-          font-size: clamp(20px, 2.2vw, 26px);
-          font-weight: 500;
-          line-height: 1.4;
-          letter-spacing: -0.015em;
-          color: #ffffff;
-          quotes: none;
-        }
-        .ssm-panel-person {
-          margin-top: auto;
-          padding-top: 18px;
-          border-top: 1px solid rgba(255,255,255,0.12);
-        }
-        .ssm-panel-name {
-          font-family: var(--font-poppins), sans-serif;
-          font-size: 16px;
-          font-weight: 700;
-          color: #ffffff;
-          letter-spacing: -0.01em;
-        }
-        .ssm-panel-role {
-          margin-top: 4px;
-          font-family: var(--font-poppins), sans-serif;
-          font-size: 12px;
-          font-weight: 400;
-          color: rgba(255,255,255,0.62);
-          letter-spacing: 0.02em;
-        }
-        .ssm-panel-share {
-          margin-top: 24px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 16px;
-        }
-        .ssm-panel-share-btn {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          padding: 9px 16px;
-          border-radius: 999px;
-          background: rgba(255,255,255,0.08);
-          border: 1px solid rgba(255,255,255,0.14);
-          color: #ffffff;
-          font-family: var(--font-poppins), sans-serif;
-          font-size: 12px;
-          font-weight: 600;
-          letter-spacing: 0.04em;
-          text-decoration: none;
-          transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.3s;
-        }
-        .ssm-panel-share-btn:hover {
-          background: rgba(0,254,78,0.18);
-          border-color: rgba(0,254,78,0.5);
-          color: #00FE4E;
-          transform: translateY(-1px);
-        }
-        .ssm-panel-pagination {
-          display: flex;
-          gap: 6px;
-        }
-        .ssm-panel-dot {
-          width: 22px;
-          height: 4px;
-          border-radius: 2px;
-          background: rgba(255,255,255,0.18);
-          border: none;
-          cursor: pointer;
-          padding: 0;
-          transition: background 0.3s, width 0.3s;
-        }
-        .ssm-panel-dot.is-active {
-          background: #00FE4E;
-          width: 32px;
-          box-shadow: 0 0 12px rgba(0,254,78,0.5);
-        }
-        .ssm-panel-dot:hover:not(.is-active) {
-          background: rgba(255,255,255,0.4);
-        }
-
         .testimonials-section { position: relative; padding: 88px 0 80px; background: #ffffff; }
         .testimonials-pill-avatar {
           width: 28px;
@@ -2882,11 +2445,11 @@ export default function Page() {
 
       <div className="hero-stack">
         <section className="hero-bg">
-          {heroBackgrounds.map((bg, i) => (
+          {heroSlides.map((slide, i) => (
             <div
-              key={bg}
+              key={slide.bg}
               className={`hero-bg-layer ${i === heroBgIndex ? 'is-active' : ''}`}
-              style={{ backgroundImage: `url(${bg})` }}
+              style={{ backgroundImage: `url(${slide.bg})` }}
             />
           ))}
           <div className="relative mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 pt-3 pb-[70px] sm:pb-[120px] lg:pb-[180px]">
@@ -3041,16 +2604,28 @@ export default function Page() {
 
             <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-center pt-2 lg:pt-6">
               <div className="relative z-10">
-                <h1 className="mb-2 font-extrabold leading-[.95] tracking-[-0.05em] text-[#00fe4e] drop-shadow-[0_0_20px_rgba(0,254,78,.35)]" style={{ fontSize: 'clamp(32px, 5vw, 56px)' }}>
-                  Delivering Digital<br />Experience
+                <h1
+                  key={`hero-title-${heroBgIndex}`}
+                  className="hero-anim-slide-up mb-2 font-extrabold leading-[.95] tracking-[-0.05em] text-[#00fe4e] drop-shadow-[0_0_20px_rgba(0,254,78,.35)]"
+                  style={{ fontSize: 'clamp(32px, 5vw, 56px)' }}
+                >
+                  {heroSlides[heroBgIndex].title}
                 </h1>
-                <h2 className="mb-4 font-medium leading-tight tracking-[-0.03em] text-white" style={{ fontSize: 'clamp(18px, 2.6vw, 30px)' }}>
-                  That Make The <span className="text-[#00fe4e]">World</span> Better
+                <h2
+                  key={`hero-subtitle-${heroBgIndex}`}
+                  className="hero-anim-slide-up hero-anim-delay-1 mb-4 font-medium leading-tight tracking-[-0.03em] text-white"
+                  style={{ fontSize: 'clamp(18px, 2.6vw, 30px)' }}
+                >
+                  {heroSlides[heroBgIndex].subtitle}
                 </h2>
-                <p className="mb-5 lg:mb-6 font-normal leading-[1.5] text-white/80" style={{ fontSize: 'clamp(12px, 1vw, 14px)', maxWidth: '480px' }}>
-                  Connecting you the right tools, People, and Creative Strategies to elevate your business in <span className="text-[#00fe4e]">South Asia, Middle east</span> and beyond.
+                <p
+                  key={`hero-desc-${heroBgIndex}`}
+                  className="hero-anim-slide-up hero-anim-delay-2 mb-5 lg:mb-6 font-normal leading-[1.5] text-white/80"
+                  style={{ fontSize: 'clamp(12px, 1vw, 14px)', maxWidth: '480px' }}
+                >
+                  {heroSlides[heroBgIndex].desc}
                 </p>
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <div className="hero-anim-slide-up hero-anim-delay-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                   <button className="hero-btn hero-btn-primary h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium">Our Services</button>
                   <button className="hero-btn hero-btn-secondary h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium">Get Started</button>
                 </div>
@@ -3058,7 +2633,7 @@ export default function Page() {
             </div>
           </div>
           <div className="hero-bg-dots">
-            {heroBackgrounds.map((_, i) => (
+            {heroSlides.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setHeroBgIndex(i)}
@@ -3429,129 +3004,127 @@ export default function Page() {
           </div>
         </section>
 
-        {/* === Success Stories Map Section === */}
-        <section
-          className="success-stories-section"
-          onMouseEnter={() => setStoryHoverPaused(true)}
-          onMouseLeave={() => setStoryHoverPaused(false)}
-        >
-          <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
-            <div data-reveal="up-sm" className="text-[12px] font-semibold uppercase tracking-[0.08em] text-black text-center">
-              Success Stories
-            </div>
-            <h2 data-reveal="up-sm" data-reveal-delay="100" className="mt-3 text-center font-light leading-[1] tracking-[-0.02em] uppercase" style={{ fontSize: 'clamp(28px, 4.4vw, 56px)', fontFamily: 'Inter, sans-serif' }}>
-              <span style={{ background: 'linear-gradient(90deg, #00FE4E 0%, #000572 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                Hear From Our Alumni
-              </span>
-            </h2>
-            <p data-reveal="up-sm" data-reveal-delay="200" className="mt-3 text-center text-[13px] lg:text-[15px] text-black/70">
-              Watch stories of success from across Pakistan
+        {/* === Alumni Section === */}
+        <section className="alumni-section py-20 bg-[#f5f5f5]">
+
+          {/* HEADER */}
+          <div className="text-center mb-10 px-4">
+            <p className="text-xs tracking-widest text-gray-500">
+              SUCCESS STORIES
             </p>
 
-            {/* Floating cards over dotted map */}
-            <div data-reveal="zoom" data-reveal-delay="300" className="success-map-stage">
-              <img src="/world-map.png" alt="" className="success-map-img" />
-              <div className="success-map-dots" aria-hidden="true" />
+            <h2 className="text-4xl md:text-5xl font-bold mt-3">
+              <span className="text-[#00FE4E]">HEAR FROM</span>{" "}
+              <span className="text-gray-900">OUR ALUMNI</span>
+            </h2>
 
-              {successStories.map((story, i) => {
-                const isActive = i === activeStory;
-                const positions = ['ssm-pos-lhr', 'ssm-pos-isl', 'ssm-pos-khi', 'ssm-pos-fsd'];
-                return (
-                  <button
-                    key={isActive ? `${story.city}-${storyAnimKey}` : story.city}
-                    onClick={() => { setActiveStory(i); setStoryAnimKey(k => k + 1); }}
-                    className={`ssm-card ${positions[i]} ${isActive ? 'ssm-card-active' : ''}`}
-                    aria-pressed={isActive}
-                    aria-label={`Watch ${story.city} success story`}
-                    style={{ animationDelay: `${i * 0.6}s` }}
-                  >
-                    <div className="ssm-card-img-wrap">
-                      <img src={story.img} alt={story.city} className="ssm-card-img" />
-                    </div>
-                    <div className="ssm-card-text">
-                      <div className="ssm-card-city">{story.city}</div>
-                      <div className="ssm-card-watch">
-                        <span>WATCH NOW</span>
-                        <Play size={10} fill="currentColor" />
-                      </div>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+            <p className="text-gray-500 mt-2">
+              Watch stories of success from across Pakistan
+            </p>
+          </div>
 
-            {/* Mobile horizontal scroll cards (shown only on mobile) */}
-            <div className="ssm-mobile-scroll">
-              {successStories.map((story, i) => {
-                const isActive = i === activeStory;
-                return (
-                  <button
-                    key={isActive ? `${story.city}-${storyAnimKey}-m` : `${story.city}-m`}
-                    onClick={() => { setActiveStory(i); setStoryAnimKey(k => k + 1); }}
-                    className={`ssm-card-mobile ${isActive ? 'ssm-card-active' : ''}`}
-                  >
-                    <div className="ssm-card-img-wrap">
-                      <img src={story.img} alt={story.city} className="ssm-card-img" />
-                    </div>
-                    <div className="ssm-card-text">
-                      <div className="ssm-card-city">{story.city}</div>
-                      <div className="ssm-card-watch">
-                        <span>WATCH NOW</span>
-                        <Play size={10} fill="currentColor" />
-                      </div>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+          {/* MAP */}
+          <div className="relative max-w-[900px] mx-auto px-4">
 
-            {/* Black testimonial panel — content swaps with animation */}
-            <div data-reveal="up" data-reveal-delay="400" className="ssm-panel mt-12 lg:mt-16">
-              <div key={`story-${storyAnimKey}`} className="ssm-panel-inner">
-                <div className="ssm-panel-video">
-                  <a href={successStories[activeStory].url} target="_blank" rel="noopener noreferrer" className="ssm-panel-video-link">
-                    <img src={successStories[activeStory].img} alt="" className="ssm-panel-thumb" />
-                    <div className="ssm-panel-thumb-overlay" />
-                    <div className="ssm-panel-play">
-                      <Play size={26} fill="currentColor" />
-                    </div>
-                  </a>
-                </div>
-                <div className="ssm-panel-content">
-                  <div className="ssm-panel-tag">
-                    <span className="ssm-panel-tag-dot" />
-                    FEATURED STORY
-                  </div>
-                  <div className="ssm-panel-category">{successStories[activeStory].category}</div>
-                  <blockquote className="ssm-panel-quote">
-                    “{successStories[activeStory].quote}”
-                  </blockquote>
-                  <div className="ssm-panel-person">
-                    <div className="ssm-panel-name">{successStories[activeStory].name}</div>
-                    <div className="ssm-panel-role">{successStories[activeStory].role}</div>
-                  </div>
-                  <div className="ssm-panel-share">
-                    <a href={successStories[activeStory].url} target="_blank" rel="noopener noreferrer" className="ssm-panel-share-btn" aria-label="Share story">
-                      <Share2 size={16} />
-                      <span>Share</span>
-                    </a>
-                    <div className="ssm-panel-pagination">
-                      {successStories.map((_, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => { setActiveStory(idx); setStoryAnimKey(k => k + 1); }}
-                          className={`ssm-panel-dot ${idx === activeStory ? 'is-active' : ''}`}
-                          aria-label={`Show ${successStories[idx].city} story`}
-                        />
-                      ))}
-                    </div>
+            <img
+              src="/world-map.png"
+              alt="map"
+              className="w-full opacity-60"
+            />
+
+            {successStories.map((item, i) => (
+              <div
+                key={i}
+                onClick={() => handleStoryClick(i)}
+                style={{ top: item.y, left: item.x }}
+                className="absolute cursor-pointer group -translate-x-1/2 -translate-y-1/2"
+              >
+                <div
+                  className={`flex items-center gap-3 px-4 py-2 rounded-xl bg-white shadow-md transition-all duration-300 ${
+                    active === i
+                      ? "ring-2 ring-[#00FE4E] scale-105"
+                      : "hover:scale-105 hover:shadow-xl"
+                  }`}
+                >
+                  <img
+                    src={item.img}
+                    alt={item.city}
+                    width={30}
+                    height={30}
+                  />
+
+                  <div>
+                    <p className="text-sm font-semibold">{item.city}</p>
+                    <p className="text-xs text-blue-600">WATCH NOW ▶</p>
                   </div>
                 </div>
+              </div>
+            ))}
+          </div>
+
+          {/* TESTIMONIAL */}
+          <div
+            ref={testimonialRef}
+            className="mt-20 max-w-[1100px] mx-auto px-4"
+          >
+            <div className="bg-black rounded-3xl p-6 md:p-10 flex flex-col md:flex-row gap-6 items-center">
+
+              {/* LEFT VIDEO */}
+              <div className="relative w-full md:w-1/2">
+                <img
+                  src={successStories[active].video}
+                  alt="video"
+                  className="rounded-2xl w-full"
+                />
+
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-[#00FE4E] flex items-center justify-center shadow-lg cursor-pointer hover:scale-110 transition">
+                    <Play className="text-black" />
+                  </div>
+                </div>
+              </div>
+
+              {/* RIGHT CONTENT */}
+              <div className="text-white w-full md:w-1/2">
+
+                <span className="bg-yellow-400 text-black text-xs px-3 py-1 rounded">
+                  FEATURED STORY
+                </span>
+
+                <p className="text-green-400 mt-3 text-sm tracking-widest">
+                  DIGITAL LEARNING
+                </p>
+
+                <h3 className="text-lg md:text-2xl font-semibold mt-4 leading-relaxed">
+                  “{successStories[active].text}”
+                </h3>
+
+                <div className="mt-6">
+                  <p className="font-semibold">{successStories[active].name}</p>
+                  <p className="text-sm text-gray-400">
+                    {successStories[active].role}
+                  </p>
+                </div>
+
+                {/* DOTS */}
+                <div className="flex gap-2 mt-6">
+                  {successStories.map((_, i) => (
+                    <div
+                      key={i}
+                      className={`h-1 rounded-full transition-all ${
+                        i === active
+                          ? "w-6 bg-[#00FE4E]"
+                          : "w-3 bg-gray-600"
+                      }`}
+                    />
+                  ))}
+                </div>
+
               </div>
             </div>
           </div>
         </section>
-        {/* === End Success Stories Map Section === */}
+        {/* === End Alumni Section === */}
 
         <section className="testimonials-section relative overflow-hidden bg-white">
           <img src="/blink.svg" alt="" className="testimonials-blink testimonials-blink-left" />
