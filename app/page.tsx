@@ -856,7 +856,7 @@ export default function Page() {
         }
 
         .hero-stack { position: relative; width: 100%; }
-        .hero-bg { position: relative; width: 100%; background: #000; z-index: 1; overflow: visible; }
+        .hero-bg {min-height: 720px; position: relative; width: 100%; background: #000; z-index: 1; overflow: visible; }
         .hero-bg-layer {
           position: absolute;
           inset: 0;
