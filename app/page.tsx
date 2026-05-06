@@ -2440,10 +2440,8 @@ export default function Page() {
               Closing the Skills Gap in Pakistan, Parwaaz is the exclusive partner for the World Economic Forum in Pakistan
             </p>
           </div>
-
-          <section className="parwaaz-section w-full bg-white">
-            <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 items-start gap-y-[34px] lg:grid-cols-[544px_583px] lg:gap-x-[64px]">
-
+<section className="parwaaz-section w-full bg-white">
+ <div className="mx-auto grid w-full max-w-[1120px] grid-cols-1 items-start gap-y-[34px] lg:grid-cols-[644px_1fr] lg:gap-x-0">
               <div>
                 <div data-reveal="left" data-reveal-mode="cycle" className="relative w-full" style={{ width: '100%', maxWidth: '644px', height: '180px', padding: '28px 32px', borderRadius: '16px', background: '#d9d9d9' }}>
                   <h2 style={{ fontSize: '42px', fontWeight: 800, color: '#0a1970', lineHeight: 1, letterSpacing: '-0.025em', margin: 0 }}>
@@ -2487,23 +2485,22 @@ export default function Page() {
                   </li>
                 </ol>
               </div>
-
-              <div
-                data-reveal="right"
-                data-reveal-mode="cycle"
-                data-reveal-delay="120"
-                className="parwaaz-blue-card"
-                style={{
-                  width: '100%',
-                  maxWidth: '393px',
-                  height: '400px',
-                  padding: '32px 32px 36px 32px',
-                  borderRadius: '20px',
-                  marginLeft: '-60px',
-                  background: '#000572',
-                  alignSelf: 'flex-start',
-                }}
-              >
+<div
+  data-reveal="right"
+  data-reveal-mode="cycle"
+  data-reveal-delay="120"
+  className="parwaaz-blue-card"
+  style={{
+    width: '100%',
+    maxWidth: '443px',
+    height: '400px',
+    padding: '32px 32px 36px 32px',
+    borderRadius: '20px',
+    marginLeft: 'auto',
+    background: '#000572',
+    alignSelf: 'flex-start',
+  }}
+>
                 <img
                   src="/parwaaz-logo.png"
                   alt="Parwaaz"
