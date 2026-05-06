@@ -30,7 +30,7 @@ export default function AbtHero() {
             Meets Elevation.
           </h1>
 
-          <p className="mt-[14px] max-w-[700px] text-[13px] font-normal leading-[1.25] tracking-[-0.1px] text-white/85 max-[480px]:max-w-[330px] max-[480px]:text-[12px]">
+          <p className="mt-[14px] max-w-[500px] text-[13px] font-normal leading-[2] tracking-[-0.1px] text-white/85 max-[480px]:max-w-[330px] max-[480px]:text-[12px]">
             Parwaaz is built on the foundation of creativity, strategy, and
             innovation. We partner with forward-thinking brands to design
             impactful solutions that drive growth, strengthen identity, and

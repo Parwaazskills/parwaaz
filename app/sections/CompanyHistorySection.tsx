@@ -125,8 +125,7 @@ export default function CompanyHistorySection() {
   const [activeYear, setActiveYear] = useState("1985");
 
   const sectionRef = useRef<HTMLElement | null>(null);
-  const titleViewportRef = useRef<HTMLDivElement | null>(null);
-  const titleTrackRef = useRef<HTMLDivElement | null>(null);
+  const tickerTrackRef = useRef<HTMLDivElement | null>(null);
   const paraRef = useRef<HTMLParagraphElement | null>(null);
   const yearsRef = useRef<HTMLDivElement | null>(null);
   const cardsGridRef = useRef<HTMLDivElement | null>(null);
@@ -144,14 +143,13 @@ export default function CompanyHistorySection() {
     gsap.registerPlugin(ScrollTrigger);
 
     const section = sectionRef.current;
-    const titleViewport = titleViewportRef.current;
-    const titleTrack = titleTrackRef.current;
+    const tickerTrack = tickerTrackRef.current;
     const para = paraRef.current;
     const yearsBox = yearsRef.current;
     const cardsGrid = cardsGridRef.current;
     const network = networkRef.current;
 
-    if (!section || !titleViewport || !titleTrack) return;
+    if (!section) return;
 
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -162,7 +160,7 @@ export default function CompanyHistorySection() {
     const isMobile = window.matchMedia("(max-width: 760px)").matches;
 
     if (isMobile) {
-      gsap.set([titleTrack, para, yearsBox, cardsGrid, network], {
+      gsap.set([tickerTrack, para, yearsBox, cardsGrid, network], {
         clearProps: "all",
       });
 
@@ -170,11 +168,19 @@ export default function CompanyHistorySection() {
     }
 
     const ctx = gsap.context(() => {
-      gsap.set(titleTrack, {
-        x: () => titleViewport.offsetWidth + 180,
-        opacity: 1,
-        willChange: "transform",
-      });
+      if (tickerTrack) {
+        gsap.set(tickerTrack, {
+          xPercent: 0,
+          willChange: "transform",
+        });
+
+        gsap.to(tickerTrack, {
+          xPercent: -50,
+          duration: 22,
+          ease: "none",
+          repeat: -1,
+        });
+      }
 
       gsap.set(para, {
         opacity: 0,
@@ -204,11 +210,6 @@ export default function CompanyHistorySection() {
       }
 
       const forceComplete = () => {
-        gsap.set(titleTrack, {
-          x: () => -titleTrack.scrollWidth - 180,
-          opacity: 1,
-        });
-
         gsap.set([para, yearsBox, cardsGrid, network], {
           opacity: 1,
           x: 0,
@@ -222,29 +223,20 @@ export default function CompanyHistorySection() {
         .timeline({
           scrollTrigger: {
             trigger: section,
-            start: "top 94%",
-            end: "top -35%",
-            scrub: 1.65,
+            start: "top 86%",
+            end: "top 48%",
+            scrub: 0.75,
             invalidateOnRefresh: true,
             onLeave: forceComplete,
           },
         })
-        .to(titleTrack, {
-          x: () => -titleTrack.scrollWidth - 180,
+        .to(para, {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
           ease: "none",
-          duration: 2.25,
+          duration: 0.36,
         })
-        .to(
-          para,
-          {
-            opacity: 1,
-            y: 0,
-            filter: "blur(0px)",
-            ease: "none",
-            duration: 0.36,
-          },
-          "-=1.75"
-        )
         .to(
           yearsBox,
           {
@@ -254,7 +246,7 @@ export default function CompanyHistorySection() {
             ease: "none",
             duration: 0.35,
           },
-          "-=1.72"
+          "-=0.2"
         )
         .to(
           cardsGrid,
@@ -265,7 +257,7 @@ export default function CompanyHistorySection() {
             ease: "none",
             duration: 0.45,
           },
-          "-=1.65"
+          "-=0.25"
         )
         .to(
           network,
@@ -277,7 +269,7 @@ export default function CompanyHistorySection() {
             ease: "none",
             duration: 0.35,
           },
-          "-=1.2"
+          "-=0.38"
         );
 
       ScrollTrigger.refresh();
@@ -365,15 +357,19 @@ export default function CompanyHistorySection() {
 
       <div className="relative z-[2] mx-auto w-full max-w-[1400px] px-4">
         {/* Heading */}
-        <div
-          ref={titleViewportRef}
-          className="w-full overflow-visible max-[760px]:overflow-visible"
-        >
+        <div className="w-full overflow-visible max-[760px]:overflow-visible">
           <div
-            ref={titleTrackRef}
-            className="w-max max-[760px]:w-full max-[760px]:translate-x-0"
+            ref={tickerTrackRef}
+            className="flex w-max items-center gap-[80px] max-[760px]:block max-[760px]:w-full"
           >
             <h2 className="history-title whitespace-nowrap bg-[linear-gradient(90deg,#00fe4e_0%,#00d657_18%,#02875d_42%,#00616f_68%,#07136f_100%)] bg-clip-text text-[210px] font-light uppercase leading-none tracking-[3px] text-transparent max-[1600px]:text-[180px] max-[1450px]:text-[150px] max-[1300px]:text-[118px] max-[1100px]:text-[94px] max-[900px]:text-[72px] max-[760px]:whitespace-normal max-[760px]:text-[54px] max-[760px]:leading-[0.95] max-[760px]:tracking-[1px] max-[520px]:text-[42px] max-[390px]:text-[34px]">
+              COMPANY HISTORY AND TRAJECTORY
+            </h2>
+
+            <h2
+              aria-hidden="true"
+              className="history-title whitespace-nowrap bg-[linear-gradient(90deg,#00fe4e_0%,#00d657_18%,#02875d_42%,#00616f_68%,#07136f_100%)] bg-clip-text text-[210px] font-light uppercase leading-none tracking-[3px] text-transparent max-[1600px]:text-[180px] max-[1450px]:text-[150px] max-[1300px]:text-[118px] max-[1100px]:text-[94px] max-[900px]:text-[72px] max-[760px]:hidden"
+            >
               COMPANY HISTORY AND TRAJECTORY
             </h2>
           </div>
