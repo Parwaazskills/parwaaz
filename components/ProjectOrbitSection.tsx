@@ -1,0 +1,509 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+export default function ProjectOrbitSection() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const orbitRef = useRef<HTMLDivElement | null>(null);
+  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const slides = [
+    {
+      title: "Demand",
+      text: "Empowering Pakistan's workforce with world-class skills through global partnerships like Coursera. Unlock new career opportunities with tailored programs designed for modern professionals.",
+    },
+    {
+      title: "Design",
+      text: "Crafting tailored learning experiences that align with industry demands and prepare professionals for the future of work.",
+    },
+    {
+      title: "Build",
+      text: "Building real-world skills through hands-on projects, expert mentorship, and globally recognized certifications.",
+    },
+    {
+      title: "Validate",
+      text: "Validating expertise with industry-recognized credentials, helping professionals stand out in a competitive global workforce.",
+    },
+  ];
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+    // Fix for mobile pin/scrub flakiness — takes over scroll handling
+    // to prevent native scroll momentum from interfering with pinned timelines
+    ScrollTrigger.normalizeScroll(true);
+
+    const section = sectionRef.current;
+    const orbit = orbitRef.current;
+    const slideEls = slideRefs.current.filter(Boolean) as HTMLDivElement[];
+    if (!section || !orbit || slideEls.length === 0) return;
+
+    let ctx: gsap.Context | null = null;
+
+    const setup = () => {
+      if (ctx) ctx.revert();
+      ctx = gsap.context(() => {
+        gsap.set(orbit, { xPercent: -50, yPercent: -50 });
+        gsap.to(orbit, {
+          rotation: 360,
+          duration: 90,
+          repeat: -1,
+          ease: "none",
+          transformOrigin: "50% 50%",
+        });
+
+        const isMobile = window.innerWidth <= 768;
+
+        const swingOrigin = isMobile ? "-80px 50%" : "-380px 50%";
+        const swingX = isMobile ? -25 : -100;
+        const swingY = isMobile ? 60 : 280;
+        const exitX = isMobile ? 20 : 80;
+        const exitY = isMobile ? -55 : -260;
+
+        slideEls.forEach((slide, index) => {
+          gsap.set(slide, {
+            opacity: index === 0 ? 1 : 0,
+            x: index === 0 ? 0 : swingX,
+            y: index === 0 ? 0 : swingY,
+            rotation: index === 0 ? 0 : 32,
+            scale: index === 0 ? 1 : 0.85,
+            filter: index === 0 ? "blur(0px)" : "blur(6px)",
+            transformOrigin: swingOrigin,
+          });
+        });
+
+        const slideDuration = isMobile ? 1800 : 1100;
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: `+=${(slideEls.length - 1) * slideDuration}`,
+            scrub: isMobile ? 1.2 : 1,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        for (let i = 1; i < slideEls.length; i++) {
+          const prev = slideEls[i - 1];
+          const next = slideEls[i];
+          if (!prev || !next) continue;
+
+          tl.to(prev, {
+            opacity: 0,
+            x: exitX,
+            y: exitY,
+            rotation: -32,
+            scale: 0.85,
+            filter: "blur(6px)",
+            duration: 1.2,
+            ease: "power3.inOut",
+          }, i);
+
+          tl.fromTo(next, {
+            opacity: 0,
+            x: swingX,
+            y: swingY,
+            rotation: 32,
+            scale: 0.85,
+            filter: "blur(6px)",
+            transformOrigin: swingOrigin,
+          }, {
+            opacity: 1,
+            x: 0,
+            y: 0,
+            rotation: 0,
+            scale: 1,
+            filter: "blur(0px)",
+            duration: 1.2,
+            ease: "power3.inOut",
+          }, i + 0.02);
+        }
+
+        // Don't call ScrollTrigger.refresh() here — page-level useEffect already does this
+        // and calling it inside setup() can cause duplicate triggers
+      }, section);
+    };
+
+    setup();
+
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 300);
+
+    let resizeTimer: ReturnType<typeof setTimeout> | null = null;
+    let lastWidth = window.innerWidth;
+    const onResize = () => {
+      const w = window.innerWidth;
+      const wasMobile = lastWidth <= 768;
+      const isMobile = w <= 768;
+      if (wasMobile !== isMobile) {
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          setup();
+          ScrollTrigger.refresh();
+        }, 200);
+      }
+      lastWidth = w;
+    };
+    window.addEventListener('resize', onResize);
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+      clearTimeout(refreshTimer);
+      if (resizeTimer) clearTimeout(resizeTimer);
+      if (ctx) ctx.revert();
+    };
+  }, []);
+
+  return (
+    <section ref={sectionRef} className="po-section">
+      <div className="po-title">
+        <h2>
+          <span className="po-title-a">HOW IT</span>
+          <span className="po-title-b">WORKS</span>
+        </h2>
+      </div>
+
+      <div className="po-canvas">
+        <div ref={orbitRef} className="po-rings">
+          <img src="/orbit.svg" alt="" />
+        </div>
+        <img src="/orbit1.svg" alt="" className="po-solid" />
+        <div className="po-glow" />
+      </div>
+
+      <img src="/vector.svg" alt="" className="po-vector" />
+
+      <div className="po-content">
+        <div className="po-slides">
+          {slides.map((slide, index) => (
+            <div
+              key={index}
+              ref={(el) => { slideRefs.current[index] = el; }}
+              className="po-slide"
+            >
+              <div className="po-slide-row">
+                <div className="po-ball">
+                  <div className="po-ball-core" />
+                  <div className="po-ball-pulse" />
+                </div>
+                <div className="po-slide-content">
+                  <h3 className="po-slide-title">{slide.title}</h3>
+                  <p className="po-slide-text">{slide.text}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <style jsx global>{`
+        .po-section {
+          position: relative;
+          width: 100%;
+          min-height: 90vh;
+          background: #ffffff;
+          padding: 40px 0 80px;
+          overflow: visible;
+          /* Adjust vector top offset here \u2014 increase to move vector DOWN, decrease (negative) to move UP */
+          --po-vector-top: -40px;
+          /* Adjust vector size here */
+          --po-vector-width: 600px;
+          --po-vector-max-width: 42vw;
+          /* Stretch vector vertically (taller without being wider) */
+          --po-vector-height: 1400px;
+        }
+
+        .po-title {
+          position: relative;
+          z-index: 10;
+          text-align: center;
+          margin-bottom: 20px;
+          padding: 0 24px;
+        }
+        .po-title h2 {
+          margin: 0;
+          font-family: var(--font-poppins), sans-serif;
+          font-size: clamp(32px, 5vw, 64px);
+          font-weight: 500;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
+          line-height: 1;
+          display: inline-flex;
+          align-items: baseline;
+          gap: 16px;
+        }
+        .po-title-a {
+          background: linear-gradient(135deg, #0adf54 0%, #0a7a5f 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        .po-title-b {
+          background: linear-gradient(135deg, #0a7a5f 0%, #050889 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .po-canvas {
+          position: absolute;
+          top: 50%;
+          left: -300px;
+          width: 700px;
+          height: 700px;
+          transform: translateY(-30%);
+          pointer-events: none;
+          z-index: 1;
+        }
+        .po-rings {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 130%;
+          height: 130%;
+          will-change: transform;
+        }
+        .po-rings img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          display: block;
+          filter: contrast(1.3) brightness(0.9) opacity(0.85);
+        }
+        .po-solid {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          display: block;
+          filter: contrast(1.4) brightness(0.75) opacity(0.7);
+        }
+        .po-glow {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 50%;
+          height: 50%;
+          transform: translate(-50%, -50%);
+          background: radial-gradient(circle, rgba(0, 254, 78, 0.08) 0%, transparent 70%);
+          filter: blur(40px);
+          z-index: -1;
+        }
+
+        .po-vector {
+          position: absolute;
+          right: -100px;
+          bottom: -230px;
+          width: 450px;
+          max-width: 30vw;
+          max-height: 900px;
+          height: auto;
+          object-fit: contain;
+          z-index: 5;
+          pointer-events: none;
+          opacity: 0.85;
+        }
+
+        .po-content {
+          position: relative;
+          z-index: 5;
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 0 32px 0 0;
+          min-height: 60vh;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+
+        .po-slides {
+          position: relative;
+          width: 100%;
+          max-width: 700px;
+          margin-right: 40px;
+          height: 320px;
+          perspective: 1400px;
+        }
+
+        .po-slide {
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 100%;
+          will-change: transform, opacity, filter;
+        }
+
+        .po-slide-row {
+          display: flex;
+          align-items: flex-start;
+          gap: 24px;
+        }
+
+        .po-ball {
+          position: relative;
+          width: 22px;
+          height: 22px;
+          min-width: 22px;
+          margin-top: 14px;
+          flex-shrink: 0;
+        }
+        .po-ball-core {
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #d8d8d8 0%, #c0c0c0 50%, #9a9a9a 100%);
+          box-shadow:
+            0 0 0 3px rgba(180, 180, 180, 0.18),
+            0 2px 8px rgba(0, 0, 0, 0.12),
+            inset 0 1px 2px rgba(255, 255, 255, 0.5);
+          animation: poBallPulse 2.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .po-ball-pulse {
+          position: absolute;
+          inset: -8px;
+          border-radius: 50%;
+          border: 2px solid rgba(160, 160, 160, 0.5);
+          opacity: 0;
+          animation: poBallRipple 2.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes poBallPulse {
+          0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 3px rgba(180, 180, 180, 0.18), 0 2px 8px rgba(0, 0, 0, 0.12), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+          }
+          50% {
+            transform: scale(1.1);
+            box-shadow: 0 0 0 5px rgba(180, 180, 180, 0.28), 0 2px 12px rgba(0, 0, 0, 0.16), inset 0 1px 2px rgba(255, 255, 255, 0.6);
+          }
+        }
+        @keyframes poBallRipple {
+          0% { opacity: 0.7; transform: scale(0.8); }
+          100% { opacity: 0; transform: scale(1.8); }
+        }
+
+        .po-slide-content {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .po-slide-title {
+          margin: 0 0 14px 0;
+          font-family: var(--font-poppins), sans-serif;
+          font-size: clamp(40px, 4vw, 53px);
+          font-weight: 600;
+          line-height: 1.05;
+          letter-spacing: -0.025em;
+          background: linear-gradient(135deg, #0adf54 0%, #0a7a5f 50%, #050889 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .po-slide-text {
+          margin: 0;
+          font-family: var(--font-poppins), sans-serif;
+          font-size: clamp(14px, 1.5vw, 20px);
+          line-height: 1.65;
+          color: rgba(0, 0, 0, 0.62);
+          font-weight: 400;
+          max-width: 700px;
+        }
+
+        @media (max-width: 1280px) {
+          .po-canvas { top: 50%; left: -300px; width: 700px; height: 700px; transform: translateY(-30%); }
+          .po-vector { right: -100px; bottom: -230px; width: 450px; max-width: 30vw; max-height: 900px; opacity: 0.85; }
+        }
+
+        @media (max-width: 1024px) {
+          .po-section { padding: 40px 0 80px; min-height: 90vh; }
+          .po-canvas { top: 50%; left: -300px; width: 700px; height: 700px; transform: translateY(-30%); }
+          .po-vector { right: -100px; bottom: -230px; width: 450px; max-width: 30vw; max-height: 900px; opacity: 0.85; }
+          .po-content { padding: 0 24px 0 0; min-height: 55vh; }
+          .po-slides { margin-right: 24px; max-width: 480px; height: 280px; }
+        }
+
+        /* ============================================================
+         * PROJECT ORBIT — MOBILE SAME VISUAL LANGUAGE AS DESKTOP
+         * ============================================================ */
+        @media (max-width: 768px) {
+          .po-section { padding: 40px 0 60px; min-height: 100vh; overflow: visible; }
+          .po-title { margin-bottom: 28px; }
+          .po-title h2 { font-size: clamp(28px, 7vw, 38px); gap: 10px; }
+          .po-canvas {
+            position: absolute;
+            top: 50%;
+            left: -180px;
+            width: 460px;
+            height: 460px;
+            transform: translateY(-30%);
+            opacity: 0.85;
+            z-index: 1;
+          }
+          .po-vector {
+            position: absolute;
+            right: -90px;
+            bottom: -60px;
+            width: 280px;
+            opacity: 0.85;
+            max-width: none;
+            max-height: none;
+            z-index: 2;
+          }
+          .po-content {
+            position: relative;
+            z-index: 5;
+            min-height: 70vh;
+            padding: 0 20px 0 0;
+            align-items: center;
+            justify-content: flex-end;
+          }
+          .po-slides {
+            position: relative;
+            width: 100%;
+            max-width: 280px;
+            margin-right: 12px;
+            margin-left: auto;
+            height: 320px;
+            perspective: 1200px;
+            z-index: 10;
+          }
+          .po-slide {
+            position: absolute;
+            left: 0;
+            top: 100%;
+            transform: translateY(-50%);
+            width: 100%;
+            z-index: 10;
+          }
+          .po-slide-row { gap: 12px; align-items: flex-start; justify-content: flex-start; }
+          .po-ball { width: 16px; height: 16px; min-width: 16px; margin-top: 8px; }
+          .po-slide-content { text-align: left; }
+          .po-slide-title { font-size: 26px; line-height: 1.1; margin-bottom: 8px; }
+          .po-slide-text { font-size: 12px; line-height: 1.55; max-width: none; margin: 0; }
+        }
+
+        @media (max-width: 480px) {
+          .po-section { padding: 32px 0 48px; min-height: 100vh; }
+          .po-title { padding: 0 16px; margin-bottom: 22px; }
+          .po-title h2 { font-size: 26px; gap: 8px; }
+          .po-canvas { left: -160px; width: 400px; height: 400px; opacity: 0.82; }
+          .po-vector { width: 220px; right: -80px; bottom: -50px; opacity: 0.8; }
+          .po-content { padding: 0 16px 0 0; min-height: 65vh; }
+          .po-slides { max-width: 240px; margin-right: 8px; height: 300px; }
+          .po-slide-row { gap: 10px; }
+          .po-ball { width: 14px; height: 14px; min-width: 14px; margin-top: 6px; }
+          .po-slide-title { font-size: 22px; }
+          .po-slide-text { font-size: 11.5px; line-height: 1.5; }
+        }
+      `}</style>
+    </section>
+  );
+}

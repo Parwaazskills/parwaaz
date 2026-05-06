@@ -4,604 +4,21 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   Mail, Phone, Search, Plus, Mic, ArrowUp, Menu, X,
-  Lightbulb, Code2, FileText, GraduationCap,
-  Database, Image as ImageIcon, MapPin,
   CheckCircle2, BookOpen, Smile, Globe,
-  Users, Briefcase, Award, BarChart3, PieChart, LineChart,
-  ClipboardList, Target, MessageSquare, TrendingUp,
-  Play,
 } from "lucide-react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-function ProjectOrbitSection() {
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const orbitRef = useRef<HTMLDivElement | null>(null);
-  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  const slides = [
-    {
-      title: "Demand",
-      text: "Empowering Pakistan's workforce with world-class skills through global partnerships like Coursera. Unlock new career opportunities with tailored programs designed for modern professionals.",
-    },
-    {
-      title: "Design",
-      text: "Crafting tailored learning experiences that align with industry demands and prepare professionals for the future of work.",
-    },
-    {
-      title: "Build",
-      text: "Building real-world skills through hands-on projects, expert mentorship, and globally recognized certifications.",
-    },
-    {
-      title: "Validate",
-      text: "Validating expertise with industry-recognized credentials, helping professionals stand out in a competitive global workforce.",
-    },
-  ];
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    gsap.registerPlugin(ScrollTrigger);
-    // Fix for mobile pin/scrub flakiness — takes over scroll handling
-    // to prevent native scroll momentum from interfering with pinned timelines
-    ScrollTrigger.normalizeScroll(true);
-
-    const section = sectionRef.current;
-    const orbit = orbitRef.current;
-    const slideEls = slideRefs.current.filter(Boolean) as HTMLDivElement[];
-    if (!section || !orbit || slideEls.length === 0) return;
-
-    let ctx: gsap.Context | null = null;
-
-    const setup = () => {
-      if (ctx) ctx.revert();
-      ctx = gsap.context(() => {
-        gsap.set(orbit, { xPercent: -50, yPercent: -50 });
-        gsap.to(orbit, {
-          rotation: 360,
-          duration: 90,
-          repeat: -1,
-          ease: "none",
-          transformOrigin: "50% 50%",
-        });
-
-        const isMobile = window.innerWidth <= 768;
-
-        const swingOrigin = isMobile ? "-80px 50%" : "-380px 50%";
-        const swingX = isMobile ? -25 : -100;
-        const swingY = isMobile ? 60 : 280;
-        const exitX = isMobile ? 20 : 80;
-        const exitY = isMobile ? -55 : -260;
-
-        slideEls.forEach((slide, index) => {
-          gsap.set(slide, {
-            opacity: index === 0 ? 1 : 0,
-            x: index === 0 ? 0 : swingX,
-            y: index === 0 ? 0 : swingY,
-            rotation: index === 0 ? 0 : 32,
-            scale: index === 0 ? 1 : 0.85,
-            filter: index === 0 ? "blur(0px)" : "blur(6px)",
-            transformOrigin: swingOrigin,
-          });
-        });
-
-        const slideDuration = isMobile ? 1800 : 1100;
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: `+=${(slideEls.length - 1) * slideDuration}`,
-            scrub: isMobile ? 1.2 : 1,
-            pin: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          },
-        });
-
-        for (let i = 1; i < slideEls.length; i++) {
-          const prev = slideEls[i - 1];
-          const next = slideEls[i];
-          if (!prev || !next) continue;
-
-          tl.to(prev, {
-            opacity: 0,
-            x: exitX,
-            y: exitY,
-            rotation: -32,
-            scale: 0.85,
-            filter: "blur(6px)",
-            duration: 1.2,
-            ease: "power3.inOut",
-          }, i);
-
-          tl.fromTo(next, {
-            opacity: 0,
-            x: swingX,
-            y: swingY,
-            rotation: 32,
-            scale: 0.85,
-            filter: "blur(6px)",
-            transformOrigin: swingOrigin,
-          }, {
-            opacity: 1,
-            x: 0,
-            y: 0,
-            rotation: 0,
-            scale: 1,
-            filter: "blur(0px)",
-            duration: 1.2,
-            ease: "power3.inOut",
-          }, i + 0.02);
-        }
-
-        // Don't call ScrollTrigger.refresh() here — page-level useEffect already does this
-        // and calling it inside setup() can cause duplicate triggers
-      }, section);
-    };
-
-    setup();
-
-    let resizeTimer: ReturnType<typeof setTimeout> | null = null;
-    let lastWidth = window.innerWidth;
-    const onResize = () => {
-      const w = window.innerWidth;
-      const wasMobile = lastWidth <= 768;
-      const isMobile = w <= 768;
-      if (wasMobile !== isMobile) {
-        if (resizeTimer) clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-          setup();
-          ScrollTrigger.refresh();
-        }, 200);
-      }
-      lastWidth = w;
-    };
-    window.addEventListener('resize', onResize);
-
-    return () => {
-      window.removeEventListener('resize', onResize);
-      if (resizeTimer) clearTimeout(resizeTimer);
-      if (ctx) ctx.revert();
-    };
-  }, []);
-
-  return (
-    <section ref={sectionRef} className="po-section">
-      <div className="po-title">
-        <h2>
-          <span className="po-title-a">HOW IT</span>
-          <span className="po-title-b">WORKS</span>
-        </h2>
-      </div>
-
-      <div className="po-canvas">
-        <div ref={orbitRef} className="po-rings">
-          <img src="/orbit.svg" alt="" />
-        </div>
-        <img src="/orbit1.svg" alt="" className="po-solid" />
-        <div className="po-glow" />
-      </div>
-
-      <img src="/vector.svg" alt="" className="po-vector" />
-
-      <div className="po-content">
-        <div className="po-slides">
-          {slides.map((slide, index) => (
-            <div
-              key={index}
-              ref={(el) => { slideRefs.current[index] = el; }}
-              className="po-slide"
-            >
-              <div className="po-slide-row">
-                <div className="po-ball">
-                  <div className="po-ball-core" />
-                  <div className="po-ball-pulse" />
-                </div>
-                <div className="po-slide-content">
-                  <h3 className="po-slide-title">{slide.title}</h3>
-                  <p className="po-slide-text">{slide.text}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <style jsx global>{`
-        .po-section {
-          position: relative;
-          width: 100%;
-          min-height: 90vh;
-          background: #ffffff;
-          padding: 40px 0 80px;
-          overflow: visible;
-        }
-
-        .po-title {
-          position: relative;
-          z-index: 10;
-          text-align: center;
-          margin-bottom: 20px;
-          padding: 0 24px;
-        }
-        .po-title h2 {
-          margin: 0;
-          font-family: var(--font-poppins), sans-serif;
-          font-size: clamp(32px, 5vw, 64px);
-          font-weight: 500;
-          letter-spacing: 0.02em;
-          text-transform: uppercase;
-          line-height: 1;
-          display: inline-flex;
-          align-items: baseline;
-          gap: 16px;
-        }
-        .po-title-a {
-          background: linear-gradient(135deg, #0adf54 0%, #0a7a5f 100%);
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-        .po-title-b {
-          background: linear-gradient(135deg, #0a7a5f 0%, #050889 100%);
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-
-        .po-canvas {
-          position: absolute;
-          top: 50%;
-          left: -300px;
-          width: 700px;
-          height: 700px;
-          transform: translateY(-30%);
-          pointer-events: none;
-          z-index: 1;
-        }
-        .po-rings {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 130%;
-          height: 130%;
-          will-change: transform;
-        }
-        .po-rings img {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          display: block;
-          filter: contrast(1.3) brightness(0.9) opacity(0.85);
-        }
-        .po-solid {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          display: block;
-          filter: contrast(1.4) brightness(0.75) opacity(0.7);
-        }
-        .po-glow {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 50%;
-          height: 50%;
-          transform: translate(-50%, -50%);
-          background: radial-gradient(circle, rgba(0, 254, 78, 0.08) 0%, transparent 70%);
-          filter: blur(40px);
-          z-index: -1;
-        }
-
-        .po-vector {
-          position: absolute;
-          right: -100px;
-          bottom: -230px;
-          width: 450px;
-          max-width: 30vw;
-          max-height: 900px;
-          height: auto;
-          object-fit: contain;
-          z-index: 5;
-          pointer-events: none;
-          opacity: 0.85;
-        }
-
-        .po-content {
-          position: relative;
-          z-index: 5;
-          max-width: 1280px;
-          margin: 0 auto;
-          padding: 0 32px 0 0;
-          min-height: 60vh;
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-        }
-
-        .po-slides {
-          position: relative;
-          width: 100%;
-          max-width: 700px;
-          margin-right: 40px;
-          height: 320px;
-          perspective: 1400px;
-        }
-
-        .po-slide {
-          position: absolute;
-          left: 0;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 100%;
-          will-change: transform, opacity, filter;
-        }
-
-        .po-slide-row {
-          display: flex;
-          align-items: flex-start;
-          gap: 24px;
-        }
-
-        .po-ball {
-          position: relative;
-          width: 22px;
-          height: 22px;
-          min-width: 22px;
-          margin-top: 14px;
-          flex-shrink: 0;
-        }
-        .po-ball-core {
-          position: absolute;
-          inset: 0;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #d8d8d8 0%, #c0c0c0 50%, #9a9a9a 100%);
-          box-shadow:
-            0 0 0 3px rgba(180, 180, 180, 0.18),
-            0 2px 8px rgba(0, 0, 0, 0.12),
-            inset 0 1px 2px rgba(255, 255, 255, 0.5);
-          animation: poBallPulse 2.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        .po-ball-pulse {
-          position: absolute;
-          inset: -8px;
-          border-radius: 50%;
-          border: 2px solid rgba(160, 160, 160, 0.5);
-          opacity: 0;
-          animation: poBallRipple 2.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        @keyframes poBallPulse {
-          0%, 100% {
-            transform: scale(1);
-            box-shadow: 0 0 0 3px rgba(180, 180, 180, 0.18), 0 2px 8px rgba(0, 0, 0, 0.12), inset 0 1px 2px rgba(255, 255, 255, 0.5);
-          }
-          50% {
-            transform: scale(1.1);
-            box-shadow: 0 0 0 5px rgba(180, 180, 180, 0.28), 0 2px 12px rgba(0, 0, 0, 0.16), inset 0 1px 2px rgba(255, 255, 255, 0.6);
-          }
-        }
-        @keyframes poBallRipple {
-          0% { opacity: 0.7; transform: scale(0.8); }
-          100% { opacity: 0; transform: scale(1.8); }
-        }
-
-        .po-slide-content {
-          flex: 1;
-          min-width: 0;
-        }
-
-        .po-slide-title {
-          margin: 0 0 14px 0;
-          font-family: var(--font-poppins), sans-serif;
-          font-size: clamp(40px, 4vw, 53px);
-          font-weight: 600;
-          line-height: 1.05;
-          letter-spacing: -0.025em;
-          background: linear-gradient(135deg, #0adf54 0%, #0a7a5f 50%, #050889 100%);
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-
-        .po-slide-text {
-          margin: 0;
-          font-family: var(--font-poppins), sans-serif;
-          font-size: clamp(14px, 1.5vw, 20px);
-          line-height: 1.65;
-          color: rgba(0, 0, 0, 0.62);
-          font-weight: 400;
-          max-width: 700px;
-        }
-
-        @media (max-width: 1280px) {
-          .po-canvas { top: 50%; left: -300px; width: 700px; height: 700px; transform: translateY(-30%); }
-          .po-vector { right: -100px; bottom: -230px; width: 450px; max-width: 30vw; max-height: 900px; opacity: 0.85; }
-        }
-
-        @media (max-width: 1024px) {
-          .po-section { padding: 40px 0 80px; min-height: 90vh; }
-          .po-canvas { top: 50%; left: -300px; width: 700px; height: 700px; transform: translateY(-30%); }
-          .po-vector { right: -100px; bottom: -230px; width: 450px; max-width: 30vw; max-height: 900px; opacity: 0.85; }
-          .po-content { padding: 0 24px 0 0; min-height: 55vh; }
-          .po-slides { margin-right: 24px; max-width: 480px; height: 280px; }
-        }
-
-        @media (max-width: 768px) {
-          .po-section { padding: 40px 0 60px; min-height: 100vh; overflow: visible; }
-          .po-title { margin-bottom: 28px; }
-          .po-title h2 { font-size: clamp(28px, 7vw, 38px); gap: 10px; }
-          .po-canvas {
-            position: absolute;
-            top: 50%;
-            left: -180px;
-            width: 460px;
-            height: 460px;
-            transform: translateY(-30%);
-            opacity: 0.85;
-            z-index: 1;
-          }
-          .po-vector {
-            position: absolute;
-            right: -90px;
-            bottom: -60px;
-            width: 280px;
-            opacity: 0.85;
-            max-width: none;
-            max-height: none;
-            z-index: 2;
-          }
-          .po-content {
-            position: relative;
-            z-index: 5;
-            min-height: 70vh;
-            padding: 0 20px 0 0;
-            align-items: center;
-            justify-content: flex-end;
-          }
-          .po-slides {
-            position: relative;
-            width: 100%;
-            max-width: 280px;
-            margin-right: 12px;
-            margin-left: auto;
-            height: 320px;
-            perspective: 1200px;
-            z-index: 10;
-          }
-          .po-slide {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 100%;
-            z-index: 10;
-          }
-          .po-slide-row { gap: 12px; align-items: flex-start; justify-content: flex-start; }
-          .po-ball { width: 16px; height: 16px; min-width: 16px; margin-top: 8px; }
-          .po-slide-content { text-align: left; }
-          .po-slide-title { font-size: 26px; line-height: 1.1; margin-bottom: 8px; }
-          .po-slide-text { font-size: 12px; line-height: 1.55; max-width: none; margin: 0; }
-        }
-
-        @media (max-width: 480px) {
-          .po-section { padding: 32px 0 48px; min-height: 100vh; }
-          .po-title { padding: 0 16px; margin-bottom: 22px; }
-          .po-title h2 { font-size: 26px; gap: 8px; }
-          .po-canvas { left: -160px; width: 400px; height: 400px; opacity: 0.82; }
-          .po-vector { width: 220px; right: -80px; bottom: -50px; opacity: 0.8; }
-          .po-content { padding: 0 16px 0 0; min-height: 65vh; }
-          .po-slides { max-width: 240px; margin-right: 8px; height: 300px; }
-          .po-slide-row { gap: 10px; }
-          .po-ball { width: 14px; height: 14px; min-width: 14px; margin-top: 6px; }
-          .po-slide-title { font-size: 22px; }
-          .po-slide-text { font-size: 11.5px; line-height: 1.5; }
-        }
-      `}</style>
-    </section>
-  );
-}
-
-function FacebookSvg() { return <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.099 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.413c0-3.03 1.792-4.703 4.533-4.703 1.313 0 2.686.236 2.686.236v2.973H15.83c-1.49 0-1.955.931-1.955 1.887v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.099 24 12.073Z" /></svg>; }
-function YoutubeSvg() { return <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current"><path d="M23.498 6.186a2.997 2.997 0 0 0-2.11-2.12C19.504 3.5 12 3.5 12 3.5s-7.504 0-9.388.566a2.997 2.997 0 0 0-2.11 2.12C0 8.08 0 12 0 12s0 3.92.502 5.814a2.997 2.997 0 0 0 2.11 2.12C4.496 20.5 12 20.5 12 20.5s7.504 0 9.388-.566a2.997 2.997 0 0 0 2.11-2.12C24 15.92 24 12 24 12s0-3.92-.502-5.814ZM9.545 15.568V8.432L15.818 12l-6.273 3.568Z" /></svg>; }
-function XSvg() { return <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.847h-7.406l-5.8-7.584-6.636 7.584H.478l8.6-9.83L0 1.153h7.594l5.243 6.932L18.9 1.153Zm-1.29 19.494h2.04L6.486 3.246H4.298l13.313 17.401Z" /></svg>; }
-function LinkedInSvg() { return <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-current"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.447-2.136 2.941v5.665H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.119 20.452H3.554V9h3.565v11.452z" /></svg>; }
-
-const chips = [
-  { label: "Brainstorm", icon: Lightbulb }, { label: "Code", icon: Code2 },
-  { label: "Summarize text", icon: FileText }, { label: "Get advice", icon: GraduationCap },
-  { label: "Analyze data", icon: Database }, { label: "Analyze images", icon: ImageIcon },
-];
-const clientLogos = [
-  { name: "Toyota", src: "/toyota-logo.png" }, { name: "UBL", src: "/ubl-logo.png" },
-  { name: "Systems", src: "/systems-logo.png" }, { name: "TÜV Rheinland", src: "/tuv-logo.png" },
-  { name: "FPCL", src: "/fpcl-logo.png" },
-];
-const teamMembers = [
-  { name: "SHAHBAN SHOUKAT", role: "Co-Founder", img: "/team-shahban.png" },
-  { name: "SHARJEEL USMANI", role: "Co-Founder & Business Creation Leader", img: "/team-sharjeel.png" },
-  { name: "OMAR NAEEM", role: "CFO / Investment Advisor", img: "/team-omar.png" },
-  { name: "SALMAN FAIZ", role: "Digital Marketing Consultant", img: "/team-salman.png" },
-];
-
-const successStories = [
-  {
-    city: "Lahore",
-    x: "40%",
-    y: "38%",
-    img: "/minar.png",
-    video: "/minar.png",
-    name: "Aisha Tariq",
-    role: "Senior Product Manager",
-    text: "The Coursera partnership opened doors I never thought possible. From a small startup to leading a fintech team — Parwaaz changed everything.",
-  },
-  {
-    city: "Islamabad",
-    x: "55%",
-    y: "25%",
-    img: "/faisal-mosque.png",
-    video: "/faisal-mosque.png",
-    name: "Ali Khan",
-    role: "Software Engineer",
-    text: "This program gave me real-world skills and confidence to grow internationally.",
-  },
-  {
-    city: "Karachi",
-    x: "65%",
-    y: "55%",
-    img: "/mazar.png",
-    video: "/mazar.png",
-    name: "Sara Ahmed",
-    role: "UX Designer",
-    text: "The exposure and mentorship helped me break into global design roles.",
-  },
-  {
-    city: "Faisalabad",
-    x: "50%",
-    y: "45%",
-    img: "/clock-tower.png",
-    video: "/clock-tower.png",
-    name: "Usman Raza",
-    role: "Data Analyst",
-    text: "From learning basics to handling enterprise data — huge transformation.",
-  },
-];
-
-const servicesData: Record<string, { eyebrow: string; title: string; body: string; icon: any; btn: string }[]> = {
-  Training: [
-    { eyebrow: "Coursera &", title: "Digital Learning", body: "World-class skills through global partnerships like Coursera. Tailored programs for modern professionals.", icon: FileText, btn: "Learn More" },
-    { eyebrow: "International Recruitment", title: "& Payroll", body: "Connecting top Pakistani talent with global opportunities through end-to-end recruitment and manpower solutions.", icon: Database, btn: "Learn More" },
-    { eyebrow: "Payroll, Contract & Visa Management", title: "Services", body: "Streamlined payroll, contract administration and visa processing for cross-border teams.", icon: Code2, btn: "Learn More" },
-    { eyebrow: "Leadership &", title: "Executive Coaching", body: "One-on-one coaching for managers and executives. Build the skills to lead high-performing teams with confidence.", icon: GraduationCap, btn: "Learn More" },
-    { eyebrow: "Technical &", title: "Bootcamp Programs", body: "Intensive hands-on bootcamps in software, data and AI. Build production-ready skills in weeks, not years.", icon: Lightbulb, btn: "Learn More" },
-    { eyebrow: "Certified &", title: "Compliance Training", body: "ISO, HSE and industry-certified compliance training that keeps your workforce safe and your business audit-ready.", icon: BookOpen, btn: "Learn More" },
-  ],
-  "HR services": [
-    { eyebrow: "Talent Acquisition &", title: "Recruitment", body: "End-to-end recruitment from sourcing to onboarding. Build high-performing teams aligned with your goals.", icon: Users, btn: "Get Started" },
-    { eyebrow: "Performance &", title: "Employee Engagement", body: "Boost productivity with engagement programs, performance reviews and culture-building that drives retention.", icon: Award, btn: "Get Started" },
-    { eyebrow: "Compensation &", title: "Benefits Strategy", body: "Design competitive packages and benefits programs to attract and retain top talent in your industry.", icon: Briefcase, btn: "Get Started" },
-    { eyebrow: "HR Policy &", title: "Compliance Audit", body: "Review HR policies, contracts and procedures for legal compliance. Stay aligned with labor laws and best practices.", icon: ClipboardList, btn: "Get Started" },
-    { eyebrow: "Learning &", title: "Development Programs", body: "Custom L&D roadmaps tied to business goals. Upskill your people and build internal pipelines for key roles.", icon: GraduationCap, btn: "Get Started" },
-    { eyebrow: "HR Tech &", title: "HRIS Implementation", body: "Modernize HR with the right HRIS, ATS and payroll tools. We handle selection, setup and team training.", icon: Database, btn: "Get Started" },
-  ],
-  Reports: [
-    { eyebrow: "Market Intelligence &", title: "Industry Reports", body: "Detailed market analysis covering trends, competitive landscape and growth opportunities backed by data.", icon: BarChart3, btn: "Download Sample" },
-    { eyebrow: "Financial Performance", title: "Analytics", body: "Comprehensive reports with revenue analysis, profitability insights and forecasting tailored to your KPIs.", icon: LineChart, btn: "Download Sample" },
-    { eyebrow: "Workforce &", title: "HR Analytics", body: "Workforce trends, productivity metrics and engagement scores via detailed analytics dashboards.", icon: PieChart, btn: "Download Sample" },
-    { eyebrow: "Competitor &", title: "Benchmark Reports", body: "Side-by-side comparisons with industry leaders. Spot gaps, replicate wins and sharpen your competitive edge.", icon: Target, btn: "Download Sample" },
-    { eyebrow: "Diversity &", title: "Inclusion Reports", body: "Track DEI metrics across hiring, pay and promotion. Quantify progress and identify where to focus next.", icon: CheckCircle2, btn: "Download Sample" },
-    { eyebrow: "Training Impact &", title: "ROI Reports", body: "Measure the business impact of every training program. Connect learning spend to performance outcomes.", icon: TrendingUp, btn: "Download Sample" },
-  ],
-  Surveys: [
-    { eyebrow: "Employee", title: "Satisfaction Surveys", body: "Measure morale, engagement and culture fit. Get actionable insights to improve workplace experience.", icon: MessageSquare, btn: "Run Survey" },
-    { eyebrow: "Customer Experience &", title: "NPS Surveys", body: "Track satisfaction with NPS, CSAT and feedback collection systems built for modern businesses.", icon: Target, btn: "Run Survey" },
-    { eyebrow: "Market Research &", title: "Consumer Insights", body: "Large-scale research surveys to validate ideas, understand consumer behavior and identify opportunities.", icon: ClipboardList, btn: "Run Survey" },
-    { eyebrow: "Pulse &", title: "Quick-Check Surveys", body: "Short, frequent surveys to take the team's pulse on morale, focus and blockers without survey fatigue.", icon: Smile, btn: "Run Survey" },
-    { eyebrow: "Exit &", title: "Offboarding Surveys", body: "Capture honest feedback from departing employees. Spot retention issues before they cost you more talent.", icon: Users, btn: "Run Survey" },
-    { eyebrow: "Brand &", title: "Reputation Tracking", body: "Monitor how your brand is perceived in the market. Track sentiment, awareness and advocacy over time.", icon: Globe, btn: "Run Survey" },
-  ],
-};
+import GsapTextAnimations from "@/components/GsapTextAnimations";
+import ProjectOrbitSection from "@/components/ProjectOrbitSection";
+import ContactCTASection from "@/components/ContactCTASection";
+import TeamSection from "@/components/TeamSection";
+import AlumniSection from "@/components/AlumniSection";
+import NewsletterSection from "@/components/NewsletterSection";
+import Footer from "@/components/Footer";
+import { FacebookSvg, YoutubeSvg, XSvg } from "@/components/SocialIcons";
+import { heroSlides } from "@/data/heroSlides";
+import { testimonials } from "@/data/testimonials";
+import { servicesData } from "@/data/services";
+import { chips } from "@/data/chips";
+import { clientLogos } from "@/data/clientLogos";
 
 export default function Page() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -616,44 +33,10 @@ export default function Page() {
   const [activeServiceTab, setActiveServiceTab] = useState<keyof typeof servicesData>("Training");
   const [serviceAnimKey, setServiceAnimKey] = useState(0);
   const [servicePage, setServicePage] = useState(0); // 0 = cards 0-2, 1 = cards 3-5
-  const [active, setActive] = useState(0);
-  const testimonialRef = useRef<HTMLDivElement | null>(null);
-
-  const handleStoryClick = (index: number) => {
-    setActive(index);
-    setTimeout(() => {
-      testimonialRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
-  };
-
   // Reset to page 0 when switching tabs
   useEffect(() => {
     setServicePage(0);
   }, [activeServiceTab]);
-
-  const heroSlides = [
-    {
-      title: "Delivering Digital Experience",
-      subtitle: "That Make The World Better",
-      desc: "Connecting you the right tools, People, and Creative Strategies to elevate your business in South Asia, Middle East and beyond.",
-      bg: "/back-image.png",
-    },
-    {
-      title: "Innovate Your Future",
-      subtitle: "With Smart Solutions",
-      desc: "Empowering businesses with modern technology and scalable architecture.",
-      bg: "/bg.png",
-    },
-    {
-      title: "Build Smarter Systems",
-      subtitle: "Scale Without Limits",
-      desc: "We help you create future-ready digital products that grow with your business.",
-      bg: "/bg2.png",
-    },
-  ];
 
   // Auto-rotate hero background every 5 seconds
   useEffect(() => {
@@ -668,32 +51,6 @@ export default function Page() {
   const rx = useRef(0); const ry = useRef(0);
   const logoTrackRef = useRef<HTMLDivElement | null>(null);
 
-  const testimonials = [
-    {
-      name: "Sara Mohamed",
-      img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=faces",
-      stars: 5,
-      text: "I've been using the hotel booking system for several years now, and it's become my go-to platform for planning my trips. The interface is user-friendly and I appreciate the detailed information and real-time availability of hotels.",
-    },
-    {
-      name: "Ahmed Khan",
-      img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces",
-      stars: 5,
-      text: "Parwaaz transformed our hiring process. Their international recruitment expertise and dedication to quality candidates is unmatched. The team is professional, responsive, and truly understands our business needs.",
-    },
-    {
-      name: "Fatima Hassan",
-      img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=faces",
-      stars: 5,
-      text: "The Coursera partnership opened up incredible learning opportunities for our team. World-class courses combined with personalized guidance made all the difference in our professional development journey.",
-    },
-    {
-      name: "Bilal Ahmad",
-      img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces",
-      stars: 5,
-      text: "Outstanding service and remarkable attention to detail. Parwaaz delivered exactly what they promised, on time and within budget. I highly recommend them for any digital transformation initiative.",
-    },
-  ];
 
   const handleLogoPrev = () => {
     setLogoIndex(prev => prev - 1);
@@ -881,118 +238,6 @@ export default function Page() {
     return () => { observer.disconnect(); mo.disconnect(); };
   }, []);
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    gsap.registerPlugin(ScrollTrigger);
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    const splitElement = (el: HTMLElement) => {
-      if (el.dataset.textSplitProcessed) return;
-      const mode = el.dataset.textSplit === 'words' ? 'words' : 'chars';
-      const original = el.textContent || '';
-      el.dataset.textSplitOriginal = original;
-      el.textContent = '';
-      el.classList.add('text-split');
-      const tokens = mode === 'words' ? original.split(/(\s+)/) : Array.from(original);
-      tokens.forEach((token) => {
-        if (/^\s+$/.test(token)) {
-          el.appendChild(document.createTextNode(token));
-          return;
-        }
-        if (mode === 'chars' && token === ' ') {
-          el.appendChild(document.createTextNode(' '));
-          return;
-        }
-        const span = document.createElement('span');
-        span.className = 'text-split-token';
-        span.textContent = token;
-        el.appendChild(span);
-      });
-      el.dataset.textSplitProcessed = '1';
-    };
-
-    const splitTriggers: ScrollTrigger[] = [];
-    const paragraphTriggers: ScrollTrigger[] = [];
-
-    const splitElements = Array.from(document.querySelectorAll<HTMLElement>('[data-text-split]'));
-    splitElements.forEach(splitElement);
-
-    splitElements.forEach((el) => {
-      const tokens = el.querySelectorAll<HTMLElement>('.text-split-token');
-      if (!tokens.length) return;
-      if (reduced) {
-        tokens.forEach(t => { t.style.opacity = '1'; t.style.transform = 'none'; });
-        return;
-      }
-      gsap.set(tokens, { yPercent: 110, opacity: 0, rotate: 6 });
-      const tween = gsap.to(tokens, {
-        yPercent: 0,
-        opacity: 1,
-        rotate: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-        stagger: 0.035,
-        paused: true,
-        overwrite: 'auto',
-      });
-      const st = ScrollTrigger.create({
-        trigger: el,
-        start: 'top 85%',
-        once: true,
-        onEnter: () => tween.play(),
-      });
-      splitTriggers.push(st);
-    });
-
-    const paragraphs = Array.from(
-      document.querySelectorAll<HTMLElement>('[data-mwg-reveal="paragraph"]')
-    );
-    paragraphs.forEach((p) => {
-      if (p.dataset.mwgProcessed) return;
-      p.dataset.mwgProcessed = '1';
-      if (reduced) {
-        p.style.opacity = '1';
-        p.style.transform = 'none';
-        return;
-      }
-      gsap.set(p, { y: 30, opacity: 0 });
-      const tween = gsap.to(p, {
-        y: 0,
-        opacity: 1,
-        duration: 0.95,
-        ease: 'power3.out',
-        paused: true,
-        overwrite: 'auto',
-      });
-      const st = ScrollTrigger.create({
-        trigger: p,
-        start: 'top 88%',
-        once: true,
-        onEnter: () => tween.play(),
-      });
-      paragraphTriggers.push(st);
-    });
-
-    // Only refresh ScrollTrigger if user hasn't scrolled yet.
-    // Refreshing after the user has scrolled into a pinned section
-    // causes the timeline to fast-forward to current scroll position,
-    // which makes pinned slides flash by instantly.
-    const safeRefresh = () => {
-      if (window.scrollY < 50) {
-        ScrollTrigger.refresh();
-      }
-    };
-    const refreshTimer = setTimeout(safeRefresh, 250);
-    const onLoad = () => safeRefresh();
-    window.addEventListener('load', onLoad);
-
-    return () => {
-      clearTimeout(refreshTimer);
-      window.removeEventListener('load', onLoad);
-      splitTriggers.forEach(t => t.kill());
-      paragraphTriggers.forEach(t => t.kill());
-    };
-  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -1009,6 +254,7 @@ export default function Page() {
 
   return (
     <main className="bg-white overflow-x-hidden">
+      <GsapTextAnimations />
       <div ref={ringRef} className="pw-ring" />
       <div ref={dotRef} className="pw-dot" />
 
@@ -1673,6 +919,83 @@ export default function Page() {
         .chatbox-wrap { position: relative; z-index: 5; margin-top: -60px; }
         @media (min-width: 640px) { .chatbox-wrap { margin-top: -90px; } }
         @media (min-width: 1024px) { .chatbox-wrap { margin-top: -90px; } }
+
+        /* ============================================================
+         * MOBILE-ONLY FIXES (≤768px)
+         * Targets: hero, robot, chatbox, ea-card, alumni map+story
+         * Desktop layout completely untouched.
+         * ============================================================ */
+        @media (max-width: 768px) {
+          .hero-bg {
+            height: 680px; !important;
+            min-height: auto !important;
+            overflow: hidden !important;
+            padding-bottom: 44px !important;
+          }
+          .hero-robot-wrap,
+          .hero-robot-mobile {
+            position: relative !important;
+            top: auto !important;
+            right: auto !important;
+            left: auto !important;
+            width: 76% !important;
+            max-width: 270px !important;
+           margin: 40px auto 30px !important;
+            z-index: 8 !important;
+          }
+          .chatbox-wrap {
+            position: relative !important;
+            left: auto !important;
+            bottom: auto !important;
+            transform: none !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: -70px auto 0 !important;
+            padding: 0 16px !important;
+            z-index: 12 !important;
+          }
+          .ea-card {
+            width: 100% !important;
+            max-width: 380px !important;
+            margin: 0 auto !important;
+          }
+          .alumni-section {
+            margin-top: 0 !important;
+            padding-top: 54px !important;
+          }
+          .alumni-map-stage {
+            position: relative !important;
+            min-height: 390px !important;
+            overflow: visible !important;
+          }
+          .world-map {
+            display: block !important;
+            position: absolute !important;
+            top: 90px !important;
+            left: 50% !important;
+            width: 520px !important;
+            max-width: none !important;
+            height: auto !important;
+            transform: translateX(-50%) !important;
+            opacity: 0.35 !important;
+            z-index: 1 !important;
+            pointer-events: none !important;
+          }
+          .map-card {
+            position: relative !important;
+            left: auto !important;
+            top: auto !important;
+            transform: none !important;
+            z-index: 5 !important;
+            margin: 10px auto !important;
+          }
+          .success-story-panel,
+          .story-panel {
+            position: relative !important;
+            z-index: 10 !important;
+            margin-top: 20px !important;
+          }
+        }
 
         @keyframes heroSlideUp {
           0% { opacity: 0; transform: translateY(40px); }
@@ -2412,6 +1735,396 @@ export default function Page() {
           .site-footer-bottom { padding: 14px 20px; }
         }
 
+
+        /* === Alumni Map Section === */
+        .alumni-section { position: relative; }
+
+        .alumni-map-stage {
+          position: relative;
+          width: 100%;
+          max-width: 1080px;
+          margin: 0 auto;
+          padding: 80px 24px 80px;
+          aspect-ratio: 16 / 9;
+        }
+
+        .world-map {
+          position: absolute;
+          inset: 24px 16px 24px;
+          width: calc(100% - 32px);
+          height: calc(100% - 48px);
+          object-fit: contain;
+          opacity: 0.18;
+          filter: grayscale(1) brightness(1.1);
+          display: block;
+          z-index: 1;
+          pointer-events: none;
+          border-radius: 12px;
+        }
+
+        .alumni-map-dots {
+          position: absolute;
+          inset: 0;
+          background-image: radial-gradient(circle, rgba(5, 5, 5, 0.18) 1.1px, transparent 1.1px);
+          background-size: 18px 18px;
+          background-position: 0 0;
+          mix-blend-mode: multiply;
+          opacity: 0.45;
+          pointer-events: none;
+        }
+
+        /* Pin = the wrapping button positioned at the city's lat/lng on the map.
+           Visually, the pin itself is just the small dot. The card-bubble sits ABOVE,
+           connected by a tail. */
+        .alumni-pin {
+          position: absolute;
+          z-index: 5;
+          width: 0;
+          height: 0;
+          padding: 0;
+          background: transparent;
+          border: 0;
+          cursor: pointer;
+          transform: translate(-50%, -50%);
+        }
+
+        /* The location dot sitting exactly on the pin's coordinate */
+        .alumni-pin-dot {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: #050505;
+          transform: translate(-50%, -50%);
+          box-shadow: 0 0 0 2px rgba(5, 5, 5, 0.08);
+          transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        .alumni-pin-active .alumni-pin-dot {
+          background: #00FE4E;
+          box-shadow: 0 0 0 3px rgba(0, 254, 78, 0.25), 0 0 12px rgba(0, 254, 78, 0.6);
+        }
+
+        /* Continuous radar pulse rings on the active dot */
+        .alumni-pin-pulse {
+          position: absolute;
+          inset: -6px;
+          border: 2px solid #00FE4E;
+          border-radius: 50%;
+          opacity: 0;
+          animation: alumniPinPulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+          pointer-events: none;
+        }
+        .alumni-pin-pulse-2 { animation-delay: 1.1s; }
+        @keyframes alumniPinPulse {
+          0%   { transform: scale(0.6); opacity: 0.85; }
+          100% { transform: scale(3.2); opacity: 0; }
+        }
+
+        /* Floating speech-bubble card sitting ABOVE the pin */
+        .alumni-bubble {
+          position: absolute;
+          left: 0;
+          /* Sit above the pin with the tail touching the dot */
+          bottom: 6px;
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          padding: 8px 14px 8px 8px;
+          background: #ffffff;
+          border: 1.5px solid #eeeeee;
+          border-radius: 12px;
+          box-shadow:
+            0 4px 14px rgba(5, 5, 5, 0.08),
+            0 1px 3px rgba(5, 5, 5, 0.04);
+          white-space: nowrap;
+          transform: translate(-50%, -100%);
+          transform-origin: bottom center;
+          transition:
+            transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+            border-color 0.35s ease,
+            padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+            gap 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+            background 0.35s ease;
+          will-change: transform, box-shadow;
+        }
+
+        /* Tail/pointer at bottom of bubble */
+        .alumni-bubble-tail {
+          position: absolute;
+          left: 50%;
+          bottom: -7px;
+          width: 14px;
+          height: 14px;
+          background: #ffffff;
+          border-right: 1.5px solid #eeeeee;
+          border-bottom: 1.5px solid #eeeeee;
+          transform: translateX(-50%) rotate(45deg);
+          transition: border-color 0.35s ease, background 0.35s ease;
+        }
+
+        .alumni-pin:hover .alumni-bubble {
+          box-shadow:
+            0 14px 36px rgba(5, 5, 5, 0.18),
+            0 4px 10px rgba(5, 5, 5, 0.08),
+            0 0 0 2px rgba(0, 254, 78, 0.15);
+          border-color: rgba(0, 254, 78, 0.45);
+          transform: translate(-50%, -100%) translateY(-6px) scale(1.06);
+        }
+        .alumni-pin:hover .alumni-bubble-tail {
+          border-right-color: rgba(0, 254, 78, 0.45);
+          border-bottom-color: rgba(0, 254, 78, 0.45);
+        }
+        .alumni-pin:hover .alumni-bubble-watch-arrow {
+          transform: translateX(2px);
+        }
+
+        /* Active = much bigger pop-out (like Asia card in reference) */
+        .alumni-pin-active .alumni-bubble {
+          border-color: #00FE4E;
+          padding: 12px 18px 12px 12px;
+          gap: 14px;
+          box-shadow:
+            0 22px 50px rgba(0, 254, 78, 0.32),
+            0 0 0 3px rgba(0, 254, 78, 0.2),
+            0 8px 18px rgba(5, 5, 5, 0.12);
+          z-index: 6;
+          transform: translate(-50%, -100%) translateY(-4px) scale(1.35);
+        }
+        .alumni-pin-active .alumni-bubble-tail {
+          border-right-color: #00FE4E;
+          border-bottom-color: #00FE4E;
+        }
+        .alumni-pin-active .alumni-bubble-city {
+          color: #000572;
+          font-size: 15px;
+        }
+        .alumni-pin-active .alumni-bubble-watch {
+          font-size: 11px;
+        }
+        .alumni-pin-active .alumni-bubble-img-wrap {
+          width: 44px;
+          height: 44px;
+          border-radius: 10px;
+        }
+
+        .alumni-bubble-img-wrap {
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          overflow: hidden;
+          flex-shrink: 0;
+          background: #eeeeee;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .alumni-bubble-img-wrap img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+
+        .alumni-bubble-text {
+          display: inline-flex;
+          flex-direction: column;
+          align-items: flex-start;
+          line-height: 1.1;
+        }
+        .alumni-bubble-city {
+          font-family: var(--font-poppins), sans-serif;
+          font-size: 13px;
+          font-weight: 700;
+          color: #050505;
+          letter-spacing: -0.01em;
+          transition: color 0.3s ease;
+        }
+        .alumni-bubble-watch {
+          margin-top: 3px;
+          font-family: var(--font-poppins), sans-serif;
+          font-size: 10px;
+          font-weight: 600;
+          color: #000572;
+          letter-spacing: 0.06em;
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+        }
+        .alumni-bubble-watch-arrow {
+          display: inline-block;
+          font-size: 8px;
+          color: #00b347;
+          transition: transform 0.3s ease;
+        }
+
+        /* Story panel re-animates on click via React key */
+        @keyframes alumniPanelIn {
+          0%   { opacity: 0; transform: translateY(24px) scale(0.96); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .alumni-panel {
+          animation: alumniPanelIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+          will-change: transform, opacity;
+        }
+
+        /* === Alumni Section: Mobile responsive — horizontal scroll cards over preview map === */
+
+        /* Tablet (≤1024px): smaller bubbles, scale stage down (desktop layout preserved) */
+        @media (max-width: 1024px) {
+          .alumni-map-stage {
+            padding: 40px 16px 40px;
+            aspect-ratio: 16 / 10;
+          }
+          .world-map { inset: 20px 16px 20px; width: calc(100% - 32px); height: calc(100% - 40px); }
+          .alumni-bubble {
+            padding: 7px 12px 7px 7px;
+            gap: 9px;
+          }
+          .alumni-bubble-img-wrap { width: 28px; height: 28px; }
+          .alumni-bubble-city { font-size: 12px; }
+          .alumni-bubble-watch { font-size: 9.5px; }
+          .alumni-pin-active .alumni-bubble {
+            transform: translate(-50%, -100%) translateY(-8px) scale(1.25);
+            padding: 10px 14px 10px 10px;
+          }
+          .alumni-pin-active .alumni-bubble-img-wrap { width: 38px; height: 38px; }
+          .alumni-pin-active .alumni-bubble-city { font-size: 13px; }
+        }
+
+        /* === Alumni — Mobile (≤768px): pins stay on map, bubbles shrink === */
+        @media (max-width: 768px) {
+          .alumni-section {
+            padding: 48px 16px 56px !important;
+          }
+
+          /* Map stage stays as a positioned container — pins stay on the map */
+          .alumni-map-stage {
+            padding: 24px 12px !important;
+            aspect-ratio: 16 / 12 !important;
+            max-width: 100% !important;
+          }
+
+          /* Map image stays as the absolute background */
+          .world-map {
+            inset: 12px 8px !important;
+            width: calc(100% - 16px) !important;
+            height: calc(100% - 24px) !important;
+            opacity: 0.45 !important;
+          }
+
+          /* Hide dotted overlay on mobile — keep map readable */
+          .alumni-map-dots {
+            display: none !important;
+          }
+
+          /* Pins stay absolutely positioned at their x/y coords */
+          .alumni-pin {
+            position: absolute !important;
+            transform: translate(-50%, -50%) !important;
+            flex: none !important;
+          }
+
+          /* Show the dot back */
+          .alumni-pin-dot,
+          .alumni-pin-pulse {
+            display: block !important;
+          }
+
+          /* Speech bubble shrinks for mobile */
+          .alumni-bubble {
+            position: absolute !important;
+            bottom: 6px !important;
+            transform: translate(-50%, -100%) !important;
+            padding: 5px 9px 5px 5px !important;
+            gap: 6px !important;
+            white-space: nowrap !important;
+            width: auto !important;
+          }
+
+          .alumni-bubble-tail { display: block !important; }
+          .alumni-bubble-img-wrap { width: 22px !important; height: 22px !important; }
+          .alumni-bubble-city { font-size: 10px !important; }
+          .alumni-bubble-watch { font-size: 7.5px !important; margin-top: 1px !important; }
+
+          /* Active pin pop-out — smaller on mobile */
+          .alumni-pin-active .alumni-bubble {
+            transform: translate(-50%, -100%) translateY(-3px) scale(1.15) !important;
+            padding: 7px 11px 7px 7px !important;
+          }
+          .alumni-pin-active .alumni-bubble-img-wrap { width: 28px !important; height: 28px !important; }
+          .alumni-pin-active .alumni-bubble-city { font-size: 11px !important; }
+        }
+
+        /* Tiny phones */
+        @media (max-width: 480px) {
+          .alumni-section {
+            padding: 36px 14px 44px !important;
+          }
+          .alumni-map-stage {
+            aspect-ratio: 16 / 13 !important;
+          }
+          .alumni-bubble {
+            padding: 4px 7px 4px 4px !important;
+            gap: 5px !important;
+          }
+          .alumni-bubble-img-wrap { width: 18px !important; height: 18px !important; }
+          .alumni-bubble-city { font-size: 9px !important; }
+          .alumni-bubble-watch { font-size: 7px !important; }
+          .alumni-pin-active .alumni-bubble {
+            transform: translate(-50%, -100%) translateY(-2px) scale(1.1) !important;
+            padding: 5px 8px 5px 5px !important;
+          }
+          .alumni-pin-active .alumni-bubble-img-wrap { width: 22px !important; height: 22px !important; }
+          .alumni-pin-active .alumni-bubble-city { font-size: 10px !important; }
+        }
+
+        /* Story / testimonial panel — mobile sizing (≤768px) */
+        @media (max-width: 768px) {
+          .alumni-panel {
+            margin-top: 24px !important;
+            width: 100%;
+            border-radius: 20px !important;
+            padding: 20px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 16px !important;
+          }
+          .alumni-panel > div:first-child {
+            width: 100% !important;
+            height: 165px !important;
+            border-radius: 14px !important;
+          }
+          .alumni-panel > div:first-child img {
+            object-fit: cover !important;
+          }
+          .alumni-panel > div:nth-child(2) {
+            width: 100% !important;
+          }
+          .alumni-panel h3 {
+            font-size: 20px !important;
+            line-height: 1.35 !important;
+          }
+          .alumni-panel p {
+            font-size: 13px !important;
+            line-height: 1.5 !important;
+          }
+        }
+
+        /* Tiny phones (≤480px): tighter panel */
+        @media (max-width: 480px) {
+          .alumni-panel { padding: 16px !important; }
+          .alumni-panel h3 { font-size: 18px !important; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .alumni-pin-pulse { animation: none; opacity: 0; }
+          .alumni-panel { animation: none; }
+          .alumni-bubble { transition: none; }
+        }
+
         .team-section { position: relative; overflow: hidden; background: #fff; padding: 56px 0; }
         @media (min-width: 1024px) { .team-section { padding: 80px 0; } }
         .team-bg-circuit { position: absolute; right: 2%; top: 50%; transform: translateY(-50%); width: 160px; height: 380px; pointer-events: none; opacity: 0.55; z-index: 1; }
@@ -2453,6 +2166,13 @@ export default function Page() {
             />
           ))}
           <div className="relative mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 pt-3 pb-[70px] sm:pb-[120px] lg:pb-[180px]">
+
+            {heroBgIndex === 0 && (
+              <div className="hero-robot-wrap hidden lg:block">
+                <div className="hero-robot-glow" />
+                <img src="/robot.png" alt="Robot" className="hero-robot-img robot-float" />
+              </div>
+            )}
 
             <div className="hidden lg:flex items-center justify-end gap-5 text-[12px] font-semibold text-white/90 mb-3">
               <div className="flex items-center gap-2"><Mail className="h-3.5 w-3.5 text-[#00fe4e]" /><span>+92 300 2855800</span></div>
@@ -2606,29 +2326,35 @@ export default function Page() {
               <div className="relative z-10">
                 <h1
                   key={`hero-title-${heroBgIndex}`}
-                  className="hero-anim-slide-up mb-2 font-extrabold leading-[.95] tracking-[-0.05em] text-[#00fe4e] drop-shadow-[0_0_20px_rgba(0,254,78,.35)]"
+                  className="gsap-hero-title hero-anim-slide-up mb-2 font-extrabold leading-[.95] tracking-[-0.05em] text-[#00fe4e] drop-shadow-[0_0_20px_rgba(0,254,78,.35)]"
                   style={{ fontSize: 'clamp(32px, 5vw, 56px)' }}
                 >
                   {heroSlides[heroBgIndex].title}
                 </h1>
                 <h2
                   key={`hero-subtitle-${heroBgIndex}`}
-                  className="hero-anim-slide-up hero-anim-delay-1 mb-4 font-medium leading-tight tracking-[-0.03em] text-white"
+                  className="gsap-hero-subtitle hero-anim-slide-up hero-anim-delay-1 mb-4 font-medium leading-tight tracking-[-0.03em] text-white"
                   style={{ fontSize: 'clamp(18px, 2.6vw, 30px)' }}
                 >
                   {heroSlides[heroBgIndex].subtitle}
                 </h2>
                 <p
                   key={`hero-desc-${heroBgIndex}`}
-                  className="hero-anim-slide-up hero-anim-delay-2 mb-5 lg:mb-6 font-normal leading-[1.5] text-white/80"
+                  className="gsap-hero-text hero-anim-slide-up hero-anim-delay-2 mb-5 lg:mb-6 font-normal leading-[1.5] text-white/80"
                   style={{ fontSize: 'clamp(12px, 1vw, 14px)', maxWidth: '480px' }}
                 >
                   {heroSlides[heroBgIndex].desc}
                 </p>
-                <div className="hero-anim-slide-up hero-anim-delay-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <div className="gsap-hero-cta hero-anim-slide-up hero-anim-delay-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                   <button className="hero-btn hero-btn-primary h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium">Our Services</button>
                   <button className="hero-btn hero-btn-secondary h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium">Get Started</button>
                 </div>
+                {heroBgIndex === 0 && (
+                  <div className="hero-robot-mobile lg:hidden">
+                    <div className="hero-robot-glow" />
+                    <img src="/robot.png" alt="Robot" className="hero-robot-img robot-float" />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -2797,15 +2523,15 @@ export default function Page() {
 
           <section className="mt-14 lg:mt-20 pb-12 lg:pb-16">
             <div data-reveal="up-sm" className="mb-3 lg:mb-4 text-[12px] lg:text-[13px] font-semibold uppercase tracking-[0.08em] text-black">Our Services</div>
-            <div data-reveal="fade" data-reveal-delay="100" className="marquee-shell">
+            <div data-reveal="fade" data-reveal-delay="100" className="gsap-marquee marquee-shell">
               <div className="marquee-track">
-                <span className="marquee-text">Cutting-Edge Solutions</span>
+                <span className="gsap-clip marquee-text">Cutting-Edge Solutions</span>
                 <span className="marquee-text">Cutting-Edge Solutions</span>
                 <span className="marquee-text">Cutting-Edge Solutions</span>
                 <span className="marquee-text">Cutting-Edge Solutions</span>
               </div>
             </div>
-            <p data-reveal="up-sm" data-reveal-delay="200" className="mt-3 lg:mt-4 max-w-[560px] leading-[1.3] text-[#202020]" style={{ fontSize: 'clamp(13px, 1.4vw, 16px)' }}>
+            <p data-reveal="up-sm" data-reveal-delay="200" className="gsap-words mt-3 lg:mt-4 max-w-[560px] leading-[1.3] text-[#202020]" style={{ fontSize: 'clamp(13px, 1.4vw, 16px)' }}>
               Transforming businesses with AI-powered technology and intelligent automation
             </p>
             <div data-reveal="up-sm" data-reveal-delay="280" className="mt-6 lg:mt-7 grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
@@ -2875,14 +2601,14 @@ export default function Page() {
 
           <section className="mt-10 lg:mt-14 pb-12 lg:pb-20">
             <h3 data-reveal="up-sm" className="font-light leading-none tracking-[-0.03em] text-black" style={{ fontSize: 'clamp(28px, 4vw, 44px)' }}>Why Choose Us</h3>
-            <div data-reveal="fade" data-reveal-delay="100" className="marquee-shell mt-3 lg:mt-5">
+            <div data-reveal="fade" data-reveal-delay="100" className="gsap-marquee marquee-shell mt-3 lg:mt-5">
               <div className="marquee-track">
-                <span className="marquee-text">Let The Numbers Speak!</span>
+                <span className="gsap-clip marquee-text">Let The Numbers Speak!</span>
                 <span className="marquee-text">Let The Numbers Speak!</span>
                 <span className="marquee-text">Let The Numbers Speak!</span>
               </div>
             </div>
-            <p data-reveal="up-sm" data-reveal-delay="200" className="mt-3 lg:mt-4 leading-[1.4] text-black" style={{ fontSize: 'clamp(13px, 1.4vw, 16px)' }}>With enough data, the numbers speak for themselves.</p>
+            <p data-reveal="up-sm" data-reveal-delay="200" className="gsap-words mt-3 lg:mt-4 leading-[1.4] text-black" style={{ fontSize: 'clamp(13px, 1.4vw, 16px)' }}>With enough data, the numbers speak for themselves.</p>
             <div className="mt-6 lg:mt-7 grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 max-w-[1280px]">
               {[
                 { Icon: CheckCircle2, val: "1,000+", l1: "Successful", l2: "Placements" },
@@ -2904,31 +2630,19 @@ export default function Page() {
 
         <ProjectOrbitSection />
 
-        <section className="contact-cta-section">
-          <div className="contact-cta-wrap">
-            <div className="contact-cta-box" data-reveal="zoom">
-              <p className="contact-cta-text">Get in touch to learn how our team can support your business</p>
-              <button className="contact-cta-btn">
-                <span>Contact Us</span>
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </section>
+        <ContactCTASection />
 
         <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <section className="relative bg-white pb-12 lg:pb-20 pt-16 lg:pt-24">
             <div data-reveal="up-sm" className="text-[12px] font-semibold uppercase tracking-[0.08em] text-black">Clients</div>
-            <div data-reveal="fade" data-reveal-delay="100" className="marquee-shell mt-3">
+            <div data-reveal="fade" data-reveal-delay="100" className="gsap-marquee marquee-shell mt-3">
               <div className="marquee-track">
-                <span className="marquee-text">Transforming Your Possibilities</span>
+                <span className="gsap-clip marquee-text">Transforming Your Possibilities</span>
                 <span className="marquee-text">Transforming Your Possibilities</span>
                 <span className="marquee-text">Transforming Your Possibilities</span>
               </div>
             </div>
-            <p data-reveal="up-sm" data-reveal-delay="200" className="mt-3 lg:mt-4 text-[14px] lg:text-[15px] text-black">We work for a wide variety of clients in both the private and public sectors.</p>
+            <p data-reveal="up-sm" data-reveal-delay="200" className="gsap-words mt-3 lg:mt-4 text-[14px] lg:text-[15px] text-black">We work for a wide variety of clients in both the private and public sectors.</p>
             <div data-reveal="fade" data-reveal-delay="300" className="logo-shell mt-5 lg:mt-6">
               <div ref={logoTrackRef} className="logo-track" style={{ transform: `translateX(calc(${-(logoIndex + clientLogos.length)} * (clamp(150px, 16vw, 200px) + 32px)))` }}>
                 {[...clientLogos, ...clientLogos, ...clientLogos].map((logo, i) => (
@@ -2953,178 +2667,9 @@ export default function Page() {
           </section>
         </div>
 
-        <section className="team-section">
-          <div className="team-neptune-wrap" aria-hidden="true">
-            <img src="/neptune.svg" alt="" />
-          </div>
-          <div data-reveal="zoom" className="team-neptune-btn">
-            <button className="team-about-btn">About Team</button>
-          </div>
-          <div className="team-bg-circuit">
-            <svg viewBox="0 0 200 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="180" cy="40" r="6" fill="#00fe4e" />
-              <path d="M180 40 L100 40 L100 120 L60 120" stroke="#00fe4e" strokeWidth="1.5" />
-              <circle cx="60" cy="120" r="4" fill="#00fe4e" />
-              <path d="M180 40 L180 200 L120 200" stroke="#00fe4e" strokeWidth="1.5" />
-              <circle cx="120" cy="200" r="5" fill="#00fe4e" />
-              <path d="M180 200 L180 320 L80 320" stroke="#00fe4e" strokeWidth="1.5" />
-              <circle cx="80" cy="320" r="4" fill="#00fe4e" />
-              <path d="M180 40 L180 360" stroke="#00fe4e" strokeWidth="1.5" strokeDasharray="3 4" opacity="0.5" />
-            </svg>
-          </div>
-          <div className="relative mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
-            <div className="team-row">
-              <div className="team-cards-col">
-                <div data-reveal="up" className="relative z-10 mb-8 lg:mb-12">
-                  <h2 className="team-title">
-                    <span className="text-[#0adf54]">MEET</span>{" "}
-                    <span className="text-[#0a7a5f]">OUR</span>{" "}
-                    <span className="text-[#050889]">TEAM</span>
-                  </h2>
-                  <p className="mt-3 text-[14px] lg:text-[15px] text-black">
-                    Our business experts come from businesses of all shapes and sizes.
-                  </p>
-                </div>
-                <div className="team-cards-grid">
-                  {teamMembers.map((m, i) => (
-                    <div key={m.name} data-reveal="up" data-reveal-delay={i * 110} className="team-card">
-                      <div className="team-photo-frame">
-                        <img src={m.img} alt={m.name} />
-                      </div>
-                      <div className="team-card-role">{m.role}</div>
-                      <div className="team-card-name">{m.name}</div>
-                      <div className="team-card-linkedin">
-                        <LinkedInSvg />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <TeamSection />
 
-        {/* === Alumni Section === */}
-        <section className="alumni-section py-20 bg-[#f5f5f5]">
-
-          {/* HEADER */}
-          <div className="text-center mb-10 px-4">
-            <p className="text-xs tracking-widest text-gray-500">
-              SUCCESS STORIES
-            </p>
-
-            <h2 className="text-4xl md:text-5xl font-bold mt-3">
-              <span className="text-[#00FE4E]">HEAR FROM</span>{" "}
-              <span className="text-gray-900">OUR ALUMNI</span>
-            </h2>
-
-            <p className="text-gray-500 mt-2">
-              Watch stories of success from across Pakistan
-            </p>
-          </div>
-
-          {/* MAP */}
-          <div className="relative max-w-[900px] mx-auto px-4">
-
-            <img
-              src="/world-map.png"
-              alt="map"
-              className="w-full opacity-60"
-            />
-
-            {successStories.map((item, i) => (
-              <div
-                key={i}
-                onClick={() => handleStoryClick(i)}
-                style={{ top: item.y, left: item.x }}
-                className="absolute cursor-pointer group -translate-x-1/2 -translate-y-1/2"
-              >
-                <div
-                  className={`flex items-center gap-3 px-4 py-2 rounded-xl bg-white shadow-md transition-all duration-300 ${
-                    active === i
-                      ? "ring-2 ring-[#00FE4E] scale-105"
-                      : "hover:scale-105 hover:shadow-xl"
-                  }`}
-                >
-                  <img
-                    src={item.img}
-                    alt={item.city}
-                    width={30}
-                    height={30}
-                  />
-
-                  <div>
-                    <p className="text-sm font-semibold">{item.city}</p>
-                    <p className="text-xs text-blue-600">WATCH NOW ▶</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* TESTIMONIAL */}
-          <div
-            ref={testimonialRef}
-            className="mt-20 max-w-[1100px] mx-auto px-4"
-          >
-            <div className="bg-black rounded-3xl p-6 md:p-10 flex flex-col md:flex-row gap-6 items-center">
-
-              {/* LEFT VIDEO */}
-              <div className="relative w-full md:w-1/2">
-                <img
-                  src={successStories[active].video}
-                  alt="video"
-                  className="rounded-2xl w-full"
-                />
-
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-[#00FE4E] flex items-center justify-center shadow-lg cursor-pointer hover:scale-110 transition">
-                    <Play className="text-black" />
-                  </div>
-                </div>
-              </div>
-
-              {/* RIGHT CONTENT */}
-              <div className="text-white w-full md:w-1/2">
-
-                <span className="bg-yellow-400 text-black text-xs px-3 py-1 rounded">
-                  FEATURED STORY
-                </span>
-
-                <p className="text-green-400 mt-3 text-sm tracking-widest">
-                  DIGITAL LEARNING
-                </p>
-
-                <h3 className="text-lg md:text-2xl font-semibold mt-4 leading-relaxed">
-                  “{successStories[active].text}”
-                </h3>
-
-                <div className="mt-6">
-                  <p className="font-semibold">{successStories[active].name}</p>
-                  <p className="text-sm text-gray-400">
-                    {successStories[active].role}
-                  </p>
-                </div>
-
-                {/* DOTS */}
-                <div className="flex gap-2 mt-6">
-                  {successStories.map((_, i) => (
-                    <div
-                      key={i}
-                      className={`h-1 rounded-full transition-all ${
-                        i === active
-                          ? "w-6 bg-[#00FE4E]"
-                          : "w-3 bg-gray-600"
-                      }`}
-                    />
-                  ))}
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </section>
-        {/* === End Alumni Section === */}
+        <AlumniSection />
 
         <section className="testimonials-section relative overflow-hidden bg-white">
           <img src="/blink.svg" alt="" className="testimonials-blink testimonials-blink-left" />
@@ -3174,82 +2719,9 @@ export default function Page() {
           </div>
         </section>
 
-        <section className="newsletter-section">
-          <div className="newsletter-divider" />
-          <div className="newsletter-inner">
-            <h2 data-reveal="up-sm" className="newsletter-title">
-              Join The Future Of Innovation
-            </h2>
-            <p data-reveal="up-sm" data-reveal-delay="120" className="newsletter-text">
-              Making better things takes time. Drop us your email to stay in the know as we work to reduce our environmental impact. We&apos;ll share other exciting news and exclusive offers, too.
-            </p>
-            <div data-reveal="up" data-reveal-delay="240" className="newsletter-form">
-              <input type="email" placeholder="Enter your email address" className="newsletter-input" />
-              <button className="newsletter-btn">Sign Up</button>
-            </div>
-            <label data-reveal="fade" data-reveal-delay="360" className="newsletter-checkbox">
-              <input type="checkbox" />
-              <span>Keep me updated on other news and exclusive offers</span>
-            </label>
-            <p data-reveal="fade" data-reveal-delay="440" className="newsletter-note">
-              <span className="newsletter-note-label">Note:</span> You can opt-out at any time. See our{" "}
-              <Link href="#" className="newsletter-link">Privacy Policy</Link> and{" "}
-              <Link href="#" className="newsletter-link">Terms</Link>.
-            </p>
-          </div>
-        </section>
+        <NewsletterSection />
 
-        <footer className="site-footer">
-          <div className="site-footer-inner">
-            <div className="site-footer-grid">
-              <div data-reveal="up" className="site-footer-brand">
-                <img src="/parwaaz-logo.svg" alt="Parwaaz" className="site-footer-logo" />
-                <p className="site-footer-tagline">
-                  Fueling your business growth with workforce solutions, digital skills of the future, and creative design services.
-                </p>
-                <div className="site-footer-follow">
-                  <div className="site-footer-follow-label">Follow us</div>
-                  <div className="site-footer-socials">
-                    {[FacebookSvg, YoutubeSvg, XSvg].map((Icon, i) => (
-                      <Link key={i} href="#" className="site-footer-social" aria-label="Social link">
-                        <Icon />
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div data-reveal="up" data-reveal-delay="120" className="site-footer-col">
-                <Link href="#" className="site-footer-link site-footer-link-active">About</Link>
-                <Link href="#" className="site-footer-link">People</Link>
-                <Link href="#" className="site-footer-link">Contact</Link>
-                <Link href="#" className="site-footer-link">Services</Link>
-              </div>
-              <div data-reveal="up" data-reveal-delay="240" className="site-footer-col">
-                <Link href="#" className="site-footer-link">Terms</Link>
-                <Link href="#" className="site-footer-link">Privacy Policy</Link>
-                <Link href="#" className="site-footer-link">Legal Notice</Link>
-                <Link href="#" className="site-footer-link">Accessibility</Link>
-              </div>
-              <div data-reveal="up" data-reveal-delay="360" className="site-footer-col">
-                <div className="site-footer-contact">
-                  <MapPin className="site-footer-icon" />
-                  <span>Lahore, Karachi, Islamabad</span>
-                </div>
-                <div className="site-footer-contact">
-                  <Phone className="site-footer-icon" />
-                  <span>+92 300 2855800</span>
-                </div>
-                <div className="site-footer-contact">
-                  <Mail className="site-footer-icon" />
-                  <span>contact@parwaaz.co</span>
-                </div>
-              </div>
-            </div>
-            <div data-reveal="fade" data-reveal-delay="500" className="site-footer-bottom">
-              © 2026 Parwaaz.co. All rights reserved.
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </section>
     </main>
   );

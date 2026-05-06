@@ -28,12 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${poppins.variable} ${montserrat.variable}`}
-        style={{
-          fontFamily: "var(--font-poppins), sans-serif",
-        }}
-      >
+      <body className={`${poppins.variable} ${montserrat.variable}`}>
         {children}
       </body>
     </html>

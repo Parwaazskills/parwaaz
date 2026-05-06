@@ -2,9 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+ * BASE RESET
+ * ============================================================ */
+
 * {
   box-sizing: border-box;
 }
+
+/* ============================================================
+ * CRITICAL SCROLL FIX
+ * Do NOT use overflow:hidden on body/main with pinned ScrollTrigger
+ * - it breaks pin calculations on mobile Safari/Chrome.
+ * ============================================================ */
 
 html,
 body {
@@ -14,160 +24,252 @@ body {
     "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  padding: 0;
-  font-weight: inherit;
+main {
+  overflow: visible !important;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
 p {
   margin: 0;
   padding: 0;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* ============================================================
+ * GSAP TEXT ANIMATION SUPPORT
+ * Structural CSS for char/word splits and clip reveals.
+ * ============================================================ */
+
+.gsap-char,
+.gsap-word {
+  display: inline-block;
+  vertical-align: baseline;
+  white-space: pre;
+  /* Fallback opacity 1 — if JS fails, text is still visible */
+  opacity: 1;
 }
 
-button {
-  font-family: inherit;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
+/* Once GSAP is ready, hide chars/words so the JS animation can reveal them.
+   Body gets .gsap-ready class after the GsapTextAnimations component mounts. */
+.gsap-ready .gsap-char,
+.gsap-ready .gsap-word {
+  opacity: 0;
 }
 
-input,
-textarea,
-select {
-  font-family: inherit;
+.gsap-clip {
+  display: inline-block;
+  overflow: hidden;
+  will-change: clip-path, transform;
+  -webkit-clip-path: inset(100% 0 0 0);
+  clip-path: inset(100% 0 0 0);
 }
 
-img {
-  max-width: 100%;
-  height: auto;
+.gsap-heading,
+.gsap-hero-title {
+  perspective: 800px;
+  perspective-origin: 50% 50%;
+}
+
+.gsap-marquee:hover .marquee-track,
+.marquee-shell.gsap-marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes heroSlideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-anim-slide-up {
+  animation: heroSlideUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-anim-delay-0 { animation-delay: 0s; }
+.hero-anim-delay-1 { animation-delay: 0.15s; }
+.hero-anim-delay-2 { animation-delay: 0.3s; }
+.hero-anim-delay-3 { animation-delay: 0.45s; }
+
+/* ============================================================
+ * GSAP MOBILE FIX
+ * Apply GPU compositing ONLY to char/word elements.
+ * Applying transform: translateZ(0) to section containers breaks
+ * ScrollTrigger pin calculations.
+ * ============================================================ */
+
+@media (max-width: 768px) {
+  .gsap-char,
+  .gsap-word {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  /* Critical: NO transform on section containers — breaks pin calc */
+  .po-section,
+  .alumni-section,
+  .team-section,
+  .hero-bg,
+  .testimonials-section {
+    transform: none !important;
+  }
+
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ============================================================
+ * ORBIT SECTION FIX (MOST IMPORTANT)
+ * The pinned section must have overflow:visible so the pin
+ * spacer can reserve its space. Without this, the next section
+ * renders under it and appears blank.
+ * ============================================================ */
+
+.po-section {
+  position: relative;
+  width: 100%;
+  overflow: visible !important;
+}
+
+/* ============================================================
+ * WORLD MAP — MOBILE PERFECT ALIGNMENT
+ * Uses class `.world-map` on the <img src="/world-map.png">
+ * ============================================================ */
+
+.world-map {
   display: block;
-}
-
-ul, ol {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-/* ════════════════════════════════════════════════════════
-   CUSTOM CURSOR
-   IMPORTANT: Don't set transform here - JS handles it
-═══════════════════════════════════════════════════════════ */
-
-@media (pointer: fine) {
-  body { cursor: none; }
-  body * { cursor: none; }
-}
-
-.pw-ring {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 255, 102, 0.92);
-  background: rgba(0, 255, 102, 0.035);
-  box-shadow: 0 0 28px rgba(0, 255, 102, 0.38), inset 0 0 18px rgba(0, 255, 102, 0.12);
+  width: 100%;
+  height: auto;
+  object-fit: contain;
   pointer-events: none;
-  z-index: 2147483647;
-  will-change: transform;
-  /* No initial transform - JS sets it */
 }
 
-.pw-dot {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #00ff66;
-  box-shadow: 0 0 18px rgba(0, 255, 102, 0.95), 0 0 42px rgba(0, 255, 102, 0.38);
-  pointer-events: none;
-  z-index: 2147483647;
-  will-change: transform;
-  /* No initial transform - JS sets it */
-}
+@media (max-width: 768px) {
+  .alumni-map-stage {
+    position: relative !important;
+    min-height: 420px !important;
+    overflow: visible !important;
+  }
 
-body.pw-ca .pw-ring {
-  width: 82px;
-  height: 82px;
-  border-color: rgba(255, 255, 255, 0.96);
-  background: rgba(0, 255, 102, 0.16);
-  transition: width 0.28s, height 0.28s, background 0.28s, border-color 0.28s;
-}
-
-body.pw-ca .pw-dot {
-  width: 5px;
-  height: 5px;
-  background: #fff;
-  transition: width 0.28s, height 0.28s, background 0.28s;
-}
-
-@media (pointer: coarse) {
-  .pw-ring,
-  .pw-dot {
-    display: none !important;
+  .world-map {
+    position: absolute !important;
+    top: 120px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 520px !important;
+    max-width: none !important;
+    opacity: 0.35 !important;
+    z-index: 1 !important;
   }
 }
 
-/* ════════════════════════════════════════════════════════
-   PARWAAZ NAVBAR
-═══════════════════════════════════════════════════════════ */
+/* ============================================================
+ * SECTION SPACING FIX
+ * Prevents sections from overlapping after the pinned orbit
+ * ============================================================ */
 
-.pw-nav {
-  background: linear-gradient(
-    90deg,
-    #00ff66 0%,
-    #00e65c 12%,
-    #00c653 22%,
-    #0a6c3f 38%,
-    #032d1e 55%,
-    #021722 75%,
-    #001326 100%
-  ) !important;
-  box-shadow:
-    0 0 22px rgba(0, 255, 102, 0.45),
-    0 10px 40px rgba(0, 255, 102, 0.15) !important;
-  height: 64px !important;
-}
-
-@media (min-width: 1024px) {
-  .pw-nav {
-    height: 80px !important;
-  }
-}
-
-.pw-nav::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 12px;
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.12), transparent 40%),
-    radial-gradient(circle at 15% 50%, rgba(0, 255, 102, 0.25), transparent 30%),
-    radial-gradient(circle at 85% 50%, rgba(0, 20, 40, 0.6), transparent 40%);
-  pointer-events: none;
+section {
+  position: relative;
   z-index: 2;
 }
 
-.pw-logo-zone img {
-  height: 38px !important;
-  filter: brightness(1.2) drop-shadow(0 0 12px rgba(255, 255, 255, 0.5)) !important;
+.alumni-section {
+  margin-top: 80px;
 }
 
-@media (min-width: 1024px) {
-  .pw-logo-zone img {
-    height: 48px !important;
+/* ============================================================
+ * REDUCED MOTION — accessibility + safety net
+ * ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .gsap-char,
+  .gsap-word,
+  .gsap-heading,
+  .gsap-words,
+  .gsap-clip,
+  .gsap-fade-up,
+  .gsap-hero-title,
+  .gsap-hero-subtitle,
+  .gsap-hero-text,
+  .gsap-hero-cta {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    -webkit-clip-path: none !important;
+    clip-path: none !important;
   }
+
+  .marquee-track,
+  .robot-float,
+  .hero-anim-slide-up {
+    animation: none !important;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ============================================================
+ * ROBOT FLOAT ANIMATION (used by Tailwind grid robot in hero)
+ * ============================================================ */
+
+@keyframes robotFloat {
+  0%, 100% {
+    transform: translateY(0);
+    filter: drop-shadow(0 0 40px rgba(62, 130, 255, 0.45));
+  }
+  50% {
+    transform: translateY(-15px);
+    filter: drop-shadow(0 0 65px rgba(62, 130, 255, 0.7));
+  }
+}
+
+.robot-float {
+  animation: robotFloat 4.8s ease-in-out infinite;
+}
+
+/* ============================================================
+ * UTILITIES
+ * ============================================================ */
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+:focus-visible {
+  outline: 2px solid #00fe4e;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: rgba(0, 254, 78, 0.3);
+  color: #000;
+}
+
+/* Prevent layout shift while images load */
+img[src="/world-map.png"],
+img[src="/robot.png"] {
+  background: transparent;
+  min-height: 1px;
+}
+
+img[src="/robot.png"] {
+  aspect-ratio: 1 / 1;
 }
