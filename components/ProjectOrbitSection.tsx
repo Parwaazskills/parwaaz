@@ -31,9 +31,6 @@ export default function ProjectOrbitSection() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
-    // Fix for mobile pin/scrub flakiness — takes over scroll handling
-    // to prevent native scroll momentum from interfering with pinned timelines
-    ScrollTrigger.normalizeScroll(true);
 
     const section = sectionRef.current;
     const orbit = orbitRef.current;
@@ -44,7 +41,9 @@ export default function ProjectOrbitSection() {
 
     const setup = () => {
       if (ctx) ctx.revert();
+
       ctx = gsap.context(() => {
+        // Orbit ring rotation — runs on both desktop AND mobile (visual flair)
         gsap.set(orbit, { xPercent: -50, yPercent: -50 });
         gsap.to(orbit, {
           rotation: 360,
@@ -54,27 +53,30 @@ export default function ProjectOrbitSection() {
           transformOrigin: "50% 50%",
         });
 
+        // ============================================================
+        // UNIFIED TIMELINE — pinned scrub animation on BOTH desktop and mobile.
+        // Mobile uses smaller swing/exit values so the slides fit the viewport.
+        // ============================================================
         const isMobile = window.innerWidth <= 768;
-
-        const swingOrigin = isMobile ? "-80px 50%" : "-380px 50%";
-        const swingX = isMobile ? -25 : -100;
-        const swingY = isMobile ? 60 : 280;
-        const exitX = isMobile ? 20 : 80;
-        const exitY = isMobile ? -55 : -260;
+        const swingOrigin = isMobile ? "-180px 50%" : "-380px 50%";
+        const swingX = isMobile ? -60 : -100;
+        const swingY = isMobile ? 160 : 280;
+        const exitX = isMobile ? 50 : 80;
+        const exitY = isMobile ? -150 : -260;
 
         slideEls.forEach((slide, index) => {
           gsap.set(slide, {
             opacity: index === 0 ? 1 : 0,
             x: index === 0 ? 0 : swingX,
             y: index === 0 ? 0 : swingY,
-            rotation: index === 0 ? 0 : 32,
-            scale: index === 0 ? 1 : 0.85,
-            filter: index === 0 ? "blur(0px)" : "blur(6px)",
+            rotation: index === 0 ? 0 : 26,
+            scale: index === 0 ? 1 : 0.9,
+            filter: index === 0 ? "blur(0px)" : "blur(5px)",
             transformOrigin: swingOrigin,
           });
         });
 
-        const slideDuration = isMobile ? 1800 : 1100;
+        const slideDuration = isMobile ? 1450 : 1100;
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -83,6 +85,7 @@ export default function ProjectOrbitSection() {
             end: `+=${(slideEls.length - 1) * slideDuration}`,
             scrub: isMobile ? 1.2 : 1,
             pin: true,
+            pinSpacing: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,
           },
@@ -97,9 +100,9 @@ export default function ProjectOrbitSection() {
             opacity: 0,
             x: exitX,
             y: exitY,
-            rotation: -32,
-            scale: 0.85,
-            filter: "blur(6px)",
+            rotation: -26,
+            scale: 0.9,
+            filter: "blur(5px)",
             duration: 1.2,
             ease: "power3.inOut",
           }, i);
@@ -108,9 +111,9 @@ export default function ProjectOrbitSection() {
             opacity: 0,
             x: swingX,
             y: swingY,
-            rotation: 32,
-            scale: 0.85,
-            filter: "blur(6px)",
+            rotation: 26,
+            scale: 0.9,
+            filter: "blur(5px)",
             transformOrigin: swingOrigin,
           }, {
             opacity: 1,
@@ -123,9 +126,6 @@ export default function ProjectOrbitSection() {
             ease: "power3.inOut",
           }, i + 0.02);
         }
-
-        // Don't call ScrollTrigger.refresh() here — page-level useEffect already does this
-        // and calling it inside setup() can cause duplicate triggers
       }, section);
     };
 
@@ -210,7 +210,7 @@ export default function ProjectOrbitSection() {
           background: #ffffff;
           padding: 40px 0 80px;
           overflow: visible;
-          /* Adjust vector top offset here \u2014 increase to move vector DOWN, decrease (negative) to move UP */
+          /* Adjust vector top offset here — increase to move vector DOWN, decrease (negative) to move UP */
           --po-vector-top: -40px;
           /* Adjust vector size here */
           --po-vector-width: 600px;
@@ -300,15 +300,16 @@ export default function ProjectOrbitSection() {
         .po-vector {
           position: absolute;
           right: -100px;
-          bottom: -230px;
-          width: 450px;
-          max-width: 30vw;
-          max-height: 900px;
+          bottom: -330px;
+          width: 750px;
+          max-width: 40vw;
+          max-height:1200px;
           height: auto;
-          object-fit: contain;
+          object-fit: fill;
           z-index: 5;
           pointer-events: none;
           opacity: 0.85;
+          transform: rotate(180deg);
         }
 
         .po-content {
@@ -431,77 +432,100 @@ export default function ProjectOrbitSection() {
         }
 
         /* ============================================================
-         * PROJECT ORBIT — MOBILE SAME VISUAL LANGUAGE AS DESKTOP
+         * PROJECT ORBIT — MOBILE (≤768px)
+         * Mirrors desktop composition, scaled for narrow viewport.
+         * - Orbit cropped on LEFT (right half visible)
+         * - Vector cropped on RIGHT, anchored bottom-right (mirrors desktop)
+         * - Slide content vertically centered, GSAP swing animation works
+         * - NO transform !important on .po-slide — GSAP needs that property
          * ============================================================ */
         @media (max-width: 768px) {
-          .po-section { padding: 40px 0 60px; min-height: 100vh; overflow: visible; }
-          .po-title { margin-bottom: 28px; }
-          .po-title h2 { font-size: clamp(28px, 7vw, 38px); gap: 10px; }
-          .po-canvas {
-            position: absolute;
-            top: 50%;
-            left: -180px;
-            width: 460px;
-            height: 460px;
-            transform: translateY(-30%);
-            opacity: 0.85;
-            z-index: 1;
+          .po-section {
+         min-height: 90vh !important;
+            padding: 28px 0 0 !important;
+            overflow: visible !important;
           }
+          .po-title {
+            margin-bottom: 0 !important;
+            padding: 0 14px !important;
+          }
+          .po-title h2 {
+            font-size: 28px !important;
+            gap: 10px !important;
+          }
+          /* Orbit on LEFT edge, right half visible (mirrors desktop) */
+          .po-canvas {
+            top: 50% !important;
+            left: -200px !important;
+            width: 480px !important;
+            height: 480px !important;
+            transform: translateY(-30%) !important;
+            opacity: 0.85 !important;
+          }
+          /* Vector cropped on RIGHT, anchored bottom-right (mirrors desktop) */
           .po-vector {
-            position: absolute;
-            right: -90px;
-            bottom: -60px;
-            width: 280px;
-            opacity: 0.85;
-            max-width: none;
-            max-height: none;
-            z-index: 2;
+            position: absolute !important;
+            right: -120px !important;
+            bottom: -100px !important;
+            top: auto !important;
+            width: 340px !important;
+            max-width: none !important;
+            max-height: none !important;
+            height: auto !important;
+            opacity: 0.7 !important;
+            transform: rotate(180deg) !important;
+            z-index: 1 !important;
           }
           .po-content {
-            position: relative;
-            z-index: 5;
-            min-height: 70vh;
-            padding: 0 20px 0 0;
-            align-items: center;
-            justify-content: flex-end;
+            min-height: 90vh !important;
+             padding:360px 10px 0 20px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
           }
           .po-slides {
-            position: relative;
-            width: 100%;
-            max-width: 280px;
-            margin-right: 12px;
-            margin-left: auto;
-            height: 320px;
-            perspective: 1200px;
-            z-index: 10;
+            position: relative !important;
+            width: 100% !important;
+            max-width: 280px !important;
+            height: 220px !important;
+           margin: 0 0 0 auto !important;
+            perspective: 1200px !important;
+            z-index: 10 !important;
           }
+          /* CRITICAL: no transform !important — GSAP needs to write transform inline.
+             Use inset:0 instead of top/left/transform for positioning. */
           .po-slide {
-            position: absolute;
-            left: 0;
-            top: 100%;
-            transform: translateY(-50%);
-            width: 100%;
-            z-index: 10;
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100% !important;
           }
-          .po-slide-row { gap: 12px; align-items: flex-start; justify-content: flex-start; }
-          .po-ball { width: 16px; height: 16px; min-width: 16px; margin-top: 8px; }
-          .po-slide-content { text-align: left; }
-          .po-slide-title { font-size: 26px; line-height: 1.1; margin-bottom: 8px; }
-          .po-slide-text { font-size: 12px; line-height: 1.55; max-width: none; margin: 0; }
-        }
-
-        @media (max-width: 480px) {
-          .po-section { padding: 32px 0 48px; min-height: 100vh; }
-          .po-title { padding: 0 16px; margin-bottom: 22px; }
-          .po-title h2 { font-size: 26px; gap: 8px; }
-          .po-canvas { left: -160px; width: 400px; height: 400px; opacity: 0.82; }
-          .po-vector { width: 220px; right: -80px; bottom: -50px; opacity: 0.8; }
-          .po-content { padding: 0 16px 0 0; min-height: 65vh; }
-          .po-slides { max-width: 240px; margin-right: 8px; height: 300px; }
-          .po-slide-row { gap: 10px; }
-          .po-ball { width: 14px; height: 14px; min-width: 14px; margin-top: 6px; }
-          .po-slide-title { font-size: 22px; }
-          .po-slide-text { font-size: 11.5px; line-height: 1.5; }
+          .po-slide-row {
+            gap: 12px !important;
+            align-items: flex-start !important;
+          }
+          .po-ball {
+            width: 18px !important;
+            height: 18px !important;
+            min-width: 18px !important;
+            margin-top: 6px !important;
+          }
+          .po-slide-title {
+            font-size: 26px !important;
+            line-height: 1.05 !important;
+            margin-bottom: 8px !important;
+          }
+          .po-slide-text {
+            font-size: 12px !important;
+            line-height: 1.5 !important;
+            max-width: none !important;
+          }
+          .contact-cta-section,
+          .contact-cta-wrap {
+            margin-top: 0 !important;
+            padding-top: 24px !important;
+            position: relative !important;
+            z-index: 20 !important;
+          }
         }
       `}</style>
     </section>

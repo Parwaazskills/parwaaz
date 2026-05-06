@@ -273,3 +273,36 @@ img[src="/robot.png"] {
 img[src="/robot.png"] {
   aspect-ratio: 1 / 1;
 }
+@media (max-width: 768px) {
+  .alumni-section {
+    padding-top: 48px !important;
+    padding-bottom: 52px !important;
+  }
+
+  .alumni-map-stage,
+  .success-map-wrap,
+  .map-wrap,
+  .world-map-wrap {
+    min-height: 300px !important;
+    height: 300px !important;
+    margin-bottom: 18px !important;
+    overflow: visible !important;
+  }
+
+  .world-map {
+    top: 40px !important;
+    width: 560px !important;
+    opacity: 0.32 !important;
+  }
+
+  .map-card {
+    margin: 6px auto !important;
+  }
+
+  .success-story-panel,
+  .story-panel,
+  .alumni-story-card {
+    margin-top: 0 !important;
+    transform: translateY(-18px) !important;
+  }
+}

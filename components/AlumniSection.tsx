@@ -22,20 +22,24 @@ export default function AlumniSection() {
       {/* HEADER */}
       <div className="text-center mb-10 px-4">
         <p className="text-xs tracking-widest text-gray-500">SUCCESS STORIES</p>
-
-        <h2
-          className="text-4xl md:text-5xl font-bold mt-3"
-          style={{
-            background: "linear-gradient(90deg, #00FE4E 0%, #000572 100%)",
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            color: "transparent",
-          }}
-        >
-          HEAR FROM OUR ALUMNI
-        </h2>
-
+<h2
+  className="mt-3 text-center uppercase"
+  style={{
+    fontSize: 'clamp(32px, 5vw, 64px)',
+    fontWeight: 400,
+    lineHeight: '1',
+    letterSpacing: '0px',
+    fontFamily: 'Inter, sans-serif',
+    background: 'linear-gradient(90deg, #00FE4E 0%, #000572 100%)',
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    color: 'transparent',
+    margin: 0,
+  }}
+>
+  HEAR FROM OUR ALUMNI
+</h2>
         <p className="gsap-words text-gray-500 mt-2">
           Watch stories of success from across Pakistan
         </p>
