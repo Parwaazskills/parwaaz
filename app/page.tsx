@@ -856,17 +856,32 @@ export default function Page() {
         }
 
         .hero-stack { position: relative; width: 100%; }
-        .hero-bg {min-height: 720px; position: relative; width: 100%; background: #000; z-index: 1; overflow: visible; }
+       .hero-bg {min-height: 720px; position: relative; width: 100%; background: #000; z-index: 1; overflow: visible; }
         .hero-bg-layer {
           position: absolute;
           inset: 0;
           background-size: cover;
-          background-position: center bottom;
           background-repeat: no-repeat;
           opacity: 0;
           transition: opacity 1.2s ease-in-out;
           z-index: 0;
           pointer-events: none;
+        }
+        .hero-bg-layer-0 {
+          background-position: center bottom;
+        }
+        .hero-bg-layer-1 {
+          background-position: center 46%;
+        }
+        .hero-bg-layer-2 {
+          background-position: center bottom;
+        }
+        @media (max-width: 768px) {
+          .hero-bg-layer-0,
+          .hero-bg-layer-1,
+          .hero-bg-layer-2 {
+            background-position: center top;
+          }
         }
         .hero-bg-layer.is-active { opacity: 1; }
         .hero-bg-dots {
@@ -880,11 +895,13 @@ export default function Page() {
         }
         @media (min-width: 1024px) {
           .hero-bg-dots {
-            left: 0;
+            position: absolute;
+            left: 182px;
+            top: 480px;
             bottom: auto;
-            top: 540px;
             transform: none;
-            margin-left: 32px;
+            margin-left: 0;
+            z-index: 20;
           }
         }
         .hero-bg-dot {
@@ -903,8 +920,8 @@ export default function Page() {
           box-shadow: 0 0 12px rgba(0, 254, 78, 0.6);
         }
         .hero-robot-wrap { position: absolute; right: 4%; top: 100px; width: 38%; max-width: 420px; aspect-ratio: 1 / 1; pointer-events: none; z-index: 5; }
-        @media (min-width: 1024px) { .hero-robot-wrap { right: 6%; top: 120px; width: 36%; max-width: 480px; } }
-        @media (min-width: 1280px) { .hero-robot-wrap { right: 8%; top: 130px; width: 38%; max-width: 540px; } }
+        @media (min-width: 1024px) { .hero-robot-wrap { right: 6%; top: 420px; width: 36%; max-width: 480px; } }
+        @media (min-width: 1280px) { .hero-robot-wrap { right: 8%; top: 230px; width: 38%; max-width: 540px; } }
         @media (min-width: 1536px) { .hero-robot-wrap { right: 10%; max-width: 580px; } }
         .hero-robot-mobile {
           position: relative;
@@ -921,17 +938,35 @@ export default function Page() {
         @media (min-width: 1024px) { .chatbox-wrap { margin-top: -90px; } }
 
         /* ============================================================
-         * MOBILE-ONLY FIXES (≤768px)
-         * Targets: hero, robot, chatbox, ea-card, alumni map+story
-         * Desktop layout completely untouched.
+         * MOBILE FIXES ONLY
+         * DESKTOP REMAINS UNTOUCHED
          * ============================================================ */
         @media (max-width: 768px) {
           .hero-bg {
-            height: 680px; !important;
-            min-height: auto !important;
+            min-height: 720px !important;
+            height: auto !important;
             overflow: hidden !important;
-            padding-bottom: 44px !important;
+            position: relative !important;
+            padding-bottom: 0 !important;
           }
+
+          .hero-bg-layer {
+            background-repeat: no-repeat !important;
+            background-size: cover !important;
+          }
+
+          .hero-bg-layer-0 {
+            background-position: center top !important;
+          }
+
+          .hero-bg-layer-1 {
+            background-position: center top !important;
+          }
+
+          .hero-bg-layer-2 {
+            background-position: center top !important;
+          }
+
           .hero-robot-wrap,
           .hero-robot-mobile {
             position: relative !important;
@@ -940,60 +975,31 @@ export default function Page() {
             left: auto !important;
             width: 76% !important;
             max-width: 270px !important;
-           margin: 40px auto 30px !important;
+            margin: 92px auto 18px !important;
             z-index: 8 !important;
           }
+
           .chatbox-wrap {
             position: relative !important;
-            left: auto !important;
-            bottom: auto !important;
-            transform: none !important;
             width: 100% !important;
             max-width: 100% !important;
-            margin: -70px auto 0 !important;
+            margin: -108px auto 0 !important;
             padding: 0 16px !important;
-            z-index: 12 !important;
+            transform: none !important;
+            z-index: 15 !important;
           }
+
           .ea-card {
             width: 100% !important;
             max-width: 380px !important;
             margin: 0 auto !important;
+            border-radius: 22px !important;
           }
-          .alumni-section {
-            margin-top: 0 !important;
-            padding-top: 54px !important;
-          }
-          .alumni-map-stage {
-            position: relative !important;
-            min-height: 390px !important;
-            overflow: visible !important;
-          }
-          .world-map {
-            display: block !important;
-            position: absolute !important;
-            top: 90px !important;
-            left: 50% !important;
-            width: 520px !important;
-            max-width: none !important;
-            height: auto !important;
-            transform: translateX(-50%) !important;
-            opacity: 0.35 !important;
-            z-index: 1 !important;
-            pointer-events: none !important;
-          }
-          .map-card {
-            position: relative !important;
-            left: auto !important;
-            top: auto !important;
+
+          .hero-bg-dots {
+            left: 24px !important;
+            bottom: 230px !important;
             transform: none !important;
-            z-index: 5 !important;
-            margin: 10px auto !important;
-          }
-          .success-story-panel,
-          .story-panel {
-            position: relative !important;
-            z-index: 10 !important;
-            margin-top: 20px !important;
           }
         }
 
@@ -1378,6 +1384,12 @@ export default function Page() {
           }
           .parwaaz-blue-card {
             padding: 24px 22px 28px 22px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            height: auto !important;
+            min-height: 320px !important;
           }
           .parwaaz-blue-card p {
             font-size: 16px !important;
@@ -2084,7 +2096,7 @@ export default function Page() {
         /* Story / testimonial panel — mobile sizing (≤768px) */
         @media (max-width: 768px) {
           .alumni-panel {
-            margin-top: 24px !important;
+            margin-top:-94px !important;
             width: 100%;
             border-radius: 20px !important;
             padding: 20px !important;
@@ -2158,13 +2170,13 @@ export default function Page() {
 
       <div className="hero-stack">
         <section className="hero-bg">
-          {heroSlides.map((slide, i) => (
-            <div
-              key={slide.bg}
-              className={`hero-bg-layer ${i === heroBgIndex ? 'is-active' : ''}`}
-              style={{ backgroundImage: `url(${slide.bg})` }}
-            />
-          ))}
+        {heroSlides.map((slide, i) => (
+  <div
+    key={slide.bg}
+    className={`hero-bg-layer hero-bg-layer-${i} ${i === heroBgIndex ? 'is-active' : ''}`}
+    style={{ backgroundImage: `url(${slide.bg})` }}
+  />
+))}
           <div className="relative mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 pt-3 pb-[70px] sm:pb-[120px] lg:pb-[180px]">
 
             {heroBgIndex === 0 && (
@@ -2431,7 +2443,7 @@ export default function Page() {
 <section className="parwaaz-section w-full bg-white">
  <div className="mx-auto grid w-full max-w-[1120px] grid-cols-1 items-start gap-y-[34px] lg:grid-cols-[644px_1fr] lg:gap-x-0">
               <div>
-                <div data-reveal="left" data-reveal-mode="cycle" className="relative w-full" style={{ width: '100%', maxWidth: '544px', height: '120px', padding: '28px 32px', borderRadius: '16px', background: '#d9d9d9' }}>
+                <div data-reveal="left" data-reveal-mode="cycle" className="relative w-full" style={{ width: '100%', maxWidth: '644px', height: '180px', padding: '28px 32px', borderRadius: '16px', background: '#d9d9d9' }}>
                   <h2 style={{ fontSize: '42px', fontWeight: 800, color: '#0a1970', lineHeight: 1, letterSpacing: '-0.025em', margin: 0 }}>
                     Par.waaz
                   </h2>
@@ -2439,21 +2451,17 @@ export default function Page() {
                   <p style={{ fontSize: '18px', color: '#000', marginTop: '4px', lineHeight: 1.2, fontWeight: 500 }}>
                     flight or flying
                   </p>
-
-                  <p
-                    dir="rtl"
-                    style={{
-                      position: 'absolute',
-                      right: '32px',
-                      bottom: '20px',
-                      fontSize: '18px',
-                      color: '#000',
-                      lineHeight: 1.2,
-                      margin: 0,
-                    }}
-                  >
-                    (پرواز)
-                  </p>
+<p
+  style={{
+    fontSize: '18px',
+    color: '#000',
+    marginTop: '4px',
+    lineHeight: 1.2,
+    margin: '4px 0 0 0',
+  }}
+>
+  (پرواز)
+</p>
                 </div>
 
                 <ol
@@ -2477,7 +2485,6 @@ export default function Page() {
                   </li>
                 </ol>
               </div>
-<<<<<<< HEAD
 <div
   data-reveal="right"
   data-reveal-mode="cycle"
@@ -2494,24 +2501,6 @@ export default function Page() {
     alignSelf: 'flex-start',
   }}
 >
-=======
-
-              <div
-                data-reveal="right"
-                data-reveal-mode="cycle"
-                data-reveal-delay="120"
-                className="parwaaz-blue-card"
-                style={{
-                  width: '100%',
-                  maxWidth: '393px',
-                  height: '400px',
-                  padding: '32px 32px 36px 32px',
-                  borderRadius: '20px',
-                  background: '#000572',
-                  alignSelf: 'flex-start',
-                }}
-              >
->>>>>>> ca835808f599a016cee20dc45b870091084f837f
                 <img
                   src="/parwaaz-logo.png"
                   alt="Parwaaz"
@@ -2700,7 +2689,7 @@ export default function Page() {
               </div>
               <span className="text-[14px] font-semibold text-black leading-none">Testimonials</span>
             </div>
-            <h2 data-reveal="up-sm" className="testimonials-heading mt-14 lg:mt-[72px] text-center uppercase" style={{ fontSize: 'clamp(32px, 5vw, 64px)', fontWeight: 400, lineHeight: '1', letterSpacing: '0px', fontFamily: 'Inter, sans-serif' }}>
+            <h2 className="testimonials-heading mt-14 lg:mt-[72px] text-center uppercase" style={{ fontSize: 'clamp(32px, 5vw, 64px)', fontWeight: 400, lineHeight: '1', letterSpacing: '0px', fontFamily: 'Inter, sans-serif' }}>
               What Our Client Say
             </h2>
             <div className="testimonial-stage mt-24 lg:mt-[140px]">
