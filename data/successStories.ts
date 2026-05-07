@@ -1,7 +1,10 @@
+
 export type SuccessStory = {
   city: string;
   x: string;
   y: string;
+  xMobile?: string;   // NEW
+  yMobile?: string;   // NEW
   img: string;
   video: string;
   name: string;
@@ -12,18 +15,24 @@ export type SuccessStory = {
 export const successStories: SuccessStory[] = [
   {
     city: "Lahore",
-    x: "30%",
-    y: "32%",
+    x: "80%",
+    y: "42%",
+    xMobile: "25%",
+    yMobile: "22%",
     img: "/minar.png",
     video: "/minar.png",
     name: "Aisha Tariq",
     role: "Senior Product Manager",
     text: "The Coursera partnership opened doors I never thought possible. From a small startup to leading a fintech team — Parwaaz changed everything.",
   },
+  // (others stay as-is, no mobile overrides needed)
   {
     city: "Islamabad",
     x: "55%",
     y: "28%",
+    xMobile: "71%",
+    yMobile: "36%",
+    
     img: "/faisal-mosque.png",
     video: "/faisal-mosque.png",
     name: "Ali Khan",
@@ -32,8 +41,10 @@ export const successStories: SuccessStory[] = [
   },
   {
     city: "Karachi",
-    x: "75%",
-    y: "45%",
+    x: "25%",
+    y: "65%",
+     xMobile: "80%",
+  yMobile: "58%",
     img: "/mazar.png",
     video: "/mazar.png",
     name: "Sara Ahmed",
@@ -42,8 +53,11 @@ export const successStories: SuccessStory[] = [
   },
   {
     city: "Faisalabad",
-    x: "40%",
-    y: "62%",
+    x: "20%",
+    y: "32%",
+     xMobile: "30%",
+  yMobile: "58%",
+    
     img: "/clock-tower.png",
     video: "/clock-tower.png",
     name: "Usman Raza",

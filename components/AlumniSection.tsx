@@ -1,13 +1,22 @@
+
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Play } from "lucide-react";
 import { successStories } from "@/data/successStories";
 
 export default function AlumniSection() {
   const [active, setActive] = useState(0);
   const [panelAnimKey, setPanelAnimKey] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const testimonialRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const handleStoryClick = (index: number) => {
     setActive(index);
@@ -22,24 +31,25 @@ export default function AlumniSection() {
       {/* HEADER */}
       <div className="text-center mb-10 px-4">
         <p className="text-xs tracking-widest text-gray-500">SUCCESS STORIES</p>
-<h2
-  className="mt-3 text-center uppercase"
-  style={{
-    fontSize: 'clamp(32px, 5vw, 64px)',
-    fontWeight: 400,
-    lineHeight: '1',
-    letterSpacing: '0px',
-    fontFamily: 'Inter, sans-serif',
-    background: 'linear-gradient(90deg, #00FE4E 0%, #000572 100%)',
-    WebkitBackgroundClip: 'text',
-    backgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    color: 'transparent',
-    margin: 0,
-  }}
->
-  HEAR FROM OUR ALUMNI
-</h2>
+
+        <h2
+          className="mt-3"
+          style={{
+            fontSize: "clamp(32px, 5vw, 64px)",
+            fontWeight: 400,
+            lineHeight: "1",
+            letterSpacing: "0px",
+            fontFamily: "Inter, sans-serif",
+            background: "linear-gradient(90deg, #00FE4E 0%, #000572 100%)",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            color: "transparent",
+            margin: 0,
+          }}
+        >
+          HEAR FROM OUR ALUMNI
+        </h2>
         <p className="gsap-words text-gray-500 mt-2">
           Watch stories of success from across Pakistan
         </p>
@@ -57,7 +67,10 @@ export default function AlumniSection() {
               key={item.city}
               type="button"
               onClick={() => handleStoryClick(i)}
-              style={{ top: item.y, left: item.x }}
+              style={{
+                top: isMobile && item.yMobile ? item.yMobile : item.y,
+                left: isMobile && item.xMobile ? item.xMobile : item.x,
+              }}
               className={`alumni-pin ${isActive ? "alumni-pin-active" : ""}`}
               aria-label={`Watch ${item.city} story`}
               aria-pressed={isActive}
@@ -92,7 +105,7 @@ export default function AlumniSection() {
       </div>
 
       {/* TESTIMONIAL */}
-      <div ref={testimonialRef} className="mt-10 md:mt-20 max-w-[1100px] mx-auto px-4">
+     <div ref={testimonialRef} className="-mt-10 md:-mt-23 max-w-[1100px] mx-auto px-4 relative z-10">
         <div
           key={`alumni-panel-${panelAnimKey}`}
           className="alumni-panel bg-black rounded-3xl p-6 md:p-10 flex flex-col md:flex-row gap-6 items-center"

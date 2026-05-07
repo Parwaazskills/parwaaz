@@ -134,15 +134,10 @@ p {
  * renders under it and appears blank.
  * ============================================================ */
 
-.po-section {
-  position: relative;
-  width: 100%;
-  overflow: visible !important;
-}
 
 /* ============================================================
  * WORLD MAP — MOBILE PERFECT ALIGNMENT
- * Uses class `.world-map` on the <img src="/world-map.png">
+ * Uses class .world-map on the <img src="/world-map.png">
  * ============================================================ */
 
 .world-map {
@@ -273,36 +268,54 @@ img[src="/robot.png"] {
 img[src="/robot.png"] {
   aspect-ratio: 1 / 1;
 }
+.alumni-bubble-img-wrap {
+  position: relative !important;
+  flex: 0 0 56px !important;
+  width: 56px !important;
+  height: 56px !important;
+  min-width: 56px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  background: transparent !important;
+}
+
+.alumni-bubble-img-wrap img,
+.alumni-bubble-image {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  display: block !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.alumni-bubble {
+  align-items: center !important;
+  overflow: visible !important;
+}
+
 @media (max-width: 768px) {
-  .alumni-section {
-    padding-top: 48px !important;
-    padding-bottom: 52px !important;
+  .alumni-bubble-img-wrap {
+    flex-basis: 38px !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    border-radius: 8px !important;
   }
 
-  .alumni-map-stage,
-  .success-map-wrap,
-  .map-wrap,
-  .world-map-wrap {
-    min-height: 300px !important;
-    height: 300px !important;
-    margin-bottom: 18px !important;
-    overflow: visible !important;
-  }
-
-  .world-map {
-    top: 40px !important;
-    width: 560px !important;
-    opacity: 0.32 !important;
-  }
-
-  .map-card {
-    margin: 6px auto !important;
-  }
-
-  .success-story-panel,
-  .story-panel,
-  .alumni-story-card {
-    margin-top: 0 !important;
-    transform: translateY(-18px) !important;
+  .alumni-pin-active .alumni-bubble-img-wrap {
+    flex-basis: 56px !important;
+    width: 56px !important;
+    height: 56px !important;
+    min-width: 56px !important;
+    border-radius: 10px !important;
   }
 }
