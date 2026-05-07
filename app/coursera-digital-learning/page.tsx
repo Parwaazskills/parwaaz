@@ -6,6 +6,7 @@ import LearningPlatformsSection from "../sections/LearningPlatformsSection";
 import LogoCardsSection from "../sections/LogoCardsSection1";
 
 import OurMissionSection from "../sections/OurMissionSection";
+import Footer from "@/components/Footer";
 
 export default function CourseraDigitalLearningPage() {
   return (
@@ -17,6 +18,7 @@ export default function CourseraDigitalLearningPage() {
       <OurMissionSection/>
       <LearningPlatformsSection/>
       <LogoCardsSection/>
+      <Footer/>
     </main>
   );
 }
