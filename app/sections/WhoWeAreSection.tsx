@@ -508,7 +508,7 @@ export default function WhoWeAreSection() {
               className="relative h-[234px] overflow-hidden rounded-[19px] max-[768px]:order-2"
             >
               <Image
-                src="/ourmission.png"
+                src="/whatsetsusapart.png"
                 alt="Technology visual"
                 fill
                 priority

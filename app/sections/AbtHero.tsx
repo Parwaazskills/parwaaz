@@ -62,7 +62,7 @@ export default function AbtHero() {
               alt="Rotating purple 3D orb"
               fill
               priority
-              className="object-contain drop-shadow-[0_0_35px_rgba(111,55,255,0.75)]"
+              // className="object-contain drop-shadow-[0_0_35px_rgba(111,55,255,0.75)]"
             />
           </div>
         </div>
