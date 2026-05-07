@@ -15,6 +15,40 @@ export default function GsapTextAnimations() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const triggers: ScrollTrigger[] = [];
 
+    // MOBILE-ONLY: exclude orbit + blue CTA from text GSAP on mobile (≤768px).
+    // Desktop keeps the original behavior (no IGNORE filter) — strict per user instruction.
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    const IGNORE = isMobile
+      ? ":not(.po-title):not(.po-slide-title):not(.po-slide-text):not(.contact-cta-section *):not(.contact-cta-wrap *)"
+      : "";
+
+    // MOBILE-ONLY: force-reveal any text inside excluded elements (orbit titles, CTA).
+    // Without this, if those elements have gsap-heading/gsap-words classes from JSX,
+    // their chars/words still get split + hidden by .gsap-ready CSS, but never animated
+    // back to visible because IGNORE blocked the animation. This unhides them immediately.
+    const forceRevealExcluded = () => {
+      if (!isMobile) return;
+      const excludedSelectors = [
+        ".contact-cta-section",
+        ".contact-cta-wrap",
+      ];
+      excludedSelectors.forEach((sel) => {
+        document.querySelectorAll<HTMLElement>(sel).forEach((parent) => {
+          // Reveal the parent itself
+          parent.style.opacity = "1";
+          parent.style.transform = "none";
+          parent.style.filter = "none";
+          parent.style.clipPath = "none";
+          // Reveal any chars/words already inside (in case JSX has gsap-heading/gsap-words)
+          parent.querySelectorAll<HTMLElement>(".gsap-char, .gsap-word").forEach((el) => {
+            el.style.opacity = "1";
+            el.style.transform = "none";
+            el.style.filter = "none";
+          });
+        });
+      });
+    };
+
     const revealAll = () => {
       document
         .querySelectorAll<HTMLElement>(
@@ -74,17 +108,29 @@ export default function GsapTextAnimations() {
       el.dataset.gsapSplit = "words";
     };
 
-    const safeRefresh = () => {
-      const orbit = document.querySelector(".po-section");
-      let isInsidePinnedOrbit = false;
-      if (orbit) {
-        const rect = orbit.getBoundingClientRect();
-        isInsidePinnedOrbit = rect.top <= 10 && rect.bottom > window.innerHeight;
-      }
-      if (!isInsidePinnedOrbit && window.scrollY < 80) {
-        ScrollTrigger.refresh();
-      }
-    };
+    // MOBILE-ONLY: simpler safeRefresh that always refreshes (no scroll/orbit guard).
+    // Desktop keeps the original guarded behavior.
+    const safeRefresh = isMobile
+      ? () => {
+          const orbit = document.querySelector(".po-section");
+          if (!orbit) return;
+          const rect = orbit.getBoundingClientRect();
+          const insideOrbit = rect.top <= 10 && rect.bottom >= window.innerHeight * 0.5;
+          if (!insideOrbit && window.scrollY < 80) {
+            ScrollTrigger.refresh();
+          }
+        }
+      : () => {
+          const orbit = document.querySelector(".po-section");
+          let isInsidePinnedOrbit = false;
+          if (orbit) {
+            const rect = orbit.getBoundingClientRect();
+            isInsidePinnedOrbit = rect.top <= 10 && rect.bottom > window.innerHeight;
+          }
+          if (!isInsidePinnedOrbit && window.scrollY < 80) {
+            ScrollTrigger.refresh();
+          }
+        };
 
     if (reduced) {
       revealAll();
@@ -99,7 +145,7 @@ export default function GsapTextAnimations() {
       try {
         storedCtx = gsap.context(() => {
           // .gsap-heading: char split, rotateX + blur
-          document.querySelectorAll<HTMLElement>(".gsap-heading").forEach((el) => {
+          document.querySelectorAll<HTMLElement>(`.gsap-heading${IGNORE}`).forEach((el) => {
             if (el.dataset.gsapBound === "1") return;
             el.dataset.gsapBound = "1";
             splitToChars(el);
@@ -134,7 +180,7 @@ export default function GsapTextAnimations() {
           });
 
           // .gsap-words: word fade-up
-          document.querySelectorAll<HTMLElement>(".gsap-words").forEach((el) => {
+          document.querySelectorAll<HTMLElement>(`.gsap-words${IGNORE}`).forEach((el) => {
             if (el.dataset.gsapBound === "1") return;
             el.dataset.gsapBound = "1";
             splitToWords(el);
@@ -160,7 +206,7 @@ export default function GsapTextAnimations() {
           });
 
           // .gsap-clip: clip-path reveal
-          document.querySelectorAll<HTMLElement>(".gsap-clip").forEach((el) => {
+          document.querySelectorAll<HTMLElement>(`.gsap-clip${IGNORE}`).forEach((el) => {
             if (el.dataset.gsapBound === "1") return;
             el.dataset.gsapBound = "1";
             gsap.set(el, { clipPath: "inset(100% 0 0 0)", y: 80 });
@@ -182,7 +228,7 @@ export default function GsapTextAnimations() {
           });
 
           // .gsap-fade-up
-          document.querySelectorAll<HTMLElement>(".gsap-fade-up").forEach((el) => {
+          document.querySelectorAll<HTMLElement>(`.gsap-fade-up${IGNORE}`).forEach((el) => {
             if (el.dataset.gsapBound === "1") return;
             el.dataset.gsapBound = "1";
             gsap.set(el, { opacity: 0, y: 30 });
@@ -270,6 +316,12 @@ export default function GsapTextAnimations() {
             });
           }
         });
+
+        // MOBILE: force-reveal excluded elements right after GSAP context runs
+        forceRevealExcluded();
+        // And again after 500ms to catch orbit slides that may render after mount
+        setTimeout(forceRevealExcluded, 500);
+        setTimeout(forceRevealExcluded, 1500);
 
         // Safety net per spec: anything still invisible after 2s gets force-revealed
         safetyTimer = setTimeout(() => {
