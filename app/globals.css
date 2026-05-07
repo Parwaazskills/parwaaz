@@ -20,7 +20,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: var(--font-poppins), -apple-system, BlinkMacSystemFont,
+  font-family: var(--font-montserrat), -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -84,17 +84,36 @@ p {
 }
 
 @keyframes heroSlideUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero-anim-slide-up {
   animation: heroSlideUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-.hero-anim-delay-0 { animation-delay: 0s; }
-.hero-anim-delay-1 { animation-delay: 0.15s; }
-.hero-anim-delay-2 { animation-delay: 0.3s; }
-.hero-anim-delay-3 { animation-delay: 0.45s; }
+
+.hero-anim-delay-0 {
+  animation-delay: 0s;
+}
+
+.hero-anim-delay-1 {
+  animation-delay: 0.15s;
+}
+
+.hero-anim-delay-2 {
+  animation-delay: 0.3s;
+}
+
+.hero-anim-delay-3 {
+  animation-delay: 0.45s;
+}
 
 /* ============================================================
  * GSAP MOBILE FIX
@@ -133,7 +152,6 @@ p {
  * spacer can reserve its space. Without this, the next section
  * renders under it and appears blank.
  * ============================================================ */
-
 
 /* ============================================================
  * WORLD MAP — MOBILE PERFECT ALIGNMENT
@@ -221,10 +239,12 @@ section {
  * ============================================================ */
 
 @keyframes robotFloat {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
     filter: drop-shadow(0 0 40px rgba(62, 130, 255, 0.45));
   }
+
   50% {
     transform: translateY(-15px);
     filter: drop-shadow(0 0 65px rgba(62, 130, 255, 0.7));
@@ -243,6 +263,7 @@ section {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -268,6 +289,7 @@ img[src="/robot.png"] {
 img[src="/robot.png"] {
   aspect-ratio: 1 / 1;
 }
+
 .alumni-bubble-img-wrap {
   position: relative !important;
   flex: 0 0 56px !important;
