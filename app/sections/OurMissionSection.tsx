@@ -3,7 +3,7 @@
 export default function OurMissionSection() {
   return (
     <section className="w-full bg-white px-4 py-[96px] max-[768px]:py-[70px] max-[480px]:py-[56px]">
-      <div className="mx-auto w-full max-w-[1215px]">
+      <div className="mx-auto w-full max-w-[1400px]">
         <h2 className="font-montserrat text-[24px] font-semibold leading-[1.2] tracking-[-0.2px] text-[#8A8A8A] max-[480px]:text-[22px]">
           The Future of Learning Is Digital
         </h2>
