@@ -1,35 +1,20 @@
 // app/sections/LearningPlatformsSection.tsx
 
 import Image from "next/image";
-import type { ComponentType, CSSProperties, ReactNode } from "react";
-import { OfficeChair, PayrollIcon, ServiceIcon } from "../../components/ServiceIcons";
-
-type ServiceIconProps = {
-  className?: string;
-  style?: CSSProperties;
-  size?: number;
-  color?: string;
-  strokeWidth?: number;
-};
+import type { ReactNode } from "react";
 
 type ServiceItem = {
   id: string;
-  Icon: ComponentType<ServiceIconProps>;
-  iconProps?: ServiceIconProps;
+  iconSrc: string;
   title: ReactNode;
   description: string;
-  benchmark: string;
   deliverables: string[];
 };
 
 const services: ServiceItem[] = [
   {
     id: "ai-strategy-readiness",
-    Icon: ServiceIcon,
-    iconProps: {
-      className: "h-[56px] w-[56px]",
-      style: { filter: "brightness(0) invert(1)" },
-    },
+    iconSrc: "/icon/Readiness.svg",
     title: (
       <>
         AI Strategy
@@ -39,7 +24,6 @@ const services: ServiceItem[] = [
     ),
     description:
       "A C-suite engagement that answers the three questions every leadership team needs answered before spending on AI: Where does AI genuinely create value in our business? What capability do we already have and what do we need to build? How do we govern AI responsibly while moving fast enough to matter?",
-    benchmark: "BCG X AI Strategy · Deloitte AI Readiness",
     deliverables: [
       "AI maturity assessment across all functions",
       "Use-case identification & business case modelling",
@@ -50,10 +34,7 @@ const services: ServiceItem[] = [
   },
   {
     id: "international-ai-partner-brokerage",
-    Icon: PayrollIcon,
-    iconProps: {
-      className: "h-[58px] w-[58px] text-white",
-    },
+    iconSrc: "/icon/Partners.svg",
     title: (
       <>
         International AI
@@ -63,7 +44,6 @@ const services: ServiceItem[] = [
     ),
     description:
       "Access to the world's leading AI infrastructure platforms — with Parwaaz as the accountable integrator. We evaluate vendors independently, negotiate on your behalf, and manage the full implementation lifecycle so you get the best technology for your context, not the loudest sales pitch.",
-    benchmark: "G42 Partnership Model · Microsoft SI Programme",
     deliverables: [
       "Independent AI vendor evaluation & RFP management",
       "G42, Azure OpenAI, AWS Bedrock, Google Vertex scoping",
@@ -74,13 +54,7 @@ const services: ServiceItem[] = [
   },
   {
     id: "generative-ai-llm-deployment",
-    Icon: OfficeChair,
-    iconProps: {
-      className: "h-[56px] w-[56px] text-white",
-      size: 56,
-      strokeWidth: 1.45,
-      color: "currentColor",
-    },
+    iconSrc: "/icon/LLM.svg",
     title: (
       <>
         Generative AI
@@ -90,7 +64,6 @@ const services: ServiceItem[] = [
     ),
     description:
       "Enterprise-grade deployment of large language models and generative AI applications — from intelligent document processing and customer service automation to knowledge management systems and AI-powered decision support tools.",
-    benchmark: "Deloitte AI Deployment · Accenture GenAI",
     deliverables: [
       "Enterprise LLM selection, setup & fine-tuning",
       "RAG Retrieval-Augmented Generation pipeline build",
@@ -101,10 +74,7 @@ const services: ServiceItem[] = [
   },
   {
     id: "process-automation-ai-workflows",
-    Icon: PayrollIcon,
-    iconProps: {
-      className: "h-[58px] w-[58px] text-white",
-    },
+    iconSrc: "/icon/Automation.svg",
     title: (
       <>
         Process Automation
@@ -114,7 +84,6 @@ const services: ServiceItem[] = [
     ),
     description:
       "Move beyond basic RPA to intelligent automation — combining robotic process automation with AI judgement layers that can handle exceptions, learn from patterns, and continuously improve. Built for HR, finance, procurement, and public sector operations.",
-    benchmark: "PwC Intelligent Automation · Deloitte RPA",
     deliverables: [
       "End-to-end process audit & automation opportunity mapping",
       "RPA build & deployment using UiPath and Power Automate",
@@ -125,11 +94,7 @@ const services: ServiceItem[] = [
   },
   {
     id: "custom-technology-development",
-    Icon: ServiceIcon,
-    iconProps: {
-      className: "h-[56px] w-[56px]",
-      style: { filter: "brightness(0) invert(1)" },
-    },
+    iconSrc: "/icon/Development.svg",
     title: (
       <>
         Custom Technology
@@ -139,7 +104,6 @@ const services: ServiceItem[] = [
     ),
     description:
       "Bespoke software, data platforms, and digital products built for your specific requirements — from MVP prototypes to enterprise-scale systems. Our team combines product thinking with technical depth to deliver solutions that are built to last, not just built to demo.",
-    benchmark: "BCG X Ventures · Accenture Technology",
     deliverables: [
       "Custom software & web application development",
       "API design, build & third-party integrations",
@@ -150,13 +114,7 @@ const services: ServiceItem[] = [
   },
   {
     id: "ai-governance-compliance",
-    Icon: OfficeChair,
-    iconProps: {
-      className: "h-[56px] w-[56px] text-white",
-      size: 56,
-      strokeWidth: 1.45,
-      color: "currentColor",
-    },
+    iconSrc: "/icon/Compliance.svg",
     title: (
       <>
         AI Governance
@@ -166,7 +124,6 @@ const services: ServiceItem[] = [
     ),
     description:
       "As AI becomes embedded in business operations, governance is not optional — it is the difference between AI that scales and AI that creates liability. Parwaaz builds responsible AI frameworks aligned to WEF principles, international standards, and Pakistan's evolving regulatory environment.",
-    benchmark: "WEF AI Governance · PwC Responsible AI",
     deliverables: [
       "Responsible AI policy & ethics framework",
       "Model risk assessment & bias audit",
@@ -243,8 +200,6 @@ export default function Aitechservicebreakdown() {
 
         <div className="mt-[28px] flex flex-col gap-[24px] max-[768px]:mt-[30px] max-[768px]:gap-[28px]">
           {services.map((item, index) => {
-            const Icon = item.Icon;
-
             return (
               <div
                 id={item.id}
@@ -253,24 +208,26 @@ export default function Aitechservicebreakdown() {
               >
                 <div className="flex min-h-[190px] w-full items-center rounded-t-[15px] bg-[#000572] px-[38px] max-[1180px]:min-h-[170px] max-[768px]:max-w-[360px] max-[480px]:min-h-[150px] max-[480px]:px-[30px]">
                   <div>
-                    <div className="mb-[16px] flex items-center text-white">
-                      <Icon {...item.iconProps} />
+                    <div className="mb-[16px] flex items-center">
+                      <Image
+                        src={item.iconSrc}
+                        alt=""
+                        width={58}
+                        height={58}
+                        className="h-[56px] w-[56px] object-contain"
+                      />
                     </div>
 
-                    <h3 className="font-montserrat text-[25px] font-semibold leading-[1.14] tracking-[-0.4px] text-white max-[480px]:text-[22px]">
+                    <h3 className="font-montserrat text-[25px] font-medium leading-[1.14] tracking-[-0.4px] text-white max-[480px]:text-[22px]">
                       {item.title}
                     </h3>
                   </div>
                 </div>
 
-                <div className="flex flex-col justify-center max-[1180px]:pr-[12px] max-[768px]:pr-0">
+                <div className="flex flex-col justify-top max-[1180px]:pr-[12px] max-[768px]:pr-0">
                   <p className="max-w-[680px] font-montserrat text-[17px] font-normal leading-[1.45] tracking-[0.1px] text-[#000000] max-[1024px]:text-[16px] max-[480px]:text-[14px]">
                     {item.description}
                   </p>
-
-                  <div className="mt-[18px] inline-flex w-fit rounded-full border border-[#D9D9D9] bg-[#F8F8F8] px-[14px] py-[7px] font-montserrat text-[12px] font-medium leading-[1.3] text-[#6E6E6E] max-[480px]:text-[11px]">
-                    {item.benchmark}
-                  </div>
                 </div>
 
                 <div className="flex flex-col justify-center rounded-[14px] border border-[#E8E8E8] bg-[#FAFAFA] px-[24px] py-[22px] max-[1180px]:col-span-2 max-[768px]:col-span-1 max-[480px]:px-[18px] max-[480px]:py-[18px]">
@@ -296,24 +253,22 @@ export default function Aitechservicebreakdown() {
           })}
         </div>
 
-        <div className="mt-[44px] flex items-center justify-between gap-[28px] rounded-[18px] border border-[#E8E8E8] bg-[#FAFAFA] px-[32px] py-[30px] max-[768px]:mt-[38px] max-[768px]:flex-col max-[768px]:items-start max-[768px]:px-[22px] max-[768px]:py-[26px]">
-          <div>
-            <h3 className="font-montserrat text-[16px] font-semibold leading-[1.3] tracking-[0.1px] text-[#8A8A8A] max-[480px]:text-[15px]">
-              Ready To Discuss AI?
-            </h3>
+        <div className="mx-auto mt-[44px] flex w-full max-w-[1400px] flex-col items-center justify-center rounded-[12px] border border-[#00FF2F] bg-[#000572] px-[42px] py-[40px] text-center shadow-[0_18px_55px_rgba(0,5,114,0.14)] max-[768px]:mt-[38px] max-[768px]:px-[22px] max-[768px]:py-[34px] max-[480px]:rounded-[10px]">
+          <h3 className="font-montserrat text-[24px] font-semibold leading-[1.25] tracking-[1.2px] text-[#00FF2F] max-[768px]:text-[22px] max-[480px]:text-[20px]">
+            Ready To Discuss AI?
+          </h3>
 
-            <p className="mt-[14px] max-w-[760px] font-montserrat text-[16px] font-normal leading-[1.45] tracking-[0.15px] text-[#000000] max-[768px]:text-[14px] max-[480px]:text-[13px]">
-              Tell Us About Your Organisation, Your Challenge, And Your
-              Timeline. Parwaaz Can Help You Move From AI Strategy To
-              Deployment With A Structured, Execution-Ready Approach.
-            </p>
-          </div>
+          <p className="mt-[22px] max-w-[835px] font-montserrat text-[16px] font-normal leading-[1.75] tracking-[1.05px] text-white max-[768px]:mt-[18px] max-[768px]:text-[14px] max-[480px]:text-[13px]">
+            Tell Us About Your Organisation, Your Challenge, And Your Timeline.
+            Parwaaz Can Help You Move From AI Strategy To Deployment With A
+            Structured, Execution-Ready Approach.
+          </p>
 
           <a
             href="mailto:contact@parwaaz.co"
-            className="inline-flex shrink-0 items-center justify-center rounded-[6px] bg-[#000572] px-[28px] py-[14px] font-montserrat text-[14px] font-semibold leading-none tracking-[-0.1px] text-white transition-all duration-300 hover:-translate-y-[2px] hover:bg-[#00045f] max-[768px]:w-full"
+            className="mt-[18px] inline-flex h-[46px] min-w-[172px] items-center justify-center rounded-[7px] bg-[#00F51F] px-[28px] font-montserrat text-[13px] font-medium leading-none tracking-[-0.1px] text-[#001000] transition-all duration-300 hover:-translate-y-[2px] hover:bg-[#00DD1C] max-[480px]:h-[44px] max-[480px]:w-full"
           >
-            Get in touch →
+            Contact Us
           </a>
         </div>
       </div>

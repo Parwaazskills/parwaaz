@@ -66,11 +66,32 @@ export default function Aitechsubsection() {
       className="w-full bg-white px-4 py-[96px] max-[768px]:py-[70px] max-[480px]:py-[56px]"
     >
       <div className="mission-block mx-auto w-full max-w-[1400px] will-change-transform">
-        <h2 className="font-montserrat text-[24px] font-semibold leading-[1.2] tracking-[-0.2px] text-[#000572] max-[480px]:text-[22px]">
-          The AI navigator thesis
-        </h2>
+        <div className="flex items-center gap-[14px]">
+          <span className="flex h-[19px] w-[19px] shrink-0 items-center justify-center rounded-full bg-[#000572]">
+            <svg
+              width="11"
+              height="8"
+              viewBox="0 0 11 8"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="block"
+            >
+              <path
+                d="M1 4.1L4.05 7L10 1"
+                stroke="white"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
 
-        <div className="mt-[18px] max-w-[1185px] font-montserrat text-[16px] font-normal leading-[1.65] tracking-[0.2px] text-[#000000] max-[768px]:text-[14px] max-[480px]:text-[13px]">
+          <h2 className="font-montserrat text-[24px] font-semibold leading-[1.2] tracking-[-0.2px] text-[#000572] max-[480px]:text-[22px]">
+            The AI navigator thesis
+          </h2>
+        </div>
+
+        <div className="ml-[33px] mt-[18px] max-w-[1185px] font-montserrat text-[16px] font-normal leading-[1.65] tracking-[0.2px] text-[#000000] max-[768px]:ml-0 max-[768px]:text-[14px] max-[480px]:text-[13px]">
           <p>
             Parwaaz does not sell AI products. We act as the independent
             navigator and integrator — helping organisations understand the
@@ -84,11 +105,32 @@ export default function Aitechsubsection() {
       </div>
 
       <div className="mission-block mx-auto mt-[18px] w-full max-w-[1400px] will-change-transform">
-        <h2 className="font-montserrat text-[24px] font-semibold leading-[1.2] tracking-[-0.2px] text-[#000572] max-[480px]:text-[22px]">
-          Why international AI partners need Parwaaz
-        </h2>
+        <div className="flex items-center gap-[14px]">
+          <span className="flex h-[19px] w-[19px] shrink-0 items-center justify-center rounded-full bg-[#000572]">
+            <svg
+              width="11"
+              height="8"
+              viewBox="0 0 11 8"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="block"
+            >
+              <path
+                d="M1 4.1L4.05 7L10 1"
+                stroke="white"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
 
-        <div className="mt-[18px] max-w-[1185px] font-montserrat text-[16px] font-normal leading-[1.65] tracking-[0.2px] text-[#000000] max-[768px]:text-[14px] max-[480px]:text-[13px]">
+          <h2 className="font-montserrat text-[24px] font-semibold leading-[1.2] tracking-[-0.2px] text-[#000572] max-[480px]:text-[22px]">
+            Why international AI partners need Parwaaz
+          </h2>
+        </div>
+
+        <div className="ml-[33px] mt-[18px] max-w-[1185px] font-montserrat text-[16px] font-normal leading-[1.65] tracking-[0.2px] text-[#000000] max-[768px]:ml-0 max-[768px]:text-[14px] max-[480px]:text-[13px]">
           <p>
             Global AI platforms — G42, Microsoft Azure AI, Google Vertex, AWS
             Bedrock — need trusted local partners to reach enterprise and
@@ -102,11 +144,32 @@ export default function Aitechsubsection() {
       </div>
 
       <div className="mission-block mx-auto mt-[18px] w-full max-w-[1400px] will-change-transform">
-        <h2 className="font-montserrat text-[24px] font-semibold leading-[1.2] tracking-[-0.2px] text-[#000572] max-[480px]:text-[22px]">
-          What makes this different from IT consulting
-        </h2>
+        <div className="flex items-center gap-[14px]">
+          <span className="flex h-[19px] w-[19px] shrink-0 items-center justify-center rounded-full bg-[#000572]">
+            <svg
+              width="11"
+              height="8"
+              viewBox="0 0 11 8"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="block"
+            >
+              <path
+                d="M1 4.1L4.05 7L10 1"
+                stroke="white"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
 
-        <div className="mt-[18px] max-w-[1185px] font-montserrat text-[16px] font-normal leading-[1.65] tracking-[0.2px] text-[#000000] max-[768px]:text-[14px] max-[480px]:text-[13px]">
+          <h2 className="font-montserrat text-[24px] font-semibold leading-[1.2] tracking-[-0.2px] text-[#000572] max-[480px]:text-[22px]">
+            What makes this different from IT consulting
+          </h2>
+        </div>
+
+        <div className="ml-[33px] mt-[18px] max-w-[1185px] font-montserrat text-[16px] font-normal leading-[1.65] tracking-[0.2px] text-[#000000] max-[768px]:ml-0 max-[768px]:text-[14px] max-[480px]:text-[13px]">
           <p>
             Traditional IT consultants sell implementation hours. Parwaaz starts
             upstream — with strategy and readiness — ensuring clients invest in
