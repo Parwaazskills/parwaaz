@@ -11,7 +11,7 @@ export default function ParwaazAboutCard() {
           .parwaaz-section { padding: 56px 20px; }
           .parwaaz-blue-card {
             padding: 24px 22px 28px 22px !important;
-            margin-left: auto !important;
+            margin-left: 10px !important;
             margin-right: auto !important;
             max-width: 100% !important;
             width: 100% !important;
@@ -28,8 +28,8 @@ export default function ParwaazAboutCard() {
           .parwaaz-blue-card p { font-size: 15px !important; }
         }
         .parwaaz-numbered-list li::marker {
-          color: #0a1970;
-          font-weight: 700;
+          color: #000000;
+          font-weight: 300;
         }
       `}</style>
 
@@ -92,7 +92,7 @@ export default function ParwaazAboutCard() {
                 maxWidth: "500px",
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
                 fontSize: "20px",
-                fontWeight: 400,
+                fontWeight: 300,
                 lineHeight: 1.7,
                 letterSpacing: "0",
                 color: "#000000",
@@ -144,22 +144,22 @@ export default function ParwaazAboutCard() {
                 fontSize: "20px",
                 lineHeight: 1.7,
                 color: "#ffffff",
-                fontWeight: 400,
+                fontWeight: 300,
                 margin: 0,
               }}
             >
-              We chose this name because it reflects exactly what we do.
+              Parwaaz was built on a simple belief: when talent, technology, and opportunity move together, economies rise.
             </p>
             <p
               style={{
                 fontSize: "20px",
                 lineHeight: 1.7,
                 color: "#ffffff",
-                fontWeight: 400,
+                fontWeight: 700,
                 margin: "20px 0 0 0",
               }}
             >
-              AI and advanced technology are the defining forces of our era - it is the difference between being left behind and leading the way.
+              Parwaaz exists to power that journey.
             </p>
           </div>
         </div>

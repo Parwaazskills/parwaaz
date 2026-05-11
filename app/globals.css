@@ -20,16 +20,18 @@ html,
 body {
   margin: 0;
   padding: 0;
+  max-width: 100vw;
   font-family: var(--font-poppins), -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   overflow-y: auto;
 }
 
 main {
-  overflow: visible !important;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 h1,
@@ -268,6 +270,11 @@ img[src="/robot.png"] {
 img[src="/robot.png"] {
   aspect-ratio: 1 / 1;
 }
+
+/* ============================================================
+ * ALUMNI BUBBLE STYLES
+ * ============================================================ */
+
 .alumni-bubble-img-wrap {
   position: relative !important;
   flex: 0 0 56px !important;

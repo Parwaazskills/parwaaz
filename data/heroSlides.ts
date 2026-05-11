@@ -7,9 +7,9 @@ export type HeroSlide = {
 
 export const heroSlides: HeroSlide[] = [
   {
-    title: "Delivering Digital Experience",
+    title: "Building Future-Ready Workforce & Digital Ecosystems",
     subtitle: "That Make The World Better",
-    desc: "Connecting you the right tools, People, and Creative Strategies to elevate your business in South Asia, Middle East and beyond.",
+    desc: "Helping governments, enterprises, and global partners build workforce capability, digital infrastructure, and market expansion pathways across emerging economies.",
     bg: "/back-image.png",
   },
   {

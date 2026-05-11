@@ -30,7 +30,7 @@ export default function ContactCTASection() {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          gap: 24px;
+          gap: 18px;
           overflow: hidden;
           box-shadow: 0 20px 60px rgba(5, 7, 131, 0.25);
         }
@@ -44,16 +44,29 @@ export default function ContactCTASection() {
           background: radial-gradient(ellipse, rgba(0, 254, 78, 0.12), transparent 60%);
           pointer-events: none;
         }
+        .contact-cta-heading {
+          position: relative;
+          margin: 0;
+          font-family: var(--font-poppins), sans-serif;
+          font-size: 26px;
+          font-weight: 500;
+          color: #ffffff;
+          text-align: center;
+          line-height: 1.25;
+          max-width: 620px;
+          z-index: 1;
+        }
         .contact-cta-text {
           position: relative;
           margin: 0;
           font-family: var(--font-poppins), sans-serif;
-          font-size: 18px;
-          font-weight: 200;
+          font-size: 15px;
+          font-weight: 300;
           color: #ffffff;
           text-align: center;
-          line-height: 1.5;
-          max-width: 460px;
+          line-height: 1.55;
+          max-width: 560px;
+          opacity: 0.9;
           z-index: 1;
         }
         .contact-cta-btn {
@@ -74,6 +87,7 @@ export default function ContactCTASection() {
           box-shadow: 0 4px 14px rgba(0, 254, 78, 0.4);
           transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           z-index: 1;
+          margin-top: 6px;
         }
         .contact-cta-btn svg {
           width: 18px;
@@ -88,8 +102,9 @@ export default function ContactCTASection() {
         @media (max-width: 1024px) {
           .contact-cta-section { margin-top: 40px; padding: 0 0 80px; }
           .contact-cta-wrap { padding: 0 24px; }
-          .contact-cta-box { padding: 40px 32px; min-height: 200px; gap: 20px; }
-          .contact-cta-text { font-size: 17px; }
+          .contact-cta-box { padding: 40px 32px; min-height: 200px; gap: 16px; }
+          .contact-cta-heading { font-size: 23px; }
+          .contact-cta-text { font-size: 14px; }
         }
         @media (max-width: 768px) {
           .contact-cta-section {
@@ -98,13 +113,18 @@ export default function ContactCTASection() {
             position: relative !important;
             z-index: 10 !important;
           }
+          .contact-cta-heading { font-size: 20px; }
+          .contact-cta-text { font-size: 13px; }
         }
       `}</style>
 
       <section className="contact-cta-section">
         <div className="contact-cta-wrap">
           <div className="contact-cta-box" data-reveal="zoom">
-            <p className="contact-cta-text">Get in touch to learn how our team can support your business</p>
+            <h3 className="contact-cta-heading">Let&apos;s Build the Next Flight of Growth!</h3>
+            <p className="contact-cta-text">
+              Connect with our team to explore workforce transformation, digital capability, and strategic expansion opportunities.
+            </p>
             <button className="contact-cta-btn">
               <span>Contact Us</span>
               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

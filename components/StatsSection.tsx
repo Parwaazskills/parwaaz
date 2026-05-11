@@ -3,10 +3,10 @@
 import { CheckCircle2, BookOpen, Smile, Globe } from "lucide-react";
 
 const stats = [
-  { Icon: CheckCircle2, val: "1,000+", l1: "Successful", l2: "Placements" },
+  { Icon: CheckCircle2, val: "1,000+", l1: "Career Pathways", l2: "Enabled" },
   { Icon: BookOpen, val: "12,000+", l1: "Specialized", l2: "Courses" },
-  { Icon: Smile, val: "95%", l1: "Customer", l2: "Satisfaction" },
-  { Icon: Globe, val: "5+", l1: "Countries", l2: "where we have clients" },
+  { Icon: Smile, val: "95%", l1: "Partner", l2: "Satisfaction" },
+  { Icon: Globe, val: "5+", l1: "Global Markets", l2: "Served" },
 ];
 
 export default function StatsSection() {
@@ -19,9 +19,38 @@ export default function StatsSection() {
           border: 1px solid #02E046;
           border-radius: 10px;
           cursor: default;
+          transition: background 0.4s ease, border-color 0.4s ease, transform 0.4s cubic-bezier(0.2,0.9,0.3,1), box-shadow 0.4s ease;
         }
-        .stat-card-icon { color: #02E046; }
-        .stat-card-val { color: #000000; }
+        .stat-card-icon {
+          color: #02E046;
+          transition: color 0.4s ease;
+        }
+        .stat-card-val {
+          color: #000000;
+          transition: color 0.4s ease;
+        }
+        .stat-card-label {
+          transition: color 0.4s ease;
+        }
+
+        /* ============ HOVER STATE — turns navy ============ */
+        .stat-card:hover {
+          background: #050783;
+          border-color: #050783;
+          transform: translateY(-4px);
+          box-shadow: 0 12px 28px rgba(5, 7, 131, 0.22);
+          cursor: pointer;
+        }
+        .stat-card:hover .stat-card-icon {
+          color: #ffffff;
+        }
+        .stat-card:hover .stat-card-val {
+          color: #ffffff;
+        }
+        .stat-card:hover .stat-card-label {
+          color: #ffffff !important;
+        }
+
         @media (max-width: 768px) {
           .stat-card {
             width: 160px !important;
@@ -101,9 +130,9 @@ export default function StatsSection() {
           className="gsap-marquee marquee-shell mt-3 lg:mt-5"
         >
           <div className="marquee-track">
-            <span className="gsap-clip marquee-text">Let The Numbers Speak!</span>
-            <span className="marquee-text">Let The Numbers Speak!</span>
-            <span className="marquee-text">Let The Numbers Speak!</span>
+            <span className="gsap-clip marquee-text">Execution That Creates Measurable Impact</span>
+            <span className="marquee-text">Execution That Creates Measurable Impact</span>
+            <span className="marquee-text">Execution That Creates Measurable Impact</span>
           </div>
         </div>
         <p
@@ -112,7 +141,7 @@ export default function StatsSection() {
           className="gsap-words mt-3 lg:mt-4 leading-[1.4] text-black"
           style={{ fontSize: "clamp(13px, 1.4vw, 16px)" }}
         >
-          With enough data, the numbers speak for themselves.
+          Workforce, technology, and operational impact at scale.
         </p>
         <div className="mt-6 lg:mt-7 grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 max-w-[1280px]">
           {stats.map((s, i) => (

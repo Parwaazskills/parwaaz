@@ -1,105 +1,106 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { clientLogos } from "@/data/clientLogos";
 
 export default function ClientsSection() {
+  // Same 5-copy seamless loop as PartnerLogosSection
   const [logoIndex, setLogoIndex] = useState(0);
-  const logoTrackRef = useRef<HTMLDivElement | null>(null);
+  const [glowingSide, setGlowingSide] = useState<"prev" | "next" | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const isTransitioningRef = useRef(false);
 
-  const handleLogoPrev = () => setLogoIndex((prev) => prev - 1);
-  const handleLogoNext = () => setLogoIndex((prev) => prev + 1);
+  const total = clientLogos.length;
+  const COPIES = 5;
+  const CENTER_OFFSET = 2 * total;
+  const SAFE_RANGE = 2 * total;
+
+  const renderedLogos = Array.from({ length: COPIES }, () => clientLogos).flat();
+
+  const handlePrev = useCallback(() => {
+    setLogoIndex((prev) => prev - 1);
+    setGlowingSide("prev");
+    setTimeout(() => setGlowingSide(null), 800);
+  }, []);
+
+  const handleNext = useCallback(() => {
+    setLogoIndex((prev) => prev + 1);
+    setGlowingSide("next");
+    setTimeout(() => setGlowingSide(null), 800);
+  }, []);
 
   useEffect(() => {
-    const track = logoTrackRef.current;
+    const track = trackRef.current;
     if (!track) return;
-    const len = clientLogos.length;
-    if (logoIndex >= 0 && logoIndex < len) return;
 
-    const handle = setTimeout(() => {
-      const wrapped = ((logoIndex % len) + len) % len;
-      track.style.transition = "none";
-      setLogoIndex(wrapped);
-      requestAnimationFrame(() => {
+    const handleTransitionEnd = () => {
+      isTransitioningRef.current = false;
+
+      if (Math.abs(logoIndex) >= SAFE_RANGE) {
+        const wrapped = ((logoIndex % total) + total) % total;
+
+        if (!trackRef.current) return;
+
+        trackRef.current.style.transition = "none";
+        setLogoIndex(wrapped);
         requestAnimationFrame(() => {
-          if (logoTrackRef.current) logoTrackRef.current.style.transition = "";
+          requestAnimationFrame(() => {
+            if (trackRef.current) {
+              trackRef.current.style.transition = "";
+            }
+          });
         });
-      });
-    }, 620);
+      }
+    };
 
-    return () => clearTimeout(handle);
-  }, [logoIndex]);
+    track.addEventListener("transitionend", handleTransitionEnd);
+    return () => {
+      track.removeEventListener("transitionend", handleTransitionEnd);
+    };
+  }, [logoIndex, total, SAFE_RANGE]);
 
   return (
     <>
       <style jsx global>{`
-        .logo-shell {
+        /* ============ MARQUEE TRACK ============ */
+        .clients-shell {
           position: relative;
           overflow: hidden;
           padding: 24px 0 32px;
           width: 100vw;
           margin-left: calc(50% - 50vw);
-          -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%);
-          mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%);
+          -webkit-mask-image: linear-gradient(
+            90deg,
+            transparent 0%,
+            black 6%,
+            black 94%,
+            transparent 100%
+          );
+          mask-image: linear-gradient(
+            90deg,
+            transparent 0%,
+            black 6%,
+            black 94%,
+            transparent 100%
+          );
         }
-        .logo-track {
+        .clients-track {
           display: flex;
           width: max-content;
           gap: 32px;
           padding-left: 16px;
-          transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
           will-change: transform;
         }
-        @media (min-width: 640px) { .logo-track { padding-left: 24px; } }
-        @media (min-width: 1024px) { .logo-track { padding-left: 32px; } }
-        .logo-nav-wrap { display: flex; justify-content: center; margin-top: 8px; }
-        .logo-nav-btn {
-          width: 84px;
-          height: 60px;
-          background: #ffffff;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 4px;
-          padding: 0 6px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-          border: 1px solid rgba(0,0,0,0.04);
-          transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        @media (min-width: 640px) {
+          .clients-track { padding-left: 24px; }
         }
-        .logo-nav-btn:hover {
-          box-shadow: 0 6px 18px rgba(0,254,78,0.18), 0 0 0 2px rgba(0,254,78,0.25);
-          border-color: rgba(0,254,78,0.35);
+        @media (min-width: 1024px) {
+          .clients-track { padding-left: 32px; }
         }
-        .logo-nav-arrow {
-          width: 32px;
-          height: 32px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: transparent;
-          border: none;
-          cursor: pointer;
-          padding: 0;
-          color: #8e8e8e;
-          border-radius: 8px;
-          transition: color 0.25s ease, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.25s ease, filter 0.25s ease;
-        }
-        .logo-nav-arrow svg { width: 20px; height: 20px; transition: filter 0.25s ease; }
-        .logo-nav-arrow-prev:hover {
-          color: #00fe4e;
-          transform: translateX(-2px);
-          background: rgba(0,254,78,0.08);
-        }
-        .logo-nav-arrow-prev:hover svg { filter: drop-shadow(0 0 4px rgba(0,254,78,0.4)); }
-        .logo-nav-arrow-next:hover {
-          color: #00fe4e;
-          transform: translateX(2px);
-          background: rgba(0,254,78,0.08);
-        }
-        .logo-nav-arrow-next:hover svg { filter: drop-shadow(0 0 4px rgba(0,254,78,0.4)); }
-        .logo-nav-arrow:active { transform: scale(0.92); }
-        .logo-card {
+
+        /* ============ LOGO CARDS ============ */
+        .clients-card {
           width: clamp(150px, 16vw, 200px);
           height: clamp(80px, 9vw, 110px);
           flex: 0 0 auto;
@@ -109,14 +110,17 @@ export default function ClientsSection() {
           border-radius: 10px;
           border: none;
           background: #ffffff;
-          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
-          transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.35s ease;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06),
+            0 1px 3px rgba(0, 0, 0, 0.04);
+          transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+            box-shadow 0.35s ease;
         }
-        .logo-card:hover {
+        .clients-card:hover {
           transform: translateY(-4px);
-          box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 254, 78, 0.12);
+          box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08),
+            0 2px 6px rgba(0, 254, 78, 0.12);
         }
-        .logo-card img {
+        .clients-card img {
           max-height: 55%;
           max-width: 70%;
           width: auto;
@@ -124,9 +128,103 @@ export default function ClientsSection() {
           filter: grayscale(0.15);
           transition: filter 0.3s ease;
         }
-        .logo-card:hover img { filter: grayscale(0); }
+        .clients-card:hover img {
+          filter: grayscale(0);
+        }
+
+        /* ============ NAV BUTTONS ============ */
+        .clients-nav-wrap {
+          display: flex;
+          justify-content: center;
+          margin-top: 12px;
+          padding: 24px 0;
+        }
+        .clients-nav-box {
+          position: relative;
+          display: inline-block;
+          width: 79px;
+          height: 71px;
+          line-height: 0;
+        }
+        .clients-nav-svg {
+          display: block;
+          width: 79px;
+          height: 71px;
+          pointer-events: none;
+          position: relative;
+          z-index: 2;
+        }
+
+        /* GLOW */
+        .clients-glow {
+          position: absolute;
+          top: 50%;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: radial-gradient(
+            circle,
+            rgba(117, 251, 105, 0.85) 0%,
+            rgba(117, 251, 105, 0.55) 25%,
+            rgba(117, 251, 105, 0.25) 50%,
+            rgba(117, 251, 105, 0) 75%
+          );
+          transform: translateY(-50%) scale(0.3);
+          opacity: 0;
+          pointer-events: none;
+          z-index: 1;
+          transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .clients-glow-prev { left: -10px; }
+        .clients-glow-next { right: -10px; }
+
+        /* HOVER state */
+        .clients-nav-hit-prev:hover ~ .clients-glow-prev,
+        .clients-glow-prev:hover {
+          opacity: 1;
+          transform: translateY(-50%) scale(1);
+        }
+        .clients-nav-hit-next:hover ~ .clients-glow-next,
+        .clients-glow-next:hover {
+          opacity: 1;
+          transform: translateY(-50%) scale(1);
+        }
+
+        /* CLICK pulse */
+        .clients-glow.is-active {
+          animation: clientsGlowAnim 0.75s ease-out forwards;
+        }
+        @keyframes clientsGlowAnim {
+          0% { opacity: 0; transform: translateY(-50%) scale(0.3); }
+          25% { opacity: 1; transform: translateY(-50%) scale(1.15); }
+          100% { opacity: 0; transform: translateY(-50%) scale(1.5); }
+        }
+
+        .clients-nav-hit {
+          position: absolute;
+          top: 0;
+          width: 50%;
+          height: 100%;
+          background: transparent;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+          z-index: 3;
+        }
+        .clients-nav-hit-prev { left: 0; }
+        .clients-nav-hit-next { right: 0; }
+
+        /* ============ MOBILE ============ */
         @media (max-width: 768px) {
-          .logo-shell { padding-bottom: 12px !important; }
+          .clients-shell { padding-bottom: 12px !important; }
+          .clients-nav-box,
+          .clients-nav-svg { width: 66px; height: 60px; }
+          .clients-glow { width: 50px; height: 50px; }
+        }
+        @media (max-width: 480px) {
+          .clients-nav-box,
+          .clients-nav-svg { width: 58px; height: 52px; }
+          .clients-glow { width: 44px; height: 44px; }
         }
       `}</style>
 
@@ -137,9 +235,9 @@ export default function ClientsSection() {
           </div>
           <div data-reveal="fade" data-reveal-delay="100" className="gsap-marquee marquee-shell mt-3">
             <div className="marquee-track">
-              <span className="gsap-clip marquee-text">Transforming Your Possibilities</span>
-              <span className="marquee-text">Transforming Your Possibilities</span>
-              <span className="marquee-text">Transforming Your Possibilities</span>
+              <span className="gsap-clip marquee-text">Powering Growth</span>
+              <span className="marquee-text">Powering Growth</span>
+              <span className="marquee-text">Powering Growth</span>
             </div>
           </div>
           <p
@@ -147,37 +245,52 @@ export default function ClientsSection() {
             data-reveal-delay="200"
             className="gsap-words mt-3 lg:mt-4 text-[14px] lg:text-[15px] text-black"
           >
-            We work for a wide variety of clients in both the private and public sectors.
+            Supporting public and private sector organizations through integrated workforce and digital transformation solutions.
           </p>
-          <div data-reveal="fade" data-reveal-delay="300" className="logo-shell mt-5 lg:mt-6">
+
+          <div data-reveal="fade" data-reveal-delay="300" className="clients-shell mt-5 lg:mt-6">
             <div
-              ref={logoTrackRef}
-              className="logo-track"
+              ref={trackRef}
+              className="clients-track"
               style={{
                 transform: `translateX(calc(${
-                  -(logoIndex + clientLogos.length)
+                  -(logoIndex + CENTER_OFFSET)
                 } * (clamp(150px, 16vw, 200px) + 32px)))`,
               }}
             >
-              {[...clientLogos, ...clientLogos, ...clientLogos].map((logo, i) => (
-                <div key={logo.name + "-" + i} className="logo-card">
+              {renderedLogos.map((logo, i) => (
+                <div key={logo.name + "-" + i} className="clients-card">
                   <img src={logo.src} alt={logo.name} />
                 </div>
               ))}
             </div>
           </div>
-          <div data-reveal="zoom" data-reveal-delay="400" className="logo-nav-wrap">
-            <div className="logo-nav-btn">
-              <button onClick={handleLogoPrev} className="logo-nav-arrow logo-nav-arrow-prev" aria-label="Previous">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-              <button onClick={handleLogoNext} className="logo-nav-arrow logo-nav-arrow-next" aria-label="Next">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
+
+          <div data-reveal="zoom" data-reveal-delay="400" className="clients-nav-wrap">
+            <div className="clients-nav-box">
+              <button
+                type="button"
+                onClick={handlePrev}
+                className="clients-nav-hit clients-nav-hit-prev"
+                aria-label="Previous"
+              />
+              <button
+                type="button"
+                onClick={handleNext}
+                className="clients-nav-hit clients-nav-hit-next"
+                aria-label="Next"
+              />
+              <span
+                className={`clients-glow clients-glow-prev ${
+                  glowingSide === "prev" ? "is-active" : ""
+                }`}
+              />
+              <span
+                className={`clients-glow clients-glow-next ${
+                  glowingSide === "next" ? "is-active" : ""
+                }`}
+              />
+              <img src="/button.svg" alt="" className="clients-nav-svg" />
             </div>
           </div>
         </section>

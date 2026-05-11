@@ -11,8 +11,9 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import ChatBox from "@/components/ChatBox";
+import PartnerLogosSection from "@/components/PartnerLogosSection";
 import SearchModal from "@/components/SearchModal";
-import WefCard from "@/components/WefCard";
+
 import ParwaazAboutCard from "@/components/ParwaazAboutCard";
 import ServicesSection from "@/components/ServicesSection";
 import StatsSection from "@/components/StatsSection";
@@ -28,8 +29,8 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [heroServicesOpen, setHeroServicesOpen] = useState(false);
   const [heroBgIndex, setHeroBgIndex] = useState(0);
-  const [activeServiceTab, setActiveServiceTab] =
-    useState<keyof typeof servicesData>("Training");
+const [activeServiceTab, setActiveServiceTab] =
+  useState<keyof typeof servicesData>("AI & Advanced Technology");
   const [serviceAnimKey, setServiceAnimKey] = useState(0);
   const [servicePage, setServicePage] = useState(0);
 
@@ -313,25 +314,28 @@ export default function Page() {
           .pw-ring, .pw-dot { display: none; }
         }
       `}</style>
+<div className="hero-stack">
+  <HeroSection heroBgIndex={heroBgIndex} setHeroBgIndex={setHeroBgIndex} />
 
-      <div className="hero-stack">
-        <HeroSection heroBgIndex={heroBgIndex} setHeroBgIndex={setHeroBgIndex} />
+  <div className="absolute top-0 left-0 right-0 z-50 mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 pt-3">
+    <Navbar
+      mobileNavOpen={mobileNavOpen}
+      setMobileNavOpen={setMobileNavOpen}
+      mobileServicesOpen={mobileServicesOpen}
+      setMobileServicesOpen={setMobileServicesOpen}
+      setSearchOpen={setSearchOpen}
+    />
+  </div>
 
-        <div className="absolute top-0 left-0 right-0 z-50 mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 pt-3">
-          <Navbar
-            mobileNavOpen={mobileNavOpen}
-            setMobileNavOpen={setMobileNavOpen}
-            mobileServicesOpen={mobileServicesOpen}
-            setMobileServicesOpen={setMobileServicesOpen}
-            setSearchOpen={setSearchOpen}
-          />
-        </div>
+  <div style={{ display: "none" }}>
+    <ChatBox />
+  </div>
+</div>
 
-        <ChatBox />
-      </div>
+<PartnerLogosSection />
+<section className="relative z-10 bg-white pt-4 lg:pt-6 pb-12">
 
-      <section className="relative z-10 bg-white pt-10 lg:pt-14 pb-12">
-        <WefCard />
+    
         <ParwaazAboutCard />
 
         <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">

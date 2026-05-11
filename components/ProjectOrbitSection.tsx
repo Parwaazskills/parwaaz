@@ -12,20 +12,20 @@ export default function ProjectOrbitSection() {
 
   const slides = [
     {
-      title: "Demand",
-      text: "Empowering Pakistan's workforce with world-class skills through global partnerships like Coursera. Unlock new career opportunities with tailored programs designed for modern professionals.",
+      title: "Map Demand",
+      text: "Identifying talent needs, industry gaps, and emerging opportunities through research, surveys, and market intelligence.",
     },
     {
-      title: "Design",
-      text: "Crafting tailored learning experiences that align with industry demands and prepare professionals for the future of work.",
+      title: "Build Pathways",
+      text: "Designing tailored learning, recruitment, and operational frameworks aligned with organizational and sector priorities.",
     },
     {
-      title: "Build",
-      text: "Building real-world skills through hands-on projects, expert mentorship, and globally recognized certifications.",
+      title: "Deploy Solutions",
+      text: "Activating delivery through strategic partnerships, digital systems, regional networks, and operational infrastructure.",
     },
     {
-      title: "Validate",
-      text: "Validating expertise with industry-recognized credentials, helping professionals stand out in a competitive global workforce.",
+      title: "Drive Outcomes",
+      text: "Creating measurable impact through placement, productivity, market expansion, and long-term economic value.",
     },
   ];
 
@@ -295,8 +295,8 @@ export default function ProjectOrbitSection() {
     <section ref={sectionRef} className="po-section">
       <div className="po-title">
         <h2>
-          <span className="po-title-a">HOW IT</span>
-          <span className="po-title-b">WORKS</span>
+          <span className="po-title-a">HOW PARWAAZ</span>
+          <span className="po-title-b">OPERATES</span>
         </h2>
       </div>
 

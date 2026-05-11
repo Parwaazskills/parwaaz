@@ -1,5 +1,14 @@
 "use client";
 
+import Link from "next/link";
+import { useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, A11y } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
+
+import "swiper/css";
+import "swiper/css/navigation";
+
 import { servicesData } from "@/data/services";
 
 interface ServicesSectionProps {
@@ -16,9 +25,22 @@ export default function ServicesSection({
   setActiveServiceTab,
   serviceAnimKey,
   setServiceAnimKey,
-  servicePage,
-  setServicePage,
 }: ServicesSectionProps) {
+  const swiperRef = useRef<SwiperType | null>(null);
+  const [glowingSide, setGlowingSide] = useState<"prev" | "next" | null>(null);
+
+  const handlePrev = () => {
+    swiperRef.current?.slidePrev();
+    setGlowingSide("prev");
+    setTimeout(() => setGlowingSide(null), 800);
+  };
+
+  const handleNext = () => {
+    swiperRef.current?.slideNext();
+    setGlowingSide("next");
+    setTimeout(() => setGlowingSide(null), 800);
+  };
+
   return (
     <>
       <style jsx global>{`
@@ -39,7 +61,7 @@ export default function ServicesSection({
         }
         .service-card:hover::before { opacity: 0; }
         .service-card-icon {
-          transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), color 0.45s ease;
+          transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), color 0.45s ease, filter 0.45s ease, opacity 0.45s ease;
           will-change: transform;
         }
         .service-card:hover .service-card-icon { transform: translateY(-4px) scale(1.05); }
@@ -49,6 +71,15 @@ export default function ServicesSection({
           50% { transform: translateY(-3px); }
         }
         .service-card-icon { animation: serviceCardFloat 3.5s ease-in-out infinite; }
+
+        .service-card-icon-img {
+          filter: brightness(0) saturate(100%) invert(45%);
+          opacity: 1;
+        }
+        .service-card-cycle:hover .service-card-icon-img {
+          filter: brightness(0) invert(1);
+          opacity: 1;
+        }
 
         .service-tab-btn {
           background: #f1f1f1;
@@ -79,48 +110,114 @@ export default function ServicesSection({
           animation: serviceCardSlideIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
-        .services-nav-wrap { display: flex; justify-content: center; }
-        .services-nav-btn {
-          width: 84px;
-          height: 60px;
-          background: #ffffff;
-          border-radius: 8px;
+        /* ============================================
+           NEW NAV BUTTONS — using /button.svg
+           Mirrors PartnerLogosSection styling
+           ============================================ */
+        .services-nav-wrap {
           display: flex;
-          align-items: center;
           justify-content: center;
-          gap: 4px;
-          padding: 0 6px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-          border: 1px solid rgba(0,0,0,0.04);
+          margin-top: 12px;
+          padding: 24px 0;
         }
-        .services-nav-arrow {
-          width: 32px;
-          height: 32px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+        .services-nav-box {
+          position: relative;
+          display: inline-block;
+          width: 79px;
+          height: 71px;
+          line-height: 0;
+        }
+        .services-nav-svg {
+          display: block;
+          width: 79px;
+          height: 71px;
+          pointer-events: none;
+          position: relative;
+          z-index: 2;
+        }
+
+        /* GLOW — radial halo on each side */
+        .services-glow {
+          position: absolute;
+          top: 50%;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: radial-gradient(
+            circle,
+            rgba(117, 251, 105, 0.85) 0%,
+            rgba(117, 251, 105, 0.55) 25%,
+            rgba(117, 251, 105, 0.25) 50%,
+            rgba(117, 251, 105, 0) 75%
+          );
+          transform: translateY(-50%) scale(0.3);
+          opacity: 0;
+          pointer-events: none;
+          z-index: 1;
+          transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .services-glow-prev { left: -10px; }
+        .services-glow-next { right: -10px; }
+
+        /* HOVER — glow appears smoothly */
+        .services-nav-hit-prev:hover ~ .services-glow-prev,
+        .services-glow-prev:hover {
+          opacity: 1;
+          transform: translateY(-50%) scale(1);
+        }
+        .services-nav-hit-next:hover ~ .services-glow-next,
+        .services-glow-next:hover {
+          opacity: 1;
+          transform: translateY(-50%) scale(1);
+        }
+
+        /* CLICK pulse */
+        .services-glow.is-active {
+          animation: servicesGlowAnim 0.75s ease-out forwards;
+        }
+        @keyframes servicesGlowAnim {
+          0% { opacity: 0; transform: translateY(-50%) scale(0.3); }
+          25% { opacity: 1; transform: translateY(-50%) scale(1.15); }
+          100% { opacity: 0; transform: translateY(-50%) scale(1.5); }
+        }
+
+        .services-nav-hit {
+          position: absolute;
+          top: 0;
+          width: 50%;
+          height: 100%;
           background: transparent;
           border: none;
-          cursor: pointer;
           padding: 0;
-          color: #8e8e8e;
-          border-radius: 8px;
-          transition: color 0.25s ease, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.25s ease, filter 0.25s ease;
+          cursor: pointer;
+          z-index: 3;
         }
-        .services-nav-arrow svg { width: 20px; height: 20px; transition: filter 0.25s ease; }
-        .services-nav-arrow-prev:hover {
-          color: #00fe4e;
-          transform: translateX(-2px);
-          background: rgba(0,254,78,0.08);
+        .services-nav-hit-prev { left: 0; }
+        .services-nav-hit-next { right: 0; }
+
+        /* MOBILE responsive */
+        @media (max-width: 768px) {
+          .services-nav-box,
+          .services-nav-svg {
+            width: 66px;
+            height: 60px;
+          }
+          .services-glow {
+            width: 50px;
+            height: 50px;
+          }
         }
-        .services-nav-arrow-prev:hover svg { filter: drop-shadow(0 0 4px rgba(0,254,78,0.4)); }
-        .services-nav-arrow-next:hover {
-          color: #00fe4e;
-          transform: translateX(2px);
-          background: rgba(0,254,78,0.08);
+        @media (max-width: 480px) {
+          .services-nav-box,
+          .services-nav-svg {
+            width: 58px;
+            height: 52px;
+          }
+          .services-glow {
+            width: 44px;
+            height: 44px;
+          }
         }
-        .services-nav-arrow-next:hover svg { filter: drop-shadow(0 0 4px rgba(0,254,78,0.4)); }
-        .services-nav-arrow:active { transform: scale(0.92); }
 
         .service-card-cycle {
           background: #ffffff;
@@ -128,7 +225,7 @@ export default function ServicesSection({
           transition: background 0.45s ease, border-color 0.45s ease, transform 0.45s cubic-bezier(0.2,0.9,0.3,1), box-shadow 0.45s cubic-bezier(0.2,0.9,0.3,1);
         }
         .service-card-cycle .service-card-icon-cycle {
-          color: #d0d0d0;
+          color: #6b6b6b;
           transition: color 0.45s ease;
         }
         .service-card-cycle .service-card-eyebrow {
@@ -162,6 +259,36 @@ export default function ServicesSection({
           color: #ffffff;
         }
         .service-card-cycle:hover .service-card-body { color: rgba(255, 255, 255, 0.78); }
+
+        .services-swiper {
+          width: 100%;
+          padding: 4px 4px 8px;
+        }
+        .services-swiper .swiper-slide {
+          height: auto;
+          display: flex;
+        }
+        .services-swiper .swiper-slide > * {
+          width: 100%;
+        }
+
+        .services-tabs-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+        }
+        @media (min-width: 640px) {
+          .services-tabs-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+          }
+        }
+        @media (min-width: 1024px) {
+          .services-tabs-grid {
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+          }
+        }
       `}</style>
 
       <section className="mt-14 lg:mt-20 pb-12 lg:pb-16">
@@ -170,10 +297,10 @@ export default function ServicesSection({
         </div>
         <div data-reveal="fade" data-reveal-delay="100" className="gsap-marquee marquee-shell">
           <div className="marquee-track">
-            <span className="gsap-clip marquee-text">Cutting-Edge Solutions</span>
-            <span className="marquee-text">Cutting-Edge Solutions</span>
-            <span className="marquee-text">Cutting-Edge Solutions</span>
-            <span className="marquee-text">Cutting-Edge Solutions</span>
+            <span className="gsap-clip marquee-text">Solutions Designed To Move Organizations Forward</span>
+            <span className="marquee-text">Solutions Designed To Move Organizations Forward</span>
+            <span className="marquee-text">Solutions Designed To Move Organizations Forward</span>
+            <span className="marquee-text">Solutions Designed To Move Organizations Forward</span>
           </div>
         </div>
         <p
@@ -184,86 +311,108 @@ export default function ServicesSection({
         >
           Transforming businesses with AI-powered technology and intelligent automation
         </p>
-        <div data-reveal="up-sm" data-reveal-delay="280" className="mt-6 lg:mt-7 grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
+
+        <div data-reveal="up-sm" data-reveal-delay="280" className="services-tabs-grid mt-6 lg:mt-7">
           {(Object.keys(servicesData) as (keyof typeof servicesData)[]).map((item) => (
             <button
               key={item}
               onClick={() => {
                 setActiveServiceTab(item);
                 setServiceAnimKey((k) => k + 1);
+                if (swiperRef.current) {
+                  swiperRef.current.slideTo(0);
+                }
               }}
-              className={`service-tab-btn h-[48px] lg:h-[60px] rounded-[8px] text-[14px] lg:text-[16px] font-medium ${
+              className={`service-tab-btn w-full h-[48px] lg:h-[60px] rounded-[8px] text-[12px] lg:text-[14px] font-medium px-2 flex items-center justify-center text-center leading-tight ${
                 activeServiceTab === item ? "is-active" : ""
               }`}
             >
-              {item}
+              <span className="block">{item}</span>
             </button>
           ))}
         </div>
-        <div
-          key={`${activeServiceTab}-${servicePage}-${serviceAnimKey}`}
-          className="services-cards-track mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-7 items-stretch"
-        >
-          {servicesData[activeServiceTab]
-            .slice(servicePage * 3, servicePage * 3 + 3)
-            .map((card, i) => {
-              const Icon = card.icon;
+
+        <div className="mt-6" key={`${String(activeServiceTab)}-${serviceAnimKey}`}>
+          <Swiper
+            modules={[Navigation, A11y]}
+            onSwiper={(s) => { swiperRef.current = s; }}
+            spaceBetween={20}
+            slidesPerView={1}
+            grabCursor
+            breakpoints={{
+              640: { slidesPerView: 2, spaceBetween: 20 },
+              1024: { slidesPerView: 3, spaceBetween: 28 },
+            }}
+            className="services-swiper"
+          >
+            {(servicesData[activeServiceTab] || []).map((card, i) => {
+              const isImageIcon = typeof card.icon === "string";
+              const IconComponent = !isImageIcon ? (card.icon as React.ComponentType<{ className?: string; strokeWidth?: number }>) : null;
+
               return (
-                <div
-                  key={`${activeServiceTab}-${servicePage}-${i}`}
-                  className={`service-card service-card-cycle service-card-anim relative flex flex-col min-h-[440px] lg:aspect-square lg:min-h-0 rounded-[14px] border border-[#e5e5e5] p-7 lg:p-8 overflow-hidden ${
-                    i === 2 ? "md:col-span-2 lg:col-span-1" : ""
-                  }`}
-                  style={{ animationDelay: `${i * 120}ms` }}
-                >
-                  <Icon
-                    className="service-card-icon absolute right-7 top-6 lg:right-8 lg:top-8 h-[60px] w-[60px] lg:h-[80px] lg:w-[80px] service-card-icon-cycle"
-                    strokeWidth={1.4}
-                  />
-                  <div className="service-card-eyebrow mt-[60px] lg:mt-[90px] text-[13px] lg:text-[14px]">
-                    {card.eyebrow}
-                  </div>
-                  <h3
-                    className="service-card-title mt-2 font-medium leading-tight tracking-[-0.02em]"
-                    style={{ fontSize: "clamp(24px, 2.4vw, 30px)" }}
+                <SwiperSlide key={`${String(activeServiceTab)}-${i}`}>
+                  <Link
+                    href={card.href || "#"}
+                    className="service-card service-card-cycle service-card-anim relative flex flex-col min-h-[440px] lg:aspect-square lg:min-h-0 rounded-[14px] border border-[#e5e5e5] p-7 lg:p-8 overflow-hidden"
+                    style={{ animationDelay: `${i * 120}ms` }}
                   >
-                    {card.title}
-                  </h3>
-                  <p className="service-card-body mt-3 lg:mt-4 text-[13px] lg:text-[14px] leading-[1.55]">
-                    {card.body}
-                  </p>
-                </div>
+                    {isImageIcon ? (
+                      <img
+                        src={card.icon as string}
+                        alt=""
+                        className="service-card-icon service-card-icon-img absolute right-7 top-6 lg:right-8 lg:top-8 h-[60px] w-[60px] lg:h-[80px] lg:w-[80px] object-contain"
+                      />
+                    ) : IconComponent ? (
+                      <IconComponent
+                        className="service-card-icon absolute right-7 top-6 lg:right-8 lg:top-8 h-[60px] w-[60px] lg:h-[80px] lg:w-[80px] service-card-icon-cycle"
+                        strokeWidth={1.4}
+                      />
+                    ) : null}
+                    <div className="service-card-eyebrow mt-[60px] lg:mt-[90px] text-[13px] lg:text-[14px]">
+                      {card.eyebrow}
+                    </div>
+                    <h3
+                      className="service-card-title mt-2 font-medium leading-tight tracking-[-0.02em]"
+                      style={{ fontSize: "clamp(22px, 2.2vw, 28px)" }}
+                    >
+                      {card.title}
+                    </h3>
+                    <p className="service-card-body mt-3 lg:mt-4 text-[13px] lg:text-[14px] leading-[1.55]">
+                      {card.body}
+                    </p>
+                  </Link>
+                </SwiperSlide>
               );
             })}
+          </Swiper>
         </div>
-        <div className="services-nav-wrap mt-7 lg:mt-9">
-          <div className="services-nav-btn">
+
+        {/* ============ NAV BUTTONS (using /button.svg) ============ */}
+        <div data-reveal="zoom" data-reveal-delay="100" className="services-nav-wrap">
+          <div className="services-nav-box">
             <button
-              onClick={() => {
-                const totalPages = Math.ceil(servicesData[activeServiceTab].length / 3);
-                setServicePage((p) => (p - 1 + totalPages) % totalPages);
-                setServiceAnimKey((k) => k + 1);
-              }}
-              className="services-nav-arrow services-nav-arrow-prev"
+              type="button"
+              onClick={handlePrev}
+              className="services-nav-hit services-nav-hit-prev"
               aria-label="Previous cards"
-            >
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
+            />
             <button
-              onClick={() => {
-                const totalPages = Math.ceil(servicesData[activeServiceTab].length / 3);
-                setServicePage((p) => (p + 1) % totalPages);
-                setServiceAnimKey((k) => k + 1);
-              }}
-              className="services-nav-arrow services-nav-arrow-next"
+              type="button"
+              onClick={handleNext}
+              className="services-nav-hit services-nav-hit-next"
               aria-label="Next cards"
-            >
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
+            />
+            <span
+              className={`services-glow services-glow-prev ${
+                glowingSide === "prev" ? "is-active" : ""
+              }`}
+            />
+            <span
+              className={`services-glow services-glow-next ${
+                glowingSide === "next" ? "is-active" : ""
+              }`}
+            />
+            <img src="/button.svg" alt="" className="services-nav-svg" />
           </div>
         </div>
       </section>

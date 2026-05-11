@@ -1,269 +1,334 @@
 import {
-  FileText,
-  Hammer,
-  Monitor,
-  Lightbulb,
-  BookOpen,
-  Users,
-  Award,
   Briefcase,
-  ClipboardList,
-  BarChart3,
-  LineChart,
-  PieChart,
   Target,
-  CheckCircle2,
+  BarChart3,
+  FileSearch,
   TrendingUp,
-  MessageSquare,
-  Smile,
-  Globe,
-  Database,
-  GraduationCap,
-  Mail,
+  Lightbulb,
+  Building2,
+  Sofa,
+  Server,
+  Sparkles,
+  Wrench,
+  Leaf,
 } from "lucide-react";
 
 import type { LucideIcon } from "lucide-react";
-
-import {
-  OfficeChair,
-  PayrollIcon,
-  ServiceIcon,
-} from "@/components/ServiceIcons";
 
 export type ServiceItem = {
   eyebrow: string;
   title: string;
   body: string;
-  icon:
-    | LucideIcon
-    | typeof OfficeChair
-    | typeof PayrollIcon
-    | typeof ServiceIcon;
+  /**
+   * Icon can be either:
+   *  - A path string to an SVG in /public (e.g. "/icons/ai-strategy-readiness.svg")
+   *  - A Lucide React component (used as fallback / placeholder)
+   */
+  icon: string | LucideIcon;
   btn: string;
+  href: string;
 };
 
 export const servicesData: Record<string, ServiceItem[]> = {
-  Training: [
+  // ─────────────────────────────────────────────────────────────
+  // TAB 1: AI & Advanced Technology
+  // ─────────────────────────────────────────────────────────────
+  "AI & Advanced Technology": [
     {
-      eyebrow: "Office Accommodation",
-      title: "Services",
+      eyebrow: "AI Strategy &",
+      title: "Readiness",
       body:
-        "End-to-end workspace and accommodation solutions to support your team's productivity. From office setup to housing, we handle all logistics for a seamless experience.",
-      icon: OfficeChair,
+        "Help leadership understand AI, define where it adds value in their organization, and build a credible, board-ready adoption roadmap.",
+      icon: "/icons/ai-strategy-readiness.svg",
       btn: "Learn More",
+      href: "#",
     },
-
     {
-      eyebrow: "Design & Construction",
-      title: "Management",
+      eyebrow: "International AI",
+      title: "Partner Solutions",
       body:
-        "Delivering comprehensive project support from concept to completion. Our services include architecture, BIM modeling, and construction management to ensure your projects are executed with precision.",
-      icon: Hammer,
+        "Broker and integrate global AI infrastructure — connecting enterprises to leading international AI platforms with Parwaaz as trusted integrator.",
+      icon: "/icons/international-ai-partner.svg",
       btn: "Learn More",
+      href: "#",
     },
-
     {
-      eyebrow: "Customized Technology",
-      title: "Solutions",
-      body:
-        "Providing bespoke technology solutions designed to meet your unique business needs. Our team of experts specializes in developing custom programs and systems that not only drive innovation but also ensure sustainable growth and success for your business.",
-      icon: Monitor,
-      btn: "Learn More",
-    },
-
-    {
-      eyebrow: "Coursera &",
-      title: "Digital Learning",
-      body:
-        "World-class skills through global partnerships like Coursera. Tailored programs for modern professionals.",
-      icon: FileText,
-      btn: "Learn More",
-    },
-
-    {
-      eyebrow: "International Recruitment",
-      title: "& Payroll",
-      body:
-        "Connecting top Pakistani talent with global opportunities. We provide comprehensive recruitment and manpower solutions to meet the needs of international partners.",
-      icon: PayrollIcon,
-      btn: "Learn More",
-    },
-
-    {
-      eyebrow: "Payroll, Contract & Visa Management",
-      title: "Services",
+      eyebrow: "Generative AI &",
+      title: "LLM Deployment",
       body:
         "Empowering Pakistan's workforce with world-class skills through global partnerships like Coursera. Unlock new career opportunities with tailored programs designed for modern professionals.",
-      icon: ServiceIcon,
+      icon: "/icons/generative-ai-llm.svg",
       btn: "Learn More",
+      href: "#",
+    },
+    {
+      eyebrow: "Process",
+      title: "Automation",
+      body:
+        "Automate repetitive workflows across business functions using RPA combined with AI — smarter, adaptive automation that scales.",
+      icon: "/icons/process-automation.svg",
+      btn: "Learn More",
+      href: "#",
+    },
+    {
+      eyebrow: "Custom Technology",
+      title: "Development",
+      body:
+        "Bespoke software and systems built for your specific requirements — from MVP to enterprise-scale platforms tailored to your market.",
+      icon: "/icons/custom-technology-development.svg",
+      btn: "Learn More",
+      href: "#",
+    },
+    {
+      eyebrow: "AI Governance &",
+      title: "Compliance",
+      body:
+        "Ensure AI deployments are responsible, auditable, and aligned to organisational and regulatory standards from day one.",
+      icon: "/icons/ai-governance-compliance.svg",
+      btn: "Learn More",
+      href: "#",
     },
   ],
 
-  "HR services": [
+  // ─────────────────────────────────────────────────────────────
+  // TAB 2: Reskilling & Upskilling
+  // ─────────────────────────────────────────────────────────────
+  "Reskilling & Upskilling": [
     {
-      eyebrow: "Talent Acquisition &",
+      eyebrow: "Skills Gap",
+      title: "Diagnostics",
+      body:
+        "Identify workforce capability gaps before investing — at national, sectoral, or enterprise level — with WEF-aligned assessment frameworks.",
+      icon: "/icons/skills-gap-diagnostics.svg",
+      btn: "Learn More",
+      href: "#",
+    },
+    {
+      eyebrow: "Learning Programme",
+      title: "Design",
+      body:
+        "Build evidence-based learning journeys mapped to real workforce needs — from curriculum architecture to delivery roadmaps that move the metrics that matter.",
+      icon: "/icons/learning-programme-design.svg",
+      btn: "Learn More",
+      href: "#",
+    },
+    {
+      eyebrow: "Platform Deployment",
+      title: "& LMS",
+      body:
+        "Full Coursera enterprise licensing, setup, and integration as Pakistan's exclusive B2B Coursera partner — or connect Coursera to existing HR systems.",
+      icon: "/icons/platform-deployment-lms.svg",
+      btn: "Learn More",
+      href: "#",
+    },
+    {
+      eyebrow: "Credentials &",
+      title: "Certification",
+      body:
+        "Issue globally recognised credentials and digital certifications that validate workforce capability and travel across employers, sectors, and borders.",
+      icon: "/icons/credentials-certification.svg",
+      btn: "Learn More",
+      href: "#",
+    },
+    {
+      eyebrow: "Workforce Reskilling",
+      title: "& Upskilling",
+      body:
+        "Structured cohort programmes that move employees from current to future capability — in AI, data, digital tools, and leadership.",
+      icon: "/icons/workforce-reskilling-upskilling.svg",
+      btn: "Learn More",
+      href: "#",
+    },
+    {
+      eyebrow: "Learning Impact & Skills",
+      title: "Intelligence",
+      body:
+        "Measure what learning actually changes — capability lift, completion rates, business outcomes, and ROI — in boardroom-ready reporting.",
+      icon: "/icons/learning-impact-intelligence.svg",
+      btn: "Learn More",
+      href: "#",
+    },
+  ],
+
+  // ─────────────────────────────────────────────────────────────
+  // TAB 3: Talent Mobility & Manpower Solutions
+  // ─────────────────────────────────────────────────────────────
+  "Talent Mobility & Manpower Solutions": [
+    {
+      eyebrow: "International",
       title: "Recruitment",
       body:
-        "End-to-end recruitment from sourcing to onboarding. Build high-performing teams aligned with your goals.",
-      icon: Users,
+        "Connect top Pakistani talent with international opportunities — from executive search to high-volume specialist hiring across global markets.",
+      icon: "/icons/international-recruitment.svg",
       btn: "Get Started",
+      href: "#",
     },
-
     {
-      eyebrow: "Performance &",
-      title: "Employee Engagement",
+      eyebrow: "Payroll & Contract",
+      title: "Management",
       body:
-        "Boost productivity with engagement programs, performance reviews and culture-building that drives retention.",
-      icon: Award,
+        "Full employer-of-record and payroll management — handling compliance, taxes, and legal requirements across multiple jurisdictions.",
+      icon: "/icons/payroll-contract-management.svg",
       btn: "Get Started",
+      href: "#",
     },
-
     {
-      eyebrow: "Compensation &",
-      title: "Benefits Strategy",
+      eyebrow: "Visa & Immigration",
+      title: "Services",
       body:
-        "Design competitive packages and benefits programs to attract and retain top talent in your industry.",
-      icon: Briefcase,
+        "Complete visa processing, immigration support, and legal documentation for smooth international workforce deployment with full compliance.",
+      icon: "/icons/visa-immigration-services.svg",
       btn: "Get Started",
+      href: "#",
     },
-
     {
-      eyebrow: "HR Policy &",
-      title: "Compliance Audit",
+      eyebrow: "Workforce Deployment &",
+      title: "Settling-in",
       body:
-        "Review HR policies, contracts and procedures for legal compliance. Stay aligned with labor laws and best practices.",
-      icon: ClipboardList,
+        "End-to-end relocation support — ensuring deployed employees are housed, onboarded, and fully productive from their first day.",
+      icon: "/icons/workforce-deployment-settling-in.svg",
       btn: "Get Started",
+      href: "#",
     },
-
     {
-      eyebrow: "Learning &",
-      title: "Development Programs",
-      body:
-        "Custom L&D roadmaps tied to business goals. Upskill your people and build internal pipelines for key roles.",
-      icon: GraduationCap,
-      btn: "Get Started",
-    },
-
-    {
-      eyebrow: "HR Tech &",
-      title: "HRIS Implementation",
-      body:
-        "Modernize HR with the right HRIS, ATS and payroll tools. We handle selection, setup and team training.",
-      icon: Database,
-      btn: "Get Started",
-    },
-  ],
-
-  Reports: [
-    {
-      eyebrow: "Market Intelligence &",
-      title: "Industry Reports",
-      body:
-        "Detailed market analysis covering trends, competitive landscape and growth opportunities backed by data.",
-      icon: BarChart3,
-      btn: "Download Sample",
-    },
-
-    {
-      eyebrow: "Financial Performance",
+      eyebrow: "Talent Intelligence &",
       title: "Analytics",
       body:
-        "Comprehensive reports with revenue analysis, profitability insights and forecasting tailored to your KPIs.",
-      icon: LineChart,
-      btn: "Download Sample",
+        "Data-driven insights on talent availability, mobility trends, and workforce planning to inform smarter hiring and deployment decisions.",
+      icon: "/icons/talent-intelligence-analytics.svg",
+      btn: "Get Started",
+      href: "#",
     },
-
     {
-      eyebrow: "Workforce &",
-      title: "HR Analytics",
+      eyebrow: "Outsourced HR & People",
+      title: "Operations",
       body:
-        "Workforce trends, productivity metrics and engagement scores via detailed analytics dashboards.",
-      icon: PieChart,
-      btn: "Download Sample",
-    },
-
-    {
-      eyebrow: "Competitor &",
-      title: "Benchmark Reports",
-      body:
-        "Side-by-side comparisons with industry leaders. Spot gaps, replicate wins and sharpen your competitive edge.",
-      icon: Target,
-      btn: "Download Sample",
-    },
-
-    {
-      eyebrow: "Diversity &",
-      title: "Inclusion Reports",
-      body:
-        "Track DEI metrics across hiring, pay and promotion. Quantify progress and identify where to focus next.",
-      icon: CheckCircle2,
-      btn: "Download Sample",
-    },
-
-    {
-      eyebrow: "Training Impact &",
-      title: "ROI Reports",
-      body:
-        "Measure the business impact of every training program. Connect learning spend to performance outcomes.",
-      icon: TrendingUp,
-      btn: "Download Sample",
+        "Fully managed HR functions for companies that need professional people operations without the overhead of building an in-house HR team.",
+      icon: "/icons/outsourced-hr-operations.svg",
+      btn: "Get Started",
+      href: "#",
     },
   ],
 
-  Surveys: [
+  // ─────────────────────────────────────────────────────────────
+  // TAB 4: Consulting, Advisory & Research
+  // (Placeholder content + lucide icons — update when final copy/SVGs arrive)
+  // ─────────────────────────────────────────────────────────────
+  "Consulting, Advisory & Research": [
     {
-      eyebrow: "Employee",
-      title: "Satisfaction Surveys",
+      eyebrow: "Strategic Business",
+      title: "Consulting",
       body:
-        "Measure morale, engagement and culture fit. Get actionable insights to improve workplace experience.",
-      icon: MessageSquare,
-      btn: "Run Survey",
+        "Helping organisations navigate market entry, partnerships, growth strategy, and operational transformation across emerging markets.",
+      icon: Briefcase,
+      btn: "Learn More",
+      href: "#",
     },
-
     {
-      eyebrow: "Customer Experience &",
-      title: "NPS Surveys",
+      eyebrow: "Executive",
+      title: "Advisory",
       body:
-        "Track satisfaction with NPS, CSAT and feedback collection systems built for modern businesses.",
+        "Trusted advisory support for leadership teams — covering strategy execution, organisational design, and performance acceleration.",
       icon: Target,
-      btn: "Run Survey",
+      btn: "Learn More",
+      href: "#",
     },
-
     {
-      eyebrow: "Market Research &",
-      title: "Consumer Insights",
+      eyebrow: "Market",
+      title: "Research",
       body:
-        "Large-scale research surveys to validate ideas, understand consumer behavior and identify opportunities.",
-      icon: ClipboardList,
-      btn: "Run Survey",
+        "Sector intelligence, competitor benchmarking, and workforce insights — turning raw data into actionable strategic decisions.",
+      icon: BarChart3,
+      btn: "Learn More",
+      href: "#",
     },
-
     {
-      eyebrow: "Pulse &",
-      title: "Quick-Check Surveys",
+      eyebrow: "Policy & Public",
+      title: "Research",
       body:
-        "Short, frequent surveys to take the team's pulse on morale, focus and blockers without survey fatigue.",
-      icon: Smile,
-      btn: "Run Survey",
+        "Evidence-based research supporting governments, multilaterals, and policy bodies on workforce, education, and economic development.",
+      icon: FileSearch,
+      btn: "Learn More",
+      href: "#",
     },
-
     {
-      eyebrow: "Exit &",
-      title: "Offboarding Surveys",
+      eyebrow: "Impact",
+      title: "Assessment",
       body:
-        "Capture honest feedback from departing employees. Spot retention issues before they cost you more talent.",
-      icon: Users,
-      btn: "Run Survey",
+        "Measure programme outcomes and long-term impact through structured evaluation frameworks aligned to international standards.",
+      icon: TrendingUp,
+      btn: "Learn More",
+      href: "#",
     },
-
     {
-      eyebrow: "Brand &",
-      title: "Reputation Tracking",
+      eyebrow: "Feasibility &",
+      title: "Due Diligence",
       body:
-        "Monitor how your brand is perceived in the market. Track sentiment, awareness and advocacy over time.",
-      icon: Globe,
-      btn: "Run Survey",
+        "Independent feasibility studies, due diligence reviews, and investment readiness assessments for projects and partnerships.",
+      icon: Lightbulb,
+      btn: "Learn More",
+      href: "#",
+    },
+  ],
+
+  // ─────────────────────────────────────────────────────────────
+  // TAB 5: Workspace, Design & Infrastructure
+  // (Placeholder content + lucide icons — update when final copy/SVGs arrive)
+  // ─────────────────────────────────────────────────────────────
+  "Workspace, Design & Infrastructure": [
+    {
+      eyebrow: "Workspace",
+      title: "Design",
+      body:
+        "Designing modern, productive work environments — from concept and space planning through to detailed architectural execution.",
+      icon: Building2,
+      btn: "Learn More",
+      href: "#",
+    },
+    {
+      eyebrow: "Interior &",
+      title: "Fit-out",
+      body:
+        "Full interior fit-out delivery — finishes, furniture, lighting, and brand-aligned environments built to international quality standards.",
+      icon: Sofa,
+      btn: "Learn More",
+      href: "#",
+    },
+    {
+      eyebrow: "IT",
+      title: "Infrastructure",
+      body:
+        "Network, server, security, and connectivity infrastructure designed for performance, resilience, and enterprise-grade reliability.",
+      icon: Server,
+      btn: "Learn More",
+      href: "#",
+    },
+    {
+      eyebrow: "Smart Office",
+      title: "Solutions",
+      body:
+        "IoT-enabled workspaces — smart access, occupancy intelligence, energy management, and integrated meeting room technology.",
+      icon: Sparkles,
+      btn: "Learn More",
+      href: "#",
+    },
+    {
+      eyebrow: "Facility",
+      title: "Management",
+      body:
+        "Day-to-day facility operations, maintenance, and workplace services — keeping your environment running at peak efficiency.",
+      icon: Wrench,
+      btn: "Learn More",
+      href: "#",
+    },
+    {
+      eyebrow: "Sustainability &",
+      title: "Green Design",
+      body:
+        "Energy-efficient, sustainable workspace solutions aligned to LEED, WELL, and net-zero workplace standards.",
+      icon: Leaf,
+      btn: "Learn More",
+      href: "#",
     },
   ],
 };

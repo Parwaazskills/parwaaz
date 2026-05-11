@@ -44,8 +44,7 @@ export default function Footer() {
             />
 
             <p className="mt-[18px] text-sm leading-[1.55] text-black/70 max-[1024px]:text-[13px] max-[480px]:mt-3.5">
-              Fueling your business growth with workforce solutions, digital
-              skills of the future, and creative design services.
+              Building pathways for growth through talent, technology, and integrated business solutions.
             </p>
 
             <div className="mt-7 max-[480px]:mt-5">

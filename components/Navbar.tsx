@@ -11,7 +11,47 @@ interface NavbarProps {
   mobileServicesOpen: boolean;
   setMobileServicesOpen: (v: boolean | ((prev: boolean) => boolean)) => void;
   setSearchOpen: (v: boolean) => void;
+  activeLink?: string;
 }
+
+const SERVICES_DROPDOWN = [
+  {
+    title: "Skills Management",
+    items: [
+      { name: "Digital Learning", href: "/services/skills-management/digital-learning" },
+      { name: "AI Learning", href: "/services/skills-management/ai-learning" },
+      { name: "Workforce Development", href: "/services/skills-management/workforce-development" },
+      { name: "Professional Certifications", href: "/services/skills-management/professional-certifications" },
+    ],
+  },
+  {
+    title: "Manpower Solutions",
+    items: [
+      { name: "Talent Mobility", href: "/services/manpower-solutions/talent-mobility" },
+      { name: "Workforce Operations", href: "/services/manpower-solutions/workforce-operations" },
+      { name: "Talent Sourcing", href: "/services/manpower-solutions/talent-sourcing" },
+      { name: "Managed Workforce Services", href: "/services/manpower-solutions/managed-workforce-services" },
+    ],
+  },
+  {
+    title: "Research & Surveys",
+    items: [
+      { name: "Market Research", href: "/services/research-surveys/market-research" },
+      { name: "Surveys & Assessments", href: "/services/research-surveys/surveys-assessments" },
+      { name: "Impact Assessment", href: "/services/research-surveys/impact-assessment" },
+      { name: "Research Advisory", href: "/services/research-surveys/research-advisory" },
+    ],
+  },
+  {
+    title: "Consulting & Business",
+    items: [
+      { name: "Business Consulting", href: "/services/consulting-business/business-consulting" },
+      { name: "Strategic Advisory", href: "/services/consulting-business/strategic-advisory" },
+      { name: "Creative & Digital Services", href: "/services/consulting-business/creative-digital-services" },
+      { name: "Business Support Services", href: "/services/consulting-business/business-support-services" },
+    ],
+  },
+];
 
 export default function Navbar({
   mobileNavOpen,
@@ -19,6 +59,7 @@ export default function Navbar({
   mobileServicesOpen,
   setMobileServicesOpen,
   setSearchOpen,
+  activeLink = "Home",
 }: NavbarProps) {
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -236,7 +277,7 @@ export default function Navbar({
           top: calc(100% + 18px);
           left: 50%;
           transform: translateX(-50%) translateY(-10px);
-          width: min(900px, calc(100vw - 40px));
+          width: min(1100px, calc(100vw - 40px));
           background:
             linear-gradient(135deg, rgba(0, 254, 78, 0.08) 0%, #0c0f17 40%, rgba(5, 8, 137, 0.6) 100%),
             #0c0f17;
@@ -244,7 +285,7 @@ export default function Navbar({
           -webkit-backdrop-filter: blur(20px) saturate(140%);
           border: 1px solid rgba(0, 254, 78, 0.18);
           border-radius: 16px;
-          padding: 24px;
+          padding: 28px;
           opacity: 0;
           visibility: hidden;
           pointer-events: none;
@@ -269,31 +310,33 @@ export default function Navbar({
           pointer-events: auto;
           transform: translateX(-50%) translateY(0);
         }
-        .pw-dropdown-grid-6 {
+        .pw-dropdown-grid-4 {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 28px;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 24px;
         }
         .pw-dropdown-col {
           display: flex;
           flex-direction: column;
-          gap: 2px;
+          gap: 4px;
         }
         .pw-dropdown-col-title {
           font-family: var(--font-poppins), sans-serif;
-          font-size: 11px;
+          font-size: 12px;
           font-weight: 700;
           letter-spacing: 0.12em;
           text-transform: uppercase;
           color: #00fe4e;
-          margin-bottom: 12px;
+          margin-bottom: 14px;
+          padding-bottom: 10px;
+          border-bottom: 1px solid rgba(0, 254, 78, 0.15);
         }
         .pw-dropdown-item {
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           gap: 9px;
-          padding: 7px 10px;
-          border-radius: 6px;
+          padding: 9px 10px;
+          border-radius: 8px;
           color: rgba(255, 255, 255, 0.78);
           text-decoration: none;
           transition: background 0.25s ease, transform 0.25s ease, color 0.25s ease;
@@ -305,13 +348,14 @@ export default function Navbar({
           border-radius: 50%;
           background: rgba(0, 254, 78, 0.4);
           flex-shrink: 0;
+          margin-top: 7px;
           transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
         }
         .pw-dropdown-item-name {
           font-size: 13px;
           font-weight: 500;
           color: rgba(255, 255, 255, 0.82);
-          line-height: 1.3;
+          line-height: 1.4;
           transition: color 0.25s ease;
         }
         .pw-dropdown-item:hover {
@@ -380,7 +424,7 @@ export default function Navbar({
         }
       `}</style>
 
-      <div className="hidden lg:flex items-center justify-end gap-5 text-[12px] font-semibold text-white/90 mb-3">
+      <div className="hidden lg:flex items-center justify-end gap-5 text-[12px] font-semibold text-white/90 mb-3 max-w-[1320px] w-[calc(100%-34px)] mx-auto pr-2">
         <div className="flex items-center gap-2">
           <Mail className="h-3.5 w-3.5 text-[#00fe4e]" />
           <span>+92 300 2855800</span>
@@ -414,14 +458,15 @@ export default function Navbar({
           </div>
           <div className="pw-links">
             {[
-              { l: "Home", a: true, hasDropdown: false },
-              { l: "About", a: false, hasDropdown: false },
-              { l: "Services", a: false, hasDropdown: true },
-              { l: "Contact", a: false, hasDropdown: false },
-            ].map(({ l, a, hasDropdown }) =>
-              hasDropdown ? (
+              { l: "Home", href: "/", hasDropdown: false },
+              { l: "About", href: "/about", hasDropdown: false },
+              { l: "Services", href: "#", hasDropdown: true },
+              { l: "Contact", href: "/contact", hasDropdown: false },
+            ].map(({ l, href, hasDropdown }) => {
+              const a = l === activeLink;
+              return hasDropdown ? (
                 <div key={l} className="pw-link-dropdown-wrap">
-                  <Link href="#" className={a ? "pw-link pw-link-active" : "pw-link"}>
+                  <Link href={href} className={a ? "pw-link pw-link-active" : "pw-link"}>
                     <span className="pw-link-dot" />
                     <span>{l}</span>
                     <svg className="pw-link-chevron" viewBox="0 0 20 20" fill="none">
@@ -429,44 +474,28 @@ export default function Navbar({
                     </svg>
                   </Link>
                   <div className="pw-dropdown-panel">
-                    <div className="pw-dropdown-grid pw-dropdown-grid-6">
-                      <div className="pw-dropdown-col">
-                        <div className="pw-dropdown-col-title">Marketing & Branding</div>
-                        {["International Events", "Domestic Events", "Webinars", "Meetups", "Tech Export Marketing", "Tech Connect"].map(item => (
-                          <Link key={item} href="#" className="pw-dropdown-item">
-                            <span className="pw-dropdown-item-dot" />
-                            <span className="pw-dropdown-item-name">{item}</span>
-                          </Link>
-                        ))}
-                      </div>
-                      <div className="pw-dropdown-col">
-                        <div className="pw-dropdown-col-title">HR Skills & Capacity</div>
-                        {["SLED Program", "GAIN Network", "ICT Training Roadmap", "ILMS", "PM's Skills Initiative", "INSPIRE Program"].map(item => (
-                          <Link key={item} href="#" className="pw-dropdown-item">
-                            <span className="pw-dropdown-item-dot" />
-                            <span className="pw-dropdown-item-name">{item}</span>
-                          </Link>
-                        ))}
-                      </div>
-                      <div className="pw-dropdown-col">
-                        <div className="pw-dropdown-col-title">Infrastructure</div>
-                        {["STPs", "IT Parks", "NCSP Centres"].map(item => (
-                          <Link key={item} href="#" className="pw-dropdown-item">
-                            <span className="pw-dropdown-item-dot" />
-                            <span className="pw-dropdown-item-name">{item}</span>
-                          </Link>
-                        ))}
-                      </div>
+                    <div className="pw-dropdown-grid-4">
+                      {SERVICES_DROPDOWN.map((col) => (
+                        <div key={col.title} className="pw-dropdown-col">
+                          <div className="pw-dropdown-col-title">{col.title}</div>
+                          {col.items.map((item) => (
+                            <Link key={item.name} href={item.href} className="pw-dropdown-item">
+                              <span className="pw-dropdown-item-dot" />
+                              <span className="pw-dropdown-item-name">{item.name}</span>
+                            </Link>
+                          ))}
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
               ) : (
-                <Link key={l} href="#" className={a ? "pw-link pw-link-active" : "pw-link"}>
+                <Link key={l} href={href} className={a ? "pw-link pw-link-active" : "pw-link"}>
                   <span className="pw-link-dot" />
                   <span>{l}</span>
                 </Link>
-              )
-            )}
+              );
+            })}
           </div>
           <button className="pw-search" aria-label="Search" onClick={() => setSearchOpen(true)}>
             <Search size={18} strokeWidth={2} />
@@ -478,12 +507,12 @@ export default function Navbar({
 
         {mobileNavOpen && (
           <div className="lg:hidden mt-3 rounded-2xl border border-[#00fe4e]/30 bg-black/95 backdrop-blur p-5 space-y-1">
-            <Link href="#" onClick={() => setMobileNavOpen(false)} className="block text-white text-base font-semibold hover:text-[#00fe4e] py-2">Home</Link>
-            <Link href="#" onClick={() => setMobileNavOpen(false)} className="block text-white text-base font-semibold hover:text-[#00fe4e] py-2">About</Link>
+            <Link href="/" onClick={() => setMobileNavOpen(false)} className={`block text-base font-semibold py-2 ${activeLink === "Home" ? "text-[#00fe4e]" : "text-white hover:text-[#00fe4e]"}`}>Home</Link>
+            <Link href="/about" onClick={() => setMobileNavOpen(false)} className={`block text-base font-semibold py-2 ${activeLink === "About" ? "text-[#00fe4e]" : "text-white hover:text-[#00fe4e]"}`}>About</Link>
 
             <button
               onClick={() => setMobileServicesOpen(v => !v)}
-              className="flex w-full items-center justify-between py-2 text-base font-semibold text-white hover:text-[#00fe4e]"
+              className={`flex w-full items-center justify-between py-2 text-base font-semibold ${activeLink === "Services" ? "text-[#00fe4e]" : "text-white hover:text-[#00fe4e]"}`}
               aria-expanded={mobileServicesOpen}
             >
               <span>Services</span>
@@ -500,39 +529,32 @@ export default function Navbar({
             <div
               className="overflow-hidden transition-all duration-300 ease-out"
               style={{
-                maxHeight: mobileServicesOpen ? "1000px" : "0px",
+                maxHeight: mobileServicesOpen ? "2000px" : "0px",
                 opacity: mobileServicesOpen ? 1 : 0,
               }}
             >
-              <div className="pl-3 pt-1 pb-2 space-y-3">
-                <div>
-                  <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#00fe4e] mb-1.5">Marketing &amp; Branding</div>
-                  <div className="space-y-1">
-                    {["International Events", "Domestic Events", "Webinars", "Meetups", "Tech Export Marketing", "Tech Connect"].map(item => (
-                      <Link key={item} href="#" onClick={() => { setMobileNavOpen(false); setMobileServicesOpen(false); }} className="block py-1 text-[13px] text-white/80 hover:text-[#00fe4e]">{item}</Link>
-                    ))}
+              <div className="pl-3 pt-1 pb-2 space-y-4">
+                {SERVICES_DROPDOWN.map((col) => (
+                  <div key={col.title}>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#00fe4e] mb-1.5">{col.title}</div>
+                    <div className="space-y-1">
+                      {col.items.map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          onClick={() => { setMobileNavOpen(false); setMobileServicesOpen(false); }}
+                          className="block py-1 text-[13px] text-white/80 hover:text-[#00fe4e]"
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#00fe4e] mb-1.5">HR Skills &amp; Capacity</div>
-                  <div className="space-y-1">
-                    {["SLED Program", "GAIN Network", "ICT Training Roadmap", "ILMS", "PM's Skills Initiative", "INSPIRE Program"].map(item => (
-                      <Link key={item} href="#" onClick={() => { setMobileNavOpen(false); setMobileServicesOpen(false); }} className="block py-1 text-[13px] text-white/80 hover:text-[#00fe4e]">{item}</Link>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#00fe4e] mb-1.5">Infrastructure</div>
-                  <div className="space-y-1">
-                    {["STPs", "IT Parks", "NCSP Centres"].map(item => (
-                      <Link key={item} href="#" onClick={() => { setMobileNavOpen(false); setMobileServicesOpen(false); }} className="block py-1 text-[13px] text-white/80 hover:text-[#00fe4e]">{item}</Link>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
-            <Link href="#" onClick={() => setMobileNavOpen(false)} className="block text-white text-base font-semibold hover:text-[#00fe4e] py-2">Contact</Link>
+            <Link href="/contact" onClick={() => setMobileNavOpen(false)} className={`block text-base font-semibold py-2 ${activeLink === "Contact" ? "text-[#00fe4e]" : "text-white hover:text-[#00fe4e]"}`}>Contact</Link>
 
             <div className="pt-3 mt-3 border-t border-white/10 space-y-2 text-white/80 text-sm">
               <div className="flex items-center gap-2"><Mail className="h-4 w-4 text-[#00fe4e]" />+92 300 2855800</div>

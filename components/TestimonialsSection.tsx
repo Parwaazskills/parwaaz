@@ -6,14 +6,19 @@ import { testimonials } from "@/data/testimonials";
 export default function TestimonialsSection() {
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [testimonialDir, setTestimonialDir] = useState<"next" | "prev">("next");
+  const [glowingSide, setGlowingSide] = useState<"prev" | "next" | null>(null);
 
   const handleTestimonialPrev = () => {
     setTestimonialDir("prev");
     setTestimonialIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    setGlowingSide("prev");
+    setTimeout(() => setGlowingSide(null), 800);
   };
   const handleTestimonialNext = () => {
     setTestimonialDir("next");
     setTestimonialIndex((prev) => (prev + 1) % testimonials.length);
+    setGlowingSide("next");
+    setTimeout(() => setGlowingSide(null), 800);
   };
 
   return (
@@ -113,55 +118,105 @@ export default function TestimonialsSection() {
           transform: scale(1.05);
           box-shadow: 0 6px 20px rgba(0,0,0,0.14), 0 0 0 5px rgba(0,254,78,0.18);
         }
-        .testimonials-nav-wrap { display: flex; justify-content: center; margin-top: 24px; }
-        .testimonials-nav-btn {
-          width: 84px;
-          height: 60px;
-          background: #ffffff;
-          border-radius: 8px;
+
+        /* ============ NEW NAV BUTTONS (button.svg + glow) ============ */
+        .testimonials-nav-wrap {
           display: flex;
-          align-items: center;
           justify-content: center;
-          gap: 4px;
-          padding: 0 6px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-          border: 1px solid rgba(0,0,0,0.05);
+          margin-top: 24px;
+          padding: 12px 0;
         }
-        .testimonials-nav-arrow {
-          width: 34px;
-          height: 34px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+        .testimonials-nav-box {
+          position: relative;
+          display: inline-block;
+          width: 79px;
+          height: 71px;
+          line-height: 0;
+        }
+        .testimonials-nav-svg {
+          display: block;
+          width: 79px;
+          height: 71px;
+          pointer-events: none;
+          position: relative;
+          z-index: 2;
+        }
+
+        /* GLOW */
+        .testimonials-glow {
+          position: absolute;
+          top: 50%;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: radial-gradient(
+            circle,
+            rgba(117, 251, 105, 0.85) 0%,
+            rgba(117, 251, 105, 0.55) 25%,
+            rgba(117, 251, 105, 0.25) 50%,
+            rgba(117, 251, 105, 0) 75%
+          );
+          transform: translateY(-50%) scale(0.3);
+          opacity: 0;
+          pointer-events: none;
+          z-index: 1;
+          transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .testimonials-glow-prev { left: -10px; }
+        .testimonials-glow-next { right: -10px; }
+
+        /* HOVER */
+        .testimonials-nav-hit-prev:hover ~ .testimonials-glow-prev,
+        .testimonials-glow-prev:hover {
+          opacity: 1;
+          transform: translateY(-50%) scale(1);
+        }
+        .testimonials-nav-hit-next:hover ~ .testimonials-glow-next,
+        .testimonials-glow-next:hover {
+          opacity: 1;
+          transform: translateY(-50%) scale(1);
+        }
+
+        /* CLICK pulse */
+        .testimonials-glow.is-active {
+          animation: testimonialsGlowAnim 0.75s ease-out forwards;
+        }
+        @keyframes testimonialsGlowAnim {
+          0% { opacity: 0; transform: translateY(-50%) scale(0.3); }
+          25% { opacity: 1; transform: translateY(-50%) scale(1.15); }
+          100% { opacity: 0; transform: translateY(-50%) scale(1.5); }
+        }
+
+        .testimonials-nav-hit {
+          position: absolute;
+          top: 0;
+          width: 50%;
+          height: 100%;
           background: transparent;
           border: none;
-          cursor: pointer;
           padding: 0;
-          color: rgba(0, 0, 0, 0.45);
-          transition: color 0.3s ease, transform 0.25s ease, filter 0.3s ease;
+          cursor: pointer;
+          z-index: 3;
         }
-        .testimonials-nav-arrow svg { width: 22px; height: 22px; }
-        .testimonials-nav-arrow-prev:hover {
-          color: #00fe4e;
-          transform: translateX(-3px);
-          filter: drop-shadow(0 0 8px rgba(0, 254, 78, 0.55));
-        }
-        .testimonials-nav-arrow-next:hover {
-          color: #00fe4e;
-          transform: translateX(3px);
-          filter: drop-shadow(0 0 8px rgba(0, 254, 78, 0.55));
-        }
-        .testimonials-nav-arrow:active { transform: scale(0.92); }
+        .testimonials-nav-hit-prev { left: 0; }
+        .testimonials-nav-hit-next { right: 0; }
+
+        /* MOBILE responsive */
         @media (max-width: 768px) {
           .testimonials-blink { width: 180px; }
           .testimonials-blink-left { left: -80px; }
           .testimonials-blink-right { right: -80px; }
+          .testimonials-nav-box,
+          .testimonials-nav-svg { width: 66px; height: 60px; }
+          .testimonials-glow { width: 50px; height: 50px; }
         }
         @media (max-width: 480px) {
           .testimonials-blink { width: 130px; }
           .testimonials-blink-left { left: -90px; }
           .testimonials-blink-right { right: -90px; }
-          .testimonials-nav-btn { width: 76px; height: 56px; }
+          .testimonials-nav-box,
+          .testimonials-nav-svg { width: 58px; height: 52px; }
+          .testimonials-glow { width: 44px; height: 44px; }
         }
       `}</style>
 
@@ -216,26 +271,33 @@ export default function TestimonialsSection() {
               </div>
             ))}
           </div>
+
+          {/* ============ NAV BUTTONS ============ */}
           <div data-reveal="zoom" data-reveal-delay="360" className="testimonials-nav-wrap">
-            <div className="testimonials-nav-btn">
+            <div className="testimonials-nav-box">
               <button
+                type="button"
                 onClick={handleTestimonialPrev}
-                className="testimonials-nav-arrow testimonials-nav-arrow-prev"
+                className="testimonials-nav-hit testimonials-nav-hit-prev"
                 aria-label="Previous testimonial"
-              >
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
+              />
               <button
+                type="button"
                 onClick={handleTestimonialNext}
-                className="testimonials-nav-arrow testimonials-nav-arrow-next"
+                className="testimonials-nav-hit testimonials-nav-hit-next"
                 aria-label="Next testimonial"
-              >
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
+              />
+              <span
+                className={`testimonials-glow testimonials-glow-prev ${
+                  glowingSide === "prev" ? "is-active" : ""
+                }`}
+              />
+              <span
+                className={`testimonials-glow testimonials-glow-next ${
+                  glowingSide === "next" ? "is-active" : ""
+                }`}
+              />
+              <img src="/button.svg" alt="" className="testimonials-nav-svg" />
             </div>
           </div>
         </div>

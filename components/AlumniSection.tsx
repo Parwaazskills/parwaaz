@@ -357,10 +357,10 @@ export default function AlumniSection() {
               margin: 0,
             }}
           >
-            HEAR FROM OUR ALUMNI
+            PARTNERS ACROSS GLOBAL MARKETS
           </h2>
           <p className="gsap-words text-gray-500 mt-2">
-            Watch stories of success from across Pakistan
+            Delivering integrated solutions across international markets.
           </p>
         </div>
 

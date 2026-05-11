@@ -68,6 +68,9 @@ export default function HeroSection({ heroBgIndex, setHeroBgIndex }: HeroSection
         }
         .hero-bg-layer.is-active { opacity: 1; }
 
+        /* ============================================
+           DOTS — MOBILE (default)
+           ============================================ */
         .hero-bg-dots {
           position: absolute;
           left: 50%;
@@ -76,18 +79,30 @@ export default function HeroSection({ heroBgIndex, setHeroBgIndex }: HeroSection
           display: flex;
           gap: 10px;
           z-index: 6;
+          transition: top 0.5s ease;
         }
+
+        /* ============================================
+           DOTS — DESKTOP (≥1024px)
+           Per-slide top positioning
+           ============================================ */
         @media (min-width: 1024px) {
           .hero-bg-dots {
             position: absolute;
             left: 182px;
-            top: 480px;
             bottom: auto;
             transform: none;
             margin-left: 0;
             z-index: 20;
           }
+          /* Background 1 (slide 0) — push DOWN here */
+          .hero-bg-dots.hero-dots-slide-0 { top: 600px; }
+          /* Background 2 (slide 1) — keep current */
+          .hero-bg-dots.hero-dots-slide-1 { top: 480px; }
+          /* Background 3 (slide 2) — push DOWN here */
+          .hero-bg-dots.hero-dots-slide-2 { top: 540px; }
         }
+
         .hero-bg-dot {
           width: 10px;
           height: 10px;
@@ -107,7 +122,7 @@ export default function HeroSection({ heroBgIndex, setHeroBgIndex }: HeroSection
         .hero-robot-wrap {
           position: absolute;
           right: 4%;
-          top: 100px;
+          top: 180px;
           width: 38%;
           max-width: 420px;
           aspect-ratio: 1 / 1;
@@ -115,10 +130,10 @@ export default function HeroSection({ heroBgIndex, setHeroBgIndex }: HeroSection
           z-index: 5;
         }
         @media (min-width: 1024px) {
-          .hero-robot-wrap { right: 6%; top: 420px; width: 36%; max-width: 480px; }
+          .hero-robot-wrap { right: 6%; top: 500px; width: 36%; max-width: 480px; }
         }
         @media (min-width: 1280px) {
-          .hero-robot-wrap { right: 8%; top: 230px; width: 38%; max-width: 540px; }
+          .hero-robot-wrap { right: 8%; top: 235px; width: 38%; max-width: 540px; }
         }
         @media (min-width: 1536px) {
           .hero-robot-wrap { right: 10%; max-width: 580px; }
@@ -166,7 +181,7 @@ export default function HeroSection({ heroBgIndex, setHeroBgIndex }: HeroSection
           .hero-robot-wrap,
           .hero-robot-mobile {
             position: relative !important;
-            top: auto !important;
+            top: 115px !important;
             right: auto !important;
             left: auto !important;
             width: 76% !important;
@@ -177,6 +192,7 @@ export default function HeroSection({ heroBgIndex, setHeroBgIndex }: HeroSection
           .hero-bg-dots {
             left: 24px !important;
             bottom: 230px !important;
+            top: auto !important;
             transform: none !important;
           }
         }
@@ -233,8 +249,8 @@ export default function HeroSection({ heroBgIndex, setHeroBgIndex }: HeroSection
                 {heroSlides[heroBgIndex].desc}
               </p>
               <div className="gsap-hero-cta hero-anim-slide-up hero-anim-delay-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                <button className="hero-btn hero-btn-primary h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium">Our Services</button>
-                <button className="hero-btn hero-btn-secondary h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium">Get Started</button>
+                <button className="hero-btn hero-btn-primary h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium">Explore Solutions</button>
+                <button className="hero-btn hero-btn-secondary h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium">Partner with us</button>
               </div>
               {heroBgIndex === 0 && (
                 <div className="hero-robot-mobile lg:hidden">
@@ -245,7 +261,7 @@ export default function HeroSection({ heroBgIndex, setHeroBgIndex }: HeroSection
             </div>
           </div>
         </div>
-        <div className="hero-bg-dots">
+        <div className={`hero-bg-dots hero-dots-slide-${heroBgIndex}`}>
           {heroSlides.map((_, i) => (
             <button
               key={i}
