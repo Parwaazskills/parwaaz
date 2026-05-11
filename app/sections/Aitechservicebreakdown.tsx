@@ -1,11 +1,35 @@
 // app/sections/LearningPlatformsSection.tsx
 
 import Image from "next/image";
+import type { ComponentType, CSSProperties, ReactNode } from "react";
+import { OfficeChair, PayrollIcon, ServiceIcon } from "../../components/ServiceIcons";
 
-const services = [
+type ServiceIconProps = {
+  className?: string;
+  style?: CSSProperties;
+  size?: number;
+  color?: string;
+  strokeWidth?: number;
+};
+
+type ServiceItem = {
+  id: string;
+  Icon: ComponentType<ServiceIconProps>;
+  iconProps?: ServiceIconProps;
+  title: ReactNode;
+  description: string;
+  benchmark: string;
+  deliverables: string[];
+};
+
+const services: ServiceItem[] = [
   {
     id: "ai-strategy-readiness",
-    number: "01",
+    Icon: ServiceIcon,
+    iconProps: {
+      className: "h-[56px] w-[56px]",
+      style: { filter: "brightness(0) invert(1)" },
+    },
     title: (
       <>
         AI Strategy
@@ -26,7 +50,10 @@ const services = [
   },
   {
     id: "international-ai-partner-brokerage",
-    number: "02",
+    Icon: PayrollIcon,
+    iconProps: {
+      className: "h-[58px] w-[58px] text-white",
+    },
     title: (
       <>
         International AI
@@ -47,7 +74,13 @@ const services = [
   },
   {
     id: "generative-ai-llm-deployment",
-    number: "03",
+    Icon: OfficeChair,
+    iconProps: {
+      className: "h-[56px] w-[56px] text-white",
+      size: 56,
+      strokeWidth: 1.45,
+      color: "currentColor",
+    },
     title: (
       <>
         Generative AI
@@ -68,7 +101,10 @@ const services = [
   },
   {
     id: "process-automation-ai-workflows",
-    number: "04",
+    Icon: PayrollIcon,
+    iconProps: {
+      className: "h-[58px] w-[58px] text-white",
+    },
     title: (
       <>
         Process Automation
@@ -89,7 +125,11 @@ const services = [
   },
   {
     id: "custom-technology-development",
-    number: "05",
+    Icon: ServiceIcon,
+    iconProps: {
+      className: "h-[56px] w-[56px]",
+      style: { filter: "brightness(0) invert(1)" },
+    },
     title: (
       <>
         Custom Technology
@@ -110,7 +150,13 @@ const services = [
   },
   {
     id: "ai-governance-compliance",
-    number: "06",
+    Icon: OfficeChair,
+    iconProps: {
+      className: "h-[56px] w-[56px] text-white",
+      size: 56,
+      strokeWidth: 1.45,
+      color: "currentColor",
+    },
     title: (
       <>
         AI Governance
@@ -196,52 +242,58 @@ export default function Aitechservicebreakdown() {
         </div>
 
         <div className="mt-[28px] flex flex-col gap-[24px] max-[768px]:mt-[30px] max-[768px]:gap-[28px]">
-          {services.map((item, index) => (
-            <div
-              id={item.id}
-              key={index}
-              className="service-breakdown-card grid grid-cols-[342px_1fr_390px] items-stretch gap-[22px] rounded-[18px] border-b border-[#EEEEEE] p-[12px] pb-[24px] transition-all duration-300 max-[1180px]:grid-cols-[310px_1fr] max-[1180px]:gap-y-[18px] max-[768px]:grid-cols-1 max-[768px]:gap-[14px] max-[768px]:pb-[28px]"
-            >
-              <div className="flex min-h-[190px] w-full items-center rounded-t-[15px] bg-[#000572] px-[38px] max-[1180px]:min-h-[170px] max-[768px]:max-w-[360px] max-[480px]:min-h-[150px] max-[480px]:px-[30px]">
-                <div>
-                  <p className="mb-[14px] font-montserrat text-[13px] font-semibold leading-none tracking-[2px] text-white/60">
-                    {item.number}
+          {services.map((item, index) => {
+            const Icon = item.Icon;
+
+            return (
+              <div
+                id={item.id}
+                key={index}
+                className="service-breakdown-card grid grid-cols-[342px_1fr_390px] items-stretch gap-[22px] rounded-[18px] border-b border-[#EEEEEE] p-[12px] pb-[24px] transition-all duration-300 max-[1180px]:grid-cols-[310px_1fr] max-[1180px]:gap-y-[18px] max-[768px]:grid-cols-1 max-[768px]:gap-[14px] max-[768px]:pb-[28px]"
+              >
+                <div className="flex min-h-[190px] w-full items-center rounded-t-[15px] bg-[#000572] px-[38px] max-[1180px]:min-h-[170px] max-[768px]:max-w-[360px] max-[480px]:min-h-[150px] max-[480px]:px-[30px]">
+                  <div>
+                    <div className="mb-[16px] flex items-center text-white">
+                      <Icon {...item.iconProps} />
+                    </div>
+
+                    <h3 className="font-montserrat text-[25px] font-semibold leading-[1.14] tracking-[-0.4px] text-white max-[480px]:text-[22px]">
+                      {item.title}
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="flex flex-col justify-center max-[1180px]:pr-[12px] max-[768px]:pr-0">
+                  <p className="max-w-[680px] font-montserrat text-[17px] font-normal leading-[1.45] tracking-[0.1px] text-[#000000] max-[1024px]:text-[16px] max-[480px]:text-[14px]">
+                    {item.description}
                   </p>
 
-                  <h3 className="font-montserrat text-[25px] font-semibold leading-[1.14] tracking-[-0.4px] text-white max-[480px]:text-[22px]">
-                    {item.title}
-                  </h3>
+                  <div className="mt-[18px] inline-flex w-fit rounded-full border border-[#D9D9D9] bg-[#F8F8F8] px-[14px] py-[7px] font-montserrat text-[12px] font-medium leading-[1.3] text-[#6E6E6E] max-[480px]:text-[11px]">
+                    {item.benchmark}
+                  </div>
+                </div>
+
+                <div className="flex flex-col justify-center rounded-[14px] border border-[#E8E8E8] bg-[#FAFAFA] px-[24px] py-[22px] max-[1180px]:col-span-2 max-[768px]:col-span-1 max-[480px]:px-[18px] max-[480px]:py-[18px]">
+                  <h4 className="font-montserrat text-[13px] font-semibold uppercase leading-[1.3] tracking-[1.7px] text-[#8A8A8A]">
+                    Deliverables
+                  </h4>
+
+                  <ul className="mt-[14px] flex flex-col gap-[9px]">
+                    {item.deliverables.map(
+                      (deliverable, deliverableIndex) => (
+                        <li
+                          key={deliverableIndex}
+                          className="relative pl-[18px] font-montserrat text-[14px] font-normal leading-[1.45] tracking-[0.05px] text-[#000000] before:absolute before:left-0 before:top-[1px] before:text-[#000572] before:content-['—'] max-[480px]:text-[13px]"
+                        >
+                          {deliverable}
+                        </li>
+                      )
+                    )}
+                  </ul>
                 </div>
               </div>
-
-              <div className="flex flex-col justify-center max-[1180px]:pr-[12px] max-[768px]:pr-0">
-                <p className="max-w-[680px] font-montserrat text-[17px] font-normal leading-[1.45] tracking-[0.1px] text-[#000000] max-[1024px]:text-[16px] max-[480px]:text-[14px]">
-                  {item.description}
-                </p>
-
-                <div className="mt-[18px] inline-flex w-fit rounded-full border border-[#D9D9D9] bg-[#F8F8F8] px-[14px] py-[7px] font-montserrat text-[12px] font-medium leading-[1.3] text-[#6E6E6E] max-[480px]:text-[11px]">
-                  {item.benchmark}
-                </div>
-              </div>
-
-              <div className="flex flex-col justify-center rounded-[14px] border border-[#E8E8E8] bg-[#FAFAFA] px-[24px] py-[22px] max-[1180px]:col-span-2 max-[768px]:col-span-1 max-[480px]:px-[18px] max-[480px]:py-[18px]">
-                <h4 className="font-montserrat text-[13px] font-semibold uppercase leading-[1.3] tracking-[1.7px] text-[#8A8A8A]">
-                  Deliverables
-                </h4>
-
-                <ul className="mt-[14px] flex flex-col gap-[9px]">
-                  {item.deliverables.map((deliverable, deliverableIndex) => (
-                    <li
-                      key={deliverableIndex}
-                      className="relative pl-[18px] font-montserrat text-[14px] font-normal leading-[1.45] tracking-[0.05px] text-[#000000] before:absolute before:left-0 before:top-[1px] before:text-[#000572] before:content-['—'] max-[480px]:text-[13px]"
-                    >
-                      {deliverable}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="mt-[44px] flex items-center justify-between gap-[28px] rounded-[18px] border border-[#E8E8E8] bg-[#FAFAFA] px-[32px] py-[30px] max-[768px]:mt-[38px] max-[768px]:flex-col max-[768px]:items-start max-[768px]:px-[22px] max-[768px]:py-[26px]">
