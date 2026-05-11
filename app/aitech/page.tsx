@@ -1,12 +1,11 @@
 // app/coursera-digital-learning/page.tsx
 
 import Navbar from "@/components/Navbar";
-import CourseraDigitalLearningHero from "../sections/CourseraDigitalLearningHero";
-import LearningPlatformsSection from "../sections/LearningPlatformsSection";
 import LogoCardsSection from "../sections/LogoCardsSection1";
-
-import OurMissionSection from "../sections/OurMissionSection";
 import Footer from "@/components/Footer";
+import Aitech from "../sections/Aitechhero";
+import Aitechsubsection from "../sections/Aitechsubsection";
+import Aitechservicebreakdown from "../sections/Aitechservicebreakdown";
 
 export default function CourseraDigitalLearningPage() {
   return (
@@ -14,9 +13,9 @@ export default function CourseraDigitalLearningPage() {
         <div className="absolute left-0 top-0 z-[999] w-full">
                 <Navbar />
               </div>
-      <CourseraDigitalLearningHero />
-      <OurMissionSection/>
-      <LearningPlatformsSection/>
+     <Aitech/>
+      <Aitechsubsection/>
+      <Aitechservicebreakdown/>
       <LogoCardsSection/>
       <Footer/>
     </main>
