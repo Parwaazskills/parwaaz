@@ -56,12 +56,12 @@ const repeatedLogos = [...logos, ...logos];
 export default function LogoCardsSection() {
   return (
     <section className="logo-marquee-section w-full overflow-hidden bg-white py-[64px] max-[768px]:py-[52px]">
-      <div className="relative w-full overflow-hidden">
+      <div className="relative w-full overflow-hidden py-[8px]">
         <div className="logo-marquee-track flex w-max gap-[24px] px-4">
           {repeatedLogos.map((logo, index) => (
             <div
               key={`${logo.name}-${index}`}
-              className="group relative flex h-[250px] w-[250px] shrink-0 items-center justify-center overflow-hidden rounded-[10px] bg-white transition-transform duration-300 ease-out hover:- max-[480px]:h-[230px] max-[480px]:w-[230px]"
+              className="group relative flex h-[250px] w-[250px] shrink-0 items-center justify-center overflow-hidden rounded-[10px] bg-white transition-transform duration-300 ease-out max-[480px]:h-[230px] max-[480px]:w-[230px]"
             >
               {/* Default border */}
               <div className="pointer-events-none absolute inset-0 rounded-[10px] border border-[#808184] opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
