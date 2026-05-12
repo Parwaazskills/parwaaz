@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import ReskillingHero from "../sections/ReskillingHero";
 import ReskillingSubsection from "../sections/Reskillingsubsection";
 import Reskillingservicebreakdown from "../sections/Reskillingservicebreakdown";
+import LogoCardsSection from "../sections/LogoCardsSection1";
 
 export default function Reskilling() {
   return (
@@ -14,6 +15,7 @@ export default function Reskilling() {
 <ReskillingHero/>
 <ReskillingSubsection/>
 <Reskillingservicebreakdown/>
+<LogoCardsSection/>
       <Footer/>
     </main>
   );

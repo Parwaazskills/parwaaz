@@ -17,17 +17,51 @@ const logos = [
     name: "FPCL",
     src: "/fpcl.png",
   },
+  {
+    name: "atlantis",
+    src: "/atlantis.png",
+  },
+  {
+    name: "americana",
+    src: "/americana.png",
+  },
+  {
+    name: "tuv",
+    src: "/tuv.png",
+  },
+  {
+    name: "asslair",
+    src: "/asslair.png",
+  },
+  {
+    name: "ibex",
+    src: "/ibex.png",
+  },
+  {
+    name: "mcc",
+    src: "/mcc.png",
+  },
+  {
+    name: "oro",
+    src: "/oro.png",
+  },
+  {
+    name: "vtt",
+    src: "/vtt.png",
+  },
 ];
+
+const repeatedLogos = [...logos, ...logos];
 
 export default function LogoCardsSection() {
   return (
-    <section className="w-full bg-white px-4 py-[64px] max-[768px]:py-[52px]">
-      <div className="mx-auto w-full max-w-[1400px]">
-        <div className="grid w-fit grid-cols-[250px_250px_250px] gap-[24px] max-[900px]:grid-cols-[250px_250px] max-[640px]:mx-auto max-[640px]:grid-cols-[250px]">
-          {logos.map((logo, index) => (
+    <section className="logo-marquee-section w-full overflow-hidden bg-white py-[64px] max-[768px]:py-[52px]">
+      <div className="relative w-full overflow-hidden">
+        <div className="logo-marquee-track flex w-max gap-[24px] px-4">
+          {repeatedLogos.map((logo, index) => (
             <div
-              key={logo.name}
-              className="group relative flex h-[250px] w-[250px] items-center justify-center overflow-hidden rounded-[10px] bg-white transition-transform duration-300 ease-out hover:-translate-y-[3px] max-[480px]:h-[230px] max-[480px]:w-[230px]"
+              key={`${logo.name}-${index}`}
+              className="group relative flex h-[250px] w-[250px] shrink-0 items-center justify-center overflow-hidden rounded-[10px] bg-white transition-transform duration-300 ease-out hover:- max-[480px]:h-[230px] max-[480px]:w-[230px]"
             >
               {/* Default border */}
               <div className="pointer-events-none absolute inset-0 rounded-[10px] border border-[#808184] opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
@@ -51,6 +85,29 @@ export default function LogoCardsSection() {
           ))}
         </div>
       </div>
+
+      <style jsx global>{`
+        .logo-marquee-track {
+          animation: logo-marquee 28s linear infinite;
+          will-change: transform;
+        }
+
+        @keyframes logo-marquee {
+          from {
+            transform: translate3d(0, 0, 0);
+          }
+
+          to {
+            transform: translate3d(calc(-50% - 12px), 0, 0);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .logo-marquee-track {
+            animation-duration: 24s;
+          }
+        }
+      `}</style>
     </section>
   );
 }

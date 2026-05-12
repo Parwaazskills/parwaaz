@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import TalentHero from "../sections/TalentHero";
 import Talentsubsection from "../sections/Talentsubsection";
 import TalentMobilityServiceBreakdown from "../sections/Talentservicebreakdown";
+import LogoCardsSection from "../sections/LogoCardsSection1";
 
 
 export default function Talent() {
@@ -14,6 +15,7 @@ export default function Talent() {
 <TalentHero/>
 <Talentsubsection/>
 <TalentMobilityServiceBreakdown/>
+<LogoCardsSection/>
       <Footer/>
     </main>
   );
