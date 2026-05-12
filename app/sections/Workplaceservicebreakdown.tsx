@@ -13,7 +13,7 @@ type ServiceItem = {
 const services: ServiceItem[] = [
   {
     id: "office-setup-accommodation",
-    iconSrc: "/icon/Dignostic.svg",
+    iconSrc: "/icon/Officesetup.svg",
     title: (
       <>
         Office Setup
@@ -33,7 +33,7 @@ const services: ServiceItem[] = [
   },
   {
     id: "architecture-interior-design",
-    iconSrc: "/icon/LearningProg.svg",
+    iconSrc: "/icon/Architecture.svg",
     title: (
       <>
         Architecture
@@ -53,7 +53,7 @@ const services: ServiceItem[] = [
   },
   {
     id: "bim-digital-construction",
-    iconSrc: "/icon/LMS.svg",
+    iconSrc: "/icon/digitalconstruction.svg",
     title: (
       <>
         BIM
@@ -73,7 +73,7 @@ const services: ServiceItem[] = [
   },
   {
     id: "construction-management",
-    iconSrc: "/icon/Certification.svg",
+    iconSrc: "/icon/ConstructionManagement.svg",
     title: (
       <>
         Construction
@@ -93,7 +93,7 @@ const services: ServiceItem[] = [
   },
   {
     id: "fit-out-refurbishment",
-    iconSrc: "/icon/Development2.svg",
+    iconSrc: "/icon/refurbishment.svg",
     title: (
       <>
         Fit-out
@@ -113,7 +113,7 @@ const services: ServiceItem[] = [
   },
   {
     id: "workspace-technology-integration",
-    iconSrc: "/icon/Intelligence.svg",
+    iconSrc: "/icon/workspace.svg",
     title: (
       <>
         Workspace Technology

@@ -13,7 +13,7 @@ type ServiceItem = {
 const services: ServiceItem[] = [
   {
     id: "digital-transformation-advisory",
-    iconSrc: "/icon/Dignostic.svg",
+    iconSrc: "/icon/advisory.svg",
     title: (
       <>
         Digital Transformation
@@ -33,7 +33,7 @@ const services: ServiceItem[] = [
   },
   {
     id: "organisational-design-hr-transformation",
-    iconSrc: "/icon/LearningProg.svg",
+    iconSrc: "/icon/HRTransformation.svg",
     title: (
       <>
         Organisational Design
@@ -53,7 +53,7 @@ const services: ServiceItem[] = [
   },
   {
     id: "public-sector-innovation",
-    iconSrc: "/icon/LMS.svg",
+    iconSrc: "/icon/Innovation.svg",
     title: (
       <>
         Public Sector
@@ -73,7 +73,7 @@ const services: ServiceItem[] = [
   },
   {
     id: "workforce-market-research",
-    iconSrc: "/icon/Certification.svg",
+    iconSrc: "/icon/Marketresearch.svg",
     title: (
       <>
         Workforce
@@ -93,7 +93,7 @@ const services: ServiceItem[] = [
   },
   {
     id: "international-market-entry-support",
-    iconSrc: "/icon/Development2.svg",
+    iconSrc: "/icon/InternationalMarket.svg",
     title: (
       <>
         International Market
@@ -113,7 +113,7 @@ const services: ServiceItem[] = [
   },
   {
     id: "programme-project-management",
-    iconSrc: "/icon/Intelligence.svg",
+    iconSrc: "/icon/outsoursedhr.svg",
     title: (
       <>
         Programme
