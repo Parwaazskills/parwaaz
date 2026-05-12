@@ -1,7 +1,7 @@
 "use client";
 
 import { teamMembers } from "@/data/teamMembers";
-import { LinkedInSvg } from "@/components/SocialIcons";
+
 
 export default function TeamSection() {
   return (
@@ -11,9 +11,9 @@ export default function TeamSection() {
           position: relative;
           overflow: hidden;
           background: #fff;
-          padding: 56px 0;
+          padding: 56px 0 24px;
         }
-        @media (min-width: 1024px) { .team-section { padding: 80px 0; } }
+        @media (min-width: 1024px) { .team-section { padding: 80px 0 32px; } }
         .team-bg-circuit {
           position: absolute;
           right: 2%;
@@ -181,7 +181,7 @@ export default function TeamSection() {
           .team-cards-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; }
         }
         @media (max-width: 768px) {
-          .team-section { padding: 0 !important; }
+          .team-section { padding: 0 0 16px !important; }
           .team-row { padding-top: 270px !important; }
           .team-card-role { min-height: 50px !important; font-size: 10px !important; }
           .team-card-name { min-height: 36px !important; font-size: 12px !important; }
@@ -246,9 +246,6 @@ export default function TeamSection() {
                     </div>
                     <div className="team-card-role">{m.role}</div>
                     <div className="team-card-name">{m.name}</div>
-                    <div className="team-card-linkedin">
-                      <LinkedInSvg />
-                    </div>
                   </div>
                 ))}
               </div>

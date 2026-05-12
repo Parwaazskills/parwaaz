@@ -47,7 +47,6 @@ p {
 
 /* ============================================================
  * GSAP TEXT ANIMATION SUPPORT
- * Structural CSS for char/word splits and clip reveals.
  * ============================================================ */
 
 .gsap-char,
@@ -55,12 +54,9 @@ p {
   display: inline-block;
   vertical-align: baseline;
   white-space: pre;
-  /* Fallback opacity 1 — if JS fails, text is still visible */
   opacity: 1;
 }
 
-/* Once GSAP is ready, hide chars/words so the JS animation can reveal them.
-   Body gets .gsap-ready class after the GsapTextAnimations component mounts. */
 .gsap-ready .gsap-char,
 .gsap-ready .gsap-word {
   opacity: 0;
@@ -100,9 +96,6 @@ p {
 
 /* ============================================================
  * GSAP MOBILE FIX
- * Apply GPU compositing ONLY to char/word elements.
- * Applying transform: translateZ(0) to section containers breaks
- * ScrollTrigger pin calculations.
  * ============================================================ */
 
 @media (max-width: 768px) {
@@ -115,7 +108,6 @@ p {
     -webkit-backface-visibility: hidden;
   }
 
-  /* Critical: NO transform on section containers — breaks pin calc */
   .po-section,
   .alumni-section,
   .team-section,
@@ -130,57 +122,12 @@ p {
 }
 
 /* ============================================================
- * ORBIT SECTION FIX (MOST IMPORTANT)
- * The pinned section must have overflow:visible so the pin
- * spacer can reserve its space. Without this, the next section
- * renders under it and appears blank.
- * ============================================================ */
-
-
-/* ============================================================
- * WORLD MAP — MOBILE PERFECT ALIGNMENT
- * Uses class .world-map on the <img src="/world-map.png">
- * ============================================================ */
-
-.world-map {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  pointer-events: none;
-}
-
-@media (max-width: 768px) {
-  .alumni-map-stage {
-    position: relative !important;
-    min-height: 420px !important;
-    overflow: visible !important;
-  }
-
-  .world-map {
-    position: absolute !important;
-    top: 120px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: 520px !important;
-    max-width: none !important;
-    opacity: 0.35 !important;
-    z-index: 1 !important;
-  }
-}
-
-/* ============================================================
- * SECTION SPACING FIX
- * Prevents sections from overlapping after the pinned orbit
+ * SECTION SPACING
  * ============================================================ */
 
 section {
   position: relative;
   z-index: 2;
-}
-
-.alumni-section {
-  margin-top: 80px;
 }
 
 /* ============================================================
@@ -219,7 +166,7 @@ section {
 }
 
 /* ============================================================
- * ROBOT FLOAT ANIMATION (used by Tailwind grid robot in hero)
+ * ROBOT FLOAT ANIMATION
  * ============================================================ */
 
 @keyframes robotFloat {
@@ -261,68 +208,8 @@ section {
 }
 
 /* Prevent layout shift while images load */
-img[src="/world-map.png"],
 img[src="/robot.png"] {
   background: transparent;
   min-height: 1px;
-}
-
-img[src="/robot.png"] {
   aspect-ratio: 1 / 1;
-}
-
-/* ============================================================
- * ALUMNI BUBBLE STYLES
- * ============================================================ */
-
-.alumni-bubble-img-wrap {
-  position: relative !important;
-  flex: 0 0 56px !important;
-  width: 56px !important;
-  height: 56px !important;
-  min-width: 56px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  border-radius: 10px !important;
-  overflow: hidden !important;
-  background: transparent !important;
-}
-
-.alumni-bubble-img-wrap img,
-.alumni-bubble-image {
-  position: absolute !important;
-  inset: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  max-width: none !important;
-  max-height: none !important;
-  object-fit: cover !important;
-  object-position: center center !important;
-  display: block !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-.alumni-bubble {
-  align-items: center !important;
-  overflow: visible !important;
-}
-
-@media (max-width: 768px) {
-  .alumni-bubble-img-wrap {
-    flex-basis: 38px !important;
-    width: 38px !important;
-    height: 38px !important;
-    min-width: 38px !important;
-    border-radius: 8px !important;
-  }
-
-  .alumni-pin-active .alumni-bubble-img-wrap {
-    flex-basis: 56px !important;
-    width: 56px !important;
-    height: 56px !important;
-    min-width: 56px !important;
-    border-radius: 10px !important;
-  }
 }
