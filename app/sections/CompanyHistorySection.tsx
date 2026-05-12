@@ -8,6 +8,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const years = ["1985", "2000", "2007", "2009", "2011", "2020", "2023"];
 
+const historyTickerTitleClass =
+  "history-title whitespace-nowrap bg-[linear-gradient(90deg,#00fe4e_0%,#00d657_18%,#02875d_42%,#00616f_68%,#07136f_100%)] bg-clip-text text-[110px] font-regular uppercase leading-[0.9] tracking-[-0.06em] text-transparent max-[1300px]:text-[118px] max-[1100px]:text-[94px] max-[900px]:text-[72px] max-[760px]:whitespace-normal max-[760px]:text-[54px] max-[760px]:leading-[0.95] max-[520px]:text-[42px] max-[390px]:text-[34px]";
+
 const historyData: Record<
   string,
   {
@@ -360,15 +363,15 @@ export default function CompanyHistorySection() {
         <div className="w-full overflow-visible max-[760px]:overflow-visible">
           <div
             ref={tickerTrackRef}
-            className="flex w-max items-center gap-[80px] max-[760px]:block max-[760px]:w-full"
+            className="flex w-max items-center gap-[42px] max-[760px]:block max-[760px]:w-full"
           >
-            <h2 className="history-title whitespace-nowrap bg-[linear-gradient(90deg,#00fe4e_0%,#00d657_18%,#02875d_42%,#00616f_68%,#07136f_100%)] bg-clip-text text-[210px] font-light uppercase leading-none tracking-[3px] text-transparent max-[1600px]:text-[180px] max-[1450px]:text-[150px] max-[1300px]:text-[118px] max-[1100px]:text-[94px] max-[900px]:text-[72px] max-[760px]:whitespace-normal max-[760px]:text-[54px] max-[760px]:leading-[0.95] max-[760px]:tracking-[1px] max-[520px]:text-[42px] max-[390px]:text-[34px]">
+            <h2 className={historyTickerTitleClass}>
               COMPANY HISTORY AND TRAJECTORY
             </h2>
 
             <h2
               aria-hidden="true"
-              className="history-title whitespace-nowrap bg-[linear-gradient(90deg,#00fe4e_0%,#00d657_18%,#02875d_42%,#00616f_68%,#07136f_100%)] bg-clip-text text-[210px] font-light uppercase leading-none tracking-[3px] text-transparent max-[1600px]:text-[180px] max-[1450px]:text-[150px] max-[1300px]:text-[118px] max-[1100px]:text-[94px] max-[900px]:text-[72px] max-[760px]:hidden"
+              className={`${historyTickerTitleClass} max-[760px]:hidden`}
             >
               COMPANY HISTORY AND TRAJECTORY
             </h2>

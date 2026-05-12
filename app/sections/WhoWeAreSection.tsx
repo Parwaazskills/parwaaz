@@ -1,6 +1,6 @@
-"use client";
-
 // app/sections/WhoWeAreSection.tsx
+
+"use client";
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
@@ -13,71 +13,9 @@ const montserrat = Montserrat({
   weight: ["300", "400", "500", "600", "700", "800"],
 });
 
-function SplitLetters({
-  text,
-  type = "normal",
-}: {
-  text: string;
-  type?: "normal" | "gradient";
-}) {
-  return (
-    <span aria-label={text}>
-      {text.split("").map((char, index) => {
-        if (char === " ") {
-          return (
-            <span
-              key={`space-${index}`}
-              className="who-heading-space inline-block"
-              aria-hidden="true"
-            >
-              &nbsp;
-            </span>
-          );
-        }
-
-        return (
-          <span
-            key={`${char}-${index}`}
-            className={`who-heading-char inline-block will-change-transform ${
-              type === "gradient"
-                ? "who-gradient-char bg-[linear-gradient(90deg,#00a95a,#006b78,#0a1f87,#00a95a)] bg-[length:220%_100%] bg-clip-text text-transparent"
-                : "text-[#00fe4e]"
-            }`}
-            aria-hidden="true"
-          >
-            {char}
-          </span>
-        );
-      })}
-    </span>
-  );
-}
-
-function SplitWords({ text }: { text: string }) {
-  const words = text.split(" ");
-
-  return (
-    <>
-      {words.map((word, index) => (
-        <span
-          key={`${word}-${index}`}
-          className="who-paragraph-word inline-block will-change-transform"
-        >
-          {word}
-          {index !== words.length - 1 && (
-            <span className="inline-block">&nbsp;</span>
-          )}
-        </span>
-      ))}
-    </>
-  );
-}
-
 export default function WhoWeAreSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const textBlockRef = useRef<HTMLDivElement | null>(null);
   const cardsBlockRef = useRef<HTMLDivElement | null>(null);
-  const orbitRef = useRef<HTMLDivElement | null>(null);
   const orbitSpinRef = useRef<HTMLDivElement | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -90,12 +28,10 @@ export default function WhoWeAreSection() {
     gsap.registerPlugin(ScrollTrigger);
 
     const section = sectionRef.current;
-    const textBlock = textBlockRef.current;
     const cardsBlock = cardsBlockRef.current;
-    const orbit = orbitRef.current;
     const orbitSpin = orbitSpinRef.current;
 
-    if (!section || !textBlock || !cardsBlock) return;
+    if (!section || !cardsBlock) return;
 
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -104,51 +40,6 @@ export default function WhoWeAreSection() {
     if (reduceMotion) return;
 
     const ctx = gsap.context(() => {
-      const headingChars = gsap.utils.toArray<HTMLElement>(".who-heading-char");
-      const paragraphWords =
-        gsap.utils.toArray<HTMLElement>(".who-paragraph-word");
-      const gradientChars =
-        gsap.utils.toArray<HTMLElement>(".who-gradient-char");
-
-      gsap.set(headingChars, {
-        opacity: 0,
-        y: (index) => (index % 2 === 0 ? 46 : -42),
-        x: (index) => (index % 2 === 0 ? -18 : 18),
-        rotateZ: (index) => (index % 2 === 0 ? -9 : 9),
-        rotateX: -35,
-        scale: 0.88,
-        filter: "blur(11px)",
-        transformOrigin: "50% 50%",
-      });
-
-      gsap.set(paragraphWords, {
-        opacity: 0,
-        y: (index) => {
-          if (index % 4 === 0) return 28;
-          if (index % 4 === 1) return -22;
-          if (index % 4 === 2) return 18;
-          return -14;
-        },
-        x: (index) => {
-          if (index % 3 === 0) return -12;
-          if (index % 3 === 1) return 12;
-          return 0;
-        },
-        rotateZ: (index) => {
-          if (index % 4 === 0) return -3.5;
-          if (index % 4 === 1) return 3.5;
-          if (index % 4 === 2) return -1.8;
-          return 1.8;
-        },
-        scale: 0.92,
-        filter: "blur(9px)",
-        transformOrigin: "50% 60%",
-      });
-
-      gsap.set(gradientChars, {
-        backgroundPosition: "0% center",
-      });
-
       gsap.set(cardRefs.current, {
         opacity: 0,
         y: 42,
@@ -171,14 +62,6 @@ export default function WhoWeAreSection() {
         filter: "blur(6px)",
       });
 
-      if (orbit) {
-        gsap.set(orbit, {
-          opacity: 0,
-          x: 38,
-          scale: 0.98,
-        });
-      }
-
       if (orbitSpin) {
         gsap.set(orbitSpin, {
           rotate: -18,
@@ -197,102 +80,6 @@ export default function WhoWeAreSection() {
           },
         });
       }
-
-      const forceTextComplete = () => {
-        gsap.set(headingChars, {
-          opacity: 1,
-          y: 0,
-          x: 0,
-          rotateZ: 0,
-          rotateX: 0,
-          scale: 1,
-          filter: "blur(0px)",
-        });
-
-        gsap.set(paragraphWords, {
-          opacity: 1,
-          y: 0,
-          x: 0,
-          rotateZ: 0,
-          scale: 1,
-          filter: "blur(0px)",
-        });
-
-        gsap.set(gradientChars, {
-          backgroundPosition: "220% center",
-        });
-      };
-
-      const textTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: textBlock,
-          start: "top 90%",
-          end: "top 38%",
-          scrub: 0.85,
-          invalidateOnRefresh: true,
-          onLeave: forceTextComplete,
-        },
-      });
-
-      textTimeline
-        .to(headingChars, {
-          opacity: 1,
-          y: 0,
-          x: 0,
-          rotateZ: 0,
-          rotateX: 0,
-          scale: 1,
-          filter: "blur(0px)",
-          ease: "none",
-          stagger: {
-            amount: 0.34,
-            from: "start",
-          },
-          duration: 0.52,
-        })
-        .to(
-          gradientChars,
-          {
-            backgroundPosition: "220% center",
-            ease: "none",
-            duration: 0.52,
-            stagger: {
-              amount: 0.18,
-              from: "start",
-            },
-          },
-          "-=0.48"
-        )
-        .to(
-          paragraphWords,
-          {
-            opacity: 1,
-            y: 0,
-            x: 0,
-            rotateZ: 0,
-            scale: 1,
-            filter: "blur(0px)",
-            ease: "none",
-            stagger: {
-              amount: 0.52,
-              from: "center",
-              grid: "auto",
-            },
-            duration: 0.68,
-          },
-          "-=0.08"
-        )
-        .to(
-          orbit,
-          {
-            opacity: 1,
-            x: 0,
-            scale: 1,
-            ease: "none",
-            duration: 0.42,
-          },
-          "-=0.54"
-        );
 
       const forceCardsComplete = () => {
         gsap.set(
@@ -413,10 +200,7 @@ export default function WhoWeAreSection() {
       className={`${montserrat.className} relative isolate w-full overflow-hidden bg-white pb-[60px] pt-[92px] max-[1024px]:pt-[78px] max-[768px]:pb-[70px] max-[768px]:pt-[64px]`}
     >
       {/* Right side circle lines image */}
-      <div
-        ref={orbitRef}
-        className="pointer-events-none absolute right-[-20px] top-[170px] z-[1] h-[720px] w-[560px] overflow-hidden max-[1024px]:top-[210px] max-[1024px]:h-[620px] max-[1024px]:w-[500px] max-[768px]:hidden"
-      >
+      <div className="pointer-events-none absolute right-[-20px] top-[170px] z-[1] h-[720px] w-[560px] overflow-hidden max-[1024px]:top-[210px] max-[1024px]:h-[620px] max-[1024px]:w-[500px] max-[768px]:hidden">
         <div
           ref={orbitSpinRef}
           className="relative h-full w-full will-change-transform"
@@ -433,14 +217,16 @@ export default function WhoWeAreSection() {
 
       <div className="relative z-[2] mx-auto w-full max-w-[1400px] px-4">
         {/* Heading */}
-        <div ref={textBlockRef} className="mx-auto max-w-[1200px] text-center">
-          <h2 className="overflow-visible text-[58px] font-light leading-[1.18] tracking-[5px] max-[768px]:text-[42px] max-[768px]:tracking-[3px] max-[480px]:text-[34px] max-[480px]:tracking-[2px]">
-            <SplitLetters text="WHO" type="normal" />{" "}
-            <SplitLetters text="WE ARE" type="gradient" />
+        <div className="mx-auto max-w-[1200px] text-center">
+          <h2 className="overflow-visible text-[58px] font-light uppercase leading-[1.18] tracking-[5px] max-[768px]:text-[42px] max-[768px]:tracking-[3px] max-[480px]:text-[34px] max-[480px]:tracking-[2px]">
+            <span className="text-[#00fe4e]">WHO</span>{" "}
+            <span className="bg-[linear-gradient(90deg,#00fe4e_0%,#00d657_18%,#02875d_42%,#00616f_68%,#07136f_100%)] bg-clip-text text-transparent">
+              WE ARE
+            </span>
           </h2>
 
           <p className="mx-auto mt-[15px] max-w-[1200px] text-[21px] font-light leading-[1.22] tracking-[0.2px] text-[#878787] max-[768px]:text-[16px] max-[480px]:text-[14px] max-[480px]:leading-[1.45]">
-            <SplitWords text={paragraphText} />
+            {paragraphText}
           </p>
         </div>
 
