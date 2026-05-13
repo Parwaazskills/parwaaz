@@ -3,6 +3,9 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { clientLogos } from "@/data/clientLogos";
 
+// Shared card+gap step (used in both transform calculation and consistency)
+const CARD_STEP = "calc(clamp(150px, 16vw, 200px) + 32px)";
+
 export default function ClientsSection() {
   // Same 5-copy seamless loop as PartnerLogosSection
   const [logoIndex, setLogoIndex] = useState(0);
@@ -18,15 +21,19 @@ export default function ClientsSection() {
   const renderedLogos = Array.from({ length: COPIES }, () => clientLogos).flat();
 
   const handlePrev = useCallback(() => {
+    if (isTransitioningRef.current) return;
+    isTransitioningRef.current = true;
     setLogoIndex((prev) => prev - 1);
     setGlowingSide("prev");
-    setTimeout(() => setGlowingSide(null), 800);
+    setTimeout(() => setGlowingSide(null), 500);
   }, []);
 
   const handleNext = useCallback(() => {
+    if (isTransitioningRef.current) return;
+    isTransitioningRef.current = true;
     setLogoIndex((prev) => prev + 1);
     setGlowingSide("next");
-    setTimeout(() => setGlowingSide(null), 800);
+    setTimeout(() => setGlowingSide(null), 500);
   }, []);
 
   useEffect(() => {
@@ -48,6 +55,11 @@ export default function ClientsSection() {
             if (trackRef.current) {
               trackRef.current.style.transition = "";
             }
+            // Safety fallback — guarantees flag clears even if transitionend
+            // doesn't fire cleanly after React state/snap
+            setTimeout(() => {
+              isTransitioningRef.current = false;
+            }, 50);
           });
         });
       }
@@ -89,7 +101,7 @@ export default function ClientsSection() {
           width: max-content;
           gap: 32px;
           padding-left: 16px;
-          transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
           will-change: transform;
         }
         @media (min-width: 640px) {
@@ -253,9 +265,7 @@ export default function ClientsSection() {
               ref={trackRef}
               className="clients-track"
               style={{
-                transform: `translateX(calc(${
-                  -(logoIndex + CENTER_OFFSET)
-                } * (clamp(150px, 16vw, 200px) + 32px)))`,
+                transform: `translateX(calc(${-(logoIndex + CENTER_OFFSET)} * ${CARD_STEP}))`,
               }}
             >
               {renderedLogos.map((logo, i) => (

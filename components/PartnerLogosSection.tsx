@@ -24,28 +24,30 @@ export default function PartnerLogosSection() {
   const total = partnerLogos.length;
   const COPIES = 5;                  // render this many copies of the logo array
   const CENTER_OFFSET = 2 * total;   // we start visually in the middle copy (3rd of 5)
-  const TRANSITION_MS = 500;         // CSS transition duration
+  const TRANSITION_MS = 420;         // CSS transition duration
   const SAFE_RANGE = 2 * total;      // drift allowed before snap-back
 
   // 5 copies side-by-side
   const renderedLogos = Array.from({ length: COPIES }, () => partnerLogos).flat();
 
   const handlePrev = useCallback(() => {
+    if (isTransitioningRef.current) return;
+    isTransitioningRef.current = true;
     setLogoIndex((prev) => prev - 1);
     setGlowingSide("prev");
-    setTimeout(() => setGlowingSide(null), 800);
+    setTimeout(() => setGlowingSide(null), 500);
   }, []);
 
   const handleNext = useCallback(() => {
+    if (isTransitioningRef.current) return;
+    isTransitioningRef.current = true;
     setLogoIndex((prev) => prev + 1);
     setGlowingSide("next");
-    setTimeout(() => setGlowingSide(null), 800);
+    setTimeout(() => setGlowingSide(null), 500);
   }, []);
 
   // After every transition ends, check if we've drifted near the edge of
   // our 5-copy buffer. If so, instantly snap back to equivalent middle position.
-  // This runs on `transitionend` so back-to-back fast clicks all complete
-  // their animations first, then ONE snap happens at the end.
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -131,7 +133,7 @@ export default function PartnerLogosSection() {
           width: max-content;
           gap: 32px;
           padding-left: 16px;
-          transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
           will-change: transform;
         }
         @media (min-width: 640px) {
