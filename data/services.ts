@@ -41,7 +41,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Help leadership understand AI, define where it adds value in their organization, and build a credible, board-ready adoption roadmap.",
       icon: "/icons/ai-strategy-readiness.svg",
       btn: "Learn More",
-      href: "#",
+      href: "/aitech#ai-strategy-readiness",
     },
     {
       eyebrow: "International AI",
@@ -50,16 +50,16 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Broker and integrate global AI infrastructure — connecting enterprises to leading international AI platforms with Parwaaz as trusted integrator.",
       icon: "/icons/international-ai-partner.svg",
       btn: "Learn More",
-      href: "#",
+      href: "/aitech#international-ai-partner-brokerage",
     },
     {
       eyebrow: "Generative AI &",
       title: "LLM Deployment",
       body:
         "Empowering Pakistan's workforce with world-class skills through global partnerships like Coursera. Unlock new career opportunities with tailored programs designed for modern professionals.",
-      icon: "/icons/generative-ai-llm.svg",
+      icon: "/icon/LLM.svg",
       btn: "Learn More",
-      href: "#",
+      href: "/aitech#generative-ai-llm-deployment",
     },
     {
       eyebrow: "Process",
@@ -68,7 +68,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Automate repetitive workflows across business functions using RPA combined with AI — smarter, adaptive automation that scales.",
       icon: "/icons/process-automation.svg",
       btn: "Learn More",
-      href: "#",
+      href: "/aitech#process-automation-ai-workflows",
     },
     {
       eyebrow: "Custom Technology",
@@ -77,7 +77,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Bespoke software and systems built for your specific requirements — from MVP to enterprise-scale platforms tailored to your market.",
       icon: "/icons/custom-technology-development.svg",
       btn: "Learn More",
-      href: "#",
+      href: "/aitech#custom-technology-development",
     },
     {
       eyebrow: "AI Governance &",
@@ -86,7 +86,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Ensure AI deployments are responsible, auditable, and aligned to organisational and regulatory standards from day one.",
       icon: "/icons/ai-governance-compliance.svg",
       btn: "Learn More",
-      href: "#",
+      href: "/aitech#ai-governance-compliance",
     },
   ],
 
@@ -101,7 +101,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Identify workforce capability gaps before investing — at national, sectoral, or enterprise level — with WEF-aligned assessment frameworks.",
       icon: "/icons/skills-gap-diagnostics.svg",
       btn: "Learn More",
-      href: "#",
+      href: "/reskilling#skills-gap-diagnostics",
     },
     {
       eyebrow: "Learning Programme",
@@ -110,7 +110,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Build evidence-based learning journeys mapped to real workforce needs — from curriculum architecture to delivery roadmaps that move the metrics that matter.",
       icon: "/icons/learning-programme-design.svg",
       btn: "Learn More",
-      href: "#",
+      href: "/reskilling#learning-programme-architecture",
     },
     {
       eyebrow: "Platform Deployment",
@@ -119,7 +119,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Full Coursera enterprise licensing, setup, and integration as Pakistan's exclusive B2B Coursera partner — or connect Coursera to existing HR systems.",
       icon: "/icons/platform-deployment-lms.svg",
       btn: "Learn More",
-      href: "#",
+      href: "/reskilling#coursera-enterprise-deployment",
     },
     {
       eyebrow: "Credentials &",
@@ -128,7 +128,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Issue globally recognised credentials and digital certifications that validate workforce capability and travel across employers, sectors, and borders.",
       icon: "/icons/credentials-certification.svg",
       btn: "Learn More",
-      href: "#",
+      href: "/reskilling#credentials-certification",
     },
     {
       eyebrow: "Workforce Reskilling",
@@ -137,7 +137,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Structured cohort programmes that move employees from current to future capability — in AI, data, digital tools, and leadership.",
       icon: "/icons/workforce-reskilling-upskilling.svg",
       btn: "Learn More",
-      href: "#",
+      href: "/reskilling#workforce-reskilling-cohorts",
     },
     {
       eyebrow: "Learning Impact & Skills",
@@ -146,7 +146,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Measure what learning actually changes — capability lift, completion rates, business outcomes, and ROI — in boardroom-ready reporting.",
       icon: "/icons/learning-impact-intelligence.svg",
       btn: "Learn More",
-      href: "#",
+      href: "reskilling#learning-impact-skills-intelligence",
     },
   ],
 
@@ -161,7 +161,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Connect top Pakistani talent with international opportunities — from executive search to high-volume specialist hiring across global markets.",
       icon: "/icons/international-recruitment.svg",
       btn: "Get Started",
-      href: "#",
+      href: "/talent#international-recruitment",
     },
     {
       eyebrow: "Payroll & Contract",
@@ -170,7 +170,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Full employer-of-record and payroll management — handling compliance, taxes, and legal requirements across multiple jurisdictions.",
       icon: "/icons/payroll-contract-management.svg",
       btn: "Get Started",
-      href: "#",
+      href: "/talent#payroll-contract-management",
     },
     {
       eyebrow: "Visa & Immigration",
@@ -179,7 +179,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Complete visa processing, immigration support, and legal documentation for smooth international workforce deployment with full compliance.",
       icon: "/icons/visa-immigration-services.svg",
       btn: "Get Started",
-      href: "#",
+      href: "/talent#visa-immigration-services",
     },
     {
       eyebrow: "Workforce Deployment &",
@@ -188,7 +188,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "End-to-end relocation support — ensuring deployed employees are housed, onboarded, and fully productive from their first day.",
       icon: "/icons/workforce-deployment-settling-in.svg",
       btn: "Get Started",
-      href: "#",
+      href: "/talent#workforce-deployment-settling-in",
     },
     {
       eyebrow: "Talent Intelligence &",
@@ -197,7 +197,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Data-driven insights on talent availability, mobility trends, and workforce planning to inform smarter hiring and deployment decisions.",
       icon: "/icons/talent-intelligence-analytics.svg",
       btn: "Get Started",
-      href: "#",
+      href: "/talent#talent-intelligence-analytics",
     },
     {
       eyebrow: "Outsourced HR & People",
@@ -206,7 +206,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Fully managed HR functions for companies that need professional people operations without the overhead of building an in-house HR team.",
       icon: "/icons/outsourced-hr-operations.svg",
       btn: "Get Started",
-      href: "#",
+      href: "/talent#outsourced-hr-people-operations",
     },
   ],
 
@@ -222,7 +222,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Helping organisations navigate market entry, partnerships, growth strategy, and operational transformation across emerging markets.",
       icon: Briefcase,
       btn: "Learn More",
-      href: "#",
+      href: "/consulting#digital-transformation-advisory",
     },
     {
       eyebrow: "Executive",
@@ -231,7 +231,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Trusted advisory support for leadership teams — covering strategy execution, organisational design, and performance acceleration.",
       icon: Target,
       btn: "Learn More",
-      href: "#",
+      href: "/consulting#organisational-design-hr-transformation",
     },
     {
       eyebrow: "Market",
@@ -240,7 +240,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Sector intelligence, competitor benchmarking, and workforce insights — turning raw data into actionable strategic decisions.",
       icon: BarChart3,
       btn: "Learn More",
-      href: "#",
+      href: "/consulting#public-sector-innovation",
     },
     {
       eyebrow: "Policy & Public",
@@ -249,7 +249,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Evidence-based research supporting governments, multilaterals, and policy bodies on workforce, education, and economic development.",
       icon: FileSearch,
       btn: "Learn More",
-      href: "#",
+      href: "/consulting#workforce-market-research",
     },
     {
       eyebrow: "Impact",
@@ -258,7 +258,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Measure programme outcomes and long-term impact through structured evaluation frameworks aligned to international standards.",
       icon: TrendingUp,
       btn: "Learn More",
-      href: "#",
+      href: "/consulting#international-market-entry-support",
     },
     {
       eyebrow: "Feasibility &",
@@ -267,7 +267,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Independent feasibility studies, due diligence reviews, and investment readiness assessments for projects and partnerships.",
       icon: Lightbulb,
       btn: "Learn More",
-      href: "#",
+      href: "/consulting#programme-project-management",
     },
   ],
 
@@ -283,7 +283,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Designing modern, productive work environments — from concept and space planning through to detailed architectural execution.",
       icon: Building2,
       btn: "Learn More",
-      href: "#",
+      href: "/workspace#office-setup-accommodation",
     },
     {
       eyebrow: "Interior &",
@@ -292,7 +292,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Full interior fit-out delivery — finishes, furniture, lighting, and brand-aligned environments built to international quality standards.",
       icon: Sofa,
       btn: "Learn More",
-      href: "#",
+      href: "/workspace#architecture-interior-design",
     },
     {
       eyebrow: "IT",
@@ -301,7 +301,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Network, server, security, and connectivity infrastructure designed for performance, resilience, and enterprise-grade reliability.",
       icon: Server,
       btn: "Learn More",
-      href: "#",
+      href: "/workspace#bim-digital-construction",
     },
     {
       eyebrow: "Smart Office",
@@ -310,7 +310,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "IoT-enabled workspaces — smart access, occupancy intelligence, energy management, and integrated meeting room technology.",
       icon: Sparkles,
       btn: "Learn More",
-      href: "#",
+      href: "/workspace#construction-management",
     },
     {
       eyebrow: "Facility",
@@ -319,7 +319,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Day-to-day facility operations, maintenance, and workplace services — keeping your environment running at peak efficiency.",
       icon: Wrench,
       btn: "Learn More",
-      href: "#",
+      href: "/workspace#fit-out-refurbishment",
     },
     {
       eyebrow: "Sustainability &",
@@ -328,7 +328,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
         "Energy-efficient, sustainable workspace solutions aligned to LEED, WELL, and net-zero workplace standards.",
       icon: Leaf,
       btn: "Learn More",
-      href: "#",
+      href: "/workspace#workspace-technology-integration",
     },
   ],
 };
