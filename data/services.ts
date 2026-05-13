@@ -1,18 +1,3 @@
-import {
-  Briefcase,
-  Target,
-  BarChart3,
-  FileSearch,
-  TrendingUp,
-  Lightbulb,
-  Building2,
-  Sofa,
-  Server,
-  Sparkles,
-  Wrench,
-  Leaf,
-} from "lucide-react";
-
 import type { LucideIcon } from "lucide-react";
 
 export type ServiceItem = {
@@ -212,60 +197,59 @@ export const servicesData: Record<string, ServiceItem[]> = {
 
   // ─────────────────────────────────────────────────────────────
   // TAB 4: Consulting, Advisory & Research
-  // (Placeholder content + lucide icons — update when final copy/SVGs arrive)
   // ─────────────────────────────────────────────────────────────
   "Consulting, Advisory & Research": [
     {
-      eyebrow: "Strategic Business",
-      title: "Consulting",
+      eyebrow: "Digital Transformation",
+      title: "Advisory",
       body:
-        "Helping organisations navigate market entry, partnerships, growth strategy, and operational transformation across emerging markets.",
-      icon: Briefcase,
+        "End-to-end digital transformation engagements for enterprises and government bodies — from strategy and operating model redesign through to technology implementation and change management. Aligned to international frameworks (TOGAF, McKinsey 7S, Kotter) and calibrated to local execution realities.",
+      icon: "/icon/advisory.svg",
       btn: "Learn More",
       href: "/consulting#digital-transformation-advisory",
     },
     {
-      eyebrow: "Executive",
-      title: "Advisory",
+      eyebrow: "Organisational Design &",
+      title: "HR Transformation",
       body:
-        "Trusted advisory support for leadership teams — covering strategy execution, organisational design, and performance acceleration.",
-      icon: Target,
+        "Redesign how organisations are structured, how decisions are made, and how people are managed — to unlock the performance that existing capability and resources should already be delivering. Built on Korn Ferry and Deloitte organisational design methodology.",
+      icon: "/icon/HRTransformation.svg",
       btn: "Learn More",
       href: "/consulting#organisational-design-hr-transformation",
     },
     {
-      eyebrow: "Market",
-      title: "Research",
+      eyebrow: "Public Sector",
+      title: "Innovation",
       body:
-        "Sector intelligence, competitor benchmarking, and workforce insights — turning raw data into actionable strategic decisions.",
-      icon: BarChart3,
+        "Capacity building, service redesign, and programme delivery for government ministries, departments, and development organisations — backed by WEF frameworks and with a track record of delivery on donor-funded national programmes.",
+      icon: "/icon/Innovation.svg",
       btn: "Learn More",
       href: "/consulting#public-sector-innovation",
     },
     {
-      eyebrow: "Policy & Public",
+      eyebrow: "Workforce & Market",
       title: "Research",
       body:
-        "Evidence-based research supporting governments, multilaterals, and policy bodies on workforce, education, and economic development.",
-      icon: FileSearch,
+        "Proprietary research products that generate commercial-grade insights on Pakistan's talent landscape and digital economy — published under WEF co-branding to maximise credibility and reach with government, investors, and multinationals.",
+      icon: "/icon/Marketresearch.svg",
       btn: "Learn More",
       href: "/consulting#workforce-market-research",
     },
     {
-      eyebrow: "Impact",
-      title: "Assessment",
+      eyebrow: "International Market Entry",
+      title: "Support",
       body:
-        "Measure programme outcomes and long-term impact through structured evaluation frameworks aligned to international standards.",
-      icon: TrendingUp,
+        "The on-the-ground delivery partner for multinationals entering or scaling in Pakistan, Saudi Arabia, or UAE. Parwaaz provides the local market intelligence, regulatory navigation, partner identification, and operational setup that international firms need to move from decision to operations.",
+      icon: "/icon/InternationalMarket.svg",
       btn: "Learn More",
       href: "/consulting#international-market-entry-support",
     },
     {
-      eyebrow: "Feasibility &",
-      title: "Due Diligence",
+      eyebrow: "Programme & Project",
+      title: "Management",
       body:
-        "Independent feasibility studies, due diligence reviews, and investment readiness assessments for projects and partnerships.",
-      icon: Lightbulb,
+        "PMO-as-a-service for large national, regional, or organisational implementation programmes — providing the governance infrastructure, reporting discipline, and delivery accountability that complex multi-stakeholder programmes require but rarely have.",
+      icon: "/icon/outsoursedhr.svg",
       btn: "Learn More",
       href: "/consulting#programme-project-management",
     },
@@ -273,60 +257,59 @@ export const servicesData: Record<string, ServiceItem[]> = {
 
   // ─────────────────────────────────────────────────────────────
   // TAB 5: Workspace, Design & Infrastructure
-  // (Placeholder content + lucide icons — update when final copy/SVGs arrive)
   // ─────────────────────────────────────────────────────────────
   "Workspace, Design & Infrastructure": [
     {
-      eyebrow: "Workspace",
-      title: "Design",
+      eyebrow: "Office Setup &",
+      title: "Accommodation",
       body:
-        "Designing modern, productive work environments — from concept and space planning through to detailed architectural execution.",
-      icon: Building2,
+        "End-to-end workspace and housing solutions for teams setting up in Pakistan or relocating internationally — handled entirely by Parwaaz so leadership can focus on the business. From identifying and negotiating the right space to handing over a fully furnished, operational office on day one.",
+      icon: "/icon/Officesetup.svg",
       btn: "Learn More",
       href: "/workspace#office-setup-accommodation",
     },
     {
-      eyebrow: "Interior &",
-      title: "Fit-out",
+      eyebrow: "Architecture & Interior",
+      title: "Design",
       body:
-        "Full interior fit-out delivery — finishes, furniture, lighting, and brand-aligned environments built to international quality standards.",
-      icon: Sofa,
+        "Professional architecture and interior design services from concept to construction documentation — for commercial offices, institutional buildings, residential developments, and hospitality projects. Delivered through our Design Synergies partnership with full design team capability.",
+      icon: "/icon/Architecture.svg",
       btn: "Learn More",
       href: "/workspace#architecture-interior-design",
     },
     {
-      eyebrow: "IT",
-      title: "Infrastructure",
+      eyebrow: "BIM & Digital",
+      title: "Construction",
       body:
-        "Network, server, security, and connectivity infrastructure designed for performance, resilience, and enterprise-grade reliability.",
-      icon: Server,
+        "Building Information Modelling services that bring coordination, precision, and cost control to complex construction projects. BIM reduces design clashes, eliminates construction waste, and produces an accurate digital twin that supports facilities management for the building's lifetime.",
+      icon: "/icon/digitalconstruction.svg",
       btn: "Learn More",
       href: "/workspace#bim-digital-construction",
     },
     {
-      eyebrow: "Smart Office",
-      title: "Solutions",
+      eyebrow: "Construction",
+      title: "Management",
       body:
-        "IoT-enabled workspaces — smart access, occupancy intelligence, energy management, and integrated meeting room technology.",
-      icon: Sparkles,
+        "Professional management of construction projects from procurement through to handover — providing the owner with a single point of accountability for time, cost, and quality. Our construction management team has delivered commercial, institutional, and infrastructure projects across Pakistan.",
+      icon: "/icon/ConstructionManagement.svg",
       btn: "Learn More",
       href: "/workspace#construction-management",
     },
     {
-      eyebrow: "Facility",
-      title: "Management",
+      eyebrow: "Fit-out &",
+      title: "Refurbishment",
       body:
-        "Day-to-day facility operations, maintenance, and workplace services — keeping your environment running at peak efficiency.",
-      icon: Wrench,
+        "Turnkey commercial fit-out — from Cat A shell-and-core to fully furnished, branded, technology-enabled workspaces. Also specialist refurbishment of existing spaces, including MEP upgrades, structural modifications, and full interior renewal while minimising business disruption.",
+      icon: "/icon/refurbishment.svg",
       btn: "Learn More",
       href: "/workspace#fit-out-refurbishment",
     },
     {
-      eyebrow: "Sustainability &",
-      title: "Green Design",
+      eyebrow: "Workspace Technology",
+      title: "Integration",
       body:
-        "Energy-efficient, sustainable workspace solutions aligned to LEED, WELL, and net-zero workplace standards.",
-      icon: Leaf,
+        "The digital infrastructure that makes modern workspaces productive — designed and installed as part of the fit-out process, not retrofitted afterwards. From enterprise connectivity and AV systems to access control, smart building management, and IoT integration.",
+      icon: "/icon/workspace.svg",
       btn: "Learn More",
       href: "/workspace#workspace-technology-integration",
     },

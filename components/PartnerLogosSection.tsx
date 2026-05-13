@@ -8,8 +8,10 @@ export default function PartnerLogosSection() {
   // direction before needing to snap — plenty of buffer for fast clicks.
   const [logoIndex, setLogoIndex] = useState(0);
   const [glowingSide, setGlowingSide] = useState<"prev" | "next" | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const isTransitioningRef = useRef(false);
+  const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const partnerLogos = [
     { src: "/wef.png", name: "World Economic Forum" },
@@ -26,6 +28,7 @@ export default function PartnerLogosSection() {
   const CENTER_OFFSET = 2 * total;   // we start visually in the middle copy (3rd of 5)
   const TRANSITION_MS = 420;         // CSS transition duration
   const SAFE_RANGE = 2 * total;      // drift allowed before snap-back
+  const AUTOPLAY_INTERVAL = 2500;    // ms between auto-slides
 
   // 5 copies side-by-side
   const renderedLogos = Array.from({ length: COPIES }, () => partnerLogos).flat();
@@ -45,6 +48,32 @@ export default function PartnerLogosSection() {
     setGlowingSide("next");
     setTimeout(() => setGlowingSide(null), 500);
   }, []);
+
+  // ============ AUTOPLAY ============
+  useEffect(() => {
+    if (isPaused) {
+      // Stop the timer when paused
+      if (autoplayTimerRef.current) {
+        clearInterval(autoplayTimerRef.current);
+        autoplayTimerRef.current = null;
+      }
+      return;
+    }
+
+    // Start the timer
+    autoplayTimerRef.current = setInterval(() => {
+      if (!isTransitioningRef.current) {
+        isTransitioningRef.current = true;
+        setLogoIndex((prev) => prev + 1);
+      }
+    }, AUTOPLAY_INTERVAL);
+
+    return () => {
+      if (autoplayTimerRef.current) {
+        clearInterval(autoplayTimerRef.current);
+      }
+    };
+  }, [isPaused]);
 
   // After every transition ends, check if we've drifted near the edge of
   // our 5-copy buffer. If so, instantly snap back to equivalent middle position.
@@ -176,7 +205,7 @@ export default function PartnerLogosSection() {
           filter: grayscale(0);
         }
 
-        /* ============ NAV BUTTONS ============ */
+        /* ============ NAV BUTTONS — SMALLER ============ */
         .collab-nav-wrap {
           display: flex;
           justify-content: center;
@@ -186,14 +215,14 @@ export default function PartnerLogosSection() {
         .collab-nav-box {
           position: relative;
           display: inline-block;
-          width: 79px;
-          height: 71px;
+          width: 56px;
+          height: 50px;
           line-height: 0;
         }
         .collab-nav-svg {
           display: block;
-          width: 79px;
-          height: 71px;
+          width: 56px;
+          height: 50px;
           pointer-events: none;
           position: relative;
           z-index: 2;
@@ -203,8 +232,8 @@ export default function PartnerLogosSection() {
         .collab-glow {
           position: absolute;
           top: 50%;
-          width: 60px;
-          height: 60px;
+          width: 44px;
+          height: 44px;
           border-radius: 50%;
           background: radial-gradient(
             circle,
@@ -219,8 +248,8 @@ export default function PartnerLogosSection() {
           z-index: 1;
           transition: opacity 0.3s ease, transform 0.3s ease;
         }
-        .collab-glow-prev { left: -10px; }
-        .collab-glow-next { right: -10px; }
+        .collab-glow-prev { left: -8px; }
+        .collab-glow-next { right: -8px; }
 
         /* HOVER state */
         .collab-nav-hit-prev:hover ~ .collab-glow-prev,
@@ -268,15 +297,15 @@ export default function PartnerLogosSection() {
           }
           .collab-shell { padding-bottom: 12px !important; }
           .collab-nav-box,
-          .collab-nav-svg { width: 66px; height: 60px; }
-          .collab-glow { width: 50px; height: 50px; }
+          .collab-nav-svg { width: 48px; height: 44px; }
+          .collab-glow { width: 38px; height: 38px; }
         }
         @media (max-width: 480px) {
           .collab-section { padding: 48px 0 24px; }
           .collab-title { font-size: 17px; margin-bottom: 18px; }
           .collab-nav-box,
-          .collab-nav-svg { width: 58px; height: 52px; }
-          .collab-glow { width: 44px; height: 44px; }
+          .collab-nav-svg { width: 42px; height: 38px; }
+          .collab-glow { width: 32px; height: 32px; }
         }
       `}</style>
 
@@ -285,7 +314,13 @@ export default function PartnerLogosSection() {
           INTERNATIONAL COLLABORATERS
         </h2>
 
-        <div data-reveal="fade" data-reveal-delay="100" className="collab-shell">
+        <div
+          data-reveal="fade"
+          data-reveal-delay="100"
+          className="collab-shell"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
           <div
             ref={trackRef}
             className="collab-track"
@@ -304,7 +339,11 @@ export default function PartnerLogosSection() {
         </div>
 
         <div data-reveal="zoom" data-reveal-delay="200" className="collab-nav-wrap">
-          <div className="collab-nav-box">
+          <div
+            className="collab-nav-box"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
             <button
               type="button"
               onClick={handlePrev}

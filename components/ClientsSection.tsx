@@ -10,13 +10,16 @@ export default function ClientsSection() {
   // Same 5-copy seamless loop as PartnerLogosSection
   const [logoIndex, setLogoIndex] = useState(0);
   const [glowingSide, setGlowingSide] = useState<"prev" | "next" | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const isTransitioningRef = useRef(false);
+  const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const total = clientLogos.length;
   const COPIES = 5;
   const CENTER_OFFSET = 2 * total;
   const SAFE_RANGE = 2 * total;
+  const AUTOPLAY_INTERVAL = 2500; // ms between auto-slides
 
   const renderedLogos = Array.from({ length: COPIES }, () => clientLogos).flat();
 
@@ -35,6 +38,30 @@ export default function ClientsSection() {
     setGlowingSide("next");
     setTimeout(() => setGlowingSide(null), 500);
   }, []);
+
+  // ============ AUTOPLAY ============
+  useEffect(() => {
+    if (isPaused) {
+      if (autoplayTimerRef.current) {
+        clearInterval(autoplayTimerRef.current);
+        autoplayTimerRef.current = null;
+      }
+      return;
+    }
+
+    autoplayTimerRef.current = setInterval(() => {
+      if (!isTransitioningRef.current) {
+        isTransitioningRef.current = true;
+        setLogoIndex((prev) => prev + 1);
+      }
+    }, AUTOPLAY_INTERVAL);
+
+    return () => {
+      if (autoplayTimerRef.current) {
+        clearInterval(autoplayTimerRef.current);
+      }
+    };
+  }, [isPaused]);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -55,8 +82,6 @@ export default function ClientsSection() {
             if (trackRef.current) {
               trackRef.current.style.transition = "";
             }
-            // Safety fallback — guarantees flag clears even if transitionend
-            // doesn't fire cleanly after React state/snap
             setTimeout(() => {
               isTransitioningRef.current = false;
             }, 50);
@@ -144,7 +169,7 @@ export default function ClientsSection() {
           filter: grayscale(0);
         }
 
-        /* ============ NAV BUTTONS ============ */
+        /* ============ NAV BUTTONS — SMALLER ============ */
         .clients-nav-wrap {
           display: flex;
           justify-content: center;
@@ -154,14 +179,14 @@ export default function ClientsSection() {
         .clients-nav-box {
           position: relative;
           display: inline-block;
-          width: 79px;
-          height: 71px;
+          width: 56px;
+          height: 50px;
           line-height: 0;
         }
         .clients-nav-svg {
           display: block;
-          width: 79px;
-          height: 71px;
+          width: 56px;
+          height: 50px;
           pointer-events: none;
           position: relative;
           z-index: 2;
@@ -171,8 +196,8 @@ export default function ClientsSection() {
         .clients-glow {
           position: absolute;
           top: 50%;
-          width: 60px;
-          height: 60px;
+          width: 44px;
+          height: 44px;
           border-radius: 50%;
           background: radial-gradient(
             circle,
@@ -187,8 +212,8 @@ export default function ClientsSection() {
           z-index: 1;
           transition: opacity 0.3s ease, transform 0.3s ease;
         }
-        .clients-glow-prev { left: -10px; }
-        .clients-glow-next { right: -10px; }
+        .clients-glow-prev { left: -8px; }
+        .clients-glow-next { right: -8px; }
 
         /* HOVER state */
         .clients-nav-hit-prev:hover ~ .clients-glow-prev,
@@ -230,13 +255,13 @@ export default function ClientsSection() {
         @media (max-width: 768px) {
           .clients-shell { padding-bottom: 12px !important; }
           .clients-nav-box,
-          .clients-nav-svg { width: 66px; height: 60px; }
-          .clients-glow { width: 50px; height: 50px; }
+          .clients-nav-svg { width: 48px; height: 44px; }
+          .clients-glow { width: 38px; height: 38px; }
         }
         @media (max-width: 480px) {
           .clients-nav-box,
-          .clients-nav-svg { width: 58px; height: 52px; }
-          .clients-glow { width: 44px; height: 44px; }
+          .clients-nav-svg { width: 42px; height: 38px; }
+          .clients-glow { width: 32px; height: 32px; }
         }
       `}</style>
 
@@ -260,7 +285,13 @@ export default function ClientsSection() {
             Supporting public and private sector organizations through integrated workforce and digital transformation solutions.
           </p>
 
-          <div data-reveal="fade" data-reveal-delay="300" className="clients-shell mt-5 lg:mt-6">
+          <div
+            data-reveal="fade"
+            data-reveal-delay="300"
+            className="clients-shell mt-5 lg:mt-6"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
             <div
               ref={trackRef}
               className="clients-track"
@@ -277,7 +308,11 @@ export default function ClientsSection() {
           </div>
 
           <div data-reveal="zoom" data-reveal-delay="400" className="clients-nav-wrap">
-            <div className="clients-nav-box">
+            <div
+              className="clients-nav-box"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
+            >
               <button
                 type="button"
                 onClick={handlePrev}

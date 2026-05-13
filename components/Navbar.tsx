@@ -16,39 +16,58 @@ interface NavbarProps {
 
 const SERVICES_DROPDOWN = [
   {
-    title: "Skills Management",
+    title: "AI & Advanced Technology",
     items: [
-      { name: "Digital Learning", href: "/services/skills-management/digital-learning" },
-      { name: "AI Learning", href: "/services/skills-management/ai-learning" },
-      { name: "Workforce Development", href: "/services/skills-management/workforce-development" },
-      { name: "Professional Certifications", href: "/services/skills-management/professional-certifications" },
+      { name: "AI Strategy & Readiness", href: "/aitech#ai-strategy-readiness" },
+      { name: "International AI Partner Solutions", href: "/aitech#international-ai-partner-brokerage" },
+      { name: "Generative AI & LLM Deployment", href: "/aitech#generative-ai-llm-deployment" },
+      { name: "Process Automation", href: "/aitech#process-automation-ai-workflows" },
+      { name: "Custom Technology Development", href: "/aitech#custom-technology-development" },
+      { name: "AI Governance & Compliance", href: "/aitech#ai-governance-compliance" },
     ],
   },
   {
-    title: "Manpower Solutions",
+    title: "Reskilling & Upskilling",
     items: [
-      { name: "Talent Mobility", href: "/services/manpower-solutions/talent-mobility" },
-      { name: "Workforce Operations", href: "/services/manpower-solutions/workforce-operations" },
-      { name: "Talent Sourcing", href: "/services/manpower-solutions/talent-sourcing" },
-      { name: "Managed Workforce Services", href: "/services/manpower-solutions/managed-workforce-services" },
+      { name: "Skills Gap Diagnostics", href: "/reskilling#skills-gap-diagnostics" },
+      { name: "Learning Programme Design", href: "/reskilling#learning-programme-architecture" },
+      { name: "Platform Deployment & LMS", href: "/reskilling#coursera-enterprise-deployment" },
+      { name: "Credentials & Certification", href: "/reskilling#credentials-certification" },
+      { name: "Workforce Reskilling & Upskilling", href: "/reskilling#workforce-reskilling-cohorts" },
+      { name: "Learning Impact & Skills Intelligence", href: "/reskilling#learning-impact-skills-intelligence" },
     ],
   },
   {
-    title: "Research & Surveys",
+    title: "Talent Mobility & Manpower",
     items: [
-      { name: "Market Research", href: "/services/research-surveys/market-research" },
-      { name: "Surveys & Assessments", href: "/services/research-surveys/surveys-assessments" },
-      { name: "Impact Assessment", href: "/services/research-surveys/impact-assessment" },
-      { name: "Research Advisory", href: "/services/research-surveys/research-advisory" },
+      { name: "International Recruitment", href: "/talent#international-recruitment" },
+      { name: "Payroll & Contract Management", href: "/talent#payroll-contract-management" },
+      { name: "Visa & Immigration Services", href: "/talent#visa-immigration-services" },
+      { name: "Workforce Deployment & Settling-in", href: "/talent#workforce-deployment-settling-in" },
+      { name: "Talent Intelligence & Analytics", href: "/talent#talent-intelligence-analytics" },
+      { name: "Outsourced HR & People Operations", href: "/talent#outsourced-hr-people-operations" },
     ],
   },
   {
-    title: "Consulting & Business",
+    title: "Consulting, Advisory & Research",
     items: [
-      { name: "Business Consulting", href: "/services/consulting-business/business-consulting" },
-      { name: "Strategic Advisory", href: "/services/consulting-business/strategic-advisory" },
-      { name: "Creative & Digital Services", href: "/services/consulting-business/creative-digital-services" },
-      { name: "Business Support Services", href: "/services/consulting-business/business-support-services" },
+      { name: "Digital Transformation Advisory", href: "/consulting#digital-transformation-advisory" },
+      { name: "Organisational Design & HR Transformation", href: "/consulting#organisational-design-hr-transformation" },
+      { name: "Public Sector Innovation", href: "/consulting#public-sector-innovation" },
+      { name: "Workforce & Market Research", href: "/consulting#workforce-market-research" },
+      { name: "International Market Entry Support", href: "/consulting#international-market-entry-support" },
+      { name: "Programme & Project Management", href: "/consulting#programme-project-management" },
+    ],
+  },
+  {
+    title: "Workspace, Design & Infrastructure",
+    items: [
+      { name: "Office Setup & Accommodation", href: "/workspace#office-setup-accommodation" },
+      { name: "Architecture & Interior Design", href: "/workspace#architecture-interior-design" },
+      { name: "BIM & Digital Construction", href: "/workspace#bim-digital-construction" },
+      { name: "Construction Management", href: "/workspace#construction-management" },
+      { name: "Fit-out & Refurbishment", href: "/workspace#fit-out-refurbishment" },
+      { name: "Workspace Technology Integration", href: "/workspace#workspace-technology-integration" },
     ],
   },
 ];
@@ -65,13 +84,30 @@ export default function Navbar({
     if (typeof window === "undefined") return;
     const nav = document.querySelector<HTMLElement>(".pw-nav");
     if (!nav) return;
+
+    // Hover glow tracking
     const move = (e: MouseEvent) => {
       const rect = nav.getBoundingClientRect();
       nav.style.setProperty("--mx", `${e.clientX - rect.left}px`);
       nav.style.setProperty("--my", `${e.clientY - rect.top}px`);
     };
     nav.addEventListener("mousemove", move);
-    return () => nav.removeEventListener("mousemove", move);
+
+    // Position dropdown below navbar dynamically (always centered viewport)
+    const updateDropdownPosition = () => {
+      const navRect = nav.getBoundingClientRect();
+      const top = navRect.bottom + 18;
+      document.documentElement.style.setProperty("--dropdown-top", `${top}px`);
+    };
+    updateDropdownPosition();
+    window.addEventListener("scroll", updateDropdownPosition);
+    window.addEventListener("resize", updateDropdownPosition);
+
+    return () => {
+      nav.removeEventListener("mousemove", move);
+      window.removeEventListener("scroll", updateDropdownPosition);
+      window.removeEventListener("resize", updateDropdownPosition);
+    };
   }, []);
 
   return (
@@ -272,12 +308,16 @@ export default function Navbar({
         }
         .pw-link-dropdown-wrap:hover .pw-link-chevron { transform: rotate(180deg); }
 
+        /* ===========================================
+           DROPDOWN PANEL — fixed position, viewport-centered
+           Can never overflow horizontally
+           =========================================== */
         .pw-dropdown-panel {
-          position: absolute;
-          top: calc(100% + 18px);
+          position: fixed;
+          top: var(--dropdown-top, 100px);
           left: 50%;
           transform: translateX(-50%) translateY(-10px);
-          width: min(1100px, calc(100vw - 40px));
+          width: min(1280px, calc(100vw - 40px));
           background:
             linear-gradient(135deg, rgba(0, 254, 78, 0.08) 0%, #0c0f17 40%, rgba(5, 8, 137, 0.6) 100%),
             #0c0f17;
@@ -310,10 +350,12 @@ export default function Navbar({
           pointer-events: auto;
           transform: translateX(-50%) translateY(0);
         }
-        .pw-dropdown-grid-4 {
+
+        /* 5-column grid */
+        .pw-dropdown-grid-5 {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 24px;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 20px;
         }
         .pw-dropdown-col {
           display: flex;
@@ -322,29 +364,31 @@ export default function Navbar({
         }
         .pw-dropdown-col-title {
           font-family: var(--font-poppins), sans-serif;
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 700;
-          letter-spacing: 0.12em;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
           color: #00fe4e;
-          margin-bottom: 14px;
+          margin-bottom: 12px;
           padding-bottom: 10px;
           border-bottom: 1px solid rgba(0, 254, 78, 0.15);
+          line-height: 1.3;
+          min-height: 50px;
         }
         .pw-dropdown-item {
           display: flex;
           align-items: flex-start;
-          gap: 9px;
-          padding: 9px 10px;
-          border-radius: 8px;
+          gap: 8px;
+          padding: 7px 8px;
+          border-radius: 6px;
           color: rgba(255, 255, 255, 0.78);
           text-decoration: none;
           transition: background 0.25s ease, transform 0.25s ease, color 0.25s ease;
         }
         .pw-dropdown-item-dot {
           display: inline-block;
-          width: 5px;
-          height: 5px;
+          width: 4px;
+          height: 4px;
           border-radius: 50%;
           background: rgba(0, 254, 78, 0.4);
           flex-shrink: 0;
@@ -352,10 +396,10 @@ export default function Navbar({
           transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
         }
         .pw-dropdown-item-name {
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 500;
           color: rgba(255, 255, 255, 0.82);
-          line-height: 1.4;
+          line-height: 1.35;
           transition: color 0.25s ease;
         }
         .pw-dropdown-item:hover {
@@ -474,7 +518,7 @@ export default function Navbar({
                     </svg>
                   </Link>
                   <div className="pw-dropdown-panel">
-                    <div className="pw-dropdown-grid-4">
+                    <div className="pw-dropdown-grid-5">
                       {SERVICES_DROPDOWN.map((col) => (
                         <div key={col.title} className="pw-dropdown-col">
                           <div className="pw-dropdown-col-title">{col.title}</div>
@@ -529,7 +573,7 @@ export default function Navbar({
             <div
               className="overflow-hidden transition-all duration-300 ease-out"
               style={{
-                maxHeight: mobileServicesOpen ? "2000px" : "0px",
+                maxHeight: mobileServicesOpen ? "3500px" : "0px",
                 opacity: mobileServicesOpen ? 1 : 0,
               }}
             >

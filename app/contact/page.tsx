@@ -182,24 +182,19 @@ export default function ContactPage() {
       <div className="contact-page-wrap" style={{ background: "#f7fdf9" }}>
 
         {/* Navbar wrapper — matches ContactHero gradient */}
-        <div
-          style={{
-            background:
-              "radial-gradient(circle at 20% 30%, rgba(0, 254, 78, 0.08), transparent 50%), radial-gradient(circle at 80% 70%, rgba(0, 254, 78, 0.06), transparent 50%), linear-gradient(135deg, #000572 0%, #00033d 100%)",
-          }}
-        >
-          <div className="mx-auto w-full max-w-[1320px] px-4 sm:px-6 lg:px-8 pt-3">
-            <Navbar
-              mobileNavOpen={mobileNavOpen}
-              setMobileNavOpen={setMobileNavOpen}
-              mobileServicesOpen={mobileServicesOpen}
-              setMobileServicesOpen={setMobileServicesOpen}
-              setSearchOpen={setSearchOpen}
-              activeLink="Contact"
-            />
-          </div>
-          <ContactHero />
-        </div>
+        <div style={{ background: "#000572" }}>
+  <div className="mx-auto w-full max-w-[1320px] px-4 sm:px-6 lg:px-8 pt-3">
+    <Navbar
+      mobileNavOpen={mobileNavOpen}
+      setMobileNavOpen={setMobileNavOpen}
+      mobileServicesOpen={mobileServicesOpen}
+      setMobileServicesOpen={setMobileServicesOpen}
+      setSearchOpen={setSearchOpen}
+      activeLink="Contact"
+    />
+  </div>
+  <ContactHero />
+</div>
 
         {/* MAIN — transparent so wrapper's green shows through */}
         <main

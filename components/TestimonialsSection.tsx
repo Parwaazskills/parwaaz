@@ -119,7 +119,7 @@ export default function TestimonialsSection() {
           box-shadow: 0 6px 20px rgba(0,0,0,0.14), 0 0 0 5px rgba(0,254,78,0.18);
         }
 
-        /* ============ NEW NAV BUTTONS (button.svg + glow) ============ */
+        /* ============ NAV BUTTONS — SMALLER ============ */
         .testimonials-nav-wrap {
           display: flex;
           justify-content: center;
@@ -129,14 +129,14 @@ export default function TestimonialsSection() {
         .testimonials-nav-box {
           position: relative;
           display: inline-block;
-          width: 79px;
-          height: 71px;
+          width: 56px;
+          height: 50px;
           line-height: 0;
         }
         .testimonials-nav-svg {
           display: block;
-          width: 79px;
-          height: 71px;
+          width: 56px;
+          height: 50px;
           pointer-events: none;
           position: relative;
           z-index: 2;
@@ -146,8 +146,8 @@ export default function TestimonialsSection() {
         .testimonials-glow {
           position: absolute;
           top: 50%;
-          width: 60px;
-          height: 60px;
+          width: 44px;
+          height: 44px;
           border-radius: 50%;
           background: radial-gradient(
             circle,
@@ -162,8 +162,8 @@ export default function TestimonialsSection() {
           z-index: 1;
           transition: opacity 0.3s ease, transform 0.3s ease;
         }
-        .testimonials-glow-prev { left: -10px; }
-        .testimonials-glow-next { right: -10px; }
+        .testimonials-glow-prev { left: -8px; }
+        .testimonials-glow-next { right: -8px; }
 
         /* HOVER */
         .testimonials-nav-hit-prev:hover ~ .testimonials-glow-prev,
@@ -207,16 +207,16 @@ export default function TestimonialsSection() {
           .testimonials-blink-left { left: -80px; }
           .testimonials-blink-right { right: -80px; }
           .testimonials-nav-box,
-          .testimonials-nav-svg { width: 66px; height: 60px; }
-          .testimonials-glow { width: 50px; height: 50px; }
+          .testimonials-nav-svg { width: 48px; height: 44px; }
+          .testimonials-glow { width: 38px; height: 38px; }
         }
         @media (max-width: 480px) {
           .testimonials-blink { width: 130px; }
           .testimonials-blink-left { left: -90px; }
           .testimonials-blink-right { right: -90px; }
           .testimonials-nav-box,
-          .testimonials-nav-svg { width: 58px; height: 52px; }
-          .testimonials-glow { width: 44px; height: 44px; }
+          .testimonials-nav-svg { width: 42px; height: 38px; }
+          .testimonials-glow { width: 32px; height: 32px; }
         }
       `}</style>
 

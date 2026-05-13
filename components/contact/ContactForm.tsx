@@ -52,10 +52,10 @@ export default function ContactForm() {
           color: #050505;
         }
         .contact-form-heading .accent {
-          color: #00b347;
-          font-style: italic;
-          font-weight: 600;
-        }
+  color: #00b347;
+  font-style: normal;
+  font-weight: 700;
+}
 
         .contact-input-label {
           display: block;
@@ -102,44 +102,50 @@ export default function ContactForm() {
           font-family: var(--font-poppins), sans-serif;
         }
 
-        .contact-submit {
-          position: relative;
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          padding: 14px 28px;
-          font-size: 14px;
-          font-weight: 500;
-          color: #ffffff;
-          background: #050505;
-          border: none;
-          border-radius: 30px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          box-shadow: 0 8px 24px rgba(0, 254, 78, 0.25), 0 0 0 3px rgba(0, 254, 78, 0.08);
-        }
-        .contact-submit:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 14px 32px rgba(0, 254, 78, 0.4), 0 0 0 4px rgba(0, 254, 78, 0.15);
-        }
-        .contact-submit:active {
-          transform: translateY(0);
-        }
-        .contact-submit-arrow {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          background: #00fe4e;
-          color: #050505;
-          transition: transform 0.3s ease;
-        }
-        .contact-submit:hover .contact-submit-arrow {
-          transform: translateX(4px);
-        }
-
+       .contact-submit {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 36px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333333;
+  background: #f1f1f1;
+  border: 1.5px solid transparent;
+  border-radius: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+  transition: background 0.3s ease, color 0.3s ease, transform 0.25s ease,
+              box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.contact-submit:hover {
+  background: linear-gradient(135deg, #00fe4e 0%, #0adf54 100%);
+  color: #000000;
+  border-color: #00fe4e;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 254, 78, 0.5), 0 0 0 6px rgba(0, 254, 78, 0.12);
+}
+.contact-submit:active {
+  transform: translateY(0) scale(0.97);
+}
+.contact-submit-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #00fe4e;
+  color: #050505;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+.contact-submit:hover .contact-submit-arrow {
+  transform: translateX(4px);
+  background: #ffffff;
+}
         .contact-privacy {
           display: inline-flex;
           align-items: center;

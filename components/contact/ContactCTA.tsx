@@ -5,21 +5,20 @@ export default function ContactCTA() {
     <>
       <style jsx>{`
         .contact-cta-section {
-           background: transparent;
+          background: transparent;
           padding: 0 0 80px;
         }
         @media (max-width: 768px) {
           .contact-cta-section { padding: 0 0 56px; }
         }
 
-        /* ============ CARD — DARK NAVBAR GRADIENT ============ */
+        /* ============ CARD — SOLID PARWAAZ BLUE ============ */
         .contact-cta-card {
           position: relative;
           overflow: hidden;
           border-radius: 28px;
           padding: 56px 64px;
-          /* Exact navbar gradient: 00FE4E → 0CA53B (60%) → 1E1E1E */
-       background: linear-gradient(135deg, #00FE4E 0%, #0CA53B 50%, #064E1F 100%);
+          background: #000572;
           display: grid;
           grid-template-columns: auto 1fr auto;
           gap: 40px;
@@ -35,7 +34,7 @@ export default function ContactCTA() {
           }
         }
 
-        /* ============ ORBIT RINGS — VISIBLE & ROTATING ============ */
+        /* ============ ORBIT RINGS — PROMINENT & ROTATING ============ */
         .contact-cta-orbit-wrap {
           position: absolute;
           right: 18%;
@@ -65,24 +64,27 @@ export default function ContactCTA() {
           height: 100%;
           margin-top: -50%;
           margin-left: -50%;
-          border: 1.5px dashed rgba(255, 255, 255, 0.25);
+          border: 2px dashed rgba(0, 254, 78, 0.6);
           animation: ringRotate 30s linear infinite;
+          box-shadow: 0 0 30px rgba(0, 254, 78, 0.15);
         }
         .contact-cta-ring-2 {
           width: 75%;
           height: 75%;
           margin-top: -37.5%;
           margin-left: -37.5%;
-          border: 1px solid rgba(0, 254, 78, 0.4);
+          border: 1.5px solid rgba(0, 254, 78, 0.7);
           animation: ringRotateReverse 45s linear infinite;
+          box-shadow: 0 0 25px rgba(0, 254, 78, 0.2);
         }
         .contact-cta-ring-3 {
           width: 50%;
           height: 50%;
           margin-top: -25%;
           margin-left: -25%;
-          border: 1px dotted rgba(255, 255, 255, 0.3);
+          border: 1.5px dotted rgba(0, 254, 78, 0.65);
           animation: ringRotate 22s linear infinite;
+          box-shadow: 0 0 20px rgba(0, 254, 78, 0.18);
         }
 
         @keyframes ringRotate {
@@ -99,13 +101,13 @@ export default function ContactCTA() {
           position: absolute;
           top: 50%;
           left: 50%;
-          width: 12px;
-          height: 12px;
-          margin-top: -6px;
-          margin-left: -6px;
+          width: 14px;
+          height: 14px;
+          margin-top: -7px;
+          margin-left: -7px;
           border-radius: 50%;
           background: #00fe4e;
-          box-shadow: 0 0 14px #00fe4e, 0 0 28px rgba(0, 254, 78, 0.6);
+          box-shadow: 0 0 20px #00fe4e, 0 0 40px rgba(0, 254, 78, 0.8);
           transform-origin: center center;
         }
         .contact-cta-orbit-node.n1 {
@@ -204,42 +206,52 @@ export default function ContactCTA() {
             margin-right: auto;
           }
         }
-
-        .contact-cta-btn {
-          position: relative;
-          z-index: 3;
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          padding: 14px 28px;
-          font-size: 14px;
-          font-weight: 500;
-          color: #0a0a0a;
-          background: #ffffff;
-          border: none;
-          border-radius: 30px;
-          cursor: pointer;
-          text-decoration: none;
-          transition: all 0.3s ease;
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-        }
-        .contact-cta-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 14px 32px rgba(0, 254, 78, 0.4);
-        }
-        .contact-cta-btn-arrow {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          background: #00fe4e;
-          color: #050505;
-          transition: transform 0.3s ease;
-        }
-        .contact-cta-btn:hover .contact-cta-btn-arrow {
-          transform: translateX(4px);
+.contact-cta-btn {
+  position: relative;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 36px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333333;
+  background: #f1f1f1;
+  border: 1.5px solid transparent;
+  border-radius: 24px;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+  transition: background 0.3s ease, color 0.3s ease, transform 0.25s ease,
+              box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.contact-cta-btn:hover {
+  background: linear-gradient(135deg, #00fe4e 0%, #0adf54 100%);
+  color: #000000;
+  border-color: #00fe4e;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 254, 78, 0.5), 0 0 0 6px rgba(0, 254, 78, 0.12);
+}
+.contact-cta-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+.contact-cta-btn-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #00fe4e;
+  color: #050505;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+.contact-cta-btn:hover .contact-cta-btn-arrow {
+  transform: translateX(4px);
+  background: #ffffff;
+}
         }
       `}</style>
 
@@ -271,25 +283,14 @@ export default function ContactCTA() {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <g transform="rotate(-35 100 100)">
-                  {/* Rocket body */}
                   <ellipse cx="100" cy="100" rx="22" ry="58" fill="#ffffff" stroke="#0a1a3a" strokeWidth="3" />
-
-                  {/* Window */}
                   <circle cx="100" cy="78" r="10" fill="#0a1a3a" />
                   <circle cx="100" cy="78" r="6" fill="#00fe4e" />
                   <circle cx="98" cy="76" r="2" fill="#ffffff" opacity="0.8" />
-
-                  {/* Side fins */}
                   <path d="M78 132 L60 165 L78 158 Z" fill="#0a1a3a" />
                   <path d="M122 132 L140 165 L122 158 Z" fill="#0a1a3a" />
-
-                  {/* Center bottom fin */}
                   <path d="M100 158 L94 178 L106 178 Z" fill="#0a1a3a" />
-
-                  {/* Nose cap */}
                   <ellipse cx="100" cy="46" rx="8" ry="14" fill="#0a1a3a" />
-
-                  {/* Flame */}
                   <path
                     d="M88 162 Q100 188 112 162 Q108 178 100 198 Q92 178 88 162 Z"
                     fill="#00fe4e"
