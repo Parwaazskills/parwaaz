@@ -123,8 +123,8 @@ export default function ServicesSection({
         .services-nav-box {
           position: relative;
           display: inline-block;
-          width: 79px;
-          height: 71px;
+          width: 60px;
+          height: 60px;
           line-height: 0;
         }
         .services-nav-svg {

@@ -19,7 +19,7 @@ export default function ContactCTA() {
           border-radius: 28px;
           padding: 56px 64px;
           /* Exact navbar gradient: 00FE4E → 0CA53B (60%) → 1E1E1E */
-          background: linear-gradient(90deg, #00FE4E 0%, #0CA53B 20%, #1E1E1E 100%);
+       background: linear-gradient(135deg, #00FE4E 0%, #0CA53B 50%, #064E1F 100%);
           display: grid;
           grid-template-columns: auto 1fr auto;
           gap: 40px;

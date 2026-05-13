@@ -15,7 +15,7 @@ export const heroSlides: HeroSlide[] = [
   {
     title: "Innovate Your Future",
     subtitle: "With Smart Solutions",
-    desc: "Empowering businesses with modern technology and scalable architecture.",
+    desc: "Empring businesses with modern technology and scalable architecture.",
     bg: "/bg.png",
   },
   {

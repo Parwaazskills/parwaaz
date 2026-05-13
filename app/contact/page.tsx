@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactHero from "@/components/contact/ContactHero";
@@ -10,6 +10,11 @@ import ContactCards from "@/components/contact/ContactCards";
 import ContactCTA from "@/components/contact/ContactCTA";
 
 export default function ContactPage() {
+  // ============ NAVBAR STATE ============
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+
   // ============ CURSOR REFS ============
   const ringRef = useRef<HTMLDivElement | null>(null);
   const dotRef = useRef<HTMLDivElement | null>(null);
@@ -163,7 +168,7 @@ export default function ContactPage() {
           .pw-ring, .pw-dot { display: none; }
         }
 
-        /* CONTACT PAGE ONLY — force green tint on footer (overrides any white bg inside Footer.tsx) */
+        /* CONTACT PAGE ONLY — force green tint on footer */
         .contact-page-wrap footer,
         .contact-page-wrap footer > *:first-child {
           background: #f7fdf9 !important;
@@ -173,7 +178,7 @@ export default function ContactPage() {
         }
       `}</style>
 
-      {/* ============ PAGE CONTENT — wrapped so we can target footer ============ */}
+      {/* ============ PAGE CONTENT ============ */}
       <div className="contact-page-wrap" style={{ background: "#f7fdf9" }}>
 
         {/* Navbar wrapper — matches ContactHero gradient */}
@@ -183,7 +188,16 @@ export default function ContactPage() {
               "radial-gradient(circle at 20% 30%, rgba(0, 254, 78, 0.08), transparent 50%), radial-gradient(circle at 80% 70%, rgba(0, 254, 78, 0.06), transparent 50%), linear-gradient(135deg, #000572 0%, #00033d 100%)",
           }}
         >
-          <Navbar />
+          <div className="mx-auto w-full max-w-[1320px] px-4 sm:px-6 lg:px-8 pt-3">
+            <Navbar
+              mobileNavOpen={mobileNavOpen}
+              setMobileNavOpen={setMobileNavOpen}
+              mobileServicesOpen={mobileServicesOpen}
+              setMobileServicesOpen={setMobileServicesOpen}
+              setSearchOpen={setSearchOpen}
+              activeLink="Contact"
+            />
+          </div>
           <ContactHero />
         </div>
 
@@ -192,7 +206,7 @@ export default function ContactPage() {
           className="overflow-x-clip relative"
           style={{ background: "transparent" }}
         >
-          {/* DECORATIVE VECTOR — spans full content area, left-aligned */}
+          {/* DECORATIVE VECTOR */}
           <div
             aria-hidden="true"
             style={{

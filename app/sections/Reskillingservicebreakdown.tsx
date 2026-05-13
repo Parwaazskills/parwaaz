@@ -1,7 +1,10 @@
+"use client";
+
 // app/sections/Reskillingservicebreakdown.tsx
 
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 
 type ServiceItem = {
   id: string;
@@ -74,8 +77,7 @@ const services: ServiceItem[] = [
       "Learner onboarding & cohort management",
     ],
   },
-
-{
+  {
     id: "credentials-certification",
     iconSrc: "/icon/Certification.svg",
     title: (
@@ -95,8 +97,6 @@ const services: ServiceItem[] = [
       "National Qualifications Framework alignment",
     ],
   },
-
-
   {
     id: "workforce-reskilling-cohorts",
     iconSrc: "/icon/Development2.svg",
@@ -117,7 +117,6 @@ const services: ServiceItem[] = [
       "Cohort tracking, completion & outcome reporting",
     ],
   },
-  
   {
     id: "learning-impact-skills-intelligence",
     iconSrc: "/icon/Intelligence.svg",
@@ -141,6 +140,47 @@ const services: ServiceItem[] = [
 ];
 
 export default function Reskillingservicebreakdown() {
+  const [activeHash, setActiveHash] = useState("");
+
+  useEffect(() => {
+    let removeTimer: ReturnType<typeof setTimeout>;
+
+    const handleHashScroll = () => {
+      const hash = window.location.hash.replace("#", "");
+
+      if (!hash) return;
+
+      const target = document.getElementById(hash);
+
+      if (!target) return;
+
+      setActiveHash("");
+
+      requestAnimationFrame(() => {
+        target.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+
+        setActiveHash(hash);
+
+        clearTimeout(removeTimer);
+        removeTimer = setTimeout(() => {
+          setActiveHash("");
+        }, 3200);
+      });
+    };
+
+    handleHashScroll();
+
+    window.addEventListener("hashchange", handleHashScroll);
+
+    return () => {
+      clearTimeout(removeTimer);
+      window.removeEventListener("hashchange", handleHashScroll);
+    };
+  }, []);
+
   return (
     <section className="relative w-full overflow-hidden bg-white px-4 pb-[70px] pt-[8px] max-[768px]:pb-[56px] max-[768px]:pt-[24px]">
       <style
@@ -154,7 +194,8 @@ export default function Reskillingservicebreakdown() {
               scroll-margin-top: 120px;
             }
 
-            .service-breakdown-card:target {
+            .service-breakdown-card:target,
+            .service-breakdown-card.is-hash-highlight {
               animation: serviceGlow 3s ease-in-out;
             }
 
@@ -210,7 +251,9 @@ export default function Reskillingservicebreakdown() {
               <div
                 id={item.id}
                 key={index}
-                className="service-breakdown-card grid grid-cols-[342px_1fr_390px] items-stretch gap-[22px] rounded-[18px] border-b border-[#EEEEEE] p-[12px] pb-[24px] transition-all duration-300 max-[1180px]:grid-cols-[310px_1fr] max-[1180px]:gap-y-[18px] max-[768px]:grid-cols-1 max-[768px]:gap-[14px] max-[768px]:pb-[28px]"
+                className={`service-breakdown-card grid grid-cols-[342px_1fr_390px] items-stretch gap-[22px] rounded-[18px] border-b border-[#EEEEEE] p-[12px] pb-[24px] transition-all duration-300 max-[1180px]:grid-cols-[310px_1fr] max-[1180px]:gap-y-[18px] max-[768px]:grid-cols-1 max-[768px]:gap-[14px] max-[768px]:pb-[28px] ${
+                  activeHash === item.id ? "is-hash-highlight" : ""
+                }`}
               >
                 <div className="flex min-h-[190px] w-full items-center rounded-t-[15px] bg-[#000572] px-[38px] max-[1180px]:min-h-[170px] max-[768px]:max-w-[360px] max-[480px]:min-h-[150px] max-[480px]:px-[30px]">
                   <div>
@@ -230,7 +273,7 @@ export default function Reskillingservicebreakdown() {
                   </div>
                 </div>
 
-                <div className="flex flex-col justify-top max-[1180px]:pr-[12px] max-[768px]:pr-0">
+                <div className="flex flex-col justify-start max-[1180px]:pr-[12px] max-[768px]:pr-0">
                   {item.exclusive && (
                     <div className="mb-[12px] inline-flex w-fit items-center justify-center rounded-[4px] bg-[#00F51F] px-[10px] py-[5px] font-montserrat text-[10px] font-semibold uppercase leading-none tracking-[1px] text-[#001000]">
                       Exclusive Partnership
@@ -277,7 +320,7 @@ export default function Reskillingservicebreakdown() {
           </p>
 
           <a
-            href="mailto:contact@parwaaz.co"
+            href="/contact"
             className="mt-[18px] inline-flex h-[46px] min-w-[172px] items-center justify-center rounded-[7px] bg-[#00F51F] px-[28px] font-montserrat text-[13px] font-medium leading-none tracking-[-0.1px] text-[#001000] transition-all duration-300 hover:-translate-y-[2px] hover:bg-[#00DD1C] max-[480px]:h-[44px] max-[480px]:w-full"
           >
             Contact Us
