@@ -31,20 +31,176 @@ export default function ProjectOrbitSection() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+
     gsap.registerPlugin(ScrollTrigger);
+
+    gsap.config({
+      force3D: true,
+      nullTargetWarn: false,
+    });
 
     const section = sectionRef.current;
     const orbit = orbitRef.current;
     const slideEls = slideRefs.current.filter(Boolean) as HTMLDivElement[];
+
     if (!section || !orbit || slideEls.length === 0) return;
 
     let ctx: gsap.Context | null = null;
+
+    const updateProgressPill = (progress: number) => {
+      if (!pillRef.current) return;
+
+      const fill = pillRef.current.querySelector(
+        ".po-progress-fill"
+      ) as HTMLElement | null;
+
+      if (fill) {
+        fill.style.width = `${Math.max(0, Math.min(progress * 100, 100))}%`;
+      }
+    };
 
     const setup = () => {
       if (ctx) ctx.revert();
 
       ctx = gsap.context(() => {
-        gsap.set(orbit, { xPercent: -50, yPercent: -50 });
+        const isMobile = window.innerWidth <= 768;
+
+        gsap.set(orbit, {
+          xPercent: -50,
+          yPercent: -50,
+          rotation: 0,
+          transformOrigin: "50% 50%",
+          force3D: true,
+        });
+
+        if (isMobile) {
+          const totalSteps = slideEls.length - 1;
+
+          /*
+            Animation duration.
+            Increase 950 for slower/longer mobile animation.
+            Decrease 950 for faster/shorter mobile animation.
+          */
+          const fullAnimationDistance = totalSteps * 950;
+
+          /*
+            Contact section starts coming up during the final 10%.
+            This avoids white screen while keeping orbit pinned.
+          */
+          const overlapDistance = fullAnimationDistance * 0.20;
+
+          document.documentElement.style.setProperty(
+            "--po-mobile-overlap",
+            `${overlapDistance}px`
+          );
+
+          const positionSlidesOnArc = (progress: number) => {
+            const safeProgress = Math.max(0, Math.min(progress, 1));
+            const travel = safeProgress * totalSteps;
+
+            slideEls.forEach((slide, index) => {
+              const distance = index - travel;
+
+              const x = distance * 390;
+              const y = -150 + Math.pow(distance, 2) * 70;
+              const rotation = distance * -8;
+              const scale = 1 - Math.min(Math.abs(distance) * 0.035, 0.12);
+
+              gsap.set(slide, {
+                x,
+                y,
+                yPercent: -50,
+                rotation,
+                scale,
+                opacity: 1,
+                filter: "blur(0px)",
+                zIndex: 50 - Math.round(Math.abs(distance) * 10),
+                transformOrigin: "50% 190%",
+                force3D: true,
+              });
+            });
+          };
+
+          gsap.set(slideEls, {
+            opacity: 1,
+            filter: "blur(0px)",
+            force3D: true,
+            backfaceVisibility: "hidden",
+            transformPerspective: 1000,
+          });
+
+          slideEls.forEach((slide) => {
+            const ball = slide.querySelector(".po-ball") as HTMLElement | null;
+
+            if (ball) {
+              gsap.set(ball, {
+                x: 0,
+                y: 0,
+                force3D: true,
+              });
+            }
+          });
+
+          positionSlidesOnArc(0);
+          updateProgressPill(0);
+
+          ScrollTrigger.create({
+            trigger: section,
+            start: "top top",
+            end: `+=${fullAnimationDistance}`,
+            scrub: 0.22,
+            pin: true,
+            pinSpacing: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            fastScrollEnd: false,
+
+            onUpdate: (self) => {
+              positionSlidesOnArc(self.progress);
+              updateProgressPill(self.progress);
+
+              gsap.set(orbit, {
+                rotation: self.progress * 360,
+                force3D: true,
+              });
+            },
+
+            onLeave: () => {
+              positionSlidesOnArc(1);
+              updateProgressPill(1);
+
+              gsap.set(orbit, {
+                rotation: 360,
+                force3D: true,
+              });
+            },
+
+            onEnterBack: () => {
+              positionSlidesOnArc(1);
+              updateProgressPill(1);
+
+              gsap.set(orbit, {
+                rotation: 360,
+                force3D: true,
+              });
+            },
+
+            onLeaveBack: () => {
+              positionSlidesOnArc(0);
+              updateProgressPill(0);
+
+              gsap.set(orbit, {
+                rotation: 0,
+                force3D: true,
+              });
+            },
+          });
+
+          return;
+        }
+
+        document.documentElement.style.removeProperty("--po-mobile-overlap");
+
         gsap.to(orbit, {
           rotation: 360,
           duration: 90,
@@ -52,135 +208,6 @@ export default function ProjectOrbitSection() {
           ease: "none",
           transformOrigin: "50% 50%",
         });
-
-        const isMobile = window.innerWidth <= 768;
-
-        if (isMobile) {
-          slideEls.forEach((slide, index) => {
-            const ball = slide.querySelector(".po-ball") as HTMLElement | null;
-
-            gsap.set(slide, {
-              opacity: index === 0 ? 1 : 0,
-              scale: 1,
-              filter: "blur(0px)",
-            });
-
-            if (ball) {
-              const orbitRadius = 140;
-              const startAngle = -90;
-              const angleStep = 60;
-              const angle = startAngle + index * angleStep;
-              const rad = (angle * Math.PI) / 180;
-              const x = Math.cos(rad) * orbitRadius;
-              const y = Math.sin(rad) * orbitRadius + 250;
-
-              gsap.set(ball, {
-                x: index === 0 ? 0 : x,
-                y: index === 0 ? 0 : y,
-              });
-            }
-          });
-
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: section,
-              start: "top top",
-              end: `+=${slideEls.length * 950}`,
-              scrub: 1,
-              pin: true,
-              pinSpacing: true,
-              invalidateOnRefresh: true,
-              onUpdate: (self) => {
-                if (pillRef.current) {
-                  const progress = self.progress;
-                  const slideIndex = Math.min(Math.floor(progress * 4), 3);
-                  const dots = pillRef.current.querySelectorAll(".po-pill-dot");
-                  dots.forEach((dot, i) => {
-                    const el = dot as HTMLElement;
-                    if (i === slideIndex) {
-                      el.style.background = "rgba(255, 255, 255, 0.95)";
-                      el.style.width = "14px";
-                      el.style.height = "3px";
-                      el.style.borderRadius = "2px";
-                    } else {
-                      el.style.background = "rgba(255, 255, 255, 0.35)";
-                      el.style.width = "3px";
-                      el.style.height = "3px";
-                      el.style.borderRadius = "50%";
-                    }
-                  });
-                }
-              },
-            },
-          });
-
-          for (let i = 1; i < slideEls.length; i++) {
-            const prev = slideEls[i - 1];
-            const next = slideEls[i];
-            if (!prev || !next) continue;
-
-            const nextBall = next.querySelector(".po-ball") as HTMLElement | null;
-
-            tl.to(
-              prev,
-              {
-                opacity: 0,
-                duration: 0.6,
-                ease: "power2.inOut",
-              },
-              i
-            );
-
-            tl.fromTo(
-              next,
-              {
-                opacity: 0,
-              },
-              {
-                opacity: 1,
-                duration: 0.6,
-                ease: "power2.inOut",
-              },
-              i + 0.1
-            );
-
-            if (nextBall) {
-              const orbitRadius = 140;
-              const startAngle = -90;
-              const angleStep = 60;
-              const angle = startAngle + i * angleStep;
-              const rad = (angle * Math.PI) / 180;
-              const startX = Math.cos(rad) * orbitRadius;
-              const startY = Math.sin(rad) * orbitRadius + 250;
-
-              tl.fromTo(
-                nextBall,
-                {
-                  x: startX,
-                  y: startY,
-                },
-                {
-                  x: 0,
-                  y: 0,
-                  duration: 1,
-                  ease: "power2.inOut",
-                },
-                i
-              );
-            }
-          }
-
-          tl.to(
-            slideEls[slideEls.length - 1],
-            {
-              opacity: 1,
-              duration: 0.3,
-              ease: "none",
-            },
-            slideEls.length - 0.3
-          );
-          return;
-        }
 
         const swingOrigin = "-380px 50%";
         const swingX = -100;
@@ -216,6 +243,7 @@ export default function ProjectOrbitSection() {
         for (let i = 1; i < slideEls.length; i++) {
           const prev = slideEls[i - 1];
           const next = slideEls[i];
+
           if (!prev || !next) continue;
 
           tl.to(
@@ -263,31 +291,39 @@ export default function ProjectOrbitSection() {
     setup();
 
     const refreshTimer = setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 300);
+      ScrollTrigger.refresh(true);
+    }, 350);
 
     let resizeTimer: ReturnType<typeof setTimeout> | null = null;
     let lastWidth = window.innerWidth;
+
     const onResize = () => {
       const w = window.innerWidth;
       const wasMobile = lastWidth <= 768;
       const isMobile = w <= 768;
+
       if (wasMobile !== isMobile) {
         if (resizeTimer) clearTimeout(resizeTimer);
+
         resizeTimer = setTimeout(() => {
           setup();
-          ScrollTrigger.refresh();
-        }, 200);
+          ScrollTrigger.refresh(true);
+        }, 240);
       }
+
       lastWidth = w;
     };
+
     window.addEventListener("resize", onResize);
 
     return () => {
       window.removeEventListener("resize", onResize);
       clearTimeout(refreshTimer);
+
       if (resizeTimer) clearTimeout(resizeTimer);
       if (ctx) ctx.revert();
+
+      document.documentElement.style.removeProperty("--po-mobile-overlap");
     };
   }, []);
 
@@ -315,6 +351,7 @@ export default function ProjectOrbitSection() {
                   <div className="po-ball-core" />
                   <div className="po-ball-pulse" />
                 </div>
+
                 <div className="po-slide-content">
                   <h3 className="po-slide-title">{slide.title}</h3>
                   <p className="po-slide-text">{slide.text}</p>
@@ -329,6 +366,7 @@ export default function ProjectOrbitSection() {
         <div ref={orbitRef} className="po-rings">
           <img src="/orbit.svg" alt="" />
         </div>
+
         <img src="/orbit1.svg" alt="" className="po-solid" />
         <div className="po-glow" />
         <div className="po-sphere-gradient" />
@@ -337,10 +375,9 @@ export default function ProjectOrbitSection() {
       <img src="/vector.svg" alt="" className="po-vector" />
 
       <div ref={pillRef} className="po-control-pill">
-        <span className="po-pill-dot"></span>
-        <span className="po-pill-dot"></span>
-        <span className="po-pill-dot"></span>
-        <span className="po-pill-dot"></span>
+        <span className="po-progress-track">
+          <span className="po-progress-fill"></span>
+        </span>
       </div>
 
       <style jsx global>{`
@@ -360,6 +397,7 @@ export default function ProjectOrbitSection() {
           margin-bottom: 20px;
           padding: 0 24px;
         }
+
         .po-title h2 {
           margin: 0;
           font-family: var(--font-poppins), sans-serif;
@@ -372,12 +410,14 @@ export default function ProjectOrbitSection() {
           align-items: baseline;
           gap: 16px;
         }
+
         .po-title-a {
           background: linear-gradient(135deg, #0adf54 0%, #0a7a5f 100%);
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
         }
+
         .po-title-b {
           background: linear-gradient(135deg, #0a7a5f 0%, #050889 100%);
           -webkit-background-clip: text;
@@ -387,14 +427,15 @@ export default function ProjectOrbitSection() {
 
         .po-canvas {
           position: absolute;
-          top: 50%;
-          left: -300px;
-          width: 700px;
-          height: 700px;
+          top: 40%;
+          left: -250px;
+          width: 800px;
+          height: 800px;
           transform: translateY(-30%);
           pointer-events: none;
           z-index: 1;
         }
+
         .po-rings {
           position: absolute;
           top: 50%;
@@ -403,6 +444,7 @@ export default function ProjectOrbitSection() {
           height: 130%;
           will-change: transform;
         }
+
         .po-rings img {
           width: 100%;
           height: 100%;
@@ -410,6 +452,7 @@ export default function ProjectOrbitSection() {
           display: block;
           filter: contrast(1.3) brightness(0.9) opacity(0.85);
         }
+
         .po-solid {
           position: absolute;
           inset: 0;
@@ -419,6 +462,7 @@ export default function ProjectOrbitSection() {
           display: block;
           filter: contrast(1.4) brightness(0.75) opacity(0.7);
         }
+
         .po-glow {
           position: absolute;
           top: 50%;
@@ -426,7 +470,11 @@ export default function ProjectOrbitSection() {
           width: 50%;
           height: 50%;
           transform: translate(-50%, -50%);
-          background: radial-gradient(circle, rgba(0, 254, 78, 0.08) 0%, transparent 70%);
+          background: radial-gradient(
+            circle,
+            rgba(0, 254, 78, 0.08) 0%,
+            transparent 70%
+          );
           filter: blur(40px);
           z-index: -1;
         }
@@ -495,17 +543,24 @@ export default function ProjectOrbitSection() {
           flex-shrink: 0;
           will-change: transform;
         }
+
         .po-ball-core {
           position: absolute;
           inset: 0;
           border-radius: 50%;
-          background: linear-gradient(135deg, #d8d8d8 0%, #c0c0c0 50%, #9a9a9a 100%);
+          background: linear-gradient(
+            135deg,
+            #d8d8d8 0%,
+            #c0c0c0 50%,
+            #9a9a9a 100%
+          );
           box-shadow:
             0 0 0 3px rgba(180, 180, 180, 0.18),
             0 2px 8px rgba(0, 0, 0, 0.12),
             inset 0 1px 2px rgba(255, 255, 255, 0.5);
           animation: poBallPulse 2.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
+
         .po-ball-pulse {
           position: absolute;
           inset: -8px;
@@ -514,19 +569,36 @@ export default function ProjectOrbitSection() {
           opacity: 0;
           animation: poBallRipple 2.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
+
         @keyframes poBallPulse {
-          0%, 100% {
+          0%,
+          100% {
             transform: scale(1);
-            box-shadow: 0 0 0 3px rgba(180, 180, 180, 0.18), 0 2px 8px rgba(0, 0, 0, 0.12), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+            box-shadow:
+              0 0 0 3px rgba(180, 180, 180, 0.18),
+              0 2px 8px rgba(0, 0, 0, 0.12),
+              inset 0 1px 2px rgba(255, 255, 255, 0.5);
           }
+
           50% {
             transform: scale(1.1);
-            box-shadow: 0 0 0 5px rgba(180, 180, 180, 0.28), 0 2px 12px rgba(0, 0, 0, 0.16), inset 0 1px 2px rgba(255, 255, 255, 0.6);
+            box-shadow:
+              0 0 0 5px rgba(180, 180, 180, 0.28),
+              0 2px 12px rgba(0, 0, 0, 0.16),
+              inset 0 1px 2px rgba(255, 255, 255, 0.6);
           }
         }
+
         @keyframes poBallRipple {
-          0% { opacity: 0.7; transform: scale(0.8); }
-          100% { opacity: 0; transform: scale(1.8); }
+          0% {
+            opacity: 0.7;
+            transform: scale(0.8);
+          }
+
+          100% {
+            opacity: 0;
+            transform: scale(1.8);
+          }
         }
 
         .po-slide-content {
@@ -541,7 +613,12 @@ export default function ProjectOrbitSection() {
           font-weight: 600;
           line-height: 1.05;
           letter-spacing: -0.025em;
-          background: linear-gradient(135deg, #0adf54 0%, #0a7a5f 50%, #050889 100%);
+          background: linear-gradient(
+            135deg,
+            #0adf54 0%,
+            #0a7a5f 50%,
+            #050889 100%
+          );
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
@@ -562,201 +639,371 @@ export default function ProjectOrbitSection() {
         }
 
         @media (max-width: 1280px) {
-          .po-canvas { top: 50%; left: -300px; width: 700px; height: 700px; transform: translateY(-30%); }
-          .po-vector { right: -100px; bottom: -230px; width: 450px; max-width: 30vw; max-height: 900px; opacity: 0.85; }
+          .po-canvas {
+            top: 50%;
+            left: -300px;
+            width: 700px;
+            height: 700px;
+            transform: translateY(-30%);
+          }
+
+          .po-vector {
+            right: -100px;
+            bottom: -230px;
+            width: 450px;
+            max-width: 30vw;
+            max-height: 900px;
+            opacity: 0.85;
+          }
         }
 
         @media (max-width: 1024px) {
-          .po-section { padding: 40px 0 80px; min-height: 90vh; }
-          .po-canvas { top: 50%; left: -300px; width: 700px; height: 700px; transform: translateY(-30%); }
-          .po-vector { right: -100px; bottom: -230px; width: 450px; max-width: 30vw; max-height: 900px; opacity: 0.85; }
-          .po-content { padding: 0 24px 0 0; min-height: 55vh; }
-          .po-slides { margin-right: 24px; max-width: 480px; height: 280px; }
+          .po-section {
+            padding: 40px 0 80px;
+            min-height: 90vh;
+          }
+
+          .po-canvas {
+            top: 50%;
+            left: -300px;
+            width: 700px;
+            height: 700px;
+            transform: translateY(-30%);
+          }
+
+          .po-vector {
+            right: -100px;
+            bottom: -230px;
+            width: 450px;
+            max-width: 30vw;
+            max-height: 900px;
+            opacity: 0.85;
+          }
+
+          .po-content {
+            padding: 0 24px 0 0;
+            min-height: 55vh;
+          }
+
+          .po-slides {
+            margin-right: 24px;
+            max-width: 480px;
+            height: 280px;
+          }
         }
 
         @media (max-width: 768px) {
           .po-section {
-            height: 760px !important;
-            min-height: 760px !important;
-            padding: 28px 0 0 !important;
+            height: 100svh !important;
+            min-height: 100svh !important;
+            padding: 0 !important;
             overflow: hidden !important;
+            background: #ffffff !important;
+            contain: paint !important;
           }
+
           .po-title {
-            margin-bottom: 32px !important;
-            padding: 0 14px !important;
-            z-index: 30 !important;
+            position: absolute !important;
+            top: 38px !important;
+            left: 0 !important;
+            right: 0 !important;
+            margin: 0 !important;
+            padding: 0 18px !important;
+            z-index: 40 !important;
+            text-align: center !important;
           }
+
           .po-title h2 {
-            font-size: 22px !important;
+            display: inline-flex !important;
+            flex-direction: row !important;
+            align-items: baseline !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            font-size: clamp(17px, 5.4vw, 22px) !important;
             line-height: 1 !important;
-            gap: 6px !important;
+            letter-spacing: 0.16em !important;
+            white-space: nowrap !important;
           }
+
           .po-content {
             position: relative !important;
-            height: auto !important;
-            min-height: auto !important;
-            padding: 0 32px !important;
+            z-index: 25 !important;
+            width: 100% !important;
+            max-width: none !important;
+            height: 100svh !important;
+            min-height: 100svh !important;
+            padding: 0 34px !important;
+            margin: 0 !important;
             display: flex !important;
-            align-items: flex-start !important;
+            align-items: center !important;
             justify-content: flex-start !important;
-            margin-top: 0 !important;
-            z-index: 15 !important;
           }
+
           .po-slides {
             position: relative !important;
             width: 100% !important;
-            max-width: 280px !important;
-            height: 200px !important;
-            margin: 0 0 0 8px !important;
-            z-index: 20 !important;
+            max-width: 330px !important;
+            height: 270px !important;
+            margin: -122px 0 0 0 !important;
+            perspective: 900px !important;
             overflow: visible !important;
           }
+
           .po-slide {
             position: absolute !important;
             left: 0 !important;
-            top: 0 !important;
+            top: 50% !important;
             width: 100% !important;
-            transform: none !important;
+            will-change: transform, opacity, filter !important;
+            backface-visibility: hidden !important;
+            -webkit-backface-visibility: hidden !important;
           }
+
           .po-slide-row {
-            gap: 12px !important;
+            display: flex !important;
             align-items: flex-start !important;
-            justify-content: flex-start !important;
+            gap: 13px !important;
           }
+
           .po-ball {
-            width: 8px !important;
-            height: 8px !important;
-            min-width: 8px !important;
-            margin-top: 6px !important;
+            width: 14px !important;
+            height: 14px !important;
+            min-width: 14px !important;
+            margin-top: 7px !important;
           }
+
           .po-ball-core {
-            background: linear-gradient(135deg, #00ff66 0%, #00b347 50%, #050889 100%) !important;
+            background: linear-gradient(
+              135deg,
+              #00fe4e 0%,
+              #0adf54 45%,
+              #050889 100%
+            ) !important;
             box-shadow:
-              0 0 0 3px rgba(0, 255, 102, 0.3),
-              0 0 12px rgba(0, 255, 102, 0.7),
-              inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
+              0 0 0 4px rgba(0, 254, 78, 0.18),
+              0 0 15px rgba(0, 254, 78, 0.6),
+              inset 0 1px 2px rgba(255, 255, 255, 0.65) !important;
           }
+
           .po-ball-pulse {
-            border-color: rgba(0, 255, 102, 0.6) !important;
+            border-color: rgba(0, 254, 78, 0.55) !important;
           }
+
+          .po-slide-content {
+            flex: 1 !important;
+            min-width: 0 !important;
+          }
+
           .po-slide-title {
-            font-size: 11px !important;
-            line-height: 1.3 !important;
-            margin-bottom: 12px !important;
+            font-size: 12px !important;
+            line-height: 1.25 !important;
+            margin-bottom: 14px !important;
             font-weight: 500 !important;
-            letter-spacing: 0.12em !important;
+            letter-spacing: 0.18em !important;
             text-transform: uppercase !important;
-            font-family: var(--font-mono, ui-monospace, "SF Mono", monospace) !important;
-            color: #0a0a0a !important;
-            -webkit-text-fill-color: #0a0a0a !important;
+            font-family:
+              var(--font-montserrat),
+              var(--font-poppins),
+              sans-serif !important;
+            color: #171717 !important;
+            -webkit-text-fill-color: #171717 !important;
             background: none !important;
           }
+
           .po-slide-text {
-            font-size: 14px !important;
-            line-height: 1.55 !important;
-            max-width: 280px !important;
-            color: rgba(0, 0, 0, 0.85) !important;
+            font-size: clamp(16px, 4.4vw, 20px) !important;
+            line-height: 1.45 !important;
+            max-width: 300px !important;
+            color: rgba(0, 0, 0, 0.78) !important;
             font-weight: 400 !important;
+            letter-spacing: -0.02em !important;
           }
+
           .po-canvas {
             position: absolute !important;
             top: auto !important;
-            bottom: -260px !important;
-            left: -100px !important;
+            left: 50% !important;
+            bottom: -245px !important;
             width: 720px !important;
             height: 720px !important;
-            transform: none !important;
-            opacity: 0.55 !important;
+            transform: translateX(-50%) !important;
+            opacity: 0.62 !important;
             z-index: 1 !important;
           }
+
           .po-rings {
+            top: 50% !important;
+            left: 50% !important;
             width: 100% !important;
             height: 100% !important;
+            will-change: transform !important;
+            backface-visibility: hidden !important;
+            -webkit-backface-visibility: hidden !important;
           }
+
           .po-rings img {
-            filter: contrast(1.3) brightness(0.9) opacity(0.85) !important;
+            filter: contrast(1.1) brightness(1.02) opacity(0.7) !important;
           }
+
           .po-solid {
-            opacity: 0.5 !important;
+            opacity: 0.32 !important;
+            filter: contrast(1.15) brightness(1.05) opacity(0.65) !important;
           }
+
           .po-glow {
             display: block !important;
             top: 50% !important;
             left: 50% !important;
-            width: 70% !important;
-            height: 70% !important;
+            width: 74% !important;
+            height: 74% !important;
             background: radial-gradient(
               circle,
-              rgba(0, 255, 102, 0.25) 0%,
-              rgba(0, 179, 71, 0.12) 30%,
-              transparent 70%
+              rgba(0, 254, 78, 0.2) 0%,
+              rgba(10, 122, 95, 0.11) 34%,
+              transparent 74%
             ) !important;
-            filter: blur(50px) !important;
+            filter: blur(48px) !important;
             opacity: 1 !important;
           }
+
           .po-sphere-gradient {
             display: block !important;
             position: absolute !important;
-            top: 48% !important;
+            top: 50% !important;
             left: 50% !important;
-            width: 220px !important;
-            height: 220px !important;
+            width: 230px !important;
+            height: 230px !important;
             transform: translate(-50%, -50%) !important;
             background: radial-gradient(
               circle at 50% 50%,
-              rgba(0, 255, 102, 0.7) 0%,
-              rgba(10, 122, 95, 0.4) 35%,
-              rgba(5, 8, 137, 0.25) 65%,
-              transparent 85%
+              rgba(0, 254, 78, 0.45) 0%,
+              rgba(10, 122, 95, 0.28) 38%,
+              rgba(5, 8, 137, 0.1) 66%,
+              transparent 86%
             ) !important;
             border-radius: 50% !important;
-            filter: blur(24px) !important;
+            filter: blur(22px) !important;
             z-index: 2 !important;
             pointer-events: none !important;
           }
+
           .po-vector {
             display: block !important;
             position: absolute !important;
-            right: -180px !important;
-            bottom: -80px !important;
+            right: -230px !important;
+            bottom: 34px !important;
             top: auto !important;
             left: auto !important;
-            width: 480px !important;
+            width: 520px !important;
             max-width: none !important;
             max-height: none !important;
-            opacity: 0.28 !important;
+            opacity: 0.14 !important;
             transform: rotate(180deg) !important;
-            z-index: 3 !important;
+            z-index: 2 !important;
             pointer-events: none !important;
           }
+
           .po-control-pill {
             display: flex !important;
             position: absolute !important;
-            top: 320px !important;
             left: 50% !important;
+            bottom: 72px !important;
+            top: auto !important;
             right: auto !important;
-            bottom: auto !important;
             transform: translateX(-50%) !important;
-            background: #0a0a0a !important;
-            padding: 8px 18px !important;
+            width: 78px !important;
+            height: 22px !important;
+            background: rgba(0, 0, 0, 0.92) !important;
+            padding: 7px 10px !important;
             border-radius: 999px !important;
-            gap: 5px !important;
             align-items: center !important;
             justify-content: center !important;
-            z-index: 30 !important;
+            z-index: 50 !important;
             box-shadow:
-              0 4px 14px rgba(0, 0, 0, 0.4),
+              0 8px 22px rgba(0, 0, 0, 0.34),
               inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-            will-change: transform !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
           }
-          .po-pill-dot {
-            width: 3px !important;
-            height: 3px !important;
-            border-radius: 50% !important;
-            background: rgba(255, 255, 255, 0.35) !important;
+
+          .po-progress-track {
+            position: relative !important;
             display: block !important;
-            transition: all 0.3s ease !important;
+            width: 100% !important;
+            height: 4px !important;
+            border-radius: 999px !important;
+            background: rgba(255, 255, 255, 0.2) !important;
+            overflow: hidden !important;
+          }
+
+          .po-progress-fill {
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            height: 100% !important;
+            width: 0%;
+            border-radius: 999px !important;
+            background: rgba(255, 255, 255, 0.96) !important;
+            transition: none !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .po-title {
+            top: 38px !important;
+          }
+
+          .po-title h2 {
+            font-size: clamp(16px, 4.9vw, 20px) !important;
+            gap: 6px !important;
+            letter-spacing: 0.14em !important;
+          }
+
+          .po-content {
+            padding: 0 34px !important;
+          }
+
+          .po-slides {
+            max-width: 310px !important;
+            height: 270px !important;
+            margin-top: -124px !important;
+          }
+
+          .po-slide-text {
+            max-width: 285px !important;
+            font-size: clamp(15.5px, 4.4vw, 18px) !important;
+            line-height: 1.48 !important;
+          }
+
+          .po-canvas {
+            width: 690px !important;
+            height: 690px !important;
+            bottom: -255px !important;
+          }
+
+          .po-control-pill {
+            bottom: 72px !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .po-content {
+            padding: 0 28px !important;
+          }
+
+          .po-slides {
+            max-width: 292px !important;
+            margin-top: -118px !important;
+          }
+
+          .po-slide-text {
+            max-width: 270px !important;
+            font-size: 15px !important;
+          }
+
+          .po-canvas {
+            width: 650px !important;
+            height: 650px !important;
+            bottom: -245px !important;
           }
         }
       `}</style>
