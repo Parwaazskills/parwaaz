@@ -341,3 +341,86 @@ img[src="/robot.png"] {
     border-radius: 10px !important;
   }
 }
+
+/* ============================================================
+ * GLOBAL CUSTOM CURSOR
+ * ============================================================ */
+
+@media (pointer: fine) {
+  body {
+    cursor: none;
+  }
+
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  label,
+  [role="button"] {
+    cursor: none;
+  }
+}
+
+.pw-ring,
+.pw-dot {
+  position: fixed;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: 2147483647;
+  will-change: transform;
+  transition:
+    opacity 0.25s ease,
+    width 0.28s ease,
+    height 0.28s ease,
+    background 0.28s ease,
+    border-color 0.28s ease;
+}
+
+.pw-ring {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 254, 78, 0.92);
+  background: rgba(0, 254, 78, 0.04);
+  box-shadow:
+    0 0 28px rgba(0, 254, 78, 0.38),
+    inset 0 0 18px rgba(0, 254, 78, 0.12);
+  opacity: 0;
+}
+
+.pw-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00fe4e;
+  box-shadow:
+    0 0 18px rgba(0, 254, 78, 0.95),
+    0 0 42px rgba(0, 254, 78, 0.38);
+  opacity: 0;
+}
+
+body.pw-ca .pw-ring {
+  width: 82px;
+  height: 82px;
+  border-color: rgba(0, 254, 78, 1);
+  background: rgba(0, 254, 78, 0.18);
+}
+
+body.pw-ca .pw-dot {
+  width: 5px;
+  height: 5px;
+  background: #ffffff;
+}
+
+@media (pointer: coarse) {
+  body {
+    cursor: auto;
+  }
+
+  .pw-ring,
+  .pw-dot {
+    display: none;
+  }
+}
