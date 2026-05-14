@@ -10,24 +10,24 @@ export const testimonials: Testimonial[] = [
     name: "Sara Mohamed",
     img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=faces",
     stars: 5,
-    text: "I've been using the hotel booking system for several years now, and it's become my go-to platform for planning my trips. The interface is user-friendly and I appreciate the detailed information and real-time availability of hotels.",
+    text: "“Parwaaz brought a structured and future-focused approach to digital learning. Their ability to align global learning pathways with industry requirements helped create meaningful capability development across teams.”",
   },
   {
     name: "Ahmed Khan",
     img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces",
     stars: 5,
-    text: "Parwaaz transformed our hiring process. Their international recruitment expertise and dedication to quality candidates is unmatched. The team is professional, responsive, and truly understands our business needs.",
+    text: "“Parwaaz demonstrated strong operational capability and responsiveness throughout the recruitment and deployment process. Their understanding of workforce requirements and execution standards made them a reliable placement partner.”",
   },
   {
     name: "Fatima Hassan",
     img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=faces",
     stars: 5,
-    text: "The Coursera partnership opened up incredible learning opportunities for our team. World-class courses combined with personalized guidance made all the difference in our professional development journey.",
+    text: "“Parwaaz helped simplify complex AI learning into practical, accessible programs aligned with evolving business needs. Their support and execution capability added significant value to our digital learning initiatives.”",
   },
   {
     name: "Bilal Ahmad",
     img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces",
     stars: 5,
-    text: "Outstanding service and remarkable attention to detail. Parwaaz delivered exactly what they promised, on time and within budget. I highly recommend them for any digital transformation initiative.",
+    text: "“Parwaaz delivered a highly engaging and professionally managed training experience. Their focus on quality delivery, learner engagement, and future-ready skills created meaningful value for participants.”",
   },
 ];
