@@ -33,6 +33,13 @@ export const testimonials: Testimonial[] = [
     img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces",
     stars: 5,
     text: "“Parwaaz delivered a highly engaging and professionally managed training experience. Their focus on quality delivery, learner engagement, and future-ready skills created meaningful value for participants.”",
-    designation:"— Academic & Professional Development Team, Riphah International University"
+    designation: "— Academic & Professional Development Team, Riphah International University",
+  },
+  {
+    name: "Khurram Mehmood",
+    img: "/khurram.png",
+    stars: 5,
+    text: "“Parwaaz brought a structured and future-focused approach to digital learning. Their ability to align global learning pathways with industry requirements helped create meaningful capability development across teams.”",
+    designation: "Syed Naveed Ul Zafar, UBL",
   },
 ];

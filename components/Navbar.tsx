@@ -18,6 +18,7 @@ interface NavbarProps {
 const SERVICES_DROPDOWN = [
   {
     title: "AI & Advanced Technology",
+    href: "/aitech",
     items: [
       { name: "AI Strategy & Readiness", href: "/aitech#ai-strategy-readiness" },
       { name: "International AI Partner Solutions", href: "/aitech#international-ai-partner-brokerage" },
@@ -29,6 +30,7 @@ const SERVICES_DROPDOWN = [
   },
   {
     title: "Reskilling & Upskilling",
+    href: "/reskilling",
     items: [
       { name: "Skills Gap Diagnostics", href: "/reskilling#skills-gap-diagnostics" },
       { name: "Learning Programme Design", href: "/reskilling#learning-programme-architecture" },
@@ -40,6 +42,7 @@ const SERVICES_DROPDOWN = [
   },
   {
     title: "Talent Mobility & Manpower",
+    href: "/talent",
     items: [
       { name: "International Recruitment", href: "/talent#international-recruitment" },
       { name: "Payroll & Contract Management", href: "/talent#payroll-contract-management" },
@@ -51,6 +54,7 @@ const SERVICES_DROPDOWN = [
   },
   {
     title: "Consulting, Advisory & Research",
+    href: "/consulting",
     items: [
       { name: "Digital Transformation Advisory", href: "/consulting#digital-transformation-advisory" },
       { name: "Organisational Design & HR Transformation", href: "/consulting#organisational-design-hr-transformation" },
@@ -62,6 +66,7 @@ const SERVICES_DROPDOWN = [
   },
   {
     title: "Workspace, Design & Infrastructure",
+    href: "/workspace",
     items: [
       { name: "Office Setup & Accommodation", href: "/workspace#office-setup-accommodation" },
       { name: "Architecture & Interior Design", href: "/workspace#architecture-interior-design" },
@@ -400,24 +405,24 @@ export default function Navbar({
           cursor: pointer;
         }
 
+        /* ===== STICKY DROPDOWN — wrapper bridge ===== */
         .pw-link-dropdown-wrap::after {
           content: "";
           position: fixed;
-          top: calc(var(--dropdown-top, 100px) - 28px);
+          top: calc(var(--dropdown-top, 100px) - 42px);
           left: 50%;
           transform: translateX(-50%);
           width: min(1280px, calc(100vw - 40px));
-          height: 34px;
+          height: 46px;
           opacity: 0;
           visibility: hidden;
-          pointer-events: none;
+          pointer-events: auto;
           z-index: 999;
         }
 
         .pw-link-dropdown-wrap:hover::after {
           opacity: 1;
           visibility: visible;
-          pointer-events: auto;
         }
 
         .pw-link-chevron {
@@ -468,13 +473,15 @@ export default function Navbar({
         .pw-dropdown-panel::before {
           content: "";
           position: absolute;
-          top: -28px;
+          top: -42px;
           left: 0;
           right: 0;
-          height: 28px;
+          height: 42px;
+          background: transparent;
         }
 
-        .pw-link-dropdown-wrap:hover .pw-dropdown-panel {
+        .pw-link-dropdown-wrap:hover .pw-dropdown-panel,
+        .pw-dropdown-panel:hover {
           opacity: 1;
           visibility: visible;
           pointer-events: auto;
@@ -493,6 +500,7 @@ export default function Navbar({
           gap: 4px;
         }
 
+        /* ===== CLICKABLE COLUMN TITLE ===== */
         .pw-dropdown-col-title {
           font-family: var(--font-poppins), sans-serif;
           font-size: 11px;
@@ -505,6 +513,17 @@ export default function Navbar({
           border-bottom: 1px solid rgba(0, 254, 78, 0.15);
           line-height: 1.3;
           min-height: 50px;
+          text-decoration: none;
+          display: block;
+          cursor: pointer;
+          transition: color 0.25s ease, border-color 0.25s ease,
+                      text-shadow 0.25s ease, transform 0.25s ease;
+        }
+        .pw-dropdown-col-title:hover {
+          color: #ffffff;
+          border-bottom-color: rgba(0, 254, 78, 0.55);
+          text-shadow: 0 0 12px rgba(0, 254, 78, 0.6);
+          transform: translateY(-1px);
         }
 
         .pw-dropdown-item {
@@ -633,6 +652,24 @@ export default function Navbar({
             0 0 0 1px rgba(0, 254, 78, 0.4);
           transform: translateY(-1px) scale(1.05);
         }
+
+        /* ===== MOBILE clickable column title ===== */
+        .pw-mobile-col-title {
+          display: inline-block;
+          text-decoration: none;
+          color: #00fe4e;
+          font-size: 10px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.12em;
+          margin-bottom: 6px;
+          transition: color 0.25s ease, transform 0.25s ease;
+          cursor: pointer;
+        }
+        .pw-mobile-col-title:hover {
+          color: #ffffff;
+          transform: translateX(2px);
+        }
       `}</style>
 
       <div className="hidden lg:flex items-center justify-end gap-5 text-[12px] font-semibold text-white/90 mb-3 max-w-[1320px] w-[calc(100%-34px)] mx-auto pr-2">
@@ -712,7 +749,10 @@ export default function Navbar({
                     <div className="pw-dropdown-grid-5">
                       {SERVICES_DROPDOWN.map((col) => (
                         <div key={col.title} className="pw-dropdown-col">
-                          <div className="pw-dropdown-col-title">{col.title}</div>
+                          {/* Column title is now a clickable link */}
+                          <Link href={col.href} className="pw-dropdown-col-title">
+                            {col.title}
+                          </Link>
 
                           {col.items.map((item) => (
                             <Link key={item.name} href={item.href} className="pw-dropdown-item">
@@ -803,9 +843,17 @@ export default function Navbar({
               <div className="pl-3 pt-1 pb-2 space-y-4">
                 {SERVICES_DROPDOWN.map((col) => (
                   <div key={col.title}>
-                    <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#00fe4e] mb-1.5">
+                    {/* Mobile column title now clickable too */}
+                    <Link
+                      href={col.href}
+                      onClick={() => {
+                        setMobileNavOpen(false);
+                        setMobileServicesOpen(false);
+                      }}
+                      className="pw-mobile-col-title"
+                    >
                       {col.title}
-                    </div>
+                    </Link>
 
                     <div className="space-y-1">
                       {col.items.map((item) => (

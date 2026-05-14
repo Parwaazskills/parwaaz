@@ -1,56 +1,50 @@
-// Office locations — replace placeholders with real coords when ready
-// How to get exact coords: Google Maps → right-click on location → click coords to copy
-
 export type Office = {
   id: string;
   city: string;
-  country: string;
+  name: string;
   address: string;
-  phone: string;
-  email: string;
   lat: number;
   lng: number;
+  phone?: string;
+  email?: string;
+  hours?: string;
 };
 
 export const offices: Office[] = [
   {
     id: "lahore",
     city: "Lahore",
-    country: "Pakistan",
-    address: "Parwaaz Headquarters",
+    name: "Parwaaz Lahore Office",
+    address:
+      "3rd Floor, Daftarkhwan, Vogue Towers, M. M. Alam Road, Lahore",
+    lat: 31.5087851,
+    lng: 74.3498209,
     phone: "+92 300 2855800",
-    email: "lahore@parwaaz.co",
-    lat: 31.5204,
-    lng: 74.3587,
+    email: "info@parwaaz.com",
+    hours: "Mon – Sat: 10:00 AM – 6:00 PM",
   },
   {
     id: "karachi",
     city: "Karachi",
-    country: "Pakistan",
-    address: "Parwaaz Office",
+    name: "Parwaaz Karachi Office",
+    address:
+      "Suite # 43 & 44, Old Rally Building, Talpur Road, Lalazar, Karachi City, Sindh 74000",
+    lat: 24.8477917,
+    lng: 67.0022454,
     phone: "+92 300 2855800",
-    email: "karachi@parwaaz.co",
-    lat: 24.8607,
-    lng: 67.0011,
+    email: "info@parwaaz.com",
+    hours: "Mon – Sat: 10:00 AM – 6:00 PM",
   },
   {
     id: "islamabad",
     city: "Islamabad",
-    country: "Pakistan",
-    address: "Parwaaz Office",
+    name: "Parwaaz Islamabad Office",
+    address:
+      "Office 201-204, 2nd Floor, Block 08, F-6 Markaz, Islamabad",
+    lat: 33.7289535,
+    lng: 73.0743528,
     phone: "+92 300 2855800",
-    email: "islamabad@parwaaz.co",
-    lat: 33.6844,
-    lng: 73.0479,
-  },
-  {
-    id: "faisalabad",
-    city: "Faisalabad",
-    country: "Pakistan",
-    address: "Parwaaz Office",
-    phone: "+92 300 2855800",
-    email: "faisalabad@parwaaz.co",
-    lat: 31.4504,
-    lng: 73.135,
+    email: "info@parwaaz.com",
+    hours: "Mon – Sat: 10:00 AM – 6:00 PM",
   },
 ];
