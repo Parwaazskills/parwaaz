@@ -148,7 +148,7 @@ export default function Footer() {
               className="flex items-center gap-2.5 text-[13.5px] text-black/70 no-underline transition-all duration-300 hover:translate-x-[3px] hover:text-[#00fe4e]"
             >
               <MapPin className="h-3.5 w-3.5 shrink-0 text-[#00fe4e]" />
-              <span>Lahore, Karachi, Islamabad</span>
+           <span>Lahore, Karachi, Islamabad, Singapore</span>
             </Link>
 
             <a

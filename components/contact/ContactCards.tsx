@@ -6,7 +6,7 @@ const cards = [
   {
     icon: MapPin,
     title: "Our Location",
-    lines: ["Lahore, Karachi, Islamabad", "Pakistan"],
+   lines: ["Lahore, Karachi, Islamabad", "Pakistan & Singapore"],
     cta: "View on Map",
     href: "#",
   },

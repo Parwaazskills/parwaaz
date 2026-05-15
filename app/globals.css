@@ -424,3 +424,10 @@ body.pw-ca .pw-dot {
     display: none;
   }
 }
+/* Global body text — 16px, pure black */
+p,
+li {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #000000;
+}

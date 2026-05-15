@@ -272,16 +272,18 @@ export default function MapLibreMap() {
         .contact-map-orbit-dot,
         .contact-map-glow { display: none !important; }
 
-        /* ============ TAB BAR ============ */
+        /* ============ TAB BAR — 4 columns ============ */
         .parwaaz-map-tabs {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(4, 1fr);
           gap: 8px;
           margin-bottom: 12px;
           align-items: stretch;
         }
-        @media (max-width: 480px) {
-          .parwaaz-map-tabs { gap: 6px; }
+        @media (max-width: 640px) {
+          .parwaaz-map-tabs {
+            grid-template-columns: repeat(2, 1fr);
+          }
         }
 
         .parwaaz-map-tab {
@@ -387,7 +389,7 @@ export default function MapLibreMap() {
           filter: saturate(0.85) brightness(1.02);
         }
 
-        /* ============ OFFICE PIN — FIXED ============ */
+        /* ============ OFFICE PIN ============ */
         .parwaaz-pin {
           position: relative;
           width: 40px;
@@ -535,7 +537,7 @@ export default function MapLibreMap() {
           background: rgba(255, 255, 255, 0.85) !important;
         }
 
-        /* ============ ADDRESS INFO CARD (below map) ============ */
+        /* ============ ADDRESS INFO CARD ============ */
         .parwaaz-office-info {
           margin-top: 16px;
           padding: 20px 22px;
@@ -680,11 +682,13 @@ export default function MapLibreMap() {
 
       <div ref={mapContainer} className="parwaaz-map" />
 
-      {/* OFFICE INFO CARD — shows full address for the active office */}
+      {/* OFFICE INFO CARD */}
       <div key={activeOffice.id} className="parwaaz-office-info">
         <div className="parwaaz-office-city">{activeOffice.city} Office</div>
 
-        <div className="parwaaz-office-name">Parwaaz — {activeOffice.city}, {activeOffice.country}</div>
+        <div className="parwaaz-office-name">
+          Parwaaz {activeOffice.city}, {activeOffice.country}
+        </div>
 
         <div className="parwaaz-office-rows">
           {/* Address */}

@@ -90,7 +90,7 @@ export const servicesData: Record<string, ServiceItem[]> = {
     },
     {
       eyebrow: "Learning Programme",
-      title: "Design",
+      title: "Architecture",
       body:
         "Build evidence-based learning journeys mapped to real workforce needs — from curriculum architecture to delivery roadmaps that move the metrics that matter.",
       icon: "/icons/learning-programme-design.svg",

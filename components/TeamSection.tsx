@@ -9,7 +9,7 @@ export default function TeamSection() {
       <style jsx global>{`
         .team-section {
           position: relative;
-          overflow: hidden;
+          overflow: visible;
           background: #fff;
           padding: 56px 0 24px;
         }
@@ -70,7 +70,7 @@ export default function TeamSection() {
           object-fit: contain;
           transform: translate(-50%, -50%);
           transform-origin: 50% 50%;
-          animation: teamSphereRotate 60s linear infinite;
+          animation: none;
           will-change: transform;
           opacity: 0.85;
         }
@@ -190,7 +190,7 @@ export default function TeamSection() {
             width: 350px !important;
             height: 350px !important;
             left: -90px !important;
-            top: -50px !important;
+            top: -80px !important;
             transform: none !important;
             opacity: 0.85 !important;
           }
