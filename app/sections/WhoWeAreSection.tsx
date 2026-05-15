@@ -258,7 +258,7 @@ export default function WhoWeAreSection() {
               </h3>
 
               <p className="mt-[16px] max-w-[575px] text-[11.4px] font-light leading-[1.8] tracking-[0.08px] text-white/90 max-[480px]:text-[11px]">
-           To build the ecosystem that turns human potential into economic power — closing the gap between where talent is and where the world needs it to be. Through AI, learning, mobility, advisory, and infrastructure, we do not just deliver services. We move people, organisations, and economies forward. Every placement, every programme, every strategy is a step toward an economy that rises on the strength of its people.
+To close the gap between where human potential exists and where the world needs it — building the infrastructure that transforms talent into opportunity, organisations into leaders, and economies into forces of global impact.
               </p>
             </div>
 
@@ -322,7 +322,7 @@ export default function WhoWeAreSection() {
               </h3>
 
               <p className="mt-[16px] max-w-[590px] text-[11.4px] font-light leading-[1.8] tracking-[0.08px] text-white/90 max-[480px]:text-[11px]">
-             Our strength lies in our unique ability to blend global perspectives with local expertise. With a deep understanding of the South Asian and EMEA region’s business landscape, we offer solutions that are not only innovative but also culturally aligned and strategically sound.
+We are the only partner in this market that connects enterprise AI, reskilling, cross-border talent mobility, WEF-backed advisory, and physical infrastructure under one roof — each capability designed to amplify the others.
               </p>
             </div>
           </div>
