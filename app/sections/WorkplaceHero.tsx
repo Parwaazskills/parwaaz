@@ -8,7 +8,7 @@ export default function WorkplaceHero() {
           <span className="font-bold">Equip the team.Run the site.</span>
         </h1>
 
-        <p className="mt-[20px] max-w-[900px] font-montserrat text-[21px] font-normal leading-[1.45] tracking-[-0.2px] text-[#ffffff] max-[768px]:mt-[18px] max-[768px]:max-w-[620px] max-[768px]:text-[16px] max-[520px]:text-[13px]">
+        <p className="mt-[20px] max-w-[900px] font-montserrat text-[16px] font-normal leading-[1.45] tracking-[-0.2px] text-[#ffffff] max-[768px]:mt-[18px] max-[768px]:max-w-[620px] max-[768px]:text-[16px] max-[520px]:text-[13px]">
 The physical workspace is the one service dimension that every other Parwaaz capability depends on — and the one that no benchmark competitor offers. When international companies enter Pakistan, when deployed workforces need housing, when growing businesses need to build — Parwaaz delivers the complete physical infrastructure that makes operations possible.
         </p>
       </div>

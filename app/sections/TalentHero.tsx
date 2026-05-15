@@ -8,7 +8,7 @@ export default function TalentHero() {
           <span className="font-bold">Build careers.Deploy teams.</span>
         </h1>
 
-        <p className="mt-[20px] max-w-[900px] font-montserrat text-[21px] font-normal leading-[1.45] tracking-[-0.2px] text-[#ffffff] max-[768px]:mt-[18px] max-[768px]:max-w-[620px] max-[768px]:text-[16px] max-[520px]:text-[13px]">
+        <p className="mt-[20px] max-w-[900px] font-montserrat text-[16px] font-normal leading-[1.45] tracking-[-0.2px] text-[#ffffff] max-[768px]:mt-[18px] max-[768px]:max-w-[620px] max-[768px]:text-[16px] max-[520px]:text-[13px]">
 Pakistan's greatest export is its people. With over 10 million Pakistanis working overseas and demand for skilled Pakistani talent growing across the GCC, UK, and beyond, Parwaaz manages the full talent mobility lifecycle — from sourcing and recruitment through to payroll, compliance, and workforce settlement.
         </p>
       </div>

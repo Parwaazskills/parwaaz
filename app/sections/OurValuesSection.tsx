@@ -218,7 +218,7 @@ export default function OurValuesSection() {
 
                   <div className="min-w-0 flex-1">
                     <div className="flex w-full items-center justify-between gap-4">
-                      <h3 className="text-[13px] font-semibold uppercase leading-[1.15] tracking-[1.45px] text-[#00fe4e] max-[480px]:text-[11.5px] max-[480px]:tracking-[1px]">
+                      <h3 className="text-[14px] font-semibold uppercase leading-[1.15] tracking-[1.45px] text-[#00fe4e] max-[480px]:text-[11.5px] max-[480px]:tracking-[1px]">
                         {item.title}
                       </h3>
 
@@ -237,7 +237,7 @@ export default function OurValuesSection() {
                       }`}
                     >
                       <div className="overflow-hidden">
-                        <p className="mt-[10px] max-w-[338px] text-[12.2px] font-light leading-[1.45] tracking-[0.25px] text-white/80 max-[480px]:text-[11px]">
+                        <p className="mt-[10px] max-w-[338px] text-[14px] font-light leading-[1.45] tracking-[0.25px] text-white/80 max-[480px]:text-[11px]">
                           {item.text}
                         </p>
                       </div>

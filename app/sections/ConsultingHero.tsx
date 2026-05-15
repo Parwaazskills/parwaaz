@@ -8,7 +8,7 @@ export default function ConsultingHero() {
           <span className="font-bold">local intelligence.</span>
         </h1>
 
-        <p className="mt-[20px] max-w-[900px] font-montserrat text-[21px] font-normal leading-[1.45] tracking-[-0.2px] text-[#ffffff] max-[768px]:mt-[18px] max-[768px]:max-w-[620px] max-[768px]:text-[16px] max-[520px]:text-[13px]">
+        <p className="mt-[20px] max-w-[900px] font-montserrat text-[16px] font-normal leading-[1.45] tracking-[-0.2px] text-[#ffffff] max-[768px]:mt-[18px] max-[768px]:max-w-[620px] max-[768px]:text-[16px] max-[520px]:text-[13px]">
 Global consulting firms bring frameworks and credentials. They rarely bring deep local market knowledge, government relationships, or the ability to actually execute on the ground. Parwaaz combines the rigour of international consulting methodology with the local intelligence and execution capability that only comes from operating in this market every day.
         </p>
       </div>

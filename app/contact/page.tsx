@@ -221,6 +221,7 @@ export default function ContactPage() {
               style={{
                 position: "absolute",
                 left: "-50px",
+                rotate: "180deg",
                 top: "-100px",
                 width: "780px",
                 maxWidth: "55vw",

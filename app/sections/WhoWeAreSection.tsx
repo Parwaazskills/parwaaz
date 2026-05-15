@@ -15,6 +15,7 @@ const montserrat = Montserrat({
 
 export default function WhoWeAreSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
   const cardsBlockRef = useRef<HTMLDivElement | null>(null);
   const orbitSpinRef = useRef<HTMLDivElement | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -22,12 +23,13 @@ export default function WhoWeAreSection() {
   const iconRefs = useRef<(HTMLImageElement | null)[]>([]);
 
   const paragraphText =
-    "At Parwaaz, we are dedicated to driving growth and transformation for businesses in Pakistan, the Middle East, Saudi Arabia and beyond. With specialised expertise in international placements, payroll outsourcing, facilities management, ed-tech, content development, technology management, and design solutions, we bridge the gap between ambition and achievement.";
+    "Parwaaz is a next-generation human capital and technology ecosystem — operating across Pakistan and the GCC where ambition is highest and the stakes are real. We integrate AI, workforce development, talent mobility, strategic advisory, and infrastructure as one connected force — not fragmented vendors, but a single partner accountable for the full picture. Where global firms bring the standard but lack the depth, and local firms bring the familiarity but lack the rigour, Parwaaz brings both.";
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const section = sectionRef.current;
+    const heading = headingRef.current;
     const cardsBlock = cardsBlockRef.current;
     const orbitSpin = orbitSpinRef.current;
 
@@ -40,6 +42,42 @@ export default function WhoWeAreSection() {
     if (reduceMotion) return;
 
     const ctx = gsap.context(() => {
+      if (heading) {
+        gsap.set(heading, {
+          opacity: 0,
+          y: 28,
+          filter: "blur(7px)",
+          backgroundPosition: "0% center",
+        });
+
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: section,
+              start: "top 88%",
+              end: "top 46%",
+              scrub: 0.45,
+              invalidateOnRefresh: true,
+              onLeave: () => {
+                gsap.set(heading, {
+                  opacity: 1,
+                  y: 0,
+                  filter: "blur(0px)",
+                  backgroundPosition: "100% center",
+                });
+              },
+            },
+          })
+          .to(heading, {
+            opacity: 1,
+            y: 0,
+            filter: "blur(0px)",
+            backgroundPosition: "100% center",
+            ease: "none",
+            duration: 0.55,
+          });
+      }
+
       gsap.set(cardRefs.current, {
         opacity: 0,
         y: 42,
@@ -210,7 +248,7 @@ export default function WhoWeAreSection() {
             alt="Decorative circle lines"
             fill
             priority
-            className="object-contain object-right scale-[1.12] translate-x-[84px] translate-y-[-45px]"
+            className="translate-x-[84px] translate-y-[-45px] scale-[1.12] object-contain object-right"
           />
         </div>
       </div>
@@ -218,14 +256,17 @@ export default function WhoWeAreSection() {
       <div className="relative z-[2] mx-auto w-full max-w-[1400px] px-4">
         {/* Heading */}
         <div className="mx-auto max-w-[1200px] text-center">
-          <h2 className="overflow-visible text-[58px] font-light uppercase leading-[1.18] tracking-[5px] max-[768px]:text-[42px] max-[768px]:tracking-[3px] max-[480px]:text-[34px] max-[480px]:tracking-[2px]">
-            <span className="text-[#00fe4e]">WHO</span>{" "}
-            <span className="bg-[linear-gradient(90deg,#00fe4e_0%,#00d657_18%,#02875d_42%,#00616f_68%,#07136f_100%)] bg-clip-text text-transparent">
-              WE ARE
-            </span>
+          <h2
+            ref={headingRef}
+            className="bg-[linear-gradient(90deg,#00df49_0%,#00c85a_28%,#00766c_50%,#071663_76%,#040c54_100%)] bg-[length:160%_100%] bg-clip-text text-center text-[56px] font-normal uppercase leading-[1] tracking-[9px] text-transparent max-[900px]:text-[42px] max-[900px]:tracking-[5px] max-[480px]:text-[34px] max-[480px]:tracking-[3px]"
+            style={{
+              fontFamily: "inherit",
+            }}
+          >
+            WHO WE ARE
           </h2>
 
-          <p className="mx-auto mt-[15px] max-w-[1200px] text-[21px] font-light leading-[1.22] tracking-[0.2px] text-[#878787] max-[768px]:text-[16px] max-[480px]:text-[14px] max-[480px]:leading-[1.45]">
+          <p className="mx-auto mt-[15px] max-w-[1200px] text-[16px] font-regular leading-[1.22] tracking-[0.2px] text-[#000000] max-[768px]:text-[16px] max-[480px]:text-[14px] max-[480px]:leading-[1.45]">
             {paragraphText}
           </p>
         </div>
@@ -257,8 +298,11 @@ export default function WhoWeAreSection() {
                 OUR MISSION
               </h3>
 
-              <p className="mt-[16px] max-w-[575px] text-[11.4px] font-light leading-[1.8] tracking-[0.08px] text-white/90 max-[480px]:text-[11px]">
-To close the gap between where human potential exists and where the world needs it — building the infrastructure that transforms talent into opportunity, organisations into leaders, and economies into forces of global impact.
+              <p className="mt-[16px] max-w-[600px] text-[14px] font-light leading-[1.8] tracking-[0.08px] text-white/90 max-[480px]:text-[11px]">
+                To close the gap between where human potential exists and where
+                the world needs it — building the infrastructure that transforms
+                talent into opportunity, organisations into leaders, and
+                economies into forces of global impact.
               </p>
             </div>
 
@@ -321,8 +365,11 @@ To close the gap between where human potential exists and where the world needs 
                 WHAT SETS US APART
               </h3>
 
-              <p className="mt-[16px] max-w-[590px] text-[11.4px] font-light leading-[1.8] tracking-[0.08px] text-white/90 max-[480px]:text-[11px]">
-We are the only partner in this market that connects enterprise AI, reskilling, cross-border talent mobility, WEF-backed advisory, and physical infrastructure under one roof — each capability designed to amplify the others.
+              <p className="mt-[16px] max-w-[600px] text-[14px] font-light leading-[1.8] tracking-[0.08px] text-white/90 max-[480px]:text-[11px]">
+                We are the only partner in this market that connects enterprise
+                AI, reskilling, cross-border talent mobility, WEF-backed
+                advisory, and physical infrastructure under one roof — each
+                capability designed to amplify the others.
               </p>
             </div>
           </div>

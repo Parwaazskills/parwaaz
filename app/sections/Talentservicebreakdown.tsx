@@ -270,7 +270,7 @@ export default function TalentMobilityServiceBreakdown() {
                 </div>
 
                 <div className="flex flex-col justify-start max-[1180px]:pr-[12px] max-[768px]:pr-0">
-                  <p className="max-w-[680px] font-montserrat text-[17px] font-normal leading-[1.45] tracking-[0.1px] text-[#000000] max-[1024px]:text-[16px] max-[480px]:text-[14px]">
+                  <p className="max-w-[680px] font-montserrat text-[16px] font-normal leading-[1.45] tracking-[0.1px] text-[#000000] max-[1024px]:text-[16px] max-[480px]:text-[14px]">
                     {item.description}
                   </p>
                 </div>
