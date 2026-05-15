@@ -258,12 +258,7 @@ export default function WhoWeAreSection() {
               </h3>
 
               <p className="mt-[16px] max-w-[575px] text-[11.4px] font-light leading-[1.8] tracking-[0.08px] text-white/90 max-[480px]:text-[11px]">
-                Our mission is to empower companies with the tools, talent, and
-                creative strategies needed to stay competitive in an
-                ever-evolving market. Whether it&apos;s sourcing top talent,
-                enhancing employee learning, managing employee payrolls or
-                delivering cutting-edge design services, we are committed to
-                delivering results that make an impact.
+           To build the ecosystem that turns human potential into economic power — closing the gap between where talent is and where the world needs it to be. Through AI, learning, mobility, advisory, and infrastructure, we do not just deliver services. We move people, organisations, and economies forward. Every placement, every programme, every strategy is a step toward an economy that rises on the strength of its people.
               </p>
             </div>
 
@@ -327,11 +322,7 @@ export default function WhoWeAreSection() {
               </h3>
 
               <p className="mt-[16px] max-w-[590px] text-[11.4px] font-light leading-[1.8] tracking-[0.08px] text-white/90 max-[480px]:text-[11px]">
-                Our strength lies in our unique ability to blend global
-                perspectives with local expertise. With a deep understanding of
-                the South Asian and EMEA region&apos;s business landscape, we
-                offer solutions that are not only innovative but also culturally
-                aligned and strategically sound.
+             Our strength lies in our unique ability to blend global perspectives with local expertise. With a deep understanding of the South Asian and EMEA region’s business landscape, we offer solutions that are not only innovative but also culturally aligned and strategically sound.
               </p>
             </div>
           </div>

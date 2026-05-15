@@ -3,71 +3,51 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import {
+  Award,
+  Lightbulb,
+  UsersRound,
+  ClipboardList,
+  Sparkles,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const values = [
   {
-    title: "CLIENT-CENTRIC APPROACH:",
-    text: "Your goals are our priority, and we tailor our solutions to fit your unique needs.",
+    title: "EXCELLENCE WITHOUT EXCEPTION",
+    text: "Every engagement, every deliverable, every outcome — held to a global benchmark, without compromise.",
+    icon: Award,
   },
   {
-    title: "INNOVATION",
-    text: "We bring fresh ideas, modern strategies, and forward-thinking solutions to help your business grow with confidence.",
+    title: "RADICAL ACCOUNTABILITY",
+    text: "We commit fully, deliver completely, and own the outcome — no caveats, no exceptions.",
+    icon: ClipboardList,
   },
   {
-    title: "INTEGRITY",
-    text: "We build trust through transparency, accountability, and honest communication at every step.",
+    title: "INTEGRATED THINKING",
+    text: "We connect capabilities, not just services — because lasting transformation is always the result of a system, never a single solution.",
+    icon: Lightbulb,
+  },
+  {
+    title: "THE COURAGE TO LEAD",
+    text: "We do not follow where the market goes. We move first — and bring our clients with us.",
+    icon: Sparkles,
+  },
+  {
+    title: "HUMAN AT THE CENTRE",
+    text: "Every placement, every programme, every strategy exists for one reason: to change the trajectory of a human life.",
+    icon: UsersRound,
   },
 ];
-
-function SplitLetters({
-  text,
-  type = "normal",
-}: {
-  text: string;
-  type?: "normal" | "gradient";
-}) {
-  return (
-    <span aria-label={text}>
-      {text.split("").map((char, index) => {
-        if (char === " ") {
-          return (
-            <span
-              key={`space-${index}`}
-              className="inline-block"
-              aria-hidden="true"
-            >
-              &nbsp;
-            </span>
-          );
-        }
-
-        return (
-          <span
-            key={`${char}-${index}`}
-            className={`our-values-heading-char inline-block will-change-transform ${
-              type === "gradient"
-                ? "our-values-gradient-char bg-[linear-gradient(90deg,#008d5f,#006575,#071a76,#008d5f)] bg-[length:220%_100%] bg-clip-text text-transparent"
-                : "text-[#00fe4e]"
-            }`}
-            aria-hidden="true"
-          >
-            {char}
-          </span>
-        );
-      })}
-    </span>
-  );
-}
 
 export default function OurValuesSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const sectionRef = useRef<HTMLElement | null>(null);
-  const imageRef = useRef<HTMLDivElement | null>(null);
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
   const scrollTextRef = useRef<HTMLDivElement | null>(null);
   const accordionRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -75,10 +55,10 @@ export default function OurValuesSection() {
     gsap.registerPlugin(ScrollTrigger);
 
     const section = sectionRef.current;
-    const image = imageRef.current;
+    const heading = headingRef.current;
     const scrollText = scrollTextRef.current;
 
-    if (!section || !image) return;
+    if (!section || !heading) return;
 
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -87,39 +67,16 @@ export default function OurValuesSection() {
     if (reduceMotion) return;
 
     const ctx = gsap.context(() => {
-      const headingChars = gsap.utils.toArray<HTMLElement>(
-        ".our-values-heading-char"
-      );
-      const gradientChars = gsap.utils.toArray<HTMLElement>(
-        ".our-values-gradient-char"
-      );
-
-      gsap.set(image, {
+      gsap.set(heading, {
         opacity: 0,
-        x: -34,
-        y: 18,
-        scale: 0.96,
-        filter: "blur(8px)",
-        clipPath: "inset(8% 8% 8% 8% round 11px)",
-      });
-
-      gsap.set(headingChars, {
-        opacity: 0,
-        y: (index) => (index % 2 === 0 ? 28 : -22),
-        x: (index) => (index % 2 === 0 ? -8 : 8),
-        rotateZ: (index) => (index % 2 === 0 ? -5 : 5),
-        scale: 0.92,
+        y: 28,
         filter: "blur(7px)",
-        transformOrigin: "50% 50%",
-      });
-
-      gsap.set(gradientChars, {
         backgroundPosition: "0% center",
       });
 
       gsap.set(accordionRefs.current, {
         opacity: 0,
-        y: 18,
+        y: 20,
         scale: 0.985,
         filter: "blur(5px)",
       });
@@ -132,22 +89,11 @@ export default function OurValuesSection() {
       }
 
       const forceComplete = () => {
-        gsap.set(image, {
-          opacity: 1,
-          x: 0,
-          y: 0,
-          scale: 1,
-          filter: "blur(0px)",
-          clipPath: "inset(0% 0% 0% 0% round 11px)",
-        });
-
-        gsap.set(headingChars, {
+        gsap.set(heading, {
           opacity: 1,
           y: 0,
-          x: 0,
-          rotateZ: 0,
-          scale: 1,
           filter: "blur(0px)",
+          backgroundPosition: "100% center",
         });
 
         gsap.set(accordionRefs.current, {
@@ -155,10 +101,6 @@ export default function OurValuesSection() {
           y: 0,
           scale: 1,
           filter: "blur(0px)",
-        });
-
-        gsap.set(gradientChars, {
-          backgroundPosition: "220% center",
         });
 
         if (scrollText) {
@@ -180,47 +122,14 @@ export default function OurValuesSection() {
             onLeave: forceComplete,
           },
         })
-        .to(image, {
+        .to(heading, {
           opacity: 1,
-          x: 0,
           y: 0,
-          scale: 1,
           filter: "blur(0px)",
-          clipPath: "inset(0% 0% 0% 0% round 11px)",
+          backgroundPosition: "100% center",
           ease: "none",
           duration: 0.55,
         })
-        .to(
-          headingChars,
-          {
-            opacity: 1,
-            y: 0,
-            x: 0,
-            rotateZ: 0,
-            scale: 1,
-            filter: "blur(0px)",
-            ease: "none",
-            stagger: {
-              amount: 0.18,
-              from: "start",
-            },
-            duration: 0.45,
-          },
-          "-=0.42"
-        )
-        .to(
-          gradientChars,
-          {
-            backgroundPosition: "220% center",
-            ease: "none",
-            stagger: {
-              amount: 0.1,
-              from: "start",
-            },
-            duration: 0.35,
-          },
-          "-=0.42"
-        )
         .to(
           scrollText,
           {
@@ -245,7 +154,7 @@ export default function OurValuesSection() {
         },
         scrollTrigger: {
           trigger: section,
-          start: "top 82%",
+          start: "top 80%",
           once: true,
           invalidateOnRefresh: true,
         },
@@ -260,100 +169,84 @@ export default function OurValuesSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-white pb-[70px] pt-[78px] max-[900px]:pb-[64px] max-[900px]:pt-[64px] max-[480px]:pb-[56px] max-[480px]:pt-[54px]"
+      className="relative w-full overflow-hidden bg-white pt-[29px] pb-[76px] max-[900px]:pt-[58px] max-[900px]:pb-[62px]"
     >
-      {/* Top right decorative lines image */}
-      <div className="pointer-events-none absolute right-[-18px] top-[-182px] z-0 h-[286px] w-[455px] max-[768px]:hidden">
-        {/* <Image
-          src="/orbit.svg"
-          alt="Decorative circle lines"
-          fill
-          priority
-          className="object-contain object-right-top"
-        /> */}
+      {/* Decorative Top Right Arc Lines */}
+      <div className="pointer-events-none absolute right-[-95px] top-[-156px] z-0 h-[250px] w-[520px] overflow-hidden max-[768px]:hidden">
+        <div className="absolute right-[-18px] top-[-160px] h-[300px] w-[560px] rounded-[50%] border border-black/25" />
+        <div className="absolute right-[-3px] top-[-124px] h-[260px] w-[510px] rounded-[50%] border border-black/20" />
+        <div className="absolute right-[10px] top-[-91px] h-[220px] w-[455px] rounded-[50%] border border-black/15" />
       </div>
 
-      {/* Scroll To Top text/line */}
-      {/* <div
-        ref={scrollTextRef}
-        className="pointer-events-none absolute right-[33px] top-[31px] z-[1] flex flex-col items-center max-[768px]:hidden"
-      >
-        <span className="origin-center rotate-[-90deg] whitespace-nowrap text-[12px] font-medium text-black">
-          Scroll To Top
-        </span>
-        <div className="mt-[56px] h-[112px] w-px bg-[#00fe4e]" />
-      </div> */}
 
-      <div className="relative z-[2] mx-auto grid w-full max-w-[1400px] grid-cols-[1.08fr_0.98fr] items-start gap-[43px] px-4 max-[1200px]:gap-[34px] max-[900px]:grid-cols-1 max-[900px]:gap-[34px] max-[480px]:gap-[28px]">
-        {/* Left Image */}
-        <div
-          ref={imageRef}
-          className="relative h-[400px] w-full overflow-hidden rounded-[11px] max-[900px]:h-[340px] max-[480px]:h-[260px]"
+      <div className="relative z-[2] mx-auto w-full max-w-[1012px] px-4">
+        <h2
+          ref={headingRef}
+          className="bg-[linear-gradient(90deg,#00df49_0%,#00c85a_28%,#00766c_50%,#071663_76%,#040c54_100%)] bg-[length:160%_100%] bg-clip-text text-center text-[56px] font-normal uppercase leading-[1] tracking-[9px] text-transparent max-[900px]:text-[42px] max-[900px]:tracking-[5px] max-[480px]:text-[34px] max-[480px]:tracking-[3px]"
         >
-          <Image
-            src="/ourval.png"
-            alt="Our values"
-            fill
-            priority
-            className="object-cover object-center"
-          />
-        </div>
+          OUR VALUES
+        </h2>
 
-        {/* Right Content */}
-        <div className="pt-[15px] max-[900px]:pt-0">
-          <h2 className="overflow-visible text-[36px] font-regular uppercase leading-[1.12] tracking-[1px] max-[480px]:text-[29px]">
-            <SplitLetters text="OUR" type="normal" />{" "}
-            <SplitLetters text="VALUES" type="gradient" />
-          </h2>
+        <div className="mt-[50px] grid grid-cols-2 gap-x-[58px] gap-y-[10px] max-[900px]:mt-[38px] max-[900px]:grid-cols-1 max-[900px]:gap-[14px]">
+          {values.map((item, index) => {
+            const isOpen = openIndex === index;
+            const Icon = item.icon;
 
-          <div className="mt-[32px] flex flex-col gap-[22px] max-[480px]:mt-[26px] max-[480px]:gap-[16px]">
-            {values.map((item, index) => {
-              const isOpen = openIndex === index;
-
-              return (
-                <button
-                  key={item.title}
-                  ref={(el) => {
-                    accordionRefs.current[index] = el;
-                  }}
-                  type="button"
-                  onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className={`w-full rounded-[7px] bg-[#030887] px-[30px] text-left transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_12px_25px_rgba(3,8,135,0.18)] max-[480px]:px-[20px] ${
-                    isOpen
-                      ? "min-h-[92px] pb-[18px] pt-[26px]"
-                      : "h-[60px] py-0"
+            return (
+              <button
+                key={item.title}
+                ref={(el) => {
+                  accordionRefs.current[index] = el;
+                }}
+                type="button"
+                onClick={() => setOpenIndex(isOpen ? null : index)}
+                className={`group w-full cursor-pointer rounded-[7px] bg-[#04037f] text-left transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_12px_25px_rgba(4,3,127,0.18)] ${
+                  isOpen ? "min-h-[109px]" : "h-[77px]"
+                }`}
+              >
+                <div
+                  className={`flex h-full w-full items-center gap-[22px] px-[33px] transition-all duration-300 max-[480px]:gap-[16px] max-[480px]:px-[22px] ${
+                    isOpen ? "py-[22px]" : "py-0"
                   }`}
                 >
-                  <div className="flex w-full items-center justify-between gap-4">
-                    <h3 className="text-[15px] font-bold uppercase leading-[1.12] tracking-[0.4px] text-[#00fe4e] max-[480px]:text-[13px]">
-                      {item.title}
-                    </h3>
-
-                    {isOpen ? (
-                      <ChevronUp className="h-[16px] w-[16px] shrink-0 text-[#00fe4e]" />
-                    ) : (
-                      <ChevronDown className="h-[16px] w-[16px] shrink-0 text-[#00fe4e]" />
-                    )}
+                  <div className="flex h-[48px] w-[38px] shrink-0 items-center justify-center text-white max-[480px]:h-[42px] max-[480px]:w-[34px]">
+                    <Icon
+                      strokeWidth={1.6}
+                      className="h-full w-full text-white"
+                    />
                   </div>
 
-                  <div
-                    className={`grid transition-all duration-300 ease-out ${
-                      isOpen
-                        ? "grid-rows-[1fr] opacity-100"
-                        : "grid-rows-[0fr] opacity-0"
-                    }`}
-                  >
-                    <div className="overflow-hidden">
-                      <p className="mt-[12px] text-[11.5px] font-light leading-[1.45] tracking-[0.1px] text-white/95 max-[480px]:text-[11px]">
-                        <span className="mr-[6px] text-[#00fe4e]">•</span>
-                        {item.text}
-                      </p>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex w-full items-center justify-between gap-4">
+                      <h3 className="text-[13px] font-semibold uppercase leading-[1.15] tracking-[1.45px] text-[#00fe4e] max-[480px]:text-[11.5px] max-[480px]:tracking-[1px]">
+                        {item.title}
+                      </h3>
+
+                      {isOpen ? (
+                        <ChevronUp className="h-[13px] w-[13px] shrink-0 text-[#00fe4e]" />
+                      ) : (
+                        <ChevronDown className="h-[13px] w-[13px] shrink-0 text-[#00fe4e]" />
+                      )}
+                    </div>
+
+                    <div
+                      className={`grid transition-all duration-300 ease-out ${
+                        isOpen
+                          ? "grid-rows-[1fr] opacity-100"
+                          : "grid-rows-[0fr] opacity-0"
+                      }`}
+                    >
+                      <div className="overflow-hidden">
+                        <p className="mt-[10px] max-w-[338px] text-[12.2px] font-light leading-[1.45] tracking-[0.25px] text-white/80 max-[480px]:text-[11px]">
+                          {item.text}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </button>
-              );
-            })}
-          </div>
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
     </section>

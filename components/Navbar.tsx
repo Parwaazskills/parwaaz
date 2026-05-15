@@ -1,17 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { usePathname } from "next/navigation";
 import { Mail, Phone, Search, Menu, X } from "lucide-react";
 import { FacebookSvg, YoutubeSvg, XSvg } from "@/components/SocialIcons";
 
 interface NavbarProps {
-  mobileNavOpen: boolean;
-  setMobileNavOpen: (v: boolean) => void;
-  mobileServicesOpen: boolean;
-  setMobileServicesOpen: (v: boolean | ((prev: boolean) => boolean)) => void;
-  setSearchOpen: (v: boolean) => void;
+  mobileNavOpen?: boolean;
+  setMobileNavOpen?: Dispatch<SetStateAction<boolean>>;
+  mobileServicesOpen?: boolean;
+  setMobileServicesOpen?: Dispatch<SetStateAction<boolean>>;
+  setSearchOpen?: Dispatch<SetStateAction<boolean>>;
   activeLink?: string;
 }
 
@@ -21,59 +22,146 @@ const SERVICES_DROPDOWN = [
     href: "/aitech",
     items: [
       { name: "AI Strategy & Readiness", href: "/aitech#ai-strategy-readiness" },
-      { name: "International AI Partner Solutions", href: "/aitech#international-ai-partner-brokerage" },
-      { name: "Generative AI & LLM Deployment", href: "/aitech#generative-ai-llm-deployment" },
-      { name: "Process Automation", href: "/aitech#process-automation-ai-workflows" },
-      { name: "Custom Technology Development", href: "/aitech#custom-technology-development" },
-      { name: "AI Governance & Compliance", href: "/aitech#ai-governance-compliance" },
+      {
+        name: "International AI Partner Solutions",
+        href: "/aitech#international-ai-partner-brokerage",
+      },
+      {
+        name: "Generative AI & LLM Deployment",
+        href: "/aitech#generative-ai-llm-deployment",
+      },
+      {
+        name: "Process Automation",
+        href: "/aitech#process-automation-ai-workflows",
+      },
+      {
+        name: "Custom Technology Development",
+        href: "/aitech#custom-technology-development",
+      },
+      {
+        name: "AI Governance & Compliance",
+        href: "/aitech#ai-governance-compliance",
+      },
     ],
   },
   {
     title: "Reskilling & Upskilling",
     href: "/reskilling",
     items: [
-      { name: "Skills Gap Diagnostics", href: "/reskilling#skills-gap-diagnostics" },
-      { name: "Learning Programme Design", href: "/reskilling#learning-programme-architecture" },
-      { name: "Platform Deployment & LMS", href: "/reskilling#coursera-enterprise-deployment" },
-      { name: "Credentials & Certification", href: "/reskilling#credentials-certification" },
-      { name: "Workforce Reskilling & Upskilling", href: "/reskilling#workforce-reskilling-cohorts" },
-      { name: "Learning Impact & Skills Intelligence", href: "/reskilling#learning-impact-skills-intelligence" },
+      {
+        name: "Skills Gap Diagnostics",
+        href: "/reskilling#skills-gap-diagnostics",
+      },
+      {
+        name: "Learning Programme Design",
+        href: "/reskilling#learning-programme-architecture",
+      },
+      {
+        name: "Platform Deployment & LMS",
+        href: "/reskilling#coursera-enterprise-deployment",
+      },
+      {
+        name: "Credentials & Certification",
+        href: "/reskilling#credentials-certification",
+      },
+      {
+        name: "Workforce Reskilling & Upskilling",
+        href: "/reskilling#workforce-reskilling-cohorts",
+      },
+      {
+        name: "Learning Impact & Skills Intelligence",
+        href: "/reskilling#learning-impact-skills-intelligence",
+      },
     ],
   },
   {
     title: "Talent Mobility & Manpower",
     href: "/talent",
     items: [
-      { name: "International Recruitment", href: "/talent#international-recruitment" },
-      { name: "Payroll & Contract Management", href: "/talent#payroll-contract-management" },
-      { name: "Visa & Immigration Services", href: "/talent#visa-immigration-services" },
-      { name: "Workforce Deployment & Settling-in", href: "/talent#workforce-deployment-settling-in" },
-      { name: "Talent Intelligence & Analytics", href: "/talent#talent-intelligence-analytics" },
-      { name: "Outsourced HR & People Operations", href: "/talent#outsourced-hr-people-operations" },
+      {
+        name: "International Recruitment",
+        href: "/talent#international-recruitment",
+      },
+      {
+        name: "Payroll & Contract Management",
+        href: "/talent#payroll-contract-management",
+      },
+      {
+        name: "Visa & Immigration Services",
+        href: "/talent#visa-immigration-services",
+      },
+      {
+        name: "Workforce Deployment & Settling-in",
+        href: "/talent#workforce-deployment-settling-in",
+      },
+      {
+        name: "Talent Intelligence & Analytics",
+        href: "/talent#talent-intelligence-analytics",
+      },
+      {
+        name: "Outsourced HR & People Operations",
+        href: "/talent#outsourced-hr-people-operations",
+      },
     ],
   },
   {
     title: "Consulting, Advisory & Research",
     href: "/consulting",
     items: [
-      { name: "Digital Transformation Advisory", href: "/consulting#digital-transformation-advisory" },
-      { name: "Organisational Design & HR Transformation", href: "/consulting#organisational-design-hr-transformation" },
-      { name: "Public Sector Innovation", href: "/consulting#public-sector-innovation" },
-      { name: "Workforce & Market Research", href: "/consulting#workforce-market-research" },
-      { name: "International Market Entry Support", href: "/consulting#international-market-entry-support" },
-      { name: "Programme & Project Management", href: "/consulting#programme-project-management" },
+      {
+        name: "Digital Transformation Advisory",
+        href: "/consulting#digital-transformation-advisory",
+      },
+      {
+        name: "Organisational Design & HR Transformation",
+        href: "/consulting#organisational-design-hr-transformation",
+      },
+      {
+        name: "Public Sector Innovation",
+        href: "/consulting#public-sector-innovation",
+      },
+      {
+        name: "Workforce & Market Research",
+        href: "/consulting#workforce-market-research",
+      },
+      {
+        name: "International Market Entry Support",
+        href: "/consulting#international-market-entry-support",
+      },
+      {
+        name: "Programme & Project Management",
+        href: "/consulting#programme-project-management",
+      },
     ],
   },
   {
     title: "Workspace, Design & Infrastructure",
     href: "/workspace",
     items: [
-      { name: "Office Setup & Accommodation", href: "/workspace#office-setup-accommodation" },
-      { name: "Architecture & Interior Design", href: "/workspace#architecture-interior-design" },
-      { name: "BIM & Digital Construction", href: "/workspace#bim-digital-construction" },
-      { name: "Construction Management", href: "/workspace#construction-management" },
-      { name: "Fit-out & Refurbishment", href: "/workspace#fit-out-refurbishment" },
-      { name: "Workspace Technology Integration", href: "/workspace#workspace-technology-integration" },
+      {
+        name: "Office Setup & Accommodation",
+        href: "/workspace#office-setup-accommodation",
+      },
+      {
+        name: "Architecture & Interior Design",
+        href: "/workspace#architecture-interior-design",
+      },
+      {
+        name: "BIM & Digital Construction",
+        href: "/workspace#bim-digital-construction",
+      },
+      {
+        name: "Construction Management",
+        href: "/workspace#construction-management",
+      },
+      {
+        name: "Fit-out & Refurbishment",
+        href: "/workspace#fit-out-refurbishment",
+      },
+      {
+        name: "Workspace Technology Integration",
+        href: "/workspace#workspace-technology-integration",
+      },
     ],
   },
 ];
@@ -88,23 +176,46 @@ export default function Navbar({
 }: NavbarProps) {
   const pathname = usePathname();
 
-  const servicePages = ["/aitech", "/reskilling", "/talent", "/consulting", "/workspace"];
+  const [internalMobileNavOpen, setInternalMobileNavOpen] = useState(false);
+  const [internalMobileServicesOpen, setInternalMobileServicesOpen] =
+    useState(false);
+  const [internalSearchOpen, setInternalSearchOpen] = useState(false);
+
+  const finalMobileNavOpen = mobileNavOpen ?? internalMobileNavOpen;
+  const finalSetMobileNavOpen =
+    setMobileNavOpen ?? setInternalMobileNavOpen;
+
+  const finalMobileServicesOpen =
+    mobileServicesOpen ?? internalMobileServicesOpen;
+  const finalSetMobileServicesOpen =
+    setMobileServicesOpen ?? setInternalMobileServicesOpen;
+
+  const finalSetSearchOpen = setSearchOpen ?? setInternalSearchOpen;
+
+  const servicePages = [
+    "/aitech",
+    "/reskilling",
+    "/talent",
+    "/consulting",
+    "/workspace",
+  ];
 
   const detectedActiveLink =
     pathname === "/"
       ? "Home"
       : pathname.startsWith("/about")
-      ? "About"
-      : pathname.startsWith("/contact")
-      ? "Contact"
-      : servicePages.some((page) => pathname.startsWith(page))
-      ? "Services"
-      : "Home";
+        ? "About"
+        : pathname.startsWith("/contact")
+          ? "Contact"
+          : servicePages.some((page) => pathname.startsWith(page))
+            ? "Services"
+            : "Home";
 
   const currentActiveLink = activeLink || detectedActiveLink;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+
     const nav = document.querySelector<HTMLElement>(".pw-nav");
     if (!nav) return;
 
@@ -114,15 +225,15 @@ export default function Navbar({
       nav.style.setProperty("--my", `${e.clientY - rect.top}px`);
     };
 
-    nav.addEventListener("mousemove", move);
-
     const updateDropdownPosition = () => {
       const navRect = nav.getBoundingClientRect();
       const top = navRect.bottom + 8;
       document.documentElement.style.setProperty("--dropdown-top", `${top}px`);
     };
 
+    nav.addEventListener("mousemove", move);
     updateDropdownPosition();
+
     window.addEventListener("scroll", updateDropdownPosition);
     window.addEventListener("resize", updateDropdownPosition);
 
@@ -132,6 +243,17 @@ export default function Navbar({
       window.removeEventListener("resize", updateDropdownPosition);
     };
   }, []);
+
+  useEffect(() => {
+    if (!finalMobileNavOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [finalMobileNavOpen]);
 
   return (
     <>
@@ -176,7 +298,7 @@ export default function Navbar({
 
         .pw-nav-wrapper {
           position: relative;
-          z-index: 60;
+          z-index: 9999;
           margin-top: 8px;
         }
 
@@ -193,7 +315,7 @@ export default function Navbar({
           --mx: 50%;
           --my: 50%;
           position: relative;
-          z-index: 50;
+          z-index: 9999;
           width: 100%;
           height: 64px !important;
           border-radius: 24px;
@@ -405,7 +527,6 @@ export default function Navbar({
           cursor: pointer;
         }
 
-        /* ===== STICKY DROPDOWN — wrapper bridge ===== */
         .pw-link-dropdown-wrap::after {
           content: "";
           position: fixed;
@@ -462,7 +583,7 @@ export default function Navbar({
             opacity 0.3s ease,
             transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
             visibility 0.3s;
-          z-index: 1000;
+          z-index: 10000;
           box-shadow:
             0 20px 60px rgba(0, 0, 0, 0.5),
             0 0 0 1px rgba(0, 254, 78, 0.08),
@@ -500,7 +621,6 @@ export default function Navbar({
           gap: 4px;
         }
 
-        /* ===== CLICKABLE COLUMN TITLE ===== */
         .pw-dropdown-col-title {
           font-family: var(--font-poppins), sans-serif;
           font-size: 11px;
@@ -516,9 +636,13 @@ export default function Navbar({
           text-decoration: none;
           display: block;
           cursor: pointer;
-          transition: color 0.25s ease, border-color 0.25s ease,
-                      text-shadow 0.25s ease, transform 0.25s ease;
+          transition:
+            color 0.25s ease,
+            border-color 0.25s ease,
+            text-shadow 0.25s ease,
+            transform 0.25s ease;
         }
+
         .pw-dropdown-col-title:hover {
           color: #ffffff;
           border-bottom-color: rgba(0, 254, 78, 0.55);
@@ -534,7 +658,10 @@ export default function Navbar({
           border-radius: 6px;
           color: rgba(255, 255, 255, 0.78);
           text-decoration: none;
-          transition: background 0.25s ease, transform 0.25s ease, color 0.25s ease;
+          transition:
+            background 0.25s ease,
+            transform 0.25s ease,
+            color 0.25s ease;
           cursor: pointer;
         }
 
@@ -546,7 +673,10 @@ export default function Navbar({
           background: rgba(0, 254, 78, 0.4);
           flex-shrink: 0;
           margin-top: 7px;
-          transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+          transition:
+            background 0.25s ease,
+            box-shadow 0.25s ease,
+            transform 0.25s ease;
         }
 
         .pw-dropdown-item-name {
@@ -610,7 +740,7 @@ export default function Navbar({
 
         .pw-mobile-toggle {
           position: relative;
-          z-index: 5;
+          z-index: 10001;
           padding: 0 14px;
           background: transparent;
           border: none;
@@ -624,6 +754,131 @@ export default function Navbar({
           .pw-mobile-toggle {
             display: none;
           }
+        }
+
+        .pw-mobile-menu {
+          position: fixed;
+          left: 16px;
+          right: 16px;
+          top: 92px;
+          z-index: 10000;
+          max-height: calc(100vh - 112px);
+          overflow-y: auto;
+          border-radius: 22px;
+          border: 1px solid rgba(0, 254, 78, 0.3);
+          background:
+            linear-gradient(
+              135deg,
+              rgba(0, 254, 78, 0.1) 0%,
+              rgba(5, 8, 35, 0.98) 42%,
+              rgba(5, 8, 137, 0.86) 100%
+            ),
+            rgba(0, 0, 0, 0.96);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          padding: 20px;
+          box-shadow:
+            0 24px 70px rgba(0, 0, 0, 0.65),
+            0 0 0 1px rgba(255, 255, 255, 0.06),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .pw-mobile-link {
+          display: block;
+          width: 100%;
+          padding: 10px 0;
+          font-size: 16px;
+          font-weight: 700;
+          text-align: left;
+          text-decoration: none;
+          color: #ffffff;
+          background: transparent;
+          border: 0;
+          cursor: pointer;
+        }
+
+        .pw-mobile-link:hover,
+        .pw-mobile-link-active {
+          color: #00fe4e;
+        }
+
+        .pw-mobile-services-button {
+          display: flex;
+          width: 100%;
+          align-items: center;
+          justify-content: space-between;
+          padding: 10px 0;
+          font-size: 16px;
+          font-weight: 700;
+          text-align: left;
+          color: #ffffff;
+          background: transparent;
+          border: 0;
+          cursor: pointer;
+        }
+
+        .pw-mobile-services-button:hover,
+        .pw-mobile-services-button-active {
+          color: #00fe4e;
+        }
+
+        .pw-mobile-services-panel {
+          overflow: hidden;
+          transition:
+            max-height 0.32s ease,
+            opacity 0.25s ease;
+        }
+
+        .pw-mobile-services-inner {
+          padding: 6px 0 10px 12px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        .pw-mobile-col-title {
+          display: inline-block;
+          text-decoration: none;
+          color: #00fe4e;
+          font-size: 10px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.12em;
+          margin-bottom: 6px;
+          transition:
+            color 0.25s ease,
+            transform 0.25s ease;
+          cursor: pointer;
+        }
+
+        .pw-mobile-col-title:hover {
+          color: #ffffff;
+          transform: translateX(2px);
+        }
+
+        .pw-mobile-service-item {
+          display: block;
+          padding: 4px 0;
+          font-size: 13px;
+          line-height: 1.35;
+          color: rgba(255, 255, 255, 0.8);
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+        .pw-mobile-service-item:hover {
+          color: #00fe4e;
+        }
+
+        .pw-mobile-contact-box {
+          padding-top: 14px;
+          margin-top: 14px;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          display: flex;
+          flex-direction: column;
+          gap: 9px;
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 14px;
         }
 
         .pw-social-icon {
@@ -651,24 +906,6 @@ export default function Navbar({
             0 0 18px rgba(0, 254, 78, 0.6),
             0 0 0 1px rgba(0, 254, 78, 0.4);
           transform: translateY(-1px) scale(1.05);
-        }
-
-        /* ===== MOBILE clickable column title ===== */
-        .pw-mobile-col-title {
-          display: inline-block;
-          text-decoration: none;
-          color: #00fe4e;
-          font-size: 10px;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.12em;
-          margin-bottom: 6px;
-          transition: color 0.25s ease, transform 0.25s ease;
-          cursor: pointer;
-        }
-        .pw-mobile-col-title:hover {
-          color: #ffffff;
-          transform: translateX(2px);
         }
       `}</style>
 
@@ -731,10 +968,17 @@ export default function Navbar({
 
               return hasDropdown ? (
                 <div key={l} className="pw-link-dropdown-wrap">
-                  <Link href={href} className={a ? "pw-link pw-link-active" : "pw-link"}>
+                  <Link
+                    href={href}
+                    className={a ? "pw-link pw-link-active" : "pw-link"}
+                  >
                     <span className="pw-link-dot" />
                     <span>{l}</span>
-                    <svg className="pw-link-chevron" viewBox="0 0 20 20" fill="none">
+                    <svg
+                      className="pw-link-chevron"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                    >
                       <path
                         d="M5 8L10 13L15 8"
                         stroke="currentColor"
@@ -749,15 +993,20 @@ export default function Navbar({
                     <div className="pw-dropdown-grid-5">
                       {SERVICES_DROPDOWN.map((col) => (
                         <div key={col.title} className="pw-dropdown-col">
-                          {/* Column title is now a clickable link */}
                           <Link href={col.href} className="pw-dropdown-col-title">
                             {col.title}
                           </Link>
 
                           {col.items.map((item) => (
-                            <Link key={item.name} href={item.href} className="pw-dropdown-item">
+                            <Link
+                              key={item.name}
+                              href={item.href}
+                              className="pw-dropdown-item"
+                            >
                               <span className="pw-dropdown-item-dot" />
-                              <span className="pw-dropdown-item-name">{item.name}</span>
+                              <span className="pw-dropdown-item-name">
+                                {item.name}
+                              </span>
                             </Link>
                           ))}
                         </div>
@@ -766,7 +1015,11 @@ export default function Navbar({
                   </div>
                 </div>
               ) : (
-                <Link key={l} href={href} className={a ? "pw-link pw-link-active" : "pw-link"}>
+                <Link
+                  key={l}
+                  href={href}
+                  className={a ? "pw-link pw-link-active" : "pw-link"}
+                >
                   <span className="pw-link-dot" />
                   <span>{l}</span>
                 </Link>
@@ -774,26 +1027,37 @@ export default function Navbar({
             })}
           </div>
 
-          <button className="pw-search" aria-label="Search" onClick={() => setSearchOpen(true)}>
+          <button
+            type="button"
+            className="pw-search"
+            aria-label="Search"
+            onClick={() => finalSetSearchOpen(true)}
+          >
             <Search size={18} strokeWidth={2} />
           </button>
 
           <button
+            type="button"
             className="pw-mobile-toggle"
             aria-label="Menu"
-            onClick={() => setMobileNavOpen(!mobileNavOpen)}
+            aria-expanded={finalMobileNavOpen}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              finalSetMobileNavOpen((prev) => !prev);
+            }}
           >
-            {mobileNavOpen ? <X size={20} /> : <Menu size={20} />}
+            {finalMobileNavOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </nav>
 
-        {mobileNavOpen && (
-          <div className="lg:hidden mt-3 rounded-2xl border border-[#00fe4e]/30 bg-black/95 backdrop-blur p-5 space-y-1">
+        {finalMobileNavOpen && (
+          <div className="pw-mobile-menu lg:hidden">
             <Link
               href="/"
-              onClick={() => setMobileNavOpen(false)}
-              className={`block text-base font-semibold py-2 ${
-                currentActiveLink === "Home" ? "text-[#00fe4e]" : "text-white hover:text-[#00fe4e]"
+              onClick={() => finalSetMobileNavOpen(false)}
+              className={`pw-mobile-link ${
+                currentActiveLink === "Home" ? "pw-mobile-link-active" : ""
               }`}
             >
               Home
@@ -801,27 +1065,35 @@ export default function Navbar({
 
             <Link
               href="/about"
-              onClick={() => setMobileNavOpen(false)}
-              className={`block text-base font-semibold py-2 ${
-                currentActiveLink === "About" ? "text-[#00fe4e]" : "text-white hover:text-[#00fe4e]"
+              onClick={() => finalSetMobileNavOpen(false)}
+              className={`pw-mobile-link ${
+                currentActiveLink === "About" ? "pw-mobile-link-active" : ""
               }`}
             >
               About
             </Link>
 
             <button
-              onClick={() => setMobileServicesOpen((v) => !v)}
-              className={`flex w-full items-center justify-between py-2 text-base font-semibold cursor-pointer ${
-                currentActiveLink === "Services" ? "text-[#00fe4e]" : "text-white hover:text-[#00fe4e]"
+              type="button"
+              onClick={() => finalSetMobileServicesOpen((v) => !v)}
+              className={`pw-mobile-services-button ${
+                currentActiveLink === "Services"
+                  ? "pw-mobile-services-button-active"
+                  : ""
               }`}
-              aria-expanded={mobileServicesOpen}
+              aria-expanded={finalMobileServicesOpen}
             >
               <span>Services</span>
+
               <svg
                 viewBox="0 0 20 20"
                 fill="none"
                 className="h-4 w-4 transition-transform duration-300"
-                style={{ transform: mobileServicesOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+                style={{
+                  transform: finalMobileServicesOpen
+                    ? "rotate(180deg)"
+                    : "rotate(0deg)",
+                }}
               >
                 <path
                   d="M5 8L10 13L15 8"
@@ -834,37 +1106,36 @@ export default function Navbar({
             </button>
 
             <div
-              className="overflow-hidden transition-all duration-300 ease-out"
+              className="pw-mobile-services-panel"
               style={{
-                maxHeight: mobileServicesOpen ? "3500px" : "0px",
-                opacity: mobileServicesOpen ? 1 : 0,
+                maxHeight: finalMobileServicesOpen ? "3500px" : "0px",
+                opacity: finalMobileServicesOpen ? 1 : 0,
               }}
             >
-              <div className="pl-3 pt-1 pb-2 space-y-4">
+              <div className="pw-mobile-services-inner">
                 {SERVICES_DROPDOWN.map((col) => (
                   <div key={col.title}>
-                    {/* Mobile column title now clickable too */}
                     <Link
                       href={col.href}
                       onClick={() => {
-                        setMobileNavOpen(false);
-                        setMobileServicesOpen(false);
+                        finalSetMobileNavOpen(false);
+                        finalSetMobileServicesOpen(false);
                       }}
                       className="pw-mobile-col-title"
                     >
                       {col.title}
                     </Link>
 
-                    <div className="space-y-1">
+                    <div>
                       {col.items.map((item) => (
                         <Link
                           key={item.name}
                           href={item.href}
                           onClick={() => {
-                            setMobileNavOpen(false);
-                            setMobileServicesOpen(false);
+                            finalSetMobileNavOpen(false);
+                            finalSetMobileServicesOpen(false);
                           }}
-                          className="block py-1 text-[13px] text-white/80 hover:text-[#00fe4e] cursor-pointer"
+                          className="pw-mobile-service-item"
                         >
                           {item.name}
                         </Link>
@@ -877,28 +1148,59 @@ export default function Navbar({
 
             <Link
               href="/contact"
-              onClick={() => setMobileNavOpen(false)}
-              className={`block text-base font-semibold py-2 ${
-                currentActiveLink === "Contact" ? "text-[#00fe4e]" : "text-white hover:text-[#00fe4e]"
+              onClick={() => finalSetMobileNavOpen(false)}
+              className={`pw-mobile-link ${
+                currentActiveLink === "Contact" ? "pw-mobile-link-active" : ""
               }`}
             >
               Contact
             </Link>
 
-            <div className="pt-3 mt-3 border-t border-white/10 space-y-2 text-white/80 text-sm">
+            <div className="pw-mobile-contact-box">
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-[#00fe4e]" />
-                +92 300 2855800
+                <span>+92 300 2855800</span>
               </div>
 
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-[#00fe4e]" />
-                +92 300 2855800
+                <span>+92 300 2855800</span>
               </div>
             </div>
           </div>
         )}
       </div>
+
+      {internalSearchOpen && !setSearchOpen && (
+        <div
+          className="fixed inset-0 z-[100000] flex items-center justify-center bg-black/70 px-4 backdrop-blur-md"
+          onClick={() => setInternalSearchOpen(false)}
+        >
+          <div
+            className="w-full max-w-[520px] rounded-2xl border border-white/10 bg-[#07101c] p-5 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-white">Search</h3>
+              <button
+                type="button"
+                onClick={() => setInternalSearchOpen(false)}
+                className="text-white/70 hover:text-white"
+                aria-label="Close search"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <input
+              type="text"
+              placeholder="Search..."
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none placeholder:text-white/40 focus:border-[#00fe4e]/70"
+              autoFocus
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 }
