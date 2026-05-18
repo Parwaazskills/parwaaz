@@ -6,6 +6,8 @@ export type SuccessStory = {
   yMobile?: string;
   // Testimonial content shown in the navy panel below the map
   video: string;        // mp4 path under /public
+  videoObjectPosition?: string;  // optional per-video crop position
+  videoObjectFit?: "cover" | "contain";  // optional per-video fit mode
   category: string;     // e.g. "INTERNATIONAL PLACEMENT"
   quote: string;
   personName: string;
@@ -40,6 +42,21 @@ export const successStories: SuccessStory[] = [
       "Parwaaz helped me secure a job opportunity in the Kingdom of Saudi Arabia, where I have now been working successfully for the past two years. This opportunity changed my life, helped me support my family, and gave me a more stable future.",
     personName: "Muhammad Siddiqui",
     personRole: "Technical Trainer — Kingdom of Saudi Arabia",
+  },
+  {
+    city: "KSA",
+    x: "62%",
+    y: "42%",
+    xMobile: "62%",
+    yMobile: "32%",
+    video: "/video/mustafa.mp4",
+    videoObjectPosition: "center 55%",
+    videoObjectFit: "contain",
+    category: "INTERNATIONAL PLACEMENT",
+    quote:
+      "Coming from Sudan with years of industry experience, I always wanted an opportunity where I could teach, mentor, and pass my knowledge on to others. Parwaaz supported me throughout the journey and helped me secure my next role in KSA.",
+    personName: "Mustafa Saleh",
+    personRole: "Industrial Mechanical Trainer — Kingdom of Saudi Arabia",
   },
   {
     city: "UAE",

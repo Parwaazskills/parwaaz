@@ -141,17 +141,39 @@ export default function TeamSection() {
           padding: 0 2px;
         }
         @media (min-width: 1024px) { .team-card-name { font-size: 16px; } }
-        .team-card-linkedin {
-          margin: auto auto 0;
+
+        /* ============ LINKEDIN BUTTON ============ */
+        .team-card-linkedin-wrap {
           display: flex;
-          height: 28px;
-          width: 28px;
+          justify-content: center;
+          margin-top: 10px;
+        }
+        .team-card-linkedin {
+          display: inline-flex;
           align-items: center;
           justify-content: center;
+          width: 34px;
+          height: 34px;
           border-radius: 9999px;
           background: #0077b5;
-          color: #fff;
+          color: #ffffff;
+          text-decoration: none;
+          transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+                      background 0.25s ease,
+                      box-shadow 0.25s ease;
+          box-shadow: 0 4px 12px rgba(0, 119, 181, 0.25);
         }
+        .team-card-linkedin:hover {
+          transform: translateY(-2px) scale(1.08);
+          background: #00b95a;
+          box-shadow: 0 8px 18px rgba(0, 185, 90, 0.45);
+        }
+        .team-card-linkedin svg {
+          width: 16px;
+          height: 16px;
+          display: block;
+        }
+
         .team-photo-frame {
           position: relative;
           width: 100%;
@@ -172,7 +194,13 @@ export default function TeamSection() {
           object-fit: cover;
           object-position: center top;
           display: block;
+          filter: grayscale(100%);
+          transition: filter 0.4s ease;
         }
+        .team-photo-frame:hover img {
+          filter: grayscale(0%);
+        }
+
         @media (max-width: 1023px) {
           .team-row { grid-template-columns: 1fr; gap: 24px; }
           .team-cards-col { grid-column: 1; }
@@ -186,6 +214,9 @@ export default function TeamSection() {
           .team-card-role { min-height: 50px !important; font-size: 10px !important; }
           .team-card-name { min-height: 36px !important; font-size: 12px !important; }
           .team-photo-frame { aspect-ratio: 1 / 1 !important; }
+          .team-card-linkedin { width: 30px; height: 30px; }
+          .team-card-linkedin svg { width: 14px; height: 14px; }
+          .team-card-linkedin-wrap { margin-top: 8px; }
           .team-neptune-wrap {
             width: 350px !important;
             height: 350px !important;
@@ -203,7 +234,11 @@ export default function TeamSection() {
             z-index: 10 !important;
           }
         }
-        @media (max-width: 480px) { .team-cards-grid { gap: 12px; } }
+        @media (max-width: 480px) {
+          .team-cards-grid { gap: 12px; }
+          .team-card-linkedin { width: 28px; height: 28px; }
+          .team-card-linkedin svg { width: 13px; height: 13px; }
+        }
       `}</style>
 
       <section className="team-section">
@@ -246,6 +281,24 @@ export default function TeamSection() {
                     </div>
                     <div className="team-card-role">{m.role}</div>
                     <div className="team-card-name">{m.name}</div>
+                    <div className="team-card-linkedin-wrap">
+                      <a
+                        href={m.linkedin || "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="team-card-linkedin"
+                        aria-label={`${m.name} on LinkedIn`}
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.852 3.37-1.852 3.601 0 4.267 2.37 4.267 5.455v6.288zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                        </svg>
+                      </a>
+                    </div>
                   </div>
                 ))}
               </div>

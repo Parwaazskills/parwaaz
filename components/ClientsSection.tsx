@@ -267,9 +267,17 @@ export default function ClientsSection() {
 
       <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
         <section className="relative bg-white pb-12 lg:pb-20 pt-16 lg:pt-24">
-          <div data-reveal="up-sm" className="text-[12px] font-semibold uppercase tracking-[0.08em] text-black">
-            Clients
-          </div>
+         <div
+  data-reveal="up-sm"
+  className="uppercase tracking-[0.08em] text-black"
+  style={{
+    fontSize: "18px",
+    fontWeight: 500,
+    fontFamily: "var(--font-montserrat), sans-serif",
+  }}
+>
+  Clients
+</div>
           <div data-reveal="fade" data-reveal-delay="100" className="gsap-marquee marquee-shell mt-3">
             <div className="marquee-track">
               <span className="gsap-clip marquee-text">Powering Growth</span>

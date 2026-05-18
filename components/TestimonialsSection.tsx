@@ -174,23 +174,21 @@ export default function TestimonialsSection() {
           }
         }
 
-        .testimonials-avatar {
-          object-position: center 75%;
-          box-shadow:
-            0 4px 16px rgba(0, 0, 0, 0.1),
-            0 0 0 3px rgba(0, 254, 78, 0.12);
-          transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease;
-        }
+      .testimonials-avatar {
+  object-position: center center;
+  border: 2px solid rgba(0, 254, 78, 0.25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
 
-        .testimonials-avatar:hover {
-          transform: scale(1.05);
-          box-shadow:
-            0 6px 20px rgba(0, 0, 0, 0.14),
-            0 0 0 5px rgba(0, 254, 78, 0.18);
-        }
-
+.testimonials-avatar:hover {
+  transform: scale(1.05);
+  border-color: rgba(0, 254, 78, 0.5);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14);
+}
         .testimonials-nav-wrap {
           display: flex;
           justify-content: center;
@@ -419,11 +417,12 @@ export default function TestimonialsSection() {
               {testimonials.map((t, i) => (
                 <SwiperSlide key={i}>
                   <div className="testimonial-card">
-                    <img
-                      src={t.img}
-                      alt={t.name}
-                      className="testimonials-avatar mx-auto h-[44px] w-[44px] lg:h-[48px] lg:w-[48px] rounded-full object-cover"
-                    />
+                   <img
+  src={t.img}
+  alt={t.name}
+className="testimonials-avatar mx-auto h-[64px] w-[64px] lg:h-[72px] lg:w-[72px] rounded-full"
+  style={{ objectFit: "contain", background: "#ffffff", padding: "2px" }}
+/>
 
                     <div className="mt-3 lg:mt-4 text-[14px] lg:text-[15px] font-bold text-[#050889] text-center">
                       {t.name}

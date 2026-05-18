@@ -2,6 +2,7 @@
 
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -18,6 +19,8 @@ const historyData: Record<
     offices: string;
     employees: string;
     milestone: string;
+    logo: string;
+    logoAlt: string;
   }
 > = {
   "1985": {
@@ -26,6 +29,8 @@ const historyData: Record<
     employees: "43",
     milestone:
       "A construction consultancy delivering landmark institutional and defence infrastructure projects across Pakistan.",
+    logo: "/historyicons/airrs.png",
+    logoAlt: "AIRRS Associates logo",
   },
   "2000": {
     company: "VTT",
@@ -33,6 +38,8 @@ const historyData: Record<
     employees: "60",
     milestone:
       "An ISO-certified advisory firm driving strategy and transformation for governments and enterprises across the region.",
+    logo: "/historyicons/vtt.png",
+    logoAlt: "VTT logo",
   },
   "2009": {
     company: "FMI",
@@ -40,6 +47,8 @@ const historyData: Record<
     employees: "81",
     milestone:
       "A commodity brokerage specialising in cotton and sugar markets with deep trade expertise and market intelligence.",
+    logo: "/historyicons/fmi.png",
+    logoAlt: "FMI logo",
   },
   "2011": {
     company: "PAR",
@@ -47,6 +56,8 @@ const historyData: Record<
     employees: "137",
     milestone:
       "An agri-intelligence platform connecting research, data, and market access across Pakistan’s agriculture sector.",
+    logo: "/historyicons/par.png",
+    logoAlt: "PAR logo",
   },
   "2020": {
     company: "Learning Edge",
@@ -54,13 +65,17 @@ const historyData: Record<
     employees: "10",
     milestone:
       "An EdTech venture expanding access to global digital learning through partnerships with platforms including Coursera.",
+    logo: "/historyicons/learning-edge.png",
+    logoAlt: "Learning Edge logo",
   },
   "2023": {
     company: "Parwaz",
     offices: "Islamabad, Lahore",
     employees: "15",
     milestone:
-      "Mitrex established as the foundation of our conglomerate, with a focus on multi-regional expansion",
+      "Mitrex established as the foundation of our conglomerate, with a focus on multi-regional expansion.",
+    logo: "/historyicons/parwaz.png",
+    logoAlt: "Parwaz logo",
   },
   "2026": {
     company: "Ease Edge",
@@ -68,6 +83,8 @@ const historyData: Record<
     employees: "3",
     milestone:
       "A consultancy helping businesses navigate Pakistan’s market landscape with strategic and operational support.",
+    logo: "/historyicons/ease-edge.png",
+    logoAlt: "Ease Edge logo",
   },
 };
 
@@ -88,40 +105,55 @@ function HistoryCard({
     <button
       type="button"
       onClick={onClick}
-      className={`history-card h-[250px] w-full rounded-[8px] px-[32px] pt-[20px] text-left transition-all duration-300 max-[900px]:h-auto max-[900px]:min-h-[180px] max-[480px]:min-h-[190px] max-[480px]:px-[22px] max-[480px]:pt-[19px] ${
+      className={`history-card relative flex h-full min-h-[270px] w-full overflow-hidden rounded-[8px] px-[32px] pb-[24px] pt-[20px] text-left transition-all duration-300 max-[900px]:min-h-[270px] max-[760px]:min-h-[250px] max-[480px]:min-h-[250px] max-[480px]:px-[22px] max-[480px]:pb-[22px] max-[480px]:pt-[19px] ${
         active
           ? "bg-[#030887] !text-white shadow-[0_15px_32px_rgba(3,8,135,0.18)] [&_*]:!text-white"
           : "border border-[#00fe4e] border-r-[#040887] bg-white text-black hover:-translate-y-[3px] hover:shadow-[0_12px_24px_rgba(3,8,135,0.08)]"
       }`}
     >
-      <h3
-        className={`text-[29px] font-normal leading-none tracking-[-0.6px] max-[480px]:text-[26px] ${
-          active
-            ? "text-white"
-            : "bg-gradient-to-r from-[#00fe4e] via-[#009b70] to-[#060d79] bg-clip-text text-transparent"
-        }`}
-      >
-        {year}
-      </h3>
+      <div className="relative z-[2] flex h-full w-full flex-col">
+        <div className="flex items-start justify-between gap-[18px]">
+          <h3
+            className={`shrink-0 text-[29px] font-normal leading-none tracking-[-0.6px] max-[480px]:text-[26px] ${
+              active
+                ? "text-white"
+                : "bg-gradient-to-r from-[#00fe4e] via-[#009b70] to-[#060d79] bg-clip-text text-transparent"
+            }`}
+          >
+            {year}
+          </h3>
 
-      <ul
-        className={`mt-[22px] space-y-[9px] pl-[14px] text-[14px] leading-[1.35] max-[480px]:mt-[18px] max-[480px]:text-[9.2px] ${
-          active ? "text-white" : "text-black"
-        }`}
-      >
-        <li className="list-disc">
-          <span className="font-bold">Company:</span> {item.company}
-        </li>
-        <li className="list-disc">
-          <span className="font-bold">Offices:</span> {item.offices}
-        </li>
-        <li className="list-disc">
-          <span className="font-bold">Employees:</span> {item.employees}
-        </li>
-        <li className="list-disc">
-          <span className="font-bold">Milestone:</span> {item.milestone}
-        </li>
-      </ul>
+     <div className="relative mt-[-4px] h-[48px] w-[78px] shrink-0 overflow-hidden">
+  <Image
+    src={item.logo}
+    alt={item.logoAlt}
+    fill
+    sizes="78px"
+    className="object-contain"
+  />
+</div>
+        </div>
+
+        <ul
+          className={`mt-[16px] space-y-[8px] pl-[14px] text-[13px] leading-[1.55] max-[480px]:mt-[15px] max-[480px]:space-y-[7px] max-[480px]:text-[10.5px] max-[480px]:leading-[1.5] ${
+            active ? "text-white" : "text-black"
+          }`}
+        >
+          <li className="list-disc">
+            <span className="font-bold">Company:</span> {item.company}
+          </li>
+          <li className="list-disc">
+            <span className="font-bold">Offices:</span> {item.offices}
+          </li>
+          <li className="list-disc">
+            <span className="font-bold">Employees:</span> {item.employees}
+          </li>
+          <li className="list-disc">
+            <span className="font-bold">Milestone:</span>{" "}
+            <span className="history-card-description">{item.milestone}</span>
+          </li>
+        </ul>
+      </div>
     </button>
   );
 }
@@ -419,7 +451,7 @@ export default function CompanyHistorySection() {
 
           <div
             ref={cardsGridRef}
-            className="grid grid-cols-2 gap-x-[48px] gap-y-[13px] max-[1100px]:gap-x-[28px] max-[760px]:grid-cols-1"
+            className="grid auto-rows-fr grid-cols-2 gap-x-[48px] gap-y-[17px] max-[1100px]:gap-x-[28px] max-[760px]:grid-cols-1"
           >
             {orderedYears.slice(0, 6).map((year, index) => (
               <HistoryCard

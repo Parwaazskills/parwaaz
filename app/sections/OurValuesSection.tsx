@@ -2,16 +2,9 @@
 
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import {
-  Award,
-  Lightbulb,
-  UsersRound,
-  ClipboardList,
-  Sparkles,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -19,27 +12,32 @@ const values = [
   {
     title: "EXCELLENCE WITHOUT EXCEPTION",
     text: "Every engagement, every deliverable, every outcome — held to a global benchmark, without compromise.",
-    icon: Award,
+    icon: "/ourvalExcellence.png",
+    iconAlt: "Excellence icon",
   },
   {
     title: "RADICAL ACCOUNTABILITY",
     text: "We commit fully, deliver completely, and own the outcome — no caveats, no exceptions.",
-    icon: ClipboardList,
+    icon: "/ourvalaccountability.png",
+    iconAlt: "Accountability icon",
   },
   {
     title: "INTEGRATED THINKING",
     text: "We connect capabilities, not just services — because lasting transformation is always the result of a system, never a single solution.",
-    icon: Lightbulb,
+    icon: "/ourvalIntegratedthinking.png",
+    iconAlt: "Integrated thinking icon",
   },
   {
     title: "THE COURAGE TO LEAD",
     text: "We do not follow where the market goes. We move first — and bring our clients with us.",
-    icon: Sparkles,
+    icon: "/ourvalcouragetolead.png",
+    iconAlt: "Courage icon",
   },
   {
     title: "HUMAN AT THE CENTRE",
     text: "Every placement, every programme, every strategy exists for one reason: to change the trajectory of a human life.",
-    icon: UsersRound,
+    icon: "/ourvalHumancenter.png",
+    iconAlt: "Human icon",
   },
 ];
 
@@ -169,15 +167,13 @@ export default function OurValuesSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-white pt-[29px] pb-[76px] max-[900px]:pt-[58px] max-[900px]:pb-[62px]"
+      className="relative w-full overflow-hidden bg-white pb-[76px] pt-[29px] max-[900px]:pb-[62px] max-[900px]:pt-[58px]"
     >
-      {/* Decorative Top Right Arc Lines */}
       <div className="pointer-events-none absolute right-[-95px] top-[-156px] z-0 h-[250px] w-[520px] overflow-hidden max-[768px]:hidden">
         <div className="absolute right-[-18px] top-[-160px] h-[300px] w-[560px] rounded-[50%] border border-black/25" />
         <div className="absolute right-[-3px] top-[-124px] h-[260px] w-[510px] rounded-[50%] border border-black/20" />
         <div className="absolute right-[10px] top-[-91px] h-[220px] w-[455px] rounded-[50%] border border-black/15" />
       </div>
-
 
       <div className="relative z-[2] mx-auto w-full max-w-[1012px] px-4">
         <h2
@@ -190,7 +186,6 @@ export default function OurValuesSection() {
         <div className="mt-[50px] grid grid-cols-2 gap-x-[58px] gap-y-[10px] max-[900px]:mt-[38px] max-[900px]:grid-cols-1 max-[900px]:gap-[14px]">
           {values.map((item, index) => {
             const isOpen = openIndex === index;
-            const Icon = item.icon;
 
             return (
               <button
@@ -209,10 +204,13 @@ export default function OurValuesSection() {
                     isOpen ? "py-[22px]" : "py-0"
                   }`}
                 >
-                  <div className="flex h-[48px] w-[38px] shrink-0 items-center justify-center text-white max-[480px]:h-[42px] max-[480px]:w-[34px]">
-                    <Icon
-                      strokeWidth={1.6}
-                      className="h-full w-full text-white"
+<div className="relative flex h-[58px] w-[50px] shrink-0 items-center justify-center overflow-hidden max-[480px]:h-[48px] max-[480px]:w-[42px]">
+                      <Image
+                      src={item.icon}
+                      alt={item.iconAlt}
+                      fill
+                      sizes="48px"
+                      className="object-contain"
                     />
                   </div>
 

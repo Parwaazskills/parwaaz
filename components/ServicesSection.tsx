@@ -292,9 +292,17 @@ export default function ServicesSection({
       `}</style>
 
       <section className="mt-14 lg:mt-20 pb-12 lg:pb-16">
-        <div data-reveal="up-sm" className="mb-3 lg:mb-4 text-[12px] lg:text-[13px] font-semibold uppercase tracking-[0.08em] text-black">
-          Our Services
-        </div>
+       <div
+  data-reveal="up-sm"
+  className="mb-3 lg:mb-4 uppercase tracking-[0.08em] text-black"
+  style={{
+    fontSize: "18px",
+    fontWeight: 500,
+    fontFamily: "var(--font-montserrat), sans-serif",
+  }}
+>
+  Our Services
+</div>
         <div data-reveal="fade" data-reveal-delay="100" className="gsap-marquee marquee-shell">
           <div className="marquee-track">
             <span className="gsap-clip marquee-text">Solutions Designed To Move Organizations Forward</span>

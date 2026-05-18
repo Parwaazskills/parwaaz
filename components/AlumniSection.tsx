@@ -634,20 +634,25 @@ export default function AlumniSection() {
             </div>
 
             {successStories.map((item, i) => {
-              const isActive = active === i;
-              return (
-                <button
-                  key={item.city}
-                  type="button"
-                  onClick={() => handleStoryClick(i)}
-                  style={{
-                    top: isMobile && item.yMobile ? item.yMobile : item.y,
-                    left: isMobile && item.xMobile ? item.xMobile : item.x,
-                  }}
-                  className={`alumni-pin ${isActive ? "alumni-pin-active" : ""}`}
-                  aria-label={`${item.city} market`}
-                  aria-pressed={isActive}
-                >
+  // Skip duplicate pins for the same city — show pin only at the first occurrence
+  const firstIndex = successStories.findIndex((s) => s.city === item.city);
+  if (firstIndex !== i) return null;
+
+  // Pin is active if active story belongs to this city
+  const isActive = successStories[active]?.city === item.city;
+  return (
+    <button
+      key={item.city}
+      type="button"
+      onClick={() => handleStoryClick(i)}
+      style={{
+        top: isMobile && item.yMobile ? item.yMobile : item.y,
+        left: isMobile && item.xMobile ? item.xMobile : item.x,
+      }}
+      className={`alumni-pin ${isActive ? "alumni-pin-active" : ""}`}
+      aria-label={`${item.city} market`}
+      aria-pressed={isActive}
+    >
                   <svg
                     className="alumni-pin-icon"
                     viewBox="0 0 38 50"
@@ -706,6 +711,7 @@ export default function AlumniSection() {
                       loop
                       playsInline
                       preload="metadata"
+                      style={current.videoObjectPosition ? { objectPosition: current.videoObjectPosition } : undefined}
                       onLoadedMetadata={(e) => {
                         const d = (e.target as HTMLVideoElement).duration;
                         if (isFinite(d)) setDuration(d);
@@ -732,15 +738,21 @@ export default function AlumniSection() {
               <p className="text-[#00FE4E] mt-4 text-xs md:text-sm tracking-widest font-semibold">
                 {current.category}
               </p>
+<h3
+  className="mt-3 leading-relaxed text-white/90"
+  style={{ fontSize: "16px", fontWeight: 300 }}
+>
+  &ldquo;{current.quote}&rdquo;
+</h3>
 
-              <h3 className="text-base md:text-xl font-semibold mt-3 leading-relaxed">
-                &ldquo;{current.quote}&rdquo;
-              </h3>
-
-              <div className="mt-5">
-                <p className="font-semibold text-sm md:text-base">{current.personName}</p>
-                <p className="text-xs md:text-sm text-gray-300 mt-0.5">{current.personRole}</p>
-              </div>
+<div className="mt-5">
+  <p className="font-semibold text-white" style={{ fontSize: "16px" }}>
+    {current.personName}
+  </p>
+  <p className="text-xs md:text-sm text-white/70 mt-0.5">
+    {current.personRole}
+  </p>
+</div>
 
               <div className="flex gap-2 mt-5">
                 {successStories.map((_, i) => (

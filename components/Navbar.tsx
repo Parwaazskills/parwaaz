@@ -912,7 +912,7 @@ export default function Navbar({
       <div className="hidden lg:flex items-center justify-end gap-5 text-[12px] font-semibold text-white/90 mb-3 max-w-[1320px] w-[calc(100%-34px)] mx-auto pr-2">
         <div className="flex items-center gap-2">
           <Mail className="h-3.5 w-3.5 text-[#00fe4e]" />
-          <span>+92 300 2855800</span>
+          <span>contact@parwaaz.co</span>
         </div>
 
         <span className="text-white/35">|</span>

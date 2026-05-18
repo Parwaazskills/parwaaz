@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { heroSlides } from "@/data/heroSlides";
+import Link from "next/link";
 
 interface HeroSectionProps {
   heroBgIndex: number;
@@ -409,7 +410,10 @@ export default function HeroSection({ heroBgIndex, setHeroBgIndex }: HeroSection
               <h1
                 key={`hero-title-${heroBgIndex}`}
                 className="gsap-hero-title hero-anim-slide-up mb-2 font-extrabold leading-[.95] tracking-[-0.05em] text-[#00fe4e] drop-shadow-[0_0_20px_rgba(0,254,78,.35)]"
-                style={{ fontSize: "clamp(32px, 5vw, 56px)" }}
+                style={{
+                  fontSize: "clamp(32px, 5vw, 56px)",
+                  fontFamily: "var(--font-montserrat), sans-serif",
+                }}
               >
                 {heroSlides[heroBgIndex].title}
               </h1>
@@ -417,7 +421,10 @@ export default function HeroSection({ heroBgIndex, setHeroBgIndex }: HeroSection
               <h2
                 key={`hero-subtitle-${heroBgIndex}`}
                 className="gsap-hero-subtitle hero-anim-slide-up hero-anim-delay-1 mb-4 font-medium leading-tight tracking-[-0.03em] text-white"
-                style={{ fontSize: "clamp(18px, 2.6vw, 30px)" }}
+                style={{
+                  fontSize: "clamp(18px, 2.6vw, 30px)",
+                  fontFamily: "var(--font-montserrat), sans-serif",
+                }}
               >
                 {heroSlides[heroBgIndex].subtitle}
               </h2>
@@ -425,20 +432,30 @@ export default function HeroSection({ heroBgIndex, setHeroBgIndex }: HeroSection
               <p
                 key={`hero-desc-${heroBgIndex}`}
                 className="gsap-hero-text hero-anim-slide-up hero-anim-delay-2 mb-5 lg:mb-6 font-normal leading-[1.5] text-white/80"
-                style={{ fontSize: "clamp(12px, 1vw, 14px)", maxWidth: "480px" }}
+                style={{
+                  fontSize: "clamp(12px, 1vw, 14px)",
+                  maxWidth: "480px",
+                  fontFamily: "var(--font-montserrat), sans-serif",
+                }}
               >
                 {heroSlides[heroBgIndex].desc}
               </p>
 
-              <div className="gsap-hero-cta hero-anim-slide-up hero-anim-delay-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                <button className="hero-btn hero-btn-primary h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium">
-                  Explore Solutions
-                </button>
+       <div className="gsap-hero-cta hero-anim-slide-up hero-anim-delay-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+  <Link
+    href="/aitech"
+    className="hero-btn hero-btn-primary inline-flex items-center justify-center h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium no-underline"
+  >
+    Explore Solutions
+  </Link>
 
-                <button className="hero-btn hero-btn-secondary h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium">
-                  Partner with us
-                </button>
-              </div>
+  <Link
+    href="/contact"
+    className="hero-btn hero-btn-secondary inline-flex items-center justify-center h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium no-underline"
+  >
+    Partner with us
+  </Link>
+</div>
 
               <div className={`hero-bg-dots hero-dots-slide-${heroBgIndex}`}>
                 {heroSlides.map((_, i) => (

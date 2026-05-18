@@ -117,13 +117,17 @@ export default function StatsSection() {
       `}</style>
 
       <section className="mt-10 lg:mt-14 pb-12 lg:pb-20">
-        <h3
-          data-reveal="up-sm"
-          className="font-light leading-none tracking-[-0.03em] text-black"
-          style={{ fontSize: "clamp(28px, 4vw, 44px)" }}
-        >
-          Why Choose Us
-        </h3>
+       <h3
+  data-reveal="up-sm"
+  className="leading-none tracking-[-0.03em] text-black"
+  style={{
+    fontSize: "18px",
+    fontWeight: 500,
+    fontFamily: "var(--font-montserrat), sans-serif",
+  }}
+>
+  Why Choose Us
+</h3>
         <div
           data-reveal="fade"
           data-reveal-delay="100"

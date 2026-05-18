@@ -24,13 +24,12 @@ export default function PartnerLogosSection() {
   ];
 
   const total = partnerLogos.length;
-  const COPIES = 5;                  // render this many copies of the logo array
-  const CENTER_OFFSET = 2 * total;   // we start visually in the middle copy (3rd of 5)
-  const TRANSITION_MS = 420;         // CSS transition duration
-  const SAFE_RANGE = 2 * total;      // drift allowed before snap-back
-  const AUTOPLAY_INTERVAL = 2500;    // ms between auto-slides
+  const COPIES = 5;
+  const CENTER_OFFSET = 2 * total;
+  const TRANSITION_MS = 420;
+  const SAFE_RANGE = 2 * total;
+  const AUTOPLAY_INTERVAL = 2500;
 
-  // 5 copies side-by-side
   const renderedLogos = Array.from({ length: COPIES }, () => partnerLogos).flat();
 
   const handlePrev = useCallback(() => {
@@ -52,7 +51,6 @@ export default function PartnerLogosSection() {
   // ============ AUTOPLAY ============
   useEffect(() => {
     if (isPaused) {
-      // Stop the timer when paused
       if (autoplayTimerRef.current) {
         clearInterval(autoplayTimerRef.current);
         autoplayTimerRef.current = null;
@@ -60,7 +58,6 @@ export default function PartnerLogosSection() {
       return;
     }
 
-    // Start the timer
     autoplayTimerRef.current = setInterval(() => {
       if (!isTransitioningRef.current) {
         isTransitioningRef.current = true;
@@ -75,8 +72,6 @@ export default function PartnerLogosSection() {
     };
   }, [isPaused]);
 
-  // After every transition ends, check if we've drifted near the edge of
-  // our 5-copy buffer. If so, instantly snap back to equivalent middle position.
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -84,18 +79,13 @@ export default function PartnerLogosSection() {
     const handleTransitionEnd = () => {
       isTransitioningRef.current = false;
 
-      // Check if we've drifted past the safe range
       if (Math.abs(logoIndex) >= SAFE_RANGE) {
-        // Calculate equivalent position in the middle copy
         const wrapped = ((logoIndex % total) + total) % total;
 
         if (!trackRef.current) return;
 
-        // 1. Disable transition
         trackRef.current.style.transition = "none";
-        // 2. Snap to wrapped index
         setLogoIndex(wrapped);
-        // 3. Force reflow + re-enable transition on next frame
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             if (trackRef.current) {
@@ -120,20 +110,6 @@ export default function PartnerLogosSection() {
           width: 100%;
           padding: 90px 0 40px;
         }
-.collab-title {
-  margin: 0 0 40px 0;
-  font-family: var(--font-montserrat), sans-serif;
-  font-size: 42px;
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: 1.2;
-  text-align: center;
-  background: linear-gradient(90deg, #00fe4e 0%, #000572 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
 
         /* ============ MARQUEE TRACK ============ */
         .collab-shell {
@@ -228,7 +204,6 @@ export default function PartnerLogosSection() {
           z-index: 2;
         }
 
-        /* GLOW */
         .collab-glow {
           position: absolute;
           top: 50%;
@@ -251,7 +226,6 @@ export default function PartnerLogosSection() {
         .collab-glow-prev { left: -8px; }
         .collab-glow-next { right: -8px; }
 
-        /* HOVER state */
         .collab-nav-hit-prev:hover ~ .collab-glow-prev,
         .collab-glow-prev:hover {
           opacity: 1;
@@ -263,7 +237,6 @@ export default function PartnerLogosSection() {
           transform: translateY(-50%) scale(1);
         }
 
-        /* CLICK pulse */
         .collab-glow.is-active {
           animation: sideGlowAnim 0.75s ease-out forwards;
         }
@@ -290,11 +263,6 @@ export default function PartnerLogosSection() {
         /* ============ MOBILE ============ */
         @media (max-width: 768px) {
           .collab-section { padding: 60px 0 28px; }
-          .collab-title {
-            font-size: 20px;
-            letter-spacing: 0.02em;
-            margin-bottom: 24px;
-          }
           .collab-shell { padding-bottom: 12px !important; }
           .collab-nav-box,
           .collab-nav-svg { width: 48px; height: 44px; }
@@ -302,7 +270,6 @@ export default function PartnerLogosSection() {
         }
         @media (max-width: 480px) {
           .collab-section { padding: 48px 0 24px; }
-          .collab-title { font-size: 17px; margin-bottom: 18px; }
           .collab-nav-box,
           .collab-nav-svg { width: 42px; height: 38px; }
           .collab-glow { width: 32px; height: 32px; }
@@ -310,14 +277,39 @@ export default function PartnerLogosSection() {
       `}</style>
 
       <section className="collab-section">
-        <h2 className="collab-title" data-reveal="up-sm">
-          INTERNATIONAL COLLABORATERS
-        </h2>
+        {/* ===== NEW MARQUEE HEADING (matches ClientsSection pattern) ===== */}
+        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
+          <div
+            data-reveal="up-sm"
+            className="text-[12px] font-semibold uppercase tracking-[0.08em] text-black"
+          >
+            Partners
+          </div>
+          <div
+            data-reveal="fade"
+            data-reveal-delay="100"
+            className="gsap-marquee marquee-shell mt-3"
+          >
+            <div className="marquee-track">
+              <span className="gsap-clip marquee-text">International Collaborators</span>
+              <span className="marquee-text">International Collaborators</span>
+              <span className="marquee-text">International Collaborators</span>
+            </div>
+          </div>
+          <p
+            data-reveal="up-sm"
+            data-reveal-delay="200"
+            className="gsap-words mt-3 lg:mt-4 text-[14px] lg:text-[15px] text-black"
+          >
+            Trusted by world-class institutions and global partners shaping the future of talent and technology.
+          </p>
+        </div>
 
+        {/* ===== LOGO MARQUEE (unchanged) ===== */}
         <div
           data-reveal="fade"
-          data-reveal-delay="100"
-          className="collab-shell"
+          data-reveal-delay="300"
+          className="collab-shell mt-6 lg:mt-8"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
@@ -338,7 +330,7 @@ export default function PartnerLogosSection() {
           </div>
         </div>
 
-        <div data-reveal="zoom" data-reveal-delay="200" className="collab-nav-wrap">
+        <div data-reveal="zoom" data-reveal-delay="400" className="collab-nav-wrap">
           <div
             className="collab-nav-box"
             onMouseEnter={() => setIsPaused(true)}

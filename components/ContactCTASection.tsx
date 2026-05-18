@@ -79,44 +79,64 @@ export default function ContactCTASection() {
           z-index: 1;
         }
 
+        /* ============ BUTTON — matches "Start a Project" style ============ */
         .contact-cta-btn {
           position: relative;
+          z-index: 1;
           display: inline-flex;
           align-items: center;
-          gap: 8px;
-          height: 36px;
-          padding: 0 24px 0 28px;
-          border-radius: 4px;
-          background: linear-gradient(135deg, #00fe4e 0%, #0adf54 100%);
-          color: #000;
+          justify-content: center;
+          gap: 10px;
+          height: 48px;
+          padding: 0 36px;
           font-family: var(--font-poppins), sans-serif;
           font-size: 14px;
-          font-weight: 600;
-          border: none;
+          font-weight: 500;
+          color: #333333;
+          background: #f1f1f1;
+          border: 1.5px solid transparent;
+          border-radius: 24px;
           cursor: pointer;
-          box-shadow: 0 4px 14px rgba(0, 254, 78, 0.4);
-          transition:
-            transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-            box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          z-index: 1;
+          text-decoration: none;
+          box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
           margin-top: 6px;
-        }
-
-        .contact-cta-btn svg {
-          width: 18px;
-          height: 18px;
-          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: background 0.3s ease, color 0.3s ease, transform 0.25s ease,
+                      box-shadow 0.3s ease, border-color 0.3s ease;
         }
 
         .contact-cta-btn:hover {
+          background: linear-gradient(135deg, #00fe4e 0%, #0adf54 100%);
+          color: #000000;
+          border-color: #00fe4e;
           transform: translateY(-2px);
-          box-shadow:
-            0 8px 24px rgba(0, 254, 78, 0.5),
-            0 0 0 6px rgba(0, 254, 78, 0.12);
+          box-shadow: 0 8px 24px rgba(0, 254, 78, 0.5),
+                      0 0 0 6px rgba(0, 254, 78, 0.12);
         }
 
-        .contact-cta-btn:hover svg {
+        .contact-cta-btn:active {
+          transform: translateY(0) scale(0.97);
+        }
+
+        .contact-cta-btn-arrow {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: #00fe4e;
+          color: #050505;
+          transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .contact-cta-btn:hover .contact-cta-btn-arrow {
           transform: translateX(4px);
+          background: #ffffff;
+        }
+
+        .contact-cta-btn-arrow svg {
+          width: 12px;
+          height: 12px;
         }
 
         @media (max-width: 1024px) {
@@ -186,21 +206,20 @@ export default function ContactCTASection() {
             </p>
 
             <a href="/contact" className="contact-cta-btn">
-              <span>Contact Us</span>
-
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M5 12H19M19 12L12 5M19 12L12 19"
+              Contact Us
+              <span className="contact-cta-btn-arrow">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
                   stroke="currentColor"
-                  strokeWidth="2"
+                  strokeWidth="2.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                />
-              </svg>
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </span>
             </a>
           </div>
         </div>
