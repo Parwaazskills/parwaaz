@@ -72,40 +72,27 @@ export default function ContactCards() {
         }
 
         .contact-card {
-          position: relative;
-          display: flex;
-          gap: 14px;
-          align-items: flex-start;
-          padding: 18px;
-          background: #ffffff;
-          border: 1px solid rgba(0, 0, 0, 0.04);
-          border-radius: 14px;
-          transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        .contact-card:hover {
-          transform: translateY(-4px);
-          border-color: rgba(0, 254, 78, 0.3);
-          box-shadow: 0 12px 28px rgba(0, 254, 78, 0.12), 0 4px 8px rgba(0, 0, 0, 0.04);
-        }
+  position: relative;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 14px;
+}
 
-        .contact-card-icon {
-          flex-shrink: 0;
-          width: 42px;
-          height: 42px;
-          border-radius: 50%;
-          background: rgba(0, 254, 78, 0.12);
-          color: #00b347;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.3s ease;
-        }
-        .contact-card:hover .contact-card-icon {
-          background: #00fe4e;
-          color: #050505;
-          box-shadow: 0 0 0 4px rgba(0, 254, 78, 0.18);
-        }
-
+.contact-card-icon {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(0, 254, 78, 0.12);
+  color: #00b347;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
         .contact-card-title {
           font-size: 14px;
           font-weight: 700;

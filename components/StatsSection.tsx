@@ -87,7 +87,7 @@ export default function StatsSection() {
         .marquee-shell:hover .marquee-track { animation-play-state: paused; }
         .marquee-text {
           flex-shrink: 0;
-          font-family: var(--font-poppins), sans-serif;
+           font-family: var(--font-montserrat), sans-serif;
           font-weight: 400;
           font-size: clamp(40px, 8vw, 110px);
           line-height: 1;
