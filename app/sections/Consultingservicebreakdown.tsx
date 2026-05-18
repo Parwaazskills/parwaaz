@@ -316,12 +316,27 @@ export default function ConsultingServiceBreakdown() {
             Structured, Locally Grounded Consulting Approach.
           </p>
 
-          <a
-            href="/contact"
-            className="mt-[18px] inline-flex h-[46px] min-w-[172px] items-center justify-center rounded-[7px] bg-[#00F51F] px-[28px] font-montserrat text-[13px] font-medium leading-none tracking-[-0.1px] text-[#001000] transition-all duration-300 hover:-translate-y-[2px] hover:bg-[#00DD1C] max-[480px]:h-[44px] max-[480px]:w-full"
-          >
-            Contact Us
-          </a>
+      <a
+  href="/contact"
+  className="group relative z-[3] mt-[18px] inline-flex h-[48px] items-center justify-center gap-[10px] rounded-[24px] border-[1.5px] border-transparent bg-[#F1F1F1] px-[36px] font-montserrat text-[14px] font-medium leading-none text-[#333333] no-underline shadow-[0_4px_18px_rgba(0,0,0,0.18)] transition-all duration-300 ease-in-out hover:-translate-y-[2px] hover:border-[#00FE4E] hover:bg-[linear-gradient(135deg,#00FE4E_0%,#0ADF54_100%)] hover:text-black hover:shadow-[0_8px_24px_rgba(0,254,78,0.5),0_0_0_6px_rgba(0,254,78,0.12)] active:translate-y-0 active:scale-[0.97] max-[480px]:h-[46px] max-[480px]:w-full"
+>
+  Start a Project
+  <span className="inline-flex h-[24px] w-[24px] items-center justify-center rounded-full bg-[#00FE4E] text-[#050505] transition-all duration-300 ease-in-out group-hover:translate-x-[4px] group-hover:bg-white">
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="12 5 19 12 12 19" />
+    </svg>
+  </span>
+</a>
         </div>
       </div>
     </section>

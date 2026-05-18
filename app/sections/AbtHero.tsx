@@ -37,17 +37,17 @@ export default function AbtHero() {
             unlock new oppo
           </p>
 
-          <div className="mt-[21px] flex items-center gap-[16px]">
+          <div className="mt-[21px] flex items-center gap-[16px] max-[480px]:flex-col max-[480px]:items-start">
             <Link
               href="/services"
-              className="flex h-[38px] w-[132px] items-center justify-center rounded-[14px] bg-[#00fe4e] text-[12px] font-medium text-[#07140d] shadow-[0_8px_18px_rgba(0,254,78,0.22)] transition-all duration-300 hover:scale-[1.03] hover:bg-[#00e948]"
+              className="relative z-[3] inline-flex h-[48px] items-center justify-center rounded-[24px] border-[1.5px] border-[#00FE4E] bg-[linear-gradient(135deg,#00FE4E_0%,#0ADF54_100%)] px-[36px] font-montserrat text-[14px] font-medium leading-none text-black no-underline shadow-[0_8px_24px_rgba(0,254,78,0.35),0_0_0_6px_rgba(0,254,78,0.10)] transition-all duration-300 ease-in-out hover:-translate-y-[2px] hover:border-transparent hover:bg-[#F1F1F1] hover:text-[#333333] hover:shadow-[0_4px_18px_rgba(0,0,0,0.18)] active:translate-y-0 active:scale-[0.97] max-[480px]:h-[46px] max-[480px]:w-full"
             >
               Our Services
             </Link>
 
             <Link
               href="/contact"
-              className="flex h-[40px] w-[134px] items-center justify-center rounded-[14px] border border-black/10 bg-white text-[12px] font-medium text-[#2b2f35] shadow-[0_8px_18px_rgba(255,255,255,0.14)] transition-all duration-300 hover:scale-[1.03] hover:bg-[#f5f5f5]"
+              className="relative z-[3] inline-flex h-[48px] items-center justify-center rounded-[24px] border-[1.5px] border-transparent bg-[#F1F1F1] px-[36px] font-montserrat text-[14px] font-medium leading-none text-[#333333] no-underline shadow-[0_4px_18px_rgba(0,0,0,0.18)] transition-all duration-300 ease-in-out hover:-translate-y-[2px] hover:border-[#00FE4E] hover:bg-[linear-gradient(135deg,#00FE4E_0%,#0ADF54_100%)] hover:text-black hover:shadow-[0_8px_24px_rgba(0,254,78,0.5),0_0_0_6px_rgba(0,254,78,0.12)] active:translate-y-0 active:scale-[0.97] max-[480px]:h-[46px] max-[480px]:w-full"
             >
               Get Started
             </Link>
@@ -62,7 +62,6 @@ export default function AbtHero() {
               alt="Rotating purple 3D orb"
               fill
               priority
-              // className="object-contain drop-shadow-[0_0_35px_rgba(111,55,255,0.75)]"
             />
           </div>
         </div>

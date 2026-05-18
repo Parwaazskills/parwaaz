@@ -1,5 +1,3 @@
-// app/coursera-digital-learning/page.tsx
-
 import Navbar from "@/components/Navbar";
 import LogoCardsSection from "../sections/LogoCardsSection1";
 import Footer from "@/components/Footer";

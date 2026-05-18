@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const years = ["1985", "2000", "2007", "2009", "2011", "2020", "2023"];
+const years = ["1985", "2000", "2009", "2011", "2020", "2023", "2026"];
 
 const historyTickerTitleClass =
   "history-title whitespace-nowrap bg-[linear-gradient(90deg,#00fe4e_0%,#00d657_18%,#02875d_42%,#00616f_68%,#07136f_100%)] bg-clip-text text-[110px] font-regular uppercase leading-[0.9] tracking-[-0.06em] text-transparent max-[1300px]:text-[118px] max-[1100px]:text-[94px] max-[900px]:text-[72px] max-[760px]:whitespace-normal max-[760px]:text-[54px] max-[760px]:leading-[0.95] max-[520px]:text-[42px] max-[390px]:text-[34px]";
@@ -21,53 +21,53 @@ const historyData: Record<
   }
 > = {
   "1985": {
-    company: "Mitrex",
+    company: "AIRRS Associates",
     offices: "Islamabad, Lahore, Karachi, Kabul",
     employees: "43",
     milestone:
-      "Mitrex established as the foundation of our conglomerate, with a focus on multi-regional expansion",
+      "A construction consultancy delivering landmark institutional and defence infrastructure projects across Pakistan.",
   },
   "2000": {
-    company: "Mitrex",
-    offices: "Islamabad, Lahore, Karachi, Kabul",
-    employees: "43",
+    company: "VTT",
+    offices: "Islamabad, Karachi, Lahore",
+    employees: "60",
     milestone:
-      "Mitrex established as the foundation of our conglomerate, with a focus on multi-regional expansion",
-  },
-  "2007": {
-    company: "Mitrddex",
-    offices: "Islamabad, Lahore, Karachi, Kabul",
-    employees: "43",
-    milestone:
-      "Mitrex established as the foundation of our conglomerate, with a focus on multi-regional expansion",
+      "An ISO-certified advisory firm driving strategy and transformation for governments and enterprises across the region.",
   },
   "2009": {
-    company: "Mitrex",
-    offices: "Islamabad, Lahore, Karachi, Kabul",
-    employees: "43",
+    company: "FMI",
+    offices: "Islamabad, Lahore, Karachi, Peshawar",
+    employees: "81",
     milestone:
-      "Mitrex established as the foundation of our conglomerate, with a focus on multi-regional expansion",
+      "A commodity brokerage specialising in cotton and sugar markets with deep trade expertise and market intelligence.",
   },
   "2011": {
-    company: "Mitrex",
-    offices: "Islamabad, Lahore, Karachi, Kabul",
-    employees: "43",
+    company: "PAR",
+    offices: "Islamabad, Lahore, Karachi, Peshawar",
+    employees: "137",
     milestone:
-      "Mitrex established as the foundation of our conglomerate, with a focus on multi-regional expansion",
+      "An agri-intelligence platform connecting research, data, and market access across Pakistan’s agriculture sector.",
   },
   "2020": {
-    company: "Mitrex",
-    offices: "Islamabad, Lahore, Karachi, Kabul",
-    employees: "43",
+    company: "Learning Edge",
+    offices: "Islamabad, Karachi, Lahore",
+    employees: "10",
+    milestone:
+      "An EdTech venture expanding access to global digital learning through partnerships with platforms including Coursera.",
+  },
+  "2023": {
+    company: "Parwaz",
+    offices: "Islamabad, Lahore",
+    employees: "15",
     milestone:
       "Mitrex established as the foundation of our conglomerate, with a focus on multi-regional expansion",
   },
-  "2023": {
-    company: "Mitrex",
-    offices: "Islamabad, Lahore, Karachi, Kabul",
-    employees: "43",
+  "2026": {
+    company: "Ease Edge",
+    offices: "Islamabad, Lahore",
+    employees: "3",
     milestone:
-      "Mitrex established as the foundation of our conglomerate, with a focus on multi-regional expansion",
+      "A consultancy helping businesses navigate Pakistan’s market landscape with strategic and operational support.",
   },
 };
 
@@ -82,14 +82,16 @@ function HistoryCard({
 }) {
   const item = historyData[year];
 
+  if (!item) return null;
+
   return (
     <button
       type="button"
       onClick={onClick}
       className={`history-card h-[250px] w-full rounded-[8px] px-[32px] pt-[20px] text-left transition-all duration-300 max-[900px]:h-auto max-[900px]:min-h-[180px] max-[480px]:min-h-[190px] max-[480px]:px-[22px] max-[480px]:pt-[19px] ${
         active
-  ? "bg-[#030887] !text-white shadow-[0_15px_32px_rgba(3,8,135,0.18)] [&_*]:!text-white"
-  : "border border-[#00fe4e] border-r-[#040887] bg-white text-black hover:-translate-y-[3px] hover:shadow-[0_12px_24px_rgba(3,8,135,0.08)]"
+          ? "bg-[#030887] !text-white shadow-[0_15px_32px_rgba(3,8,135,0.18)] [&_*]:!text-white"
+          : "border border-[#00fe4e] border-r-[#040887] bg-white text-black hover:-translate-y-[3px] hover:shadow-[0_12px_24px_rgba(3,8,135,0.08)]"
       }`}
     >
       <h3
@@ -316,7 +318,6 @@ export default function CompanyHistorySection() {
       ref={sectionRef}
       className="relative w-full overflow-x-clip overflow-y-visible bg-white pb-[50px] pt-[76px] max-[900px]:pb-[54px] max-[900px]:pt-[60px] max-[600px]:pb-[48px] max-[600px]:pt-[50px]"
     >
-      {/* Right side network decorative lines */}
       <div
         ref={networkRef}
         className="electric-network pointer-events-none absolute right-[-72px] top-[430px] z-0 h-[300px] w-[330px] opacity-70 max-[900px]:hidden"
@@ -359,7 +360,6 @@ export default function CompanyHistorySection() {
       </div>
 
       <div className="relative z-[2] mx-auto w-full max-w-[1400px] px-4">
-        {/* Heading */}
         <div className="w-full overflow-visible max-[760px]:overflow-visible">
           <div
             ref={tickerTrackRef}
@@ -389,7 +389,6 @@ export default function CompanyHistorySection() {
         </p>
 
         <div className="mt-[50px] grid grid-cols-[100px_1fr] gap-[48px] max-[900px]:gap-[34px] max-[760px]:grid-cols-1 max-[760px]:gap-[28px] max-[600px]:mt-[34px]">
-          {/* Years Sidebar */}
           <div
             ref={yearsRef}
             className="relative flex flex-col items-center gap-[25px] pt-0 max-[760px]:flex-row max-[760px]:flex-wrap max-[760px]:justify-start max-[760px]:gap-[10px]"
@@ -418,7 +417,6 @@ export default function CompanyHistorySection() {
             })}
           </div>
 
-          {/* Cards Grid */}
           <div
             ref={cardsGridRef}
             className="grid grid-cols-2 gap-x-[48px] gap-y-[13px] max-[1100px]:gap-x-[28px] max-[760px]:grid-cols-1"
