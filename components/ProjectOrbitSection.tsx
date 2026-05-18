@@ -713,17 +713,18 @@ export default function ProjectOrbitSection() {
             text-align: center !important;
           }
 
-          .po-title h2 {
-            display: inline-flex !important;
-            flex-direction: row !important;
-            align-items: baseline !important;
-            justify-content: center !important;
-            gap: 8px !important;
-            font-size: clamp(17px, 5.4vw, 22px) !important;
-            line-height: 1 !important;
-            letter-spacing: 0.16em !important;
-            white-space: nowrap !important;
-          }
+         .po-title h2 {
+  margin: 0;
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 42px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 16px;
+}
 
           .po-content {
             position: relative !important;
@@ -1006,6 +1007,36 @@ export default function ProjectOrbitSection() {
             bottom: -245px !important;
           }
         }
+
+        /* FINAL FORCE FONT FOR ORBIT TITLE */
+.po-title h2,
+.po-title h2 span {
+  font-family: var(--font-montserrat), sans-serif !important;
+  font-size: 42px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.2 !important;
+}
+
+@media (max-width: 768px) {
+  .po-title h2,
+  .po-title h2 span {
+    font-family: var(--font-montserrat), sans-serif !important;
+    font-size: 30px !important;
+    font-weight: 400 !important;
+    letter-spacing: 0 !important;
+    line-height: 1.2 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .po-title h2,
+  .po-title h2 span {
+    font-size: 24px !important;
+    font-weight: 400 !important;
+    letter-spacing: 0 !important;
+  }
+}
       `}</style>
     </section>
   );

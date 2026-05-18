@@ -88,8 +88,8 @@ function HistoryCard({
       onClick={onClick}
       className={`history-card h-[250px] w-full rounded-[8px] px-[32px] pt-[20px] text-left transition-all duration-300 max-[900px]:h-auto max-[900px]:min-h-[180px] max-[480px]:min-h-[190px] max-[480px]:px-[22px] max-[480px]:pt-[19px] ${
         active
-          ? "bg-[#030887] text-white shadow-[0_15px_32px_rgba(3,8,135,0.18)]"
-          : "border border-[#00fe4e] border-r-[#040887] bg-white text-black hover:-translate-y-[3px] hover:shadow-[0_12px_24px_rgba(3,8,135,0.08)]"
+  ? "bg-[#030887] !text-white shadow-[0_15px_32px_rgba(3,8,135,0.18)] [&_*]:!text-white"
+  : "border border-[#00fe4e] border-r-[#040887] bg-white text-black hover:-translate-y-[3px] hover:shadow-[0_12px_24px_rgba(3,8,135,0.08)]"
       }`}
     >
       <h3

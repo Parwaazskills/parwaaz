@@ -120,20 +120,20 @@ export default function PartnerLogosSection() {
           width: 100%;
           padding: 90px 0 40px;
         }
-        .collab-title {
-          margin: 0 0 40px 0;
-          font-family: var(--font-poppins), sans-serif;
-          font-size: clamp(22px, 3.5vw, 45px);
-          font-weight: 600;
-          letter-spacing: 0.04em;
-          line-height: 1.2;
-          text-align: center;
-          background: linear-gradient(90deg, #00fe4e 0%, #000572 100%);
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          color: transparent;
-        }
+.collab-title {
+  margin: 0 0 40px 0;
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 42px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-align: center;
+  background: linear-gradient(90deg, #00fe4e 0%, #000572 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
 
         /* ============ MARQUEE TRACK ============ */
         .collab-shell {
