@@ -123,19 +123,15 @@ function HistoryCard({
             {year}
           </h3>
 
-          <div
-            className={`relative mt-[-4px] h-[48px] w-[78px] shrink-0 overflow-hidden border ${
-              active ? "border-white/20 bg-white" : "border-[#e7f7e9] bg-white"
-            }`}
-          >
-            <Image
-              src={item.logo}
-              alt={item.logoAlt}
-              fill
-              sizes="78px"
-              className="object-contain p-[5px]"
-            />
-          </div>
+     <div className="relative mt-[-4px] h-[48px] w-[78px] shrink-0 overflow-hidden">
+  <Image
+    src={item.logo}
+    alt={item.logoAlt}
+    fill
+    sizes="78px"
+    className="object-contain"
+  />
+</div>
         </div>
 
         <ul
