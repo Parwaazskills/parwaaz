@@ -13,7 +13,7 @@ export const teamMembers: TeamMember[] = [
     linkedin: "https://www.linkedin.com/in/shahban-shoukat-a50321250/",
   },
   {
-    name: "SHeRJEEL USMANI",
+    name: "SHERJEEL USMANI",
     role: "Co-Founder",
     img: "/team-sharjeel.png",
     linkedin: "https://www.linkedin.com/in/muhammad-sherjeel-pasha-usmani-21444665/",
@@ -26,7 +26,7 @@ export const teamMembers: TeamMember[] = [
   },
   {
     name: "SALMAN FAYYAZ",
-    role: "Digital Marketing Consultant",
+    role: "Head Marketing & Growth",
     img: "/team-salman.png",
     linkedin: "https://www.linkedin.com/in/salmanfayyaz/",
   },
