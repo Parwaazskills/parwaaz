@@ -8,14 +8,14 @@ export type Testimonial = {
 
 export const testimonials: Testimonial[] = [
   {
-    name: "Sara Mohamed",
+    name: "Zaid Hamid",
     img: "/indus.png",
     stars: 5,
     text: "“Parwaaz brought a structured and future-focused approach to digital learning. Their ability to align global learning pathways with industry requirements helped create meaningful capability development across teams.”",
     designation: "- Learning & Development Team, Indus Motors",
   },
   {
-    name: "Ahmed Khan",
+    name: "Nicols Notis",
     img: "/tuv-rheinland.png",
     stars: 5,
     text: "“Parwaaz demonstrated strong operational capability and responsiveness throughout the recruitment and deployment process. Their understanding of workforce requirements and execution standards made them a reliable placement partner.”",
@@ -29,7 +29,7 @@ export const testimonials: Testimonial[] = [
     designation: "— Digital Transformation Team, Fauji Fertilizer Company",
   },
   {
-    name: "Bilal Ahmad",
+    name: "Sarfraz Haroon",
     img: "/ripah.png",
     stars: 5,
     text: "“Parwaaz delivered a highly engaging and professionally managed training experience. Their focus on quality delivery, learner engagement, and future-ready skills created meaningful value for participants.”",
@@ -40,6 +40,6 @@ export const testimonials: Testimonial[] = [
     img: "/ubl-logo.png",
     stars: 5,
     text: "“Parwaaz brought a structured and future-focused approach to digital learning. Their ability to align global learning pathways with industry requirements helped create meaningful capability development across teams.”",
-    designation: "UBL",
+    designation: "— Head of People Development, UBL",
   },
 ];
