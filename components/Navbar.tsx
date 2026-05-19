@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { usePathname } from "next/navigation";
 import { Mail, Phone, Search, Menu, X } from "lucide-react";
@@ -175,15 +175,16 @@ export default function Navbar({
   activeLink,
 }: NavbarProps) {
   const pathname = usePathname();
+  const servicesDropdownRef = useRef<HTMLDivElement | null>(null);
 
   const [internalMobileNavOpen, setInternalMobileNavOpen] = useState(false);
   const [internalMobileServicesOpen, setInternalMobileServicesOpen] =
     useState(false);
   const [internalSearchOpen, setInternalSearchOpen] = useState(false);
+  const [desktopServicesOpen, setDesktopServicesOpen] = useState(false);
 
   const finalMobileNavOpen = mobileNavOpen ?? internalMobileNavOpen;
-  const finalSetMobileNavOpen =
-    setMobileNavOpen ?? setInternalMobileNavOpen;
+  const finalSetMobileNavOpen = setMobileNavOpen ?? setInternalMobileNavOpen;
 
   const finalMobileServicesOpen =
     mobileServicesOpen ?? internalMobileServicesOpen;
@@ -227,7 +228,7 @@ export default function Navbar({
 
     const updateDropdownPosition = () => {
       const navRect = nav.getBoundingClientRect();
-      const top = navRect.bottom + 8;
+      const top = navRect.bottom + 10;
       document.documentElement.style.setProperty("--dropdown-top", `${top}px`);
     };
 
@@ -243,6 +244,43 @@ export default function Navbar({
       window.removeEventListener("resize", updateDropdownPosition);
     };
   }, []);
+
+  useEffect(() => {
+    if (!desktopServicesOpen) return;
+
+    const handlePointerDown = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as Node;
+
+      if (
+        servicesDropdownRef.current &&
+        servicesDropdownRef.current.contains(target)
+      ) {
+        return;
+      }
+
+      setDesktopServicesOpen(false);
+    };
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setDesktopServicesOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("touchstart", handlePointerDown);
+    window.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("touchstart", handlePointerDown);
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, [desktopServicesOpen]);
+
+  useEffect(() => {
+    setDesktopServicesOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (!finalMobileNavOpen) return;
@@ -498,6 +536,10 @@ export default function Navbar({
           isolation: isolate;
           transition: color 0.25s ease, transform 0.25s ease;
           cursor: pointer;
+          background: transparent;
+          border: 0;
+          outline: 0;
+          font-family: inherit;
         }
 
         .pw-link::before,
@@ -527,25 +569,6 @@ export default function Navbar({
           cursor: pointer;
         }
 
-        .pw-link-dropdown-wrap::after {
-          content: "";
-          position: fixed;
-          top: calc(var(--dropdown-top, 100px) - 42px);
-          left: 50%;
-          transform: translateX(-50%);
-          width: min(1280px, calc(100vw - 40px));
-          height: 46px;
-          opacity: 0;
-          visibility: hidden;
-          pointer-events: auto;
-          z-index: 999;
-        }
-
-        .pw-link-dropdown-wrap:hover::after {
-          opacity: 1;
-          visibility: visible;
-        }
-
         .pw-link-chevron {
           width: 14px;
           height: 14px;
@@ -553,7 +576,7 @@ export default function Navbar({
           transition: transform 0.3s ease;
         }
 
-        .pw-link-dropdown-wrap:hover .pw-link-chevron {
+        .pw-link-dropdown-wrap.is-open .pw-link-chevron {
           transform: rotate(180deg);
         }
 
@@ -591,18 +614,7 @@ export default function Navbar({
           cursor: default;
         }
 
-        .pw-dropdown-panel::before {
-          content: "";
-          position: absolute;
-          top: -42px;
-          left: 0;
-          right: 0;
-          height: 42px;
-          background: transparent;
-        }
-
-        .pw-link-dropdown-wrap:hover .pw-dropdown-panel,
-        .pw-dropdown-panel:hover {
+        .pw-link-dropdown-wrap.is-open .pw-dropdown-panel {
           opacity: 1;
           visibility: visible;
           pointer-events: auto;
@@ -967,10 +979,22 @@ export default function Navbar({
               const a = l === currentActiveLink;
 
               return hasDropdown ? (
-                <div key={l} className="pw-link-dropdown-wrap">
-                  <Link
-                    href={href}
+                <div
+                  key={l}
+                  ref={servicesDropdownRef}
+                  className={`pw-link-dropdown-wrap ${
+                    desktopServicesOpen ? "is-open" : ""
+                  }`}
+                >
+                  <button
+                    type="button"
                     className={a ? "pw-link pw-link-active" : "pw-link"}
+                    aria-expanded={desktopServicesOpen}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setDesktopServicesOpen((prev) => !prev);
+                    }}
                   >
                     <span className="pw-link-dot" />
                     <span>{l}</span>
@@ -987,13 +1011,20 @@ export default function Navbar({
                         strokeLinejoin="round"
                       />
                     </svg>
-                  </Link>
+                  </button>
 
-                  <div className="pw-dropdown-panel">
+                  <div
+                    className="pw-dropdown-panel"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <div className="pw-dropdown-grid-5">
                       {SERVICES_DROPDOWN.map((col) => (
                         <div key={col.title} className="pw-dropdown-col">
-                          <Link href={col.href} className="pw-dropdown-col-title">
+                          <Link
+                            href={col.href}
+                            className="pw-dropdown-col-title"
+                            onClick={() => setDesktopServicesOpen(false)}
+                          >
                             {col.title}
                           </Link>
 
@@ -1002,6 +1033,7 @@ export default function Navbar({
                               key={item.name}
                               href={item.href}
                               className="pw-dropdown-item"
+                              onClick={() => setDesktopServicesOpen(false)}
                             >
                               <span className="pw-dropdown-item-dot" />
                               <span className="pw-dropdown-item-name">
@@ -1019,6 +1051,7 @@ export default function Navbar({
                   key={l}
                   href={href}
                   className={a ? "pw-link pw-link-active" : "pw-link"}
+                  onClick={() => setDesktopServicesOpen(false)}
                 >
                   <span className="pw-link-dot" />
                   <span>{l}</span>
@@ -1159,7 +1192,7 @@ export default function Navbar({
             <div className="pw-mobile-contact-box">
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-[#00fe4e]" />
-                <span>+92 300 2855800</span>
+                <span>contact@parwaaz.co</span>
               </div>
 
               <div className="flex items-center gap-2">
