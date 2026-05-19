@@ -6,150 +6,61 @@ const cards = [
   {
     icon: MapPin,
     title: "Our Location",
-   lines: ["Lahore, Karachi, Islamabad", "Pakistan & Singapore"],
-    cta: "View on Map",
-    href: "#",
+    lines: ["Lahore, Karachi, Islamabad", "Pakistan & Singapore"],
   },
   {
     icon: Phone,
     title: "Call Us",
     lines: ["+92 300 2855800"],
-    cta: "Make a Call",
-    href: "tel:+923002855800",
   },
   {
     icon: Mail,
     title: "Email Us",
     lines: ["contact@parwaaz.co"],
-    cta: "Send Email",
-    href: "mailto:contact@parwaaz.co",
   },
   {
     icon: Clock,
     title: "Business Hours",
     lines: ["Mon – Fri: 9:00 AM – 6:00 PM", "Saturday – Sunday: Closed"],
-    cta: null,
-    href: null,
   },
 ];
 
 export default function ContactCards() {
   return (
-    <>
-      <style jsx>{`
-        .contact-cards-section {
-          position: relative;
-          background: transparent;
-          padding: 0 0 64px;
-          z-index: 2;
-        }
-        @media (max-width: 768px) {
-          .contact-cards-section { padding: 0 0 48px; }
-        }
+    <section className="relative z-[2] bg-transparent pb-16 max-[768px]:pb-12">
+      <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-4 gap-4 rounded-[20px] border border-[rgba(0,254,78,0.1)] bg-white/85 p-6 shadow-[0_8px_28px_rgba(0,0,0,0.04)] backdrop-blur-[10px] max-[1024px]:grid-cols-2 max-[640px]:grid-cols-1 max-[640px]:gap-3 max-[640px]:p-4">
+          {cards.map((card) => {
+            const Icon = card.icon;
 
-        .contact-cards-grid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 16px;
-          background: rgba(255, 255, 255, 0.85);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(0, 254, 78, 0.1);
-          border-radius: 20px;
-          padding: 24px;
-          box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04);
-        }
-        @media (max-width: 1024px) {
-          .contact-cards-grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
-        }
-        @media (max-width: 640px) {
-          .contact-cards-grid {
-            grid-template-columns: 1fr;
-            padding: 16px;
-            gap: 12px;
-          }
-        }
-
-        .contact-card {
-  position: relative;
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-  padding: 18px;
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  border-radius: 14px;
-}
-
-.contact-card-icon {
-  flex-shrink: 0;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: rgba(0, 254, 78, 0.12);
-  color: #00b347;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-        .contact-card-title {
-          font-size: 14px;
-          font-weight: 700;
-          color: #050505;
-          margin-bottom: 4px;
-        }
-
-        .contact-card-line {
-          font-size: 12.5px;
-          color: #5a5a5a;
-          line-height: 1.5;
-        }
-
-        .contact-card-cta {
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          margin-top: 10px;
-          font-size: 12px;
-          font-weight: 600;
-          color: #00b347;
-          letter-spacing: 0.02em;
-          text-decoration: none;
-          transition: gap 0.25s ease;
-        }
-        .contact-card-cta:hover {
-          gap: 8px;
-        }
-      `}</style>
-
-      <section className="contact-cards-section">
-        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
-          <div className="contact-cards-grid">
-            {cards.map((card) => {
-              const Icon = card.icon;
-              return (
-                <div key={card.title} className="contact-card">
-                  <div className="contact-card-icon">
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="contact-card-title">{card.title}</div>
-                    {card.lines.map((line) => (
-                      <div key={line} className="contact-card-line">{line}</div>
-                    ))}
-                    {card.cta && card.href && (
-                      <a href={card.href} className="contact-card-cta">
-                        {card.cta} →
-                      </a>
-                    )}
-                  </div>
+            return (
+              <div
+                key={card.title}
+                className="relative flex min-h-[118px] items-center gap-[14px] rounded-[14px] border border-black/[0.04] bg-white p-[18px]"
+              >
+                <div className="flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full bg-[#00fe4e]/[0.12] text-[#00b347]">
+                  <Icon className="h-5 w-5" />
                 </div>
-              );
-            })}
-          </div>
+
+                <div>
+                  <div className="mb-1 text-[14px] font-bold text-[#050505]">
+                    {card.title}
+                  </div>
+
+                  {card.lines.map((line) => (
+                    <div
+                      key={line}
+                      className="text-[12.5px] leading-[1.5] text-[#5a5a5a]"
+                    >
+                      {line}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
