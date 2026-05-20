@@ -149,7 +149,7 @@ function HistoryCard({
             <span className="font-bold">Employees:</span> {item.employees}
           </li>
           <li className="list-disc">
-            <span className="font-bold">Milestone:</span>{" "}
+            <span className="font-bold">Who we are:</span>{" "}
             <span className="history-card-description">{item.milestone}</span>
           </li>
         </ul>

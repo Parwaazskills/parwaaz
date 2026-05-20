@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { usePathname } from "next/navigation";
-import { Mail, Phone, Search, Menu, X } from "lucide-react";
+import { Mail, Phone, Search, Menu, X, Linkedin } from "lucide-react";
 import { FacebookSvg, YoutubeSvg, XSvg } from "@/components/SocialIcons";
 
 interface NavbarProps {
@@ -938,17 +938,29 @@ export default function Navbar({
 
         <span className="text-white/65 mr-2">Follow Us:</span>
 
-        <div className="flex items-center gap-3">
-          <Link href="#" className="pw-social-icon">
-            <FacebookSvg />
-          </Link>
-          <Link href="#" className="pw-social-icon">
-            <YoutubeSvg />
-          </Link>
-          <Link href="#" className="pw-social-icon">
-            <XSvg />
-          </Link>
-        </div>
+       <div className="flex items-center gap-3">
+  <Link href="#" className="pw-social-icon" aria-label="Facebook">
+    <FacebookSvg />
+  </Link>
+
+  <Link href="#" className="pw-social-icon" aria-label="YouTube">
+    <YoutubeSvg />
+  </Link>
+
+  <Link href="#" className="pw-social-icon" aria-label="X">
+    <XSvg />
+  </Link>
+
+  <Link
+    href="https://www.linkedin.com/company/parwaazskills/posts/?feedView=all"
+    className="pw-social-icon"
+    aria-label="LinkedIn"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <Linkedin size={20} strokeWidth={2.2} />
+  </Link>
+</div>
       </div>
 
       <div className="pw-nav-wrapper relative mb-4 lg:mb-5">

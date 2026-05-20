@@ -42,7 +42,7 @@ const values = [
 ];
 
 export default function OurValuesSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const sectionRef = useRef<HTMLElement | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
@@ -164,6 +164,68 @@ export default function OurValuesSection() {
     return () => ctx.revert();
   }, []);
 
+  const renderValueCard = (item: (typeof values)[number], index: number) => {
+    const isOpen = openIndex === index;
+
+    return (
+      <button
+        key={item.title}
+        ref={(el) => {
+          accordionRefs.current[index] = el;
+        }}
+        type="button"
+        onClick={() => setOpenIndex(isOpen ? null : index)}
+        className={`group w-full cursor-pointer rounded-[7px] bg-[#04037f] text-left transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_12px_25px_rgba(4,3,127,0.18)] ${
+          isOpen ? "min-h-[148px]" : "h-[77px]"
+        }`}
+      >
+        <div
+          className={`flex h-full w-full items-center gap-[22px] px-[33px] transition-all duration-300 max-[480px]:gap-[16px] max-[480px]:px-[22px] ${
+            isOpen ? "py-[22px]" : "py-0"
+          }`}
+        >
+          <div className="relative flex h-[58px] w-[50px] shrink-0 items-center justify-center overflow-hidden max-[480px]:h-[48px] max-[480px]:w-[42px]">
+            <Image
+              src={item.icon}
+              alt={item.iconAlt}
+              fill
+              sizes="48px"
+              className="object-contain"
+            />
+          </div>
+
+          <div className="min-w-0 flex-1">
+            <div className="flex w-full items-center justify-between gap-4">
+              <h3 className="text-[14px] font-semibold uppercase leading-[1.15] tracking-[1.45px] text-[#00fe4e] max-[480px]:text-[11.5px] max-[480px]:tracking-[1px]">
+                {item.title}
+              </h3>
+
+              {isOpen ? (
+                <ChevronUp className="h-[13px] w-[13px] shrink-0 text-[#00fe4e]" />
+              ) : (
+                <ChevronDown className="h-[13px] w-[13px] shrink-0 text-[#00fe4e]" />
+              )}
+            </div>
+
+            <div
+              className={`grid transition-all duration-300 ease-out ${
+                isOpen
+                  ? "grid-rows-[1fr] opacity-100"
+                  : "grid-rows-[0fr] opacity-0"
+              }`}
+            >
+              <div className="overflow-hidden">
+                <p className="mt-[10px] max-w-[338px] text-[14px] font-light leading-[1.45] tracking-[0.25px] text-white/100 max-[480px]:text-[11px]">
+                  {item.text}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </button>
+    );
+  };
+
   return (
     <section
       ref={sectionRef}
@@ -183,68 +245,17 @@ export default function OurValuesSection() {
           OUR VALUES
         </h2>
 
-        <div className="mt-[50px] grid grid-cols-2 gap-x-[58px] gap-y-[10px] max-[900px]:mt-[38px] max-[900px]:grid-cols-1 max-[900px]:gap-[14px]">
-          {values.map((item, index) => {
-            const isOpen = openIndex === index;
+        <div className="mt-[50px] flex gap-x-[58px] max-[900px]:mt-[38px] max-[900px]:flex-col max-[900px]:gap-[14px]">
+          <div className="flex w-1/2 flex-col gap-[10px] max-[900px]:w-full max-[900px]:gap-[14px]">
+            {renderValueCard(values[0], 0)}
+            {renderValueCard(values[2], 2)}
+            {renderValueCard(values[4], 4)}
+          </div>
 
-            return (
-              <button
-                key={item.title}
-                ref={(el) => {
-                  accordionRefs.current[index] = el;
-                }}
-                type="button"
-                onClick={() => setOpenIndex(isOpen ? null : index)}
-                className={`group w-full cursor-pointer rounded-[7px] bg-[#04037f] text-left transition-all duration-300 hover:translate-y-[-2px] hover:shadow-[0_12px_25px_rgba(4,3,127,0.18)] ${
-                  isOpen ? "min-h-[109px]" : "h-[77px]"
-                }`}
-              >
-                <div
-                  className={`flex h-full w-full items-center gap-[22px] px-[33px] transition-all duration-300 max-[480px]:gap-[16px] max-[480px]:px-[22px] ${
-                    isOpen ? "py-[22px]" : "py-0"
-                  }`}
-                >
-<div className="relative flex h-[58px] w-[50px] shrink-0 items-center justify-center overflow-hidden max-[480px]:h-[48px] max-[480px]:w-[42px]">
-                      <Image
-                      src={item.icon}
-                      alt={item.iconAlt}
-                      fill
-                      sizes="48px"
-                      className="object-contain"
-                    />
-                  </div>
-
-                  <div className="min-w-0 flex-1">
-                    <div className="flex w-full items-center justify-between gap-4">
-                      <h3 className="text-[14px] font-semibold uppercase leading-[1.15] tracking-[1.45px] text-[#00fe4e] max-[480px]:text-[11.5px] max-[480px]:tracking-[1px]">
-                        {item.title}
-                      </h3>
-
-                      {isOpen ? (
-                        <ChevronUp className="h-[13px] w-[13px] shrink-0 text-[#00fe4e]" />
-                      ) : (
-                        <ChevronDown className="h-[13px] w-[13px] shrink-0 text-[#00fe4e]" />
-                      )}
-                    </div>
-
-                    <div
-                      className={`grid transition-all duration-300 ease-out ${
-                        isOpen
-                          ? "grid-rows-[1fr] opacity-100"
-                          : "grid-rows-[0fr] opacity-0"
-                      }`}
-                    >
-                      <div className="overflow-hidden">
-                        <p className="mt-[10px] max-w-[338px] text-[14px] font-light leading-[1.45] tracking-[0.25px] text-white/80 max-[480px]:text-[11px]">
-                          {item.text}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </button>
-            );
-          })}
+          <div className="flex w-1/2 flex-col gap-[10px] max-[900px]:w-full max-[900px]:gap-[14px]">
+            {renderValueCard(values[1], 1)}
+            {renderValueCard(values[3], 3)}
+          </div>
         </div>
       </div>
     </section>
