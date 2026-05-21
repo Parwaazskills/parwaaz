@@ -104,7 +104,7 @@ export default function AbtHero() {
               Parwaaz is built on the foundation of creativity, strategy, and
               innovation. We partner with forward-thinking brands to design
               impactful solutions that drive growth, strengthen identity, and
-              unlock new oppo
+              unlock new opportunity!
             </p>
 
             <div className="mt-[21px] flex flex-col items-stretch gap-3 sm:flex-row sm:items-center max-[480px]:w-full">
