@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin } from "lucide-react";
 import { FacebookSvg, YoutubeSvg, XSvg } from "@/components/SocialIcons";
 
 export default function Footer() {
@@ -8,7 +8,10 @@ export default function Footer() {
       <div className="mx-auto max-w-[1280px] px-8 max-[768px]:px-6 max-[480px]:px-5">
         <div className="grid grid-cols-[1.4fr_1fr_1fr_1.3fr] items-start gap-12 max-[1024px]:grid-cols-[1.2fr_1fr_1fr_1.2fr] max-[1024px]:gap-8 max-[768px]:grid-cols-2 max-[768px]:gap-x-6 max-[768px]:gap-y-7 max-[480px]:grid-cols-1 max-[480px]:gap-6">
           {/* ============ BRAND COLUMN ============ */}
-          <div data-reveal="up" className="max-w-[320px] max-[768px]:col-span-2 max-[768px]:max-w-full max-[480px]:col-span-1">
+          <div
+            data-reveal="up"
+            className="max-w-[320px] max-[768px]:col-span-2 max-[768px]:max-w-full max-[480px]:col-span-1"
+          >
             <Link href="/" aria-label="Parwaaz home">
               <img
                 src="/parwaaz-logo.svg"
@@ -18,7 +21,8 @@ export default function Footer() {
             </Link>
 
             <p className="mt-[18px] text-sm leading-[1.55] text-black/70 max-[1024px]:text-[13px] max-[480px]:mt-3.5">
-              Building pathways for growth through talent, technology, and integrated business solutions.
+              Building pathways for growth through talent, technology, and
+              integrated business solutions.
             </p>
 
             <div className="mt-7 max-[480px]:mt-5">
@@ -35,6 +39,16 @@ export default function Footer() {
                   aria-label="Facebook"
                 >
                   <FacebookSvg />
+                </Link>
+
+                <Link
+                  href="https://www.linkedin.com/company/parwaazskills/posts/?feedView=all"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border-[1.5px] border-black/15 bg-transparent text-black/55 transition-all duration-300 hover:-translate-y-[3px] hover:scale-[1.08] hover:border-[#00fe4e] hover:bg-[#00fe4e] hover:text-black hover:shadow-[0_6px_16px_rgba(0,254,78,0.45)] [&_svg]:block [&_svg]:h-4 [&_svg]:w-4"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin />
                 </Link>
 
                 <Link
@@ -148,7 +162,7 @@ export default function Footer() {
               className="flex items-center gap-2.5 text-[13.5px] text-black/70 no-underline transition-all duration-300 hover:translate-x-[3px] hover:text-[#00fe4e]"
             >
               <MapPin className="h-3.5 w-3.5 shrink-0 text-[#00fe4e]" />
-           <span>Lahore, Karachi, Islamabad, Singapore</span>
+              <span>Lahore, Karachi, Islamabad, Singapore</span>
             </Link>
 
             <a

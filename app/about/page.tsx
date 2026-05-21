@@ -1,4 +1,4 @@
-import ScrollToTopIndicator from "@/components/ScrollToTopIndicator";
+
 import AbtHero from "../sections/AbtHero";
 import CompanyHistorySection from "../sections/CompanyHistorySection";
 import OurValuesSection from "../sections/OurValuesSection";
@@ -13,7 +13,7 @@ export default function AboutPage() {
         <Navbar />
       </div>
 
-      <ScrollToTopIndicator />
+      {/* <ScrollToTopIndicator /> */}
       <AbtHero />
       <WhoWeAreSection />
       <OurValuesSection />
