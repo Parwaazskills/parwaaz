@@ -69,11 +69,11 @@ const historyData: Record<
     logoAlt: "Learning Edge logo",
   },
   "2023": {
-    company: "Parwaz",
+    company: "Parwaaz",
     offices: "Islamabad, Lahore",
     employees: "15",
     milestone:
-      "Mitrex established as the foundation of our conglomerate, with a focus on multi-regional expansion.",
+      "Building pathways for growth through talent, technology, and integrated business solutions.",
     logo: "/historyicons/parwaz.png",
     logoAlt: "Parwaz logo",
   },
