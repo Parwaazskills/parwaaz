@@ -788,7 +788,7 @@ export default function ProjectOrbitSection() {
           }
 
           .po-slide-title {
-            font-size: 12px !important;
+            font-size: 18px !important;
             line-height: 1.25 !important;
             margin-bottom: 14px !important;
             font-weight: 500 !important;
@@ -1025,7 +1025,7 @@ export default function ProjectOrbitSection() {
           .po-title h2,
           .po-title h2 span {
             font-family: var(--font-montserrat), sans-serif !important;
-            font-size: 36px !important;
+            font-size: 28px !important;
             font-weight: 400 !important;
             letter-spacing: 0 !important;
             line-height: 1.08 !important;
@@ -1035,7 +1035,7 @@ export default function ProjectOrbitSection() {
         @media (max-width: 480px) {
           .po-title h2,
           .po-title h2 span {
-            font-size: 31px !important;
+            font-size: 28px !important;
             font-weight: 400 !important;
             letter-spacing: 0 !important;
             line-height: 1.08 !important;
