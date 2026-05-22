@@ -76,18 +76,8 @@ export default function ProjectOrbitSection() {
         if (isMobile) {
           const totalSteps = slideEls.length - 1;
 
-          /*
-            Animation duration.
-            Increase 950 for slower/longer mobile animation.
-            Decrease 950 for faster/shorter mobile animation.
-          */
           const fullAnimationDistance = totalSteps * 950;
-
-          /*
-            Contact section starts coming up during the final 10%.
-            This avoids white screen while keeping orbit pinned.
-          */
-          const overlapDistance = fullAnimationDistance * 0.20;
+          const overlapDistance = fullAnimationDistance * 0.2;
 
           document.documentElement.style.setProperty(
             "--po-mobile-overlap",
@@ -102,7 +92,7 @@ export default function ProjectOrbitSection() {
               const distance = index - travel;
 
               const x = distance * 390;
-              const y = -150 + Math.pow(distance, 2) * 70;
+              const y = -92 + Math.pow(distance, 2) * 72;
               const rotation = distance * -8;
               const scale = 1 - Math.min(Math.abs(distance) * 0.035, 0.12);
 
@@ -704,7 +694,7 @@ export default function ProjectOrbitSection() {
 
           .po-title {
             position: absolute !important;
-            top: 38px !important;
+            top: 56px !important;
             left: 0 !important;
             right: 0 !important;
             margin: 0 !important;
@@ -713,18 +703,20 @@ export default function ProjectOrbitSection() {
             text-align: center !important;
           }
 
-         .po-title h2 {
-  margin: 0;
-  font-family: var(--font-montserrat), sans-serif;
-  font-size: 42px;
-  font-weight: 400;
-  letter-spacing: 0;
-  text-transform: uppercase;
-  line-height: 1.2;
-  display: inline-flex;
-  align-items: baseline;
-  gap: 16px;
-}
+          .po-title h2 {
+            margin: 0 !important;
+            font-family: var(--font-montserrat), sans-serif !important;
+            font-size: 36px !important;
+            font-weight: 400 !important;
+            letter-spacing: 0 !important;
+            text-transform: uppercase !important;
+            line-height: 1.08 !important;
+            display: inline-flex !important;
+            align-items: baseline !important;
+            justify-content: center !important;
+            gap: 10px !important;
+            flex-wrap: wrap !important;
+          }
 
           .po-content {
             position: relative !important;
@@ -733,10 +725,10 @@ export default function ProjectOrbitSection() {
             max-width: none !important;
             height: 100svh !important;
             min-height: 100svh !important;
-            padding: 0 34px !important;
+            padding: 176px 34px 230px !important;
             margin: 0 !important;
             display: flex !important;
-            align-items: center !important;
+            align-items: flex-start !important;
             justify-content: flex-start !important;
           }
 
@@ -744,8 +736,8 @@ export default function ProjectOrbitSection() {
             position: relative !important;
             width: 100% !important;
             max-width: 330px !important;
-            height: 270px !important;
-            margin: -122px 0 0 0 !important;
+            height: 300px !important;
+            margin: 0 !important;
             perspective: 900px !important;
             overflow: visible !important;
           }
@@ -824,7 +816,7 @@ export default function ProjectOrbitSection() {
             position: absolute !important;
             top: auto !important;
             left: 50% !important;
-            bottom: -245px !important;
+            bottom: -305px !important;
             width: 720px !important;
             height: 720px !important;
             transform: translateX(-50%) !important;
@@ -908,7 +900,7 @@ export default function ProjectOrbitSection() {
             display: flex !important;
             position: absolute !important;
             left: 50% !important;
-            bottom: 72px !important;
+            bottom: 92px !important;
             top: auto !important;
             right: auto !important;
             transform: translateX(-50%) !important;
@@ -950,23 +942,24 @@ export default function ProjectOrbitSection() {
 
         @media (max-width: 480px) {
           .po-title {
-            top: 38px !important;
+            top: 54px !important;
           }
 
           .po-title h2 {
-            font-size: clamp(16px, 4.9vw, 20px) !important;
-            gap: 6px !important;
-            letter-spacing: 0.14em !important;
+            font-size: 31px !important;
+            gap: 8px !important;
+            letter-spacing: 0 !important;
+            line-height: 1.08 !important;
           }
 
           .po-content {
-            padding: 0 34px !important;
+            padding: 176px 34px 230px !important;
           }
 
           .po-slides {
             max-width: 310px !important;
-            height: 270px !important;
-            margin-top: -124px !important;
+            height: 300px !important;
+            margin: 0 !important;
           }
 
           .po-slide-text {
@@ -978,22 +971,33 @@ export default function ProjectOrbitSection() {
           .po-canvas {
             width: 690px !important;
             height: 690px !important;
-            bottom: -255px !important;
+            bottom: -310px !important;
           }
 
           .po-control-pill {
-            bottom: 72px !important;
+            bottom: 92px !important;
           }
         }
 
         @media (max-width: 380px) {
+          .po-title {
+            top: 50px !important;
+          }
+
+          .po-title h2 {
+            font-size: 28px !important;
+            gap: 7px !important;
+            line-height: 1.1 !important;
+          }
+
           .po-content {
-            padding: 0 28px !important;
+            padding: 170px 28px 220px !important;
           }
 
           .po-slides {
             max-width: 292px !important;
-            margin-top: -118px !important;
+            height: 292px !important;
+            margin: 0 !important;
           }
 
           .po-slide-text {
@@ -1004,39 +1008,47 @@ export default function ProjectOrbitSection() {
           .po-canvas {
             width: 650px !important;
             height: 650px !important;
-            bottom: -245px !important;
+            bottom: -300px !important;
           }
         }
 
-        /* FINAL FORCE FONT FOR ORBIT TITLE */
-.po-title h2,
-.po-title h2 span {
-  font-family: var(--font-montserrat), sans-serif !important;
-  font-size: 42px !important;
-  font-weight: 400 !important;
-  letter-spacing: 0 !important;
-  line-height: 1.2 !important;
-}
+        .po-title h2,
+        .po-title h2 span {
+          font-family: var(--font-montserrat), sans-serif !important;
+          font-size: 42px !important;
+          font-weight: 400 !important;
+          letter-spacing: 0 !important;
+          line-height: 1.2 !important;
+        }
 
-@media (max-width: 768px) {
-  .po-title h2,
-  .po-title h2 span {
-    font-family: var(--font-montserrat), sans-serif !important;
-    font-size: 30px !important;
-    font-weight: 400 !important;
-    letter-spacing: 0 !important;
-    line-height: 1.2 !important;
-  }
-}
+        @media (max-width: 768px) {
+          .po-title h2,
+          .po-title h2 span {
+            font-family: var(--font-montserrat), sans-serif !important;
+            font-size: 36px !important;
+            font-weight: 400 !important;
+            letter-spacing: 0 !important;
+            line-height: 1.08 !important;
+          }
+        }
 
-@media (max-width: 480px) {
-  .po-title h2,
-  .po-title h2 span {
-    font-size: 24px !important;
-    font-weight: 400 !important;
-    letter-spacing: 0 !important;
-  }
-}
+        @media (max-width: 480px) {
+          .po-title h2,
+          .po-title h2 span {
+            font-size: 31px !important;
+            font-weight: 400 !important;
+            letter-spacing: 0 !important;
+            line-height: 1.08 !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .po-title h2,
+          .po-title h2 span {
+            font-size: 28px !important;
+            line-height: 1.1 !important;
+          }
+        }
       `}</style>
     </section>
   );
