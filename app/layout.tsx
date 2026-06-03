@@ -2,6 +2,7 @@
 
 import type { Metadata } from "next";
 import { Poppins, Montserrat } from "next/font/google";
+import Script from "next/script";
 import CustomCursor from "@/components/CustomCursor";
 import ScrollToTopIndicator from "@/components/ScrollToTopIndicator";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -34,6 +35,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${montserrat.variable}`}>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-32STF55K2S"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){window.dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-32STF55K2S');
+          `}
+        </Script>
         <CustomCursor />
         <ScrollToTopIndicator />
         <ThemeToggle />

@@ -16,7 +16,7 @@ export default function Footer() {
               <img
                 src="/parwaaz-logo.svg"
                 alt="Parwaaz"
-                className="block h-9 w-auto object-contain"
+                className="footer-logo block h-9 w-auto object-contain"
               />
             </Link>
 

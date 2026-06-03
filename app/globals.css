@@ -925,6 +925,7 @@ html.dark .contact-page-wrap footer [aria-label="X (Twitter)"]:hover {
   color: #050505 !important;
 }
 
-html.dark .contact-page-wrap footer img[src="/parwaaz-logo.svg"] {
-  filter: brightness(0) invert(1) saturate(0) brightness(1.15);
+html.dark .footer-logo,
+html.dark footer img[src="/parwaaz-logo.svg"] {
+  filter: brightness(0) invert(1) saturate(0) brightness(1.18);
 }
