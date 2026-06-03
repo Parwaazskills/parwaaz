@@ -29,6 +29,28 @@ export default function CustomCursor() {
       let af = 0;
       let initialized = false;
 
+      const loop = () => {
+        rx.current += (cx.current - rx.current) * 0.18;
+        ry.current += (cy.current - ry.current) * 0.18;
+
+        ring.style.transform = `translate3d(${rx.current}px, ${ry.current}px, 0) translate(-50%, -50%)`;
+
+        const dx = Math.abs(cx.current - rx.current);
+        const dy = Math.abs(cy.current - ry.current);
+
+        if (dx > 0.1 || dy > 0.1) {
+          af = requestAnimationFrame(loop);
+        } else {
+          af = 0;
+        }
+      };
+
+      const scheduleLoop = () => {
+        if (!af) {
+          af = requestAnimationFrame(loop);
+        }
+      };
+
       const move = (e: MouseEvent) => {
         cx.current = e.clientX;
         cy.current = e.clientY;
@@ -44,15 +66,8 @@ export default function CustomCursor() {
         }
 
         dot.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
-      };
 
-      const loop = () => {
-        rx.current += (cx.current - rx.current) * 0.18;
-        ry.current += (cy.current - ry.current) * 0.18;
-
-        ring.style.transform = `translate3d(${rx.current}px, ${ry.current}px, 0) translate(-50%, -50%)`;
-
-        af = requestAnimationFrame(loop);
+        scheduleLoop();
       };
 
       const handleEnter = (e: Event) => {
@@ -84,14 +99,14 @@ export default function CustomCursor() {
       document.addEventListener("mouseover", handleEnter, { passive: true });
       document.addEventListener("mouseout", handleLeave, { passive: true });
 
-      af = requestAnimationFrame(loop);
-
       cleanup = () => {
         window.removeEventListener("mousemove", move);
         document.removeEventListener("mouseover", handleEnter);
         document.removeEventListener("mouseout", handleLeave);
 
-        cancelAnimationFrame(af);
+        if (af) {
+          cancelAnimationFrame(af);
+        }
 
         document.body.classList.remove("pw-ca");
 

@@ -144,7 +144,7 @@ export default function GsapTextAnimations() {
     const rafId = requestAnimationFrame(() => {
       try {
         storedCtx = gsap.context(() => {
-          // .gsap-heading: char split, rotateX + blur
+          // .gsap-heading: char split with transform-only reveal for smoother scrolling.
           document.querySelectorAll<HTMLElement>(`.gsap-heading${IGNORE}`).forEach((el) => {
             if (el.dataset.gsapBound === "1") return;
             el.dataset.gsapBound = "1";
@@ -156,17 +156,15 @@ export default function GsapTextAnimations() {
               opacity: 0,
               y: 60,
               rotateX: -45,
-              filter: "blur(8px)",
               transformOrigin: "50% 100%",
             });
             const tween = gsap.to(chars, {
               opacity: 1,
               y: 0,
               rotateX: 0,
-              filter: "blur(0px)",
-              duration: 0.9,
+              duration: 0.75,
               ease: "power4.out",
-              stagger: 0.025,
+              stagger: 0.018,
               paused: true,
             });
             triggers.push(
@@ -269,16 +267,14 @@ export default function GsapTextAnimations() {
                   opacity: 0,
                   y: 60,
                   rotateX: -45,
-                  filter: "blur(8px)",
                 });
                 gsap.to(chars, {
                   opacity: 1,
                   y: 0,
                   rotateX: 0,
-                  filter: "blur(0px)",
-                  duration: 0.9,
+                  duration: 0.75,
                   ease: "power4.out",
-                  stagger: 0.025,
+                  stagger: 0.018,
                   delay,
                 });
               }

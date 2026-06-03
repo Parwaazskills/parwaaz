@@ -227,6 +227,11 @@ section {
     animation: none !important;
   }
 
+  .pw-ring,
+  .pw-dot {
+    display: none !important;
+  }
+
   [data-reveal] {
     opacity: 1 !important;
     transform: none !important;
@@ -472,8 +477,6 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow:
     0 14px 34px rgba(0, 0, 0, 0.28),
     0 0 22px rgba(0, 254, 78, 0.2);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
 }
 
 .theme-toggle-thumb {
@@ -621,9 +624,14 @@ html.dark .service-tab-btn:not(.is-active) {
   color: rgba(245, 248, 246, 0.86) !important;
 }
 
-html.dark .service-tab-btn.is-active,
-html.dark .service-tab-btn:hover {
+html.dark .service-tab-btn.is-active {
   color: #000000 !important;
+}
+
+html.dark .service-tab-btn:not(.is-active):hover {
+  background: #182432 !important;
+  border-color: rgba(0, 254, 78, 0.45) !important;
+  color: #f5f8f6 !important;
 }
 
 html.dark input,
@@ -648,23 +656,23 @@ html.dark .pw-mobile-menu {
 }
 
 body,
-main,
-section,
-footer,
-.bg-white,
 .stat-card,
-.newsletter-section,
 .newsletter-input,
 .newsletter-btn,
+.service-card-cycle,
+.service-tab-btn,
 .service-breakdown-card,
-.contact-page-wrap,
-.contact-page-main {
+.parwaaz-map-tab,
+.parwaaz-map-locate,
+.parwaaz-office-info,
+.theme-toggle-track,
+.theme-toggle-thumb {
   transition:
-    background-color 0.35s ease,
-    background 0.35s ease,
-    border-color 0.35s ease,
-    color 0.35s ease,
-    box-shadow 0.35s ease;
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
 }
 
 html.dark .stat-card {
@@ -826,7 +834,7 @@ html.dark .parwaaz-map {
 }
 
 html.dark .parwaaz-map .maplibregl-canvas {
-  filter: saturate(0.72) brightness(0.82) contrast(1.08) !important;
+  filter: none !important;
 }
 
 html.dark .maplibregl-ctrl-group {

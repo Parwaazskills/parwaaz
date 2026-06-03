@@ -3,7 +3,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
 
 export default function ScrollToTopIndicator() {
   const wrapperRef = useRef<HTMLButtonElement | null>(null);
@@ -15,54 +14,62 @@ export default function ScrollToTopIndicator() {
 
     if (!wrapper || !line) return;
 
-    const handleScroll = () => {
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (reduceMotion) {
+      wrapper.style.display = "none";
+      return;
+    }
+
+    let frame = 0;
+    let visible = false;
+
+    const update = () => {
+      frame = 0;
+
       const scrollTop = window.scrollY;
       const pageHeight =
         document.documentElement.scrollHeight - window.innerHeight;
 
       const progress = pageHeight > 0 ? scrollTop / pageHeight : 0;
+      const nextVisible = scrollTop > 220;
 
-      if (scrollTop > 220) {
-        gsap.to(wrapper, {
-          opacity: 1,
-          x: 0,
-          duration: 0.35,
-          ease: "power3.out",
-        });
-      } else {
-        gsap.to(wrapper, {
-          opacity: 0,
-          x: 18,
-          duration: 0.35,
-          ease: "power3.out",
-        });
+      if (nextVisible !== visible) {
+        visible = nextVisible;
+        wrapper.style.opacity = visible ? "1" : "0";
+        wrapper.style.transform = visible
+          ? "translate3d(0, -50%, 0)"
+          : "translate3d(18px, -50%, 0)";
       }
 
-      gsap.to(line, {
-        scaleY: Math.max(progress, 0.08),
-        duration: 0.25,
-        ease: "power2.out",
-      });
+      line.style.transform = `scaleY(${Math.max(progress, 0.08)})`;
     };
 
-    gsap.set(wrapper, {
-      opacity: 0,
-      x: 18,
-    });
+    const scheduleUpdate = () => {
+      if (!frame) {
+        frame = requestAnimationFrame(update);
+      }
+    };
 
-    gsap.set(line, {
-      scaleY: 0.08,
-      transformOrigin: "top center",
-    });
+    wrapper.style.opacity = "0";
+    wrapper.style.transform = "translate3d(18px, -50%, 0)";
+    line.style.transform = "scaleY(0.08)";
+    line.style.transformOrigin = "top center";
 
-    handleScroll();
+    scheduleUpdate();
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll);
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+
+      if (frame) {
+        cancelAnimationFrame(frame);
+      }
     };
   }, []);
 
@@ -79,7 +86,7 @@ export default function ScrollToTopIndicator() {
       type="button"
       onClick={scrollToTop}
       aria-label="Scroll to top"
-  className="fixed right-[33px] top-1/2 z-[999] flex -translate-y-1/2 cursor-pointer flex-col items-center max-[768px]:hidden"
+      className="fixed right-[33px] top-1/2 z-[999] flex cursor-pointer flex-col items-center transition-[opacity,transform] duration-300 ease-out max-[768px]:hidden"
     >
       <span className="origin-center rotate-[-90deg] whitespace-nowrap text-[12px] font-medium text-black">
         Scroll To Top

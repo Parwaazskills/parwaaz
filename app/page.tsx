@@ -195,6 +195,7 @@ export default function Page() {
         [data-reveal].is-visible {
           opacity: 1;
           transform: none;
+          will-change: auto;
         }
 
         @media (prefers-reduced-motion: reduce) {

@@ -103,7 +103,6 @@ export default function ProjectOrbitSection() {
                 rotation,
                 scale,
                 opacity: 1,
-                filter: "blur(0px)",
                 zIndex: 50 - Math.round(Math.abs(distance) * 10),
                 transformOrigin: "50% 190%",
                 force3D: true,
@@ -113,7 +112,6 @@ export default function ProjectOrbitSection() {
 
           gsap.set(slideEls, {
             opacity: 1,
-            filter: "blur(0px)",
             force3D: true,
             backfaceVisibility: "hidden",
             transformPerspective: 1000,
@@ -213,7 +211,6 @@ export default function ProjectOrbitSection() {
             y: index === 0 ? 0 : swingY,
             rotation: index === 0 ? 0 : 26,
             scale: index === 0 ? 1 : 0.9,
-            filter: index === 0 ? "blur(0px)" : "blur(5px)",
             transformOrigin: swingOrigin,
           });
         });
@@ -244,7 +241,6 @@ export default function ProjectOrbitSection() {
               y: exitY,
               rotation: -26,
               scale: 0.9,
-              filter: "blur(5px)",
               duration: 1.2,
               ease: "power3.inOut",
             },
@@ -259,7 +255,6 @@ export default function ProjectOrbitSection() {
               y: swingY,
               rotation: 26,
               scale: 0.9,
-              filter: "blur(5px)",
               transformOrigin: swingOrigin,
             },
             {
@@ -268,7 +263,6 @@ export default function ProjectOrbitSection() {
               y: 0,
               rotation: 0,
               scale: 1,
-              filter: "blur(0px)",
               duration: 1.2,
               ease: "power3.inOut",
             },
