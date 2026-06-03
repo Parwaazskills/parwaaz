@@ -42,6 +42,10 @@ export default function WhoWeAreSection() {
     if (reduceMotion) return;
 
     const ctx = gsap.context(() => {
+      const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
+      const images = imageRefs.current.filter(Boolean) as HTMLDivElement[];
+      const icons = iconRefs.current.filter(Boolean) as HTMLImageElement[];
+
       if (heading) {
         gsap.set(heading, {
           opacity: 0,
@@ -78,27 +82,33 @@ export default function WhoWeAreSection() {
           });
       }
 
-      gsap.set(cardRefs.current, {
-        opacity: 0,
-        y: 42,
-        scale: 0.96,
-        filter: "blur(8px)",
-      });
+      if (cards.length) {
+        gsap.set(cards, {
+          opacity: 0,
+          y: 42,
+          scale: 0.96,
+          filter: "blur(8px)",
+        });
+      }
 
-      gsap.set(imageRefs.current, {
-        opacity: 0,
-        y: 42,
-        scale: 0.95,
-        filter: "blur(8px)",
-        clipPath: "inset(10% 10% 10% 10% round 19px)",
-      });
+      if (images.length) {
+        gsap.set(images, {
+          opacity: 0,
+          y: 42,
+          scale: 0.95,
+          filter: "blur(8px)",
+          clipPath: "inset(10% 10% 10% 10% round 19px)",
+        });
+      }
 
-      gsap.set(iconRefs.current, {
-        opacity: 0,
-        scale: 0.72,
-        rotate: -8,
-        filter: "blur(6px)",
-      });
+      if (icons.length) {
+        gsap.set(icons, {
+          opacity: 0,
+          scale: 0.72,
+          rotate: -8,
+          filter: "blur(6px)",
+        });
+      }
 
       if (orbitSpin) {
         gsap.set(orbitSpin, {
@@ -120,27 +130,35 @@ export default function WhoWeAreSection() {
       }
 
       const forceCardsComplete = () => {
-        gsap.set(
-          [
-            cardRefs.current[0],
-            cardRefs.current[1],
-            imageRefs.current[0],
-            imageRefs.current[1],
-            iconRefs.current[0],
-            iconRefs.current[1],
-          ],
-          {
+        const completeTargets = [
+          cardRefs.current[0],
+          cardRefs.current[1],
+          imageRefs.current[0],
+          imageRefs.current[1],
+          iconRefs.current[0],
+          iconRefs.current[1],
+        ].filter(Boolean);
+
+        if (completeTargets.length) {
+          gsap.set(completeTargets, {
             opacity: 1,
             y: 0,
             scale: 1,
             rotate: 0,
             filter: "blur(0px)",
-          }
-        );
+          });
+        }
 
-        gsap.set([imageRefs.current[0], imageRefs.current[1]], {
-          clipPath: "inset(0% 0% 0% 0% round 19px)",
-        });
+        const completeImages = [
+          imageRefs.current[0],
+          imageRefs.current[1],
+        ].filter(Boolean);
+
+        if (completeImages.length) {
+          gsap.set(completeImages, {
+            clipPath: "inset(0% 0% 0% 0% round 19px)",
+          });
+        }
       };
 
       const cardsTimeline = gsap.timeline({
@@ -155,7 +173,7 @@ export default function WhoWeAreSection() {
       });
 
       cardsTimeline
-        .to(cardRefs.current[0], {
+        .to(cardRefs.current[0] ?? [], {
           opacity: 1,
           y: 0,
           scale: 1,
@@ -164,7 +182,7 @@ export default function WhoWeAreSection() {
           duration: 0.45,
         })
         .to(
-          imageRefs.current[0],
+          imageRefs.current[0] ?? [],
           {
             opacity: 1,
             y: 0,
@@ -177,7 +195,7 @@ export default function WhoWeAreSection() {
           "-=0.35"
         )
         .to(
-          iconRefs.current[0],
+          iconRefs.current[0] ?? [],
           {
             opacity: 1,
             scale: 1,
@@ -189,7 +207,7 @@ export default function WhoWeAreSection() {
           "-=0.3"
         )
         .to(
-          imageRefs.current[1],
+          imageRefs.current[1] ?? [],
           {
             opacity: 1,
             y: 0,
@@ -202,7 +220,7 @@ export default function WhoWeAreSection() {
           "-=0.05"
         )
         .to(
-          cardRefs.current[1],
+          cardRefs.current[1] ?? [],
           {
             opacity: 1,
             y: 0,
@@ -214,7 +232,7 @@ export default function WhoWeAreSection() {
           "-=0.35"
         )
         .to(
-          iconRefs.current[1],
+          iconRefs.current[1] ?? [],
           {
             opacity: 1,
             scale: 1,

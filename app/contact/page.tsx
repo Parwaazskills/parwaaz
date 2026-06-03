@@ -239,19 +239,25 @@ export default function ContactPage() {
           }
         }
 
-        /* CONTACT PAGE ONLY — force green tint on footer */
-        .contact-page-wrap footer,
-        .contact-page-wrap footer > *:first-child {
-          background: #f7fdf9 !important;
+        .contact-page-wrap {
+          background: #f7fdf9;
         }
 
-        .contact-page-wrap footer .bg-white {
-          background: #f7fdf9 !important;
+        .contact-page-main {
+          background: transparent;
+        }
+
+        html.dark .contact-page-wrap {
+          background: #05070b !important;
+        }
+
+        html.dark .contact-page-main {
+          background: #05070b !important;
         }
       `}</style>
 
       {/* ============ PAGE CONTENT ============ */}
-      <div className="contact-page-wrap" style={{ background: "#f7fdf9" }}>
+      <div className="contact-page-wrap">
         {/* Navbar wrapper — matches ContactHero gradient */}
         <div style={{ background: "#000572" }}>
           <div className="mx-auto w-full max-w-[1320px] px-4 pt-3 sm:px-6 lg:px-8">
@@ -270,8 +276,7 @@ export default function ContactPage() {
 
         {/* MAIN — transparent so wrapper's green shows through */}
         <main
-          className="relative overflow-x-clip"
-          style={{ background: "transparent" }}
+          className="contact-page-main relative overflow-x-clip"
         >
           {/* DECORATIVE VECTOR */}
           <div
@@ -307,7 +312,7 @@ export default function ContactPage() {
           {/* CONTACT + MAP SECTION */}
           <section
             className="relative py-16 md:py-24"
-            style={{ background: "transparent", zIndex: 1 }}
+            style={{ zIndex: 1 }}
           >
             <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-14">

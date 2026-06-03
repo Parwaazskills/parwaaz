@@ -435,3 +435,496 @@ li {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-montserrat), sans-serif;
 }
+
+/* ============================================================
+ * FLOATING THEME TOGGLE
+ * ============================================================ */
+
+.theme-toggle {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 2147483646;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 68px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+}
+
+.theme-toggle-track {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 64px;
+  height: 36px;
+  padding: 0 9px;
+  border: 1px solid rgba(0, 254, 78, 0.32);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(0, 254, 78, 0.2), rgba(5, 8, 137, 0.72)),
+    rgba(5, 8, 18, 0.92);
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.28),
+    0 0 22px rgba(0, 254, 78, 0.2);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+  transition:
+    transform 0.26s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.25s ease;
+}
+
+.theme-toggle-icon {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.88);
+  pointer-events: none;
+}
+
+.theme-toggle.is-dark .theme-toggle-thumb {
+  transform: translateX(28px);
+  background: #00fe4e;
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid #00fe4e;
+  outline-offset: 4px;
+}
+
+@media (max-width: 640px) {
+  .theme-toggle {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+/* ============================================================
+ * DARK MODE
+ * Keeps hero, blue service/contact banners, and existing gradient text intact.
+ * ============================================================ */
+
+html.dark,
+html.dark body {
+  background: #05070b;
+}
+
+html.dark main.bg-white,
+html.dark main[class~="bg-white"],
+html.dark section.bg-white,
+html.dark section[class~="bg-white"],
+html.dark footer.bg-white,
+html.dark footer[class~="bg-white"],
+html.dark .parwaaz-section,
+html.dark .po-section,
+html.dark .alumni-section,
+html.dark .team-section,
+html.dark .testimonials-section,
+html.dark .logo-marquee-section {
+  background: #05070b !important;
+}
+
+html.dark .bg-white {
+  background-color: #0d141e !important;
+}
+
+html.dark .bg-white\/85,
+html.dark .bg-white\/60 {
+  background-color: rgba(13, 20, 30, 0.86) !important;
+}
+
+html.dark .bg-\[\#f1f1f1\],
+html.dark .bg-\[\#F1F1F1\],
+html.dark .bg-\[\#f0f1f8\],
+html.dark .bg-\[\#e9eaf4\] {
+  background-color: #121b27 !important;
+}
+
+html.dark .border-black\/10,
+html.dark .border-black\/15,
+html.dark .border-black\/\[0\.04\],
+html.dark .border-black\/\[0\.06\],
+html.dark .border-\[\#dedede\],
+html.dark .border-\[\#e4e4e4\],
+html.dark .border-\[\#e5e5e5\],
+html.dark .border-\[\#CFCFCF\],
+html.dark .border-\[\#cfcfcf\] {
+  border-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+html.dark p,
+html.dark li {
+  color: rgba(245, 248, 246, 0.74);
+}
+
+html.dark .text-black,
+html.dark .text-black\/55,
+html.dark .text-black\/70,
+html.dark .text-black\/75,
+html.dark .text-black\/80,
+html.dark .text-black\/85,
+html.dark .text-black\/90,
+html.dark .text-\[\#000000\],
+html.dark .text-\[\#050505\],
+html.dark .text-\[\#202020\],
+html.dark .text-\[\#2b2f35\],
+html.dark .text-\[\#333333\],
+html.dark .text-\[\#4b4b4b\] {
+  color: rgba(245, 248, 246, 0.82) !important;
+}
+
+html.dark h1:not(.gsap-hero-title),
+html.dark h2:not(.gsap-hero-subtitle),
+html.dark h3:not(.contact-cta-heading),
+html.dark h4,
+html.dark h5,
+html.dark h6 {
+  color: #f5f8f6;
+}
+
+html.dark .service-card-cycle {
+  background: #0d141e !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+html.dark .service-card-cycle:hover {
+  background: #050783 !important;
+  border-color: #050783 !important;
+}
+
+html.dark .service-card-cycle .service-card-eyebrow,
+html.dark .service-card-cycle .service-card-body {
+  color: rgba(245, 248, 246, 0.72) !important;
+}
+
+html.dark .service-tab-btn:not(.is-active) {
+  background: #121b27 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: rgba(245, 248, 246, 0.86) !important;
+}
+
+html.dark .service-tab-btn.is-active,
+html.dark .service-tab-btn:hover {
+  color: #000000 !important;
+}
+
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background: rgba(13, 20, 30, 0.86) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  color: #f5f8f6 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: rgba(245, 248, 246, 0.48) !important;
+}
+
+html.dark .contact-cta-box,
+html.dark .hero-bg,
+html.dark .pw-nav,
+html.dark .pw-dropdown-panel,
+html.dark .pw-mobile-menu {
+  color-scheme: dark;
+}
+
+body,
+main,
+section,
+footer,
+.bg-white,
+.stat-card,
+.newsletter-section,
+.newsletter-input,
+.newsletter-btn,
+.service-breakdown-card,
+.contact-page-wrap,
+.contact-page-main {
+  transition:
+    background-color 0.35s ease,
+    background 0.35s ease,
+    border-color 0.35s ease,
+    color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+html.dark .stat-card {
+  background: #0d141e !important;
+  border-color: #00fe4e !important;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+}
+
+html.dark .stat-card:hover {
+  background: #050783 !important;
+  border-color: #050783 !important;
+}
+
+html.dark .stat-card-val {
+  color: #f5f8f6 !important;
+}
+
+html.dark .stat-card-label {
+  color: rgba(245, 248, 246, 0.72) !important;
+}
+
+html.dark .newsletter-section {
+  background: #05070b !important;
+}
+
+html.dark .newsletter-text,
+html.dark .newsletter-checkbox,
+html.dark .newsletter-note {
+  color: rgba(245, 248, 246, 0.66) !important;
+}
+
+html.dark .newsletter-note-label,
+html.dark .newsletter-link {
+  color: rgba(245, 248, 246, 0.82) !important;
+  text-decoration-color: rgba(245, 248, 246, 0.34) !important;
+}
+
+html.dark .newsletter-input {
+  background: #121b27 !important;
+  color: #f5f8f6 !important;
+}
+
+html.dark .newsletter-input::placeholder {
+  color: rgba(245, 248, 246, 0.5) !important;
+}
+
+html.dark .newsletter-btn {
+  background: #121b27 !important;
+  color: #f5f8f6 !important;
+}
+
+html.dark .newsletter-btn:hover {
+  color: #000000 !important;
+}
+
+html.dark .service-breakdown-card {
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+html.dark .bg-\[\#FAFAFA\] {
+  background-color: #101823 !important;
+}
+
+html.dark .border-\[\#E8E8E8\],
+html.dark .border-\[\#EEEEEE\],
+html.dark .border-\[\#E7E7E7\] {
+  border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+html.dark .text-\[\#8A8A8A\],
+html.dark .text-\[\#5a5a5a\],
+html.dark .text-\[\#6a6a6a\],
+html.dark .text-\[\#4a4a4a\] {
+  color: rgba(245, 248, 246, 0.7) !important;
+}
+
+html.dark .service-breakdown-card .text-\[\#000000\],
+html.dark .service-breakdown-card li,
+html.dark .service-breakdown-card p {
+  color: rgba(245, 248, 246, 0.86) !important;
+}
+
+html.dark .service-breakdown-card li::before {
+  color: #00fe4e !important;
+}
+
+html.dark .contact-page-wrap {
+  background: #05070b !important;
+}
+
+html.dark .contact-page-main {
+  background: #05070b !important;
+}
+
+html.dark .contact-page-wrap .text-\[\#050505\],
+html.dark .contact-page-wrap .text-\[\#5a5a5a\] {
+  color: rgba(245, 248, 246, 0.84) !important;
+}
+
+html.dark .contact-page-wrap .bg-white {
+  background-color: #05070b  !important;
+}
+
+html.dark .contact-page-wrap .bg-white\/85,
+html.dark .contact-page-wrap .bg-white\/60 {
+  background-color: rgba(13, 20, 30, 0.86) !important;
+}
+
+/* Service-page CTA panels keep the light pill button in dark mode. */
+html.dark .bg-\[\#000572\] a.bg-\[\#F1F1F1\] {
+  background: #ffffff !important;
+  border-color: transparent !important;
+  color: #333333 !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22) !important;
+}
+
+html.dark .bg-\[\#000572\] a.bg-\[\#F1F1F1\]:hover {
+  background: linear-gradient(135deg, #00fe4e 0%, #0adf54 100%) !important;
+  border-color: #00fe4e !important;
+  color: #000000 !important;
+}
+
+html.dark .bg-\[\#000572\] a.bg-\[\#F1F1F1\] span {
+  background: #00fe4e !important;
+  color: #050505 !important;
+}
+
+html.dark .bg-\[\#000572\] a.bg-\[\#F1F1F1\]:hover span {
+  background: #ffffff !important;
+}
+
+/* Contact-page map and office surfaces. */
+html.dark .parwaaz-map-tab:not(.active) {
+  background: #111a26 !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  color: rgba(245, 248, 246, 0.78) !important;
+}
+
+html.dark .parwaaz-map-tab:not(.active):hover {
+  border-color: rgba(0, 254, 78, 0.45) !important;
+  color: #00fe4e !important;
+}
+
+html.dark .parwaaz-map-locate {
+  background: rgba(0, 254, 78, 0.1) !important;
+  border-color: rgba(0, 254, 78, 0.36) !important;
+  color: #00fe4e !important;
+}
+
+html.dark .parwaaz-map-locate:hover {
+  background: #00fe4e !important;
+  color: #050505 !important;
+}
+
+html.dark .parwaaz-map {
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark .parwaaz-map .maplibregl-canvas {
+  filter: saturate(0.72) brightness(0.82) contrast(1.08) !important;
+}
+
+html.dark .maplibregl-ctrl-group {
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28) !important;
+}
+
+html.dark .maplibregl-ctrl-group button {
+  background: #111a26 !important;
+  color: #f5f8f6 !important;
+}
+
+html.dark .maplibregl-ctrl-group button:hover {
+  background: #00fe4e !important;
+  color: #050505 !important;
+}
+
+html.dark .maplibregl-ctrl-attrib {
+  background: rgba(13, 20, 30, 0.86) !important;
+  color: rgba(245, 248, 246, 0.72) !important;
+}
+
+html.dark .maplibregl-popup-content {
+  background: #101823 !important;
+}
+
+html.dark .maplibregl-popup-tip {
+  border-top-color: #101823 !important;
+}
+
+html.dark .parwaaz-popup-title,
+html.dark .parwaaz-popup-sub {
+  color: rgba(245, 248, 246, 0.82) !important;
+}
+
+html.dark .parwaaz-office-info {
+  background: linear-gradient(135deg, #0d141e 0%, #101823 100%) !important;
+  border-color: rgba(0, 254, 78, 0.28) !important;
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+}
+
+html.dark .parwaaz-office-name {
+  color: #f5f8f6 !important;
+}
+
+html.dark .parwaaz-office-row,
+html.dark .parwaaz-office-row a {
+  color: rgba(245, 248, 246, 0.78) !important;
+}
+
+html.dark .parwaaz-office-row a:hover {
+  color: #00fe4e !important;
+}
+
+html.dark .contact-page-wrap footer {
+  width: 100% !important;
+  background: #05070b !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: inset 0 1px 0 rgba(0, 254, 78, 0.08);
+}
+
+html.dark .contact-page-wrap footer > div {
+  background: transparent !important;
+}
+
+html.dark .contact-page-wrap footer p,
+html.dark .contact-page-wrap footer a,
+html.dark .contact-page-wrap footer div {
+  color: rgba(245, 248, 246, 0.78) !important;
+}
+
+html.dark .contact-page-wrap footer a:hover {
+  color: #00fe4e !important;
+}
+
+html.dark .contact-page-wrap footer [class*="border-black"] {
+  border-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+html.dark .contact-page-wrap footer [aria-label="Facebook"],
+html.dark .contact-page-wrap footer [aria-label="LinkedIn"],
+html.dark .contact-page-wrap footer [aria-label="YouTube"],
+html.dark .contact-page-wrap footer [aria-label="X (Twitter)"] {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  color: rgba(245, 248, 246, 0.7) !important;
+}
+
+html.dark .contact-page-wrap footer [aria-label="Facebook"]:hover,
+html.dark .contact-page-wrap footer [aria-label="LinkedIn"]:hover,
+html.dark .contact-page-wrap footer [aria-label="YouTube"]:hover,
+html.dark .contact-page-wrap footer [aria-label="X (Twitter)"]:hover {
+  background: #00fe4e !important;
+  border-color: #00fe4e !important;
+  color: #050505 !important;
+}
+
+html.dark .contact-page-wrap footer img[src="/parwaaz-logo.svg"] {
+  filter: brightness(0) invert(1) saturate(0) brightness(1.15);
+}

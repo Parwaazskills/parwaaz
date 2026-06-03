@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Poppins, Montserrat } from "next/font/google";
 import CustomCursor from "@/components/CustomCursor";
 import ScrollToTopIndicator from "@/components/ScrollToTopIndicator";
+import ThemeToggle from "@/components/ThemeToggle";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -35,6 +36,7 @@ export default function RootLayout({
       <body className={`${poppins.variable} ${montserrat.variable}`}>
         <CustomCursor />
         <ScrollToTopIndicator />
+        <ThemeToggle />
         {children}
       </body>
     </html>
