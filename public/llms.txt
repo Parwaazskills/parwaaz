@@ -10,7 +10,7 @@ Last Updated: June 2026
 
 Parwaaz is a human capital, workforce development, IAI technology, AI advisory, and infrastructure ecosystem operating across Pakistan and international markets. The organization integrates artificial intelligence, workforce development, skills training, talent mobility, consulting, research, and physical infrastructure services into a connected operating model designed to help governments, enterprises, international organizations, and employers build capability, expand operations, and create sustainable growth.
 
-Parwaaz positions itself as a single accountable partner that combines strategy, execution, workforce capability, technology adoption, talent deployment, and operational infrastructure.
+Parwaaz positions itself as a single accountable partner that combines AI and advanced technology, strategy, execution, workforce capability, technology adoption, talent deployment, and operational infrastructure.
 
 ---
 
@@ -28,7 +28,7 @@ To close the gap between where human potential exists and where the world needs 
 
 ## Organizational Purpose
 
-Parwaaz exists to connect talent, technology, and opportunity through integrated solutions that enable workforce development, organizational transformation, economic participation, and international growth.
+Parwaaz exists to connect talent, technology, and opportunity through integrated solutions that enable workforce development, organizational transformation, economic participation, AI advisory and international growth.
 
 ---
 
@@ -64,9 +64,10 @@ Business Models:
 
 - Business-to-Business (B2B)
 - Business-to-Government (B2G)
+- Business-to-Consumer (B2C)
 - Professional Services
 - Advisory Services
-- Technology Services
+- AI Technology Services
 - Managed Services
 
 ---
@@ -279,6 +280,12 @@ Referenced industries and sectors include:
 - Technology Companies
 - Startups
 - Project Developers
+- Skills professionals
+- Investors & Growth Ecosystem
+- Enterprises & Multinational Corporations
+- Organizations Entering New Markets
+- Certification Partners
+- Human Capital & Learning Stakeholders
 
 ---
 
