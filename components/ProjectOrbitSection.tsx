@@ -806,6 +806,15 @@ export default function ProjectOrbitSection() {
             letter-spacing: -0.02em !important;
           }
 
+          :global(html.dark) .po-slide-title {
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+          }
+
+          :global(html.dark) .po-slide-text {
+            color: rgba(255, 255, 255, 0.86) !important;
+          }
+
           .po-canvas {
             position: absolute !important;
             top: auto !important;

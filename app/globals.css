@@ -32,6 +32,15 @@ main {
   overflow: visible !important;
 }
 
+.home-page-shell {
+  opacity: 0;
+}
+
+body.home-page-ready .home-page-shell {
+  opacity: 1;
+  transition: opacity 0.18s ease;
+}
+
 h1,
 h2,
 h3,

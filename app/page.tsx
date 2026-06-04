@@ -37,6 +37,14 @@ export default function Page() {
   const [servicePage, setServicePage] = useState(0);
 
   useEffect(() => {
+    document.body.classList.add("home-page-ready");
+
+    return () => {
+      document.body.classList.remove("home-page-ready");
+    };
+  }, []);
+
+  useEffect(() => {
     setServicePage(0);
   }, [activeServiceTab]);
 
@@ -144,7 +152,7 @@ export default function Page() {
   }, []);
 
   return (
-    <main className="bg-white overflow-x-hidden">
+    <main className="home-page-shell bg-white overflow-x-hidden">
       <GsapTextAnimations />
 
       <SearchModal

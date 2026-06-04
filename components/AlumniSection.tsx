@@ -392,6 +392,18 @@ export default function AlumniSection() {
           user-select: none;
         }
 
+        .world-map-img-wrap :global(.world-map-dark) {
+          display: none;
+        }
+
+        :global(html.dark) .world-map-img-wrap :global(.world-map-light) {
+          display: none;
+        }
+
+        :global(html.dark) .world-map-img-wrap :global(.world-map-dark) {
+          display: block;
+        }
+
         .alumni-pin {
           position: absolute;
           z-index: 5;
@@ -1026,10 +1038,18 @@ export default function AlumniSection() {
           <div className="alumni-map-stage">
             <div className="world-map-img-wrap">
               <Image
+                className="world-map-light"
                 src="/world-map.png"
                 alt="World map"
                 fill
                 priority
+                sizes="(max-width: 768px) 100vw, 1180px"
+              />
+              <Image
+                className="world-map-dark"
+                src="/mapdark.png"
+                alt="World map"
+                fill
                 sizes="(max-width: 768px) 100vw, 1180px"
               />
             </div>

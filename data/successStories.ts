@@ -73,8 +73,8 @@ export const successStories: SuccessStory[] = [
   },
   {
     city: "Singapore",
-    x: "76%",
-    y: "55%",
+    x: "70%",
+    y: "50%",
     xMobile: "94%",
     yMobile: "45%",
     video: "",
@@ -86,8 +86,8 @@ export const successStories: SuccessStory[] = [
   },
   {
     city: "South Africa",
-    x: "57%",
-    y: "75%",
+    x: "54%",
+    y: "69%",
     xMobile: "60%",
     yMobile: "50%",
     video: "",
@@ -99,8 +99,8 @@ export const successStories: SuccessStory[] = [
   },
   {
     city: "Australia",
-    x: "80%",
-    y: "78%",
+    x: "77%",
+    y: "77%",
     xMobile: "94%",
     yMobile: "58%",
     video: "",
