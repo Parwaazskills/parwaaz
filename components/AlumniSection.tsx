@@ -366,10 +366,12 @@ export default function AlumniSection() {
         .alumni-map-wrap {
           position: relative;
           z-index: 2;
-          width: 100%;
-          max-width: 1620px;
-          margin: -50px auto 0;
+          left: 50%;
+          width: min(112vw, 1840px);
+          max-width: none;
+          margin: -50px 0 0;
           padding: 0 34px;
+          transform: translateX(-50%);
         }
 
         .alumni-map-stage {
@@ -390,18 +392,8 @@ export default function AlumniSection() {
           filter: none;
           pointer-events: none;
           user-select: none;
-        }
-
-        .world-map-img-wrap :global(.world-map-dark) {
-          display: none;
-        }
-
-        :global(html.dark) .world-map-img-wrap :global(.world-map-light) {
-          display: none;
-        }
-
-        :global(html.dark) .world-map-img-wrap :global(.world-map-dark) {
-          display: block;
+          transform: scale(1.61);
+          transform-origin: center center;
         }
 
         .alumni-pin {
@@ -856,7 +848,8 @@ export default function AlumniSection() {
           }
 
           .alumni-map-wrap {
-            max-width: 1120px;
+            width: min(116vw, 1400px);
+            max-width: none;
             margin-top: -12px;
           }
         }
@@ -872,7 +865,8 @@ export default function AlumniSection() {
           }
 
           .alumni-map-wrap {
-            max-width: 1050px;
+            width: min(118vw, 1180px);
+            max-width: none;
             margin-top: -6px;
             padding: 0 20px;
           }
@@ -915,6 +909,7 @@ export default function AlumniSection() {
           }
 
           .alumni-map-wrap {
+            width: 120vw;
             padding: 0;
             margin-top: -4px;
           }
@@ -925,7 +920,7 @@ export default function AlumniSection() {
 
           .world-map-img-wrap :global(img) {
             object-fit: cover !important;
-            transform: scale(1.1);
+            transform: scale(1.45);
             transform-origin: center 55%;
           }
 
@@ -1038,19 +1033,11 @@ export default function AlumniSection() {
           <div className="alumni-map-stage">
             <div className="world-map-img-wrap">
               <Image
-                className="world-map-light"
-                src="/world-map.png"
+                src="/mapppp.svg"
                 alt="World map"
                 fill
                 priority
-                sizes="(max-width: 768px) 100vw, 1180px"
-              />
-              <Image
-                className="world-map-dark"
-                src="/mapdark.png"
-                alt="World map"
-                fill
-                sizes="(max-width: 768px) 100vw, 1180px"
+                sizes="(max-width: 768px) 120vw, (max-width: 1024px) 118vw, (max-width: 1280px) 116vw, 112vw"
               />
             </div>
 

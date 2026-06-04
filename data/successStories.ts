@@ -32,7 +32,7 @@ export type SuccessStory = {
 export const successStories: SuccessStory[] = [
   {
     city: "KSA",
-    x: "62%",
+    x: "60%",
     y: "42%",
     xMobile: "62%",
     yMobile: "32%",
@@ -45,7 +45,7 @@ export const successStories: SuccessStory[] = [
   },
   {
     city: "KSA",
-    x: "62%",
+    x: "60%",
     y: "42%",
     xMobile: "62%",
     yMobile: "32%",
@@ -60,7 +60,7 @@ export const successStories: SuccessStory[] = [
   },
   {
     city: "UAE",
-    x: "66%",
+    x: "64%",
     y: "44%",
     xMobile: "69%",
     yMobile: "34%",
@@ -73,8 +73,8 @@ export const successStories: SuccessStory[] = [
   },
   {
     city: "Singapore",
-    x: "70%",
-    y: "50%",
+    x: "68%",
+    y: "48%",
     xMobile: "94%",
     yMobile: "45%",
     video: "",
@@ -86,8 +86,8 @@ export const successStories: SuccessStory[] = [
   },
   {
     city: "South Africa",
-    x: "54%",
-    y: "69%",
+    x: "53%",
+    y: "65%",
     xMobile: "60%",
     yMobile: "50%",
     video: "",
@@ -99,8 +99,8 @@ export const successStories: SuccessStory[] = [
   },
   {
     city: "Australia",
-    x: "77%",
-    y: "77%",
+    x: "75%",
+    y: "72%",
     xMobile: "94%",
     yMobile: "58%",
     video: "",
