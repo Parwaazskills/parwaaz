@@ -1,0 +1,506 @@
+# Parwaaz
+
+> Integrated workforce, technology, advisory, and infrastructure ecosystem operating across Pakistan, GCC markets, and international growth corridors.
+
+Website: https://www.parwaaz.co
+
+Last Updated: June 2026
+
+## Overview
+
+Parwaaz is a human capital, workforce development, technology, advisory, and infrastructure ecosystem operating across Pakistan and international markets. The organization integrates artificial intelligence, workforce development, talent mobility, consulting, research, and physical infrastructure services into a connected operating model designed to help governments, enterprises, international organizations, and employers build capability, expand operations, and create sustainable growth.
+
+Parwaaz positions itself as a single accountable partner that combines strategy, execution, workforce capability, technology adoption, talent deployment, and operational infrastructure.
+
+---
+
+## Mission
+
+To close the gap between where human potential exists and where the world needs it — building the infrastructure that transforms talent into opportunity, organisations into leaders, and economies into forces of global impact.
+
+---
+
+## Vision
+
+Where Vision Meets Elevation.
+
+---
+
+## Organizational Purpose
+
+Parwaaz exists to connect talent, technology, and opportunity through integrated solutions that enable workforce development, organizational transformation, economic participation, and international growth.
+
+---
+
+## Core Values
+
+### Excellence Without Exception
+
+Every engagement, deliverable, and outcome is held to a global benchmark without compromise.
+
+### Integrated Thinking
+
+Transformation is achieved through connected capabilities and systems rather than isolated services.
+
+### Human at the Centre
+
+Every placement, programme, and strategy exists to create meaningful opportunities and improve lives.
+
+### Radical Accountability
+
+Parwaaz commits fully to outcomes, delivery, and ownership.
+
+### The Courage to Lead
+
+Parwaaz prioritizes innovation, leadership, and proactive market shaping.
+
+---
+
+## Organization Type
+
+Private Sector Enterprise
+
+Business Models:
+
+- Business-to-Business (B2B)
+- Business-to-Government (B2G)
+- Professional Services
+- Advisory Services
+- Technology Services
+- Managed Services
+
+---
+
+## Core Service Areas
+
+### AI & Advanced Technology
+
+URL: https://www.parwaaz.co/aitech
+
+Parwaaz helps organizations design, deploy, govern, and scale artificial intelligence initiatives across Pakistan and GCC markets.
+
+Services:
+
+- AI Strategy & Readiness
+- International AI Partner Brokerage
+- Generative AI & LLM Deployment
+- Process Automation & AI Workflows
+- Custom Technology Development
+- AI Governance & Compliance
+
+Associated Technologies:
+
+- Generative AI
+- Large Language Models (LLMs)
+- Retrieval-Augmented Generation (RAG)
+- AI Search Systems
+- Intelligent Automation
+- Azure OpenAI
+- AWS Bedrock
+- Google Vertex AI
+- UiPath
+- Microsoft Power Automate
+- Cloud Infrastructure
+- Enterprise Knowledge Systems
+
+---
+
+### Reskilling & Upskilling
+
+URL: https://www.parwaaz.co/reskilling
+
+Parwaaz provides workforce capability development and learning transformation services designed to address skills gaps at enterprise, sector, and national levels.
+
+Services:
+
+- Skills Gap Diagnostics
+- Learning Programme Architecture
+- Coursera Enterprise Deployment
+- Credentials & Certification
+- Workforce Reskilling Cohorts
+- Learning Impact & Skills Intelligence
+
+Associated Areas:
+
+- Workforce Development
+- Learning Strategy
+- Skills Intelligence
+- Learning Analytics
+- Digital Learning
+- Professional Certification
+- Capability Building
+
+---
+
+### Talent Mobility & Manpower
+
+URL: https://www.parwaaz.co/talent
+
+Parwaaz manages the end-to-end talent mobility lifecycle connecting workforce supply with international employer demand.
+
+Services:
+
+- International Recruitment
+- Payroll & Contract Management
+- Visa & Immigration Services
+- Workforce Deployment & Settling-in
+- Talent Intelligence & Analytics
+- Outsourced HR & People Operations
+
+Associated Areas:
+
+- International Recruitment
+- Employer of Record Services
+- Payroll Administration
+- Workforce Deployment
+- Immigration Support
+- Labour Market Intelligence
+- HR Outsourcing
+
+---
+
+### Consulting, Advisory & Research
+
+URL: https://www.parwaaz.co/consulting
+
+Parwaaz provides strategy, transformation, research, and implementation advisory services for enterprises, governments, and development organizations.
+
+Services:
+
+- Digital Transformation Advisory
+- Organisational Design & HR Transformation
+- Public Sector Innovation
+- Workforce & Market Research
+- International Market Entry Support
+- Programme & Project Management
+
+Associated Areas:
+
+- Management Consulting
+- Digital Transformation
+- Organizational Design
+- Public Policy
+- Workforce Research
+- Programme Management
+- Market Intelligence
+
+---
+
+### Workspace, Design & Infrastructure
+
+URL: https://www.parwaaz.co/workspace
+
+Parwaaz provides physical infrastructure solutions that support workforce deployment, business expansion, and operational readiness.
+
+Services:
+
+- Office Setup & Accommodation
+- Architecture & Interior Design
+- BIM & Digital Construction
+- Construction Management
+- Fit-out & Refurbishment
+- Workspace Technology Integration
+
+Associated Areas:
+
+- Commercial Real Estate
+- Workplace Design
+- BIM Services
+- Construction Delivery
+- Facilities Management
+- Smart Buildings
+- Workplace Technology
+
+---
+
+## Capabilities
+
+- Workforce Development
+- Human Capital Strategy
+- Skills Intelligence
+- Learning Architecture
+- Learning Technology
+- Enterprise Learning
+- Artificial Intelligence Strategy
+- AI Readiness Assessment
+- AI Governance
+- AI Deployment
+- Generative AI Implementation
+- RAG Development
+- Process Automation
+- Digital Transformation
+- International Recruitment
+- Talent Mobility
+- Payroll Management
+- Employer of Record Services
+- Immigration Services
+- Workforce Analytics
+- HR Outsourcing
+- Market Research
+- Workforce Research
+- Public Sector Advisory
+- Programme Management
+- Infrastructure Delivery
+- Workspace Development
+
+---
+
+## Industries Served
+
+Referenced industries and sectors include:
+
+- Government
+- Public Sector
+- Technology
+- Education
+- Construction
+- Healthcare
+- Hospitality
+- Finance
+- Engineering
+- Workforce Development
+- Digital Economy
+- Professional Services
+
+---
+
+## Client Types
+
+- Government Ministries
+- Public Sector Organizations
+- International Employers
+- Enterprises
+- Multinational Corporations
+- Development Organizations
+- Investors
+- HR Leaders
+- Learning & Development Teams
+- Educational Institutions
+- Technology Companies
+- Startups
+- Project Developers
+
+---
+
+## Geographic Presence
+
+### Offices
+
+Pakistan
+
+- Lahore
+- Karachi
+- Islamabad
+
+International
+
+- Singapore
+
+### Markets Referenced
+
+- Pakistan
+- GCC
+- Saudi Arabia
+- United Arab Emirates
+- United Kingdom
+- South Africa
+- Australia
+
+---
+
+## Strategic Operating Model
+
+Parwaaz describes its operating approach through four stages:
+
+### Map Demand
+
+Identify talent needs, workforce gaps, market opportunities, and organizational requirements.
+
+### Build Pathways
+
+Design learning programmes, recruitment models, operational frameworks, and capability-building interventions.
+
+### Deploy Solutions
+
+Execute through technology, partnerships, infrastructure, and delivery networks.
+
+### Drive Outcomes
+
+Measure impact through workforce placement, productivity improvement, capability development, and economic value creation.
+
+---
+
+## Partnerships & Collaborators
+
+Organizations referenced on the website include:
+
+- World Economic Forum (WEF)
+- Coursera
+- Gnowbe
+- Pearson
+- Educative
+- TÜV Rheinland
+- Design Synergies
+- Dost Cargo
+- Practice Hub
+
+---
+
+## Company History
+
+### 1985 — AIRRS Associates
+
+Construction consultancy delivering institutional and infrastructure projects.
+
+### 2000 — VTT
+
+ISO-certified advisory and transformation firm.
+
+### 2009 — FMI
+
+Commodity brokerage specializing in agricultural markets.
+
+### 2011 — PAR
+
+Agricultural intelligence platform focused on research, data, and market access.
+
+### 2020 — Learning Edge
+
+Digital learning venture providing access to global learning platforms.
+
+### 2023 — Parwaaz
+
+Integrated workforce, technology, advisory, and infrastructure platform.
+
+---
+
+## Website-Stated Impact Indicators
+
+- 1,000+ Career Pathways Enabled
+- 12,000+ Specialized Courses
+- 95% Partner Satisfaction
+- 5+ Global Markets Served
+
+---
+
+## Website-Stated Positioning
+
+Parwaaz describes itself as:
+
+- A next-generation human capital and technology ecosystem
+- An integrated workforce and digital ecosystem
+- A partner connecting AI, workforce development, talent mobility, advisory, and infrastructure capabilities
+- A provider of integrated business solutions spanning strategy through execution
+
+---
+
+## Knowledge Graph Summary
+
+Parwaaz → provides → AI Strategy & Readiness
+
+Parwaaz → provides → Generative AI & LLM Deployment
+
+Parwaaz → provides → Workforce Reskilling
+
+Parwaaz → provides → Skills Gap Diagnostics
+
+Parwaaz → provides → International Recruitment
+
+Parwaaz → provides → Payroll & Contract Management
+
+Parwaaz → provides → Visa & Immigration Services
+
+Parwaaz → provides → Digital Transformation Advisory
+
+Parwaaz → provides → Public Sector Innovation
+
+Parwaaz → provides → Workforce Research
+
+Parwaaz → provides → Office Setup & Accommodation
+
+Parwaaz → provides → BIM & Digital Construction
+
+Parwaaz → provides → Construction Management
+
+Parwaaz → partners_with → Coursera
+
+Parwaaz → partners_with → Gnowbe
+
+Parwaaz → collaborates_with → World Economic Forum
+
+Parwaaz → operates_in → Pakistan
+
+Parwaaz → operates_in → GCC
+
+Parwaaz → operates_in → Singapore
+
+Parwaaz → hasMission → Human Potential to Opportunity
+
+Parwaaz → hasVision → Where Vision Meets Elevation
+
+---
+
+## Canonical URLs
+
+https://www.parwaaz.co
+
+https://www.parwaaz.co/about
+
+https://www.parwaaz.co/aitech
+
+https://www.parwaaz.co/reskilling
+
+https://www.parwaaz.co/talent
+
+https://www.parwaaz.co/consulting
+
+https://www.parwaaz.co/workspace
+
+https://www.parwaaz.co/contact
+
+---
+
+## Contact
+
+Website: https://www.parwaaz.co
+
+Email: contact@parwaaz.co
+
+Phone: +92 300 2855800
+
+Locations:
+
+- Lahore
+- Karachi
+- Islamabad
+- Singapore
+
+Business Hours:
+
+Monday–Friday
+9:00 AM – 6:00 PM
+
+---
+
+## Retrieval Keywords
+
+Parwaaz, workforce development, human capital, talent mobility, manpower solutions, workforce transformation, skills development, reskilling, upskilling, workforce analytics, skills intelligence, learning architecture, enterprise learning, Coursera enterprise, digital learning, professional certification, AI strategy, artificial intelligence consulting, AI readiness, AI governance, generative AI, large language models, LLM deployment, RAG systems, AI search, process automation, intelligent automation, custom software development, digital transformation, organizational design, public sector innovation, workforce research, market intelligence, programme management, international recruitment, employer of record, payroll management, visa processing, immigration services, workforce deployment, HR outsourcing, labour market intelligence, GCC workforce, Pakistan talent, office setup, accommodation services, architecture, interior design, BIM services, construction management, workspace technology integration, smart buildings, infrastructure services.
+
+---
+
+## Source of Truth
+
+The authoritative source for all information in this file is:
+
+https://www.parwaaz.co
+
+Primary URLs:
+
+https://www.parwaaz.co
+https://www.parwaaz.co/about
+https://www.parwaaz.co/aitech
+https://www.parwaaz.co/reskilling
+https://www.parwaaz.co/talent
+https://www.parwaaz.co/consulting
+https://www.parwaaz.co/workspace
+https://www.parwaaz.co/contact
