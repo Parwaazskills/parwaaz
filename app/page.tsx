@@ -12,6 +12,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import ChatBox from "@/components/ChatBox";
 import PartnerLogosSection from "@/components/PartnerLogosSection";
+import HorizontalServicesScroll from "@/components/HorizontalServicesScroll";
 import SearchModal from "@/components/SearchModal";
 
 import ParwaazAboutCard from "@/components/ParwaazAboutCard";
@@ -256,6 +257,8 @@ export default function Page() {
           <ChatBox />
         </div>
       </div>
+
+      <HorizontalServicesScroll />
 
       <PartnerLogosSection />
 
