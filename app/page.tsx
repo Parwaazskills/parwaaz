@@ -20,7 +20,6 @@ import StatsSection from "@/components/StatsSection";
 import ClientsSection from "@/components/ClientsSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import { heroSlides } from "@/data/heroSlides";
-import { servicesData } from "@/data/services";
 
 export default function Page() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -30,11 +29,6 @@ export default function Page() {
   const [heroServicesOpen, setHeroServicesOpen] = useState(false);
   const [heroBgIndex, setHeroBgIndex] = useState(0);
 
-  const [activeServiceTab, setActiveServiceTab] =
-    useState<keyof typeof servicesData>("AI & Advanced Technology");
-
-  const [serviceAnimKey, setServiceAnimKey] = useState(0);
-  const [servicePage, setServicePage] = useState(0);
 
   useEffect(() => {
     document.body.classList.add("home-page-ready");
@@ -43,10 +37,6 @@ export default function Page() {
       document.body.classList.remove("home-page-ready");
     };
   }, []);
-
-  useEffect(() => {
-    setServicePage(0);
-  }, [activeServiceTab]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -152,7 +142,7 @@ export default function Page() {
   }, []);
 
   return (
-    <main className="home-page-shell bg-white overflow-x-hidden">
+    <main className="bg-white home-page-shell" style={{ overflowX: "clip" }}>
       <GsapTextAnimations />
 
       <SearchModal
@@ -259,19 +249,12 @@ export default function Page() {
 
       <PartnerLogosSection />
 
-      <section className="relative z-10 bg-white pt-4 lg:pt-6 pb-12">
+      <section className="relative z-10 pt-4 pb-12 bg-white lg:pt-6">
         <ParwaazAboutCard />
 
-        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
-          <ServicesSection
-            activeServiceTab={activeServiceTab}
-            setActiveServiceTab={setActiveServiceTab}
-            serviceAnimKey={serviceAnimKey}
-            setServiceAnimKey={setServiceAnimKey}
-            servicePage={servicePage}
-            setServicePage={setServicePage}
-          />
+        <ServicesSection />
 
+        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <StatsSection />
         </div>
 
