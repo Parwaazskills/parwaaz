@@ -78,8 +78,27 @@ export default function CourseProgramDetailsSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const leftContentRef = useRef<HTMLDivElement | null>(null);
   const formMoveRef = useRef<HTMLDivElement | null>(null);
+  const tabContentRef = useRef<HTMLDivElement | null>(null);
 
   const activeProgram = programTabs[activeTab];
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setActiveTab((prev) => (prev + 1) % programTabs.length);
+    }, 5000);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (!tabContentRef.current) return;
+
+    gsap.fromTo(
+      tabContentRef.current,
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }
+    );
+  }, [activeTab]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -90,40 +109,51 @@ export default function CourseProgramDetailsSection() {
 
     if (!section || !leftContent || !formMove) return;
 
-    const isMobile = window.matchMedia("(max-width: 900px)").matches;
+    const mm = gsap.matchMedia();
 
-    if (isMobile) {
-      gsap.set(formMove, { clearProps: "all" });
-      return;
-    }
+    mm.add("(min-width: 901px)", () => {
+      const ctx = gsap.context(() => {
+        gsap.set(formMove, {
+          y: 0,
+          willChange: "transform",
+        });
 
-    const ctx = gsap.context(() => {
+        gsap.to(formMove, {
+          y: () => {
+            const maxMove =
+              leftContent.offsetHeight - formMove.offsetHeight - 40;
+
+            return Math.max(maxMove, 0);
+          },
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top+=90",
+            end: "bottom bottom",
+            scrub: 0.65,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        ScrollTrigger.refresh();
+      }, section);
+
+      return () => ctx.revert();
+    });
+
+    mm.add("(max-width: 900px)", () => {
       gsap.set(formMove, {
+        clearProps: "all",
         y: 0,
-        willChange: "transform",
+        x: 0,
       });
 
-      gsap.to(formMove, {
-        y: () => {
-          const maxMove =
-            leftContent.offsetHeight - formMove.offsetHeight - 40;
+      return () => {
+        gsap.set(formMove, { clearProps: "all" });
+      };
+    });
 
-          return Math.max(maxMove, 0);
-        },
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top+=90",
-          end: "bottom bottom",
-          scrub: 0.65,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      ScrollTrigger.refresh();
-    }, section);
-
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
 
   return (
@@ -132,7 +162,7 @@ export default function CourseProgramDetailsSection() {
       className="relative w-full overflow-visible bg-white"
     >
       {/* Grey top background */}
-      <div className="absolute left-0 top-0 z-0 h-[635px] w-full bg-[#f7f7fa] max-[900px]:h-[820px] max-[640px]:h-[940px]" />
+      <div className="absolute left-0 top-0 z-0 h-[635px] w-full bg-[#f7f7fa] max-[900px]:h-[900px] max-[640px]:h-[980px] max-[480px]:h-[1040px]" />
 
       {/* Right orbit svg */}
       <div className="pointer-events-none absolute right-[-285px] top-[235px] z-[1] h-[770px] w-[770px] opacity-[0.42] max-[1100px]:right-[-410px] max-[900px]:hidden">
@@ -145,7 +175,7 @@ export default function CourseProgramDetailsSection() {
         />
       </div>
 
-      <div className="relative z-[2] mx-auto grid w-full max-w-[1160px] grid-cols-[1fr_485px] items-start gap-[72px] px-4 pb-[120px] pt-[50px] max-[1100px]:grid-cols-[1fr_430px] max-[1100px]:gap-[42px] max-[900px]:grid-cols-1 max-[900px]:pb-[58px] max-[900px]:pt-[42px]">
+      <div className="relative z-[2] mx-auto grid w-full max-w-[1160px] grid-cols-[1fr_485px] items-start gap-[72px] px-4 pb-[120px] pt-[50px] max-[1100px]:grid-cols-[1fr_430px] max-[1100px]:gap-[42px] max-[900px]:grid-cols-1 max-[900px]:gap-[45px] max-[900px]:px-[24px] max-[900px]:pb-[58px] max-[900px]:pt-[42px] max-[480px]:px-[18px]">
         {/* Left Content */}
         <div ref={leftContentRef} className="min-w-0">
           {/* Key Highlights */}
@@ -162,25 +192,27 @@ export default function CourseProgramDetailsSection() {
               </GradientTitle>
             </div>
 
-            <h3 className="mt-[35px] text-[17px] font-normal uppercase leading-none tracking-[0.4px] text-black">
-              {activeProgram.name}
-            </h3>
+            <div ref={tabContentRef}>
+              <h3 className="mt-[35px] text-[17px] font-normal uppercase leading-none tracking-[0.4px] text-black">
+                {activeProgram.name}
+              </h3>
 
-            <p className="mt-[15px] max-w-[615px] text-[11.5px] font-normal uppercase leading-[1.42] tracking-[0.45px] text-black/90 max-[480px]:text-[10.8px] max-[480px]:leading-[1.55]">
-              {activeProgram.description}
-            </p>
+              <p className="mt-[15px] max-w-[615px] text-[11.5px] font-normal uppercase leading-[1.42] tracking-[0.45px] text-black/90 max-[480px]:text-[10.8px] max-[480px]:leading-[1.55]">
+                {activeProgram.description}
+              </p>
 
-            <ul className="mt-[42px] space-y-[22px] pl-[8px] max-[480px]:mt-[32px] max-[480px]:space-y-[16px]">
-              {activeProgram.bullets.map((item) => (
-                <li
-                  key={item}
-                  className="flex items-start gap-[11px] text-[15px] font-normal leading-[1.3] tracking-[0.1px] text-black max-[480px]:text-[13px]"
-                >
-                  <span className="mt-[6px] h-[3px] w-[3px] shrink-0 rounded-full bg-black" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+              <ul className="mt-[42px] space-y-[22px] pl-[8px] max-[480px]:mt-[32px] max-[480px]:space-y-[16px]">
+                {activeProgram.bullets.map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-[11px] text-[15px] font-normal leading-[1.3] tracking-[0.1px] text-black max-[480px]:text-[13px]"
+                  >
+                    <span className="mt-[6px] h-[3px] w-[3px] shrink-0 rounded-full bg-black" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
             {/* Pagination */}
             <div className="mt-[78px] flex justify-center gap-[4px] max-[900px]:mt-[46px]">
@@ -190,7 +222,7 @@ export default function CourseProgramDetailsSection() {
                   type="button"
                   aria-label={`Show ${item.name}`}
                   onClick={() => setActiveTab(index)}
-                  className={`h-[6px] rounded-full transition-all duration-300 ${
+                  className={`h-[6px] rounded-full transition-all duration-500 ease-out ${
                     activeTab === index
                       ? "w-[44px] bg-[#030887]"
                       : "w-[13px] bg-[#d7d7d7] hover:bg-[#030887]/50"
@@ -236,8 +268,11 @@ export default function CourseProgramDetailsSection() {
         </div>
 
         {/* Right Form Moving Inside Section */}
-        <div className="relative z-[5] min-h-full self-stretch max-[900px]:self-auto">
-          <div ref={formMoveRef} className="relative w-full">
+        <div className="relative z-[5] min-h-full self-stretch max-[900px]:min-h-0 max-[900px]:self-auto">
+          <div
+            ref={formMoveRef}
+            className="relative w-full max-[900px]:mx-auto max-[900px]:max-w-[520px] max-[900px]:translate-x-0 max-[900px]:translate-y-0 max-[900px]:transform-none"
+          >
             <Form />
           </div>
         </div>

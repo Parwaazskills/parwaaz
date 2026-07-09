@@ -10,6 +10,9 @@ import CourseCareerBannerSection from "../sections/CourseCareerBannerSection";
 import Navbar from "@/components/Navbar";
 import CoursesSection from "../sections/CoursesSection";
 import AiProfessionalsCollection from "../sections/AiProfessionalsCollection";
+import CurriculumSection from "../sections/CurriculumSection";
+import ExploreCareersSection from "../sections/ExploreCareersSection";
+import Footer from "@/components/Footer";
 
 export default function CoursesPage() {
   return (
@@ -26,6 +29,9 @@ export default function CoursesPage() {
       <CourseCareerBannerSection/>
       <CoursesSection/>
       <AiProfessionalsCollection/>
+      <CurriculumSection/>
+      {/* <ExploreCareersSection/> */}
+      <Footer/>
     </main>
   );
 }
