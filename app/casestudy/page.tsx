@@ -10,7 +10,7 @@ import CaseStudyResultsSection from "../sections/CaseStudyResultsSection";
 
 export default function Casestudy() {
   return (
-    <main className="w-full overflow-visible bg-white">
+    <main className="case-study-page w-full overflow-visible bg-white">
       <div className="absolute left-0 top-0 z-[999] w-full">
                       <Navbar/>
       </div>

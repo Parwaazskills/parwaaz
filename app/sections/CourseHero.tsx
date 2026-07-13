@@ -7,10 +7,10 @@ import Link from "next/link";
 
 export default function CourseHero() {
   return (
-    <section className="relative z-[5] mb-[70px] h-[60vh] min-h-[455px] w-full overflow-visible bg-[#07077d] pt-[135px] max-[1024px]:h-auto max-[1024px]:min-h-[580px] max-[768px]:mb-0 max-[768px]:pt-[100px] max-[768px]:pb-[70px]">
+    <section className="relative z-[5] mb-[70px] h-[60vh] min-h-[600px] w-full overflow-visible bg-[#07077d] pt-[135px] max-[1024px]:h-auto max-[1024px]:min-h-[600px] max-[768px]:mb-0 max-[768px]:pt-[100px] max-[768px]:pb-[70px]">
       <div className="relative z-[2] mx-auto h-full w-full max-w-[1400px] overflow-visible px-[86px] max-[1200px]:px-[64px] max-[1024px]:px-[42px] max-[768px]:flex max-[768px]:flex-col max-[768px]:px-[24px] max-[480px]:px-[18px]">
         {/* Left Content */}
-        <div className="relative z-[3] max-w-[720px]">
+        <div className="relative z-[3] max-w-[720px] max-[1200px]:max-w-[55%] max-[768px]:max-w-full">
           <p className="max-w-[410px] text-[15.5px] font-normal leading-[1.55] tracking-[0.1px] text-white max-[480px]:text-[13px]">
             Establish Yourself as a Transformational
             <br />
@@ -33,14 +33,14 @@ export default function CourseHero() {
           <div className="mt-[31px] flex items-center gap-[8px] max-[480px]:flex-col max-[480px]:items-start max-[480px]:gap-[12px]">
             <Link
               href="/brochure"
-              className="flex h-[40px] w-[162px] items-center justify-center rounded-[14px] bg-[#00fe4e] text-[12px] font-normal text-[#07140d] shadow-[0_8px_18px_rgba(0,254,78,0.2)] transition-all duration-300 hover:scale-[1.03] hover:bg-[#00e948] max-[480px]:w-full"
+              className="hero-btn inline-flex h-[44px] items-center justify-center rounded-[24px] px-7 text-[14px] font-medium no-underline sm:h-[48px] lg:px-9 max-[480px]:w-full"
             >
               Download Brochure
             </Link>
 
             <Link
               href="/apply"
-              className="flex h-[42px] w-[162px] items-center justify-center rounded-[14px] border border-black/10 bg-white text-[12px] font-normal text-[#2b2f35] shadow-[0_8px_18px_rgba(255,255,255,0.12)] transition-all duration-300 hover:scale-[1.03] hover:bg-[#f5f5f5] max-[480px]:w-full"
+              className="hero-btn inline-flex h-[44px] items-center justify-center rounded-[24px] px-7 text-[14px] font-medium no-underline sm:h-[48px] lg:px-9 max-[480px]:w-full"
             >
               Apply Now
             </Link>

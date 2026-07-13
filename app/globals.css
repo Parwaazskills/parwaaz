@@ -124,6 +124,35 @@ p {
   animation-delay: 0.45s;
 }
 
+/* Shared CTA treatment used by the home and page heroes. */
+.hero-btn {
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  background: #f1f1f1;
+  color: #333333;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.25s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.hero-btn:hover {
+  border-color: #00fe4e;
+  background: linear-gradient(135deg, #00fe4e 0%, #0adf54 100%);
+  color: #000000;
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 24px rgba(0, 254, 78, 0.5),
+    0 0 0 6px rgba(0, 254, 78, 0.12);
+}
+
+.hero-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
 /* ============================================================
  * GSAP MOBILE FIX
  * Apply GPU compositing ONLY to char/word elements.
@@ -945,4 +974,117 @@ html.dark .contact-page-wrap footer [aria-label="X (Twitter)"]:hover {
 html.dark .footer-logo,
 html.dark footer img[src="/parwaaz-logo.svg"] {
   filter: brightness(0) invert(1) saturate(0) brightness(1.18);
+}
+
+/* ============================================================
+ * CASE STUDY, BLOG, AND COURSE DARK MODE
+ * Keeps blue/green brand panels intact while converting light page surfaces.
+ * ============================================================ */
+
+html.dark .case-study-page,
+html.dark .blogs-page,
+html.dark .course-page,
+html.dark .blogs-page article.bg-white {
+  background: #05070b !important;
+}
+
+html.dark
+  :is(.case-study-page, .blogs-page, .course-page)
+  [class~="bg-[#E6E6F1]"],
+html.dark .blogs-page [class~="bg-[#fafafa]"],
+html.dark .course-page [class~="bg-[#f7f7fa]"],
+html.dark .course-page [class~="bg-[#f1f1f7]"],
+html.dark .course-page [class~="bg-[#f0f1f8]"],
+html.dark .course-page [class~="bg-[#e9eaf4]"] {
+  background: #121b27 !important;
+}
+
+html.dark .course-page [class~="bg-[#d8ffd5]"] {
+  background: #10231a !important;
+}
+
+html.dark
+  :is(.case-study-page, .blogs-page, .course-page)
+  :is(
+    [class~="border-[#E6E6F1]"],
+    [class~="border-[#D7D8EA]"],
+    [class~="border-[#d9d9d9]"],
+    [class~="border-[#222]"],
+    [class~="border-[#000572]/30"]
+  ) {
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+html.dark
+  :is(.case-study-page, .blogs-page, .course-page)
+  :is(
+    [class~="text-[#000572]"],
+    [class~="text-[#030887]"],
+    [class~="text-[#07177d]"]
+  ) {
+  color: #00fe4e !important;
+}
+
+html.dark
+  :is(.case-study-page, .blogs-page, .course-page)
+  :is(
+    [class~="text-[#001f4d]"],
+    [class~="text-[#111111]"],
+    [class~="text-[#111]"],
+    [class~="text-[#1f1f1f]"],
+    [class~="text-[#202020]"],
+    [class~="text-[#222]"],
+    [class~="text-[#333333]"]
+  ) {
+  color: rgba(245, 248, 246, 0.88) !important;
+}
+
+html.dark
+  :is(.case-study-page, .blogs-page, .course-page)
+  :is(
+    [class~="text-[#555]"],
+    [class~="text-[#666]"],
+    [class~="text-[#777]"],
+    [class~="text-[#898989]"],
+    [class~="text-[#8a8a8a]"],
+    [class~="text-[#9c9c9c]"],
+    [class~="text-[#a7a7a7]"],
+    [class~="text-[#b5b5b5]"],
+    [class~="text-[#b6b6b6]"]
+  ) {
+  color: rgba(245, 248, 246, 0.62) !important;
+}
+
+html.dark .course-page [class~="from-white"] {
+  background-image: linear-gradient(to left, #0d141e, transparent) !important;
+}
+
+html.dark
+  :is(.case-study-page, .blogs-page, .course-page)
+  [class~="bg-clip-text"][class~="text-transparent"] {
+  color: transparent !important;
+}
+
+html.dark .course-page [class~="bg-black"] {
+  background-color: #00fe4e !important;
+}
+
+html.dark
+  .blogs-page
+  .group:hover
+  [class~="group-hover:text-[#000572]"] {
+  color: #00fe4e !important;
+}
+
+html.dark
+  :is(.case-study-page, .blogs-page, .course-page)
+  :is(
+    [class~="bg-[#00FE4E]"],
+    [class~="bg-[#00fe4e]"]
+  )[class~="text-black"] {
+  color: #050505 !important;
+}
+
+html.dark .course-page img[src="/careerbanner.png"] {
+  filter: brightness(0.58) saturate(0.9);
 }

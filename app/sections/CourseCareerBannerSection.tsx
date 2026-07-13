@@ -35,7 +35,7 @@ export default function CourseCareerBannerSection() {
 
             <Link
               href="/courses"
-              className="mt-[35px] flex h-[47px] w-[195px] items-center justify-center rounded-[16px] bg-[#00fe4e] text-[15px] font-normal tracking-[0.2px] text-black shadow-[0_12px_22px_rgba(0,0,0,0.2)] transition-all duration-300 hover:-translate-y-[2px] hover:bg-[#00e948] hover:shadow-[0_16px_30px_rgba(0,0,0,0.22)] max-[480px]:mt-[28px] max-[480px]:h-[44px] max-[480px]:w-[170px] max-[480px]:text-[14px]"
+              className="hero-btn mt-[35px] inline-flex h-[44px] items-center justify-center rounded-[24px] px-7 text-[14px] font-medium no-underline sm:h-[48px] lg:px-9 max-[480px]:mt-[28px]"
             >
               Join for free
             </Link>

@@ -97,40 +97,6 @@ export default function HeroSection({ heroBgIndex, setHeroBgIndex }: HeroSection
           animation: robotBottomOut 0.95s cubic-bezier(0.55, 0, 0.25, 1) both;
         }
 
-        .hero-btn {
-          background: #f1f1f1;
-          color: #333333;
-          border: 1.5px solid transparent;
-          box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
-          transition:
-            background 0.3s ease,
-            color 0.3s ease,
-            transform 0.25s ease,
-            box-shadow 0.3s ease,
-            border-color 0.3s ease;
-          cursor: pointer;
-        }
-
-        .hero-btn-primary,
-        .hero-btn-secondary {
-          background: #f1f1f1;
-          color: #333333;
-        }
-
-        .hero-btn:hover {
-          background: linear-gradient(135deg, #00fe4e 0%, #0adf54 100%);
-          color: #000000;
-          border-color: #00fe4e;
-          transform: translateY(-2px);
-          box-shadow:
-            0 8px 24px rgba(0, 254, 78, 0.5),
-            0 0 0 6px rgba(0, 254, 78, 0.12);
-        }
-
-        .hero-btn:active {
-          transform: translateY(0) scale(0.97);
-        }
-
         .hero-bg {
           height: 760px;
           min-height: 760px;
@@ -444,14 +410,14 @@ export default function HeroSection({ heroBgIndex, setHeroBgIndex }: HeroSection
        <div className="gsap-hero-cta hero-anim-slide-up hero-anim-delay-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
   <Link
     href="/aitech"
-    className="hero-btn hero-btn-primary inline-flex items-center justify-center h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium no-underline"
+    className="hero-btn inline-flex items-center justify-center h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium no-underline"
   >
     Explore Solutions
   </Link>
 
   <Link
     href="/contact"
-    className="hero-btn hero-btn-secondary inline-flex items-center justify-center h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium no-underline"
+    className="hero-btn inline-flex items-center justify-center h-[44px] sm:h-[48px] px-7 lg:px-9 rounded-[24px] text-[14px] font-medium no-underline"
   >
     Partner with us
   </Link>

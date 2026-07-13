@@ -57,7 +57,7 @@ export default function SecureTalentSection() {
 
             <Link
               href="/contact"
-              className="mt-[40px] flex h-[42px] w-[234px] items-center justify-center rounded-[6px] bg-[#00FE4E] font-montserrat text-[14px] font-bold !text-black transition-all duration-300 hover:scale-[1.03] hover:bg-[#00e848] max-[480px]:w-full"
+              className="hero-btn mt-[40px] inline-flex h-[44px] items-center justify-center rounded-[24px] px-7 font-montserrat text-[14px] font-medium no-underline sm:h-[48px] lg:px-9 max-[480px]:w-full"
             >
               Talk to sales →
             </Link>
