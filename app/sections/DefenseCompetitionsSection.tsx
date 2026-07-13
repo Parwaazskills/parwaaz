@@ -88,7 +88,7 @@ export default function DefenseCompetitionsSection() {
             </span>
           </h2>
 
-          <p className="mx-auto mt-[18px] max-w-[980px] font-montserrat text-[15px] font-normal leading-[1.75] text-[#333333] max-[480px]:text-[13px]">
+        <p className="mx-auto mt-[18px] max-w-[980px] font-montserrat text-[16px] font-normal leading-[1.75] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
             The two competitions behind the DoD&apos;s workforce strategy,
             designed to attract skilled technologists through virtual
             competition-based events.
@@ -115,7 +115,7 @@ export default function DefenseCompetitionsSection() {
                   {competition.title}
                 </h3>
 
-                <p className="mt-[18px] font-montserrat text-[15px] font-normal leading-[1.75] text-[#202020] max-[480px]:text-[13px]">
+              <p className="mt-[18px] font-montserrat text-[16px] font-normal leading-[1.75] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
                   {competition.intro}
                 </p>
 
@@ -123,7 +123,7 @@ export default function DefenseCompetitionsSection() {
                   {competition.pills.map((pill, pillIndex) => (
                     <div
                       key={pillIndex}
-                      className="rounded-full bg-[#E6E6F1] px-[18px] py-[10px] font-montserrat text-[13px] font-medium leading-[1.4] text-[#111111] max-[480px]:rounded-[14px]"
+                      className="rounded-full bg-[#E6E6F1] px-[18px] py-[10px] font-montserrat text-[14px] font-medium leading-[1.4] text-black max-[480px]:rounded-[14px] max-[480px]:text-[13px]"
                     >
                       {pill}
                     </div>
@@ -131,13 +131,13 @@ export default function DefenseCompetitionsSection() {
                 </div>
 
                 {competition.outro && (
-                  <p className="mt-[22px] font-montserrat text-[15px] font-normal leading-[1.75] text-[#202020] max-[480px]:text-[13px]">
+              <p className="mt-[22px] font-montserrat text-[16px] font-normal leading-[1.75] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
                     {competition.outro}
                   </p>
                 )}
 
                 {competition.extraPillsTitle && (
-                  <p className="mt-[22px] font-montserrat text-[15px] font-semibold text-[#000572] max-[480px]:text-[13px]">
+              <p className="mt-[22px] font-montserrat text-[16px] font-semibold leading-[1.6] text-[#000572] max-[768px]:text-[14px] max-[480px]:text-[13px]">
                     {competition.extraPillsTitle}
                   </p>
                 )}
@@ -147,7 +147,7 @@ export default function DefenseCompetitionsSection() {
                     {competition.extraPills.map((pill, pillIndex) => (
                       <div
                         key={pillIndex}
-                        className="rounded-full bg-[#E6E6F1] px-[18px] py-[10px] font-montserrat text-[13px] font-medium leading-[1.4] text-[#111111] max-[480px]:rounded-[14px]"
+                      className="rounded-full bg-[#E6E6F1] px-[18px] py-[10px] font-montserrat text-[14px] font-medium leading-[1.4] text-black max-[480px]:rounded-[14px] max-[480px]:text-[13px]"
                       >
                         {pill}
                       </div>

@@ -143,21 +143,21 @@ export default function BlogsListingSection() {
                         {blog.category}
                       </span>
 
-                      <span className="font-montserrat text-[12px] text-[#777]">
+                      <span className="font-montserrat text-[13px] text-black max-[480px]:text-[12px]">
                         {blog.date}
                       </span>
                     </div>
 
-                    <h3 className="font-montserrat text-[22px] font-bold leading-[1.25] text-[#111] group-hover:text-[#000572]">
+                    <h3 className="font-montserrat text-[22px] font-bold leading-[1.25] text-black group-hover:text-[#000572]">
                       {blog.title}
                     </h3>
 
-                    <p className="mt-[12px] line-clamp-2 font-montserrat text-[14px] leading-[1.65] text-[#555]">
+                    <p className="mt-[12px] line-clamp-2 font-montserrat text-[16px] leading-[1.65] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
                       {blog.excerpt}
                     </p>
 
                     <div className="mt-[24px] flex items-center justify-between">
-                      <span className="font-montserrat text-[13px] font-bold text-[#000572]">
+                      <span className="font-montserrat text-[14px] font-bold text-[#000572] max-[480px]:text-[13px]">
                         Read article
                       </span>
 

@@ -34,7 +34,7 @@ export default function CaseStudyDetails() {
             Context
           </h2>
 
-          <p className="mt-[28px] font-montserrat text-[15px] font-normal leading-[1.75] text-[#111111] max-[480px]:text-[13px]">
+          <p className="mt-[28px] font-montserrat text-[16px] font-normal leading-[1.75] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
             Finding skilled cybersecurity and IT personnel is no easy feat, as
             the demand for skilled professionals in these fields continues to
             skyrocket. <span className="font-semibold text-[#000572]">Research</span>{" "}
@@ -48,14 +48,14 @@ export default function CaseStudyDetails() {
             {contextPills.map((pill, index) => (
               <div
                 key={index}
-                className="w-fit rounded-full bg-white px-[26px] py-[12px] font-montserrat text-[14px] font-medium text-[#111111] max-[480px]:w-full max-[480px]:text-[12px]"
+                className="w-fit rounded-full bg-white px-[26px] py-[12px] font-montserrat text-[14px] font-medium text-black max-[480px]:w-full max-[480px]:text-[13px]"
               >
                 {pill}
               </div>
             ))}
           </div>
 
-          <p className="mt-[28px] font-montserrat text-[15px] font-normal leading-[1.7] text-[#111111] max-[480px]:text-[13px]">
+          <p className="mt-[28px] font-montserrat text-[16px] font-normal leading-[1.7] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
             The DoD employs 3.4M individuals under entities such as the:
           </p>
 
@@ -77,7 +77,7 @@ export default function CaseStudyDetails() {
             Goals
           </h2>
 
-          <div className="mt-[28px] space-y-[24px] font-montserrat text-[15px] font-normal leading-[1.75] text-[#111111] max-[480px]:text-[13px]">
+          <div className="mt-[28px] space-y-[24px] font-montserrat text-[16px] font-normal leading-[1.75] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
             <p>
               Rather than relying on conventional recruitment tactics to enhance
               its technical workforce, the DoD partnered with Correlation One to

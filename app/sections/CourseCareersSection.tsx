@@ -28,7 +28,7 @@ export default function CourseCareersSection() {
               CAREERS IN AI AND ML
             </h2>
 
-            <p className="mt-[18px] text-[12px] font-normal leading-none tracking-[0.35px] text-black/80 max-[480px]:text-[11px] max-[480px]:leading-[1.45]">
+            <p className="mt-[18px] text-[16px] font-normal leading-[1.6] tracking-[0.2px] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
               Here Are The Ideal Jobs Roles In AI Sought After By Companies In
               India
             </p>
@@ -39,7 +39,7 @@ export default function CourseCareersSection() {
               {leftCareers.map((career) => (
                 <li
                   key={career}
-                  className="flex items-start gap-[12px] text-[16.5px] font-normal leading-[1.2] tracking-[0.05px] text-black max-[768px]:text-[15px] max-[480px]:text-[14px]"
+                  className="flex items-start gap-[12px] text-[16px] font-normal leading-[1.45] tracking-[0.05px] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]"
                 >
                   <span className="mt-[7px] h-[3px] w-[3px] shrink-0 rounded-full bg-black" />
                   <span>{career}</span>
@@ -51,7 +51,7 @@ export default function CourseCareersSection() {
               {rightCareers.map((career) => (
                 <li
                   key={career}
-                  className="flex items-start gap-[12px] text-[16.5px] font-normal leading-[1.2] tracking-[0.05px] text-black max-[768px]:text-[15px] max-[480px]:text-[14px]"
+                  className="flex items-start gap-[12px] text-[16px] font-normal leading-[1.45] tracking-[0.05px] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]"
                 >
                   <span className="mt-[7px] h-[3px] w-[3px] shrink-0 rounded-full bg-black" />
                   <span>{career}</span>

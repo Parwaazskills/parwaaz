@@ -11,19 +11,19 @@ export default function CourseHero() {
       <div className="relative z-[2] mx-auto h-full w-full max-w-[1400px] overflow-visible px-[86px] max-[1200px]:px-[64px] max-[1024px]:px-[42px] max-[768px]:flex max-[768px]:flex-col max-[768px]:px-[24px] max-[480px]:px-[18px]">
         {/* Left Content */}
         <div className="relative z-[3] max-w-[720px] max-[1200px]:max-w-[55%] max-[768px]:max-w-full">
-          <p className="max-w-[410px] text-[15.5px] font-normal leading-[1.55] tracking-[0.1px] text-white max-[480px]:text-[13px]">
+          <p className="max-w-[410px] text-[16px] font-normal leading-[1.55] tracking-[0.1px] text-white max-[768px]:text-[14px] max-[480px]:text-[13px]">
             Establish Yourself as a Transformational
             <br />
             Business Leader
           </p>
 
-          <h1 className="mt-[7px] text-[49px] font-extrabold leading-[0.98] tracking-[-1.2px] text-[#00fe4e] max-[1024px]:text-[43px] max-[768px]:text-[42px] max-[480px]:text-[34px]">
+          <h1 className="mt-[7px] text-[64px] font-extrabold leading-[0.98] tracking-[-1.8px] text-[#00fe4e] max-[1024px]:text-[54px] max-[768px]:text-[46px] max-[520px]:text-[38px] max-[390px]:text-[32px]">
             Accelerated
             <br />
             Management Program
           </h1>
 
-          <p className="mt-[20px] max-w-[650px] text-[15.5px] font-normal leading-[1.58] tracking-[0.05px] text-white max-[480px]:text-[13px]">
+          <p className="mt-[20px] max-w-[650px] text-[16px] font-normal leading-[1.58] tracking-[0.05px] text-white max-[768px]:text-[14px] max-[480px]:text-[13px]">
             The Accelerated Management Program from National University of
             Singapore Business School is a 9-month live-online fast-track
             management program for professionals who want to excel in a dynamic

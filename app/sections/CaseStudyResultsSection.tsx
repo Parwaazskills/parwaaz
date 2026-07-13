@@ -24,7 +24,7 @@ export default function CaseStudyResultsSection() {
             </span>
           </h2>
 
-          <p className="mt-[34px] max-w-[600px] font-montserrat text-[16px] font-normal leading-[1.75] text-[#202020] max-[480px]:text-[13px]">
+          <p className="mt-[34px] max-w-[600px] font-montserrat text-[16px] font-normal leading-[1.75] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
             By partnering with Correlation One on career discovery competitions
             and skill challenges, the DoD strengthens its recruitment
             initiatives for key fields such as cybersecurity and IT.
@@ -35,7 +35,7 @@ export default function CaseStudyResultsSection() {
               {results.map((result, index) => (
                 <div
                   key={index}
-                  className="w-fit rounded-full bg-[#E6E6F1] px-[28px] py-[13px] font-montserrat text-[15px] font-medium leading-[1.4] text-[#111111] max-[480px]:w-full max-[480px]:rounded-[16px] max-[480px]:text-[12px]"
+                  className="w-fit rounded-full bg-[#E6E6F1] px-[28px] py-[13px] font-montserrat text-[16px] font-medium leading-[1.4] text-black max-[768px]:text-[14px] max-[480px]:w-full max-[480px]:rounded-[16px] max-[480px]:text-[13px]"
                 >
                   {result}
                 </div>
@@ -64,7 +64,7 @@ export default function CaseStudyResultsSection() {
               Vaugh R.
             </h3>
 
-            <p className="mt-[6px] font-montserrat text-[14px] font-normal text-white/75">
+            <p className="mt-[6px] font-montserrat text-[14px] font-normal text-white">
               U.S. Army Career Invitational participant
             </p>
           </div>

@@ -29,7 +29,7 @@ export default function CourseCareerBannerSection() {
               ADVANCE YOUR CAREER
             </h2>
 
-            <p className="mt-[28px] text-[15px] font-normal leading-none tracking-[0.1px] text-black max-[480px]:mt-[22px] max-[480px]:text-[13px]">
+            <p className="mt-[28px] text-[16px] font-normal leading-[1.6] tracking-[0.1px] text-black max-[768px]:text-[14px] max-[480px]:mt-[22px] max-[480px]:text-[13px]">
               Grow with courses from top organizations
             </p>
 

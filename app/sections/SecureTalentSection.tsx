@@ -40,11 +40,11 @@ export default function SecureTalentSection() {
               technical talent
             </h2>
 
-            <p className="mt-[26px] font-montserrat text-[15px] font-semibold leading-[1.55] !text-white max-[480px]:text-[13px]">
+          <p className="mt-[26px] font-montserrat text-[16px] font-semibold leading-[1.55] !text-white max-[768px]:text-[14px] max-[480px]:text-[13px]">
               Find out how Parwaaz&apos;s custom workforce development programs:
             </p>
 
-            <ul className="mt-[24px] space-y-[9px] pl-[22px] font-montserrat text-[15px] font-medium leading-[1.45] !text-white max-[480px]:text-[13px]">
+          <ul className="mt-[24px] space-y-[9px] pl-[22px] font-montserrat text-[16px] font-medium leading-[1.55] !text-white max-[768px]:text-[14px] max-[480px]:text-[13px]">
               {points.map((point, index) => (
                 <li
                   key={index}

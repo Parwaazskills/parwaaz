@@ -30,7 +30,7 @@ export default function CareerGoalsSection() {
               >
                 <div className="ml-[8px] h-[40px] w-[40px] shrink-0 rounded-[8px] bg-[#000572]" />
 
-                <p className="whitespace-pre-line text-left font-montserrat text-[15px] font-medium leading-[1.1] text-[#202020]">
+            <p className="whitespace-pre-line text-left font-montserrat text-[16px] font-medium leading-[1.4] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
                   {goal}
                 </p>
               </div>

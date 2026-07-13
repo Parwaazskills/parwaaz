@@ -50,7 +50,7 @@ export default function AiProfessionalsCollection() {
             Collection
           </h2>
 
-          <p className="mt-[14px] font-montserrat text-[12px] font-medium capitalize tracking-[0.6px] text-white/60 max-[480px]:text-[10px]">
+        <p className="mt-[14px] font-montserrat text-[16px] font-medium capitalize leading-[1.6] tracking-[0.2px] text-white max-[768px]:text-[14px] max-[480px]:text-[13px]">
             Harness AI To Improve The Speed, Quality, And Consistency Of Your
             Work
           </p>
@@ -80,16 +80,16 @@ export default function AiProfessionalsCollection() {
                     V
                   </span>
 
-                  <span className="font-montserrat text-[9px] font-medium text-[#b6b6b6]">
+              <span className="font-montserrat text-[13px] font-medium text-black max-[480px]:text-[12px]">
                     {course.provider}
                   </span>
                 </div>
 
-                <h3 className="mt-[8px] font-montserrat text-[16px] font-semibold leading-[1.12] tracking-[-0.2px] text-[#1f1f1f]">
+            <h3 className="mt-[8px] font-montserrat text-[16px] font-semibold leading-[1.35] tracking-[-0.2px] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
                   {course.title}
                 </h3>
 
-                <div className="mt-[8px] flex items-center gap-[5px] font-montserrat text-[8px] text-[#b5b5b5]">
+            <div className="mt-[8px] flex items-center gap-[5px] font-montserrat text-[13px] text-black max-[480px]:text-[12px]">
                   <span className="text-[9px] text-[#ffb800]">★</span>
                   <span>{course.rating}</span>
                   <span>Specialization</span>

@@ -120,14 +120,14 @@ export default function CoursesSection() {
                 key={tab.name}
                 type="button"
                 onClick={() => setActiveTab(index)}
-                className={`relative pb-[13px] text-[13px] font-bold leading-[1.2] transition-colors duration-300 max-[640px]:text-[11px] max-[420px]:text-[10px] ${
+                className={`relative pb-[13px] text-[14px] font-bold leading-[1.3] transition-colors duration-300 max-[640px]:text-[13px] max-[420px]:text-[12px] ${
                   index === 0
                     ? "text-left"
                     : index === 1
                       ? "text-center"
                       : "text-right"
                 } ${
-                  activeTab === index ? "text-[#07177d]" : "text-[#a7a7a7]"
+                  activeTab === index ? "text-[#07177d]" : "text-black"
                 }`}
               >
                 {tab.name}
@@ -154,9 +154,9 @@ export default function CoursesSection() {
               {activeCourses.map((course) => (
                 <div
                   key={`${column}-${course.id}`}
-                  className="flex min-h-[72px] items-center rounded-[4px] bg-[#f1f1f7] px-[10px] py-[8px] max-[480px]:min-h-[76px]"
+                  className="flex min-h-[104px] items-center rounded-[4px] bg-[#f1f1f7] px-[12px] py-[12px] max-[480px]:min-h-[96px]"
                 >
-                  <div className="relative h-[56px] w-[56px] shrink-0 overflow-hidden rounded-[4px] bg-[#d9d9d9] max-[480px]:h-[54px] max-[480px]:w-[54px]">
+                  <div className="relative h-[72px] w-[72px] shrink-0 overflow-hidden rounded-[4px] bg-[#d9d9d9] max-[480px]:h-[64px] max-[480px]:w-[64px]">
                     {course.image && (
                       <Image
                         src={course.image}
@@ -168,25 +168,25 @@ export default function CoursesSection() {
                   </div>
 
                   <div className="ml-[13px] min-w-0 flex-1">
-                    <p className="flex items-center gap-[4px] text-[8px] text-[#9c9c9c]">
-                      <span className="text-[10px] font-bold text-[#4285f4]">
+                    <p className="flex items-center gap-[4px] text-[13px] leading-[1.3] text-black max-[480px]:text-[12px]">
+                      <span className="text-[14px] font-bold text-[#4285f4]">
                         {course.provider.charAt(0)}
                       </span>
                       {course.provider}
                     </p>
 
-                    <h4 className="mt-[2px] truncate text-[12.5px] font-semibold leading-[1.15] text-[#222] max-[480px]:text-[12px]">
+                    <h4 className="mt-[4px] truncate text-[16px] font-semibold leading-[1.3] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
                       {course.title}
                     </h4>
 
-                    <p className="mt-[3px] text-[8px] text-[#9c9c9c]">
+                    <p className="mt-[4px] text-[13px] leading-[1.3] text-black max-[480px]:text-[12px]">
                       {course.type}
                     </p>
                   </div>
 
                   <div className="ml-[8px] flex shrink-0 items-center gap-[3px] pr-[10px] max-[480px]:pr-0">
                     <span className="text-[9px] text-[#ffb800]">★</span>
-                    <span className="text-[7px] text-[#9c9c9c]">
+                    <span className="text-[13px] text-black max-[480px]:text-[12px]">
                       {course.rating}
                     </span>
                   </div>

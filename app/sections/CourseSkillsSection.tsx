@@ -26,7 +26,7 @@ export default function CourseSkillsSection() {
           {skills.map((skill) => (
             <div
               key={skill}
-              className="flex h-[38px] items-center gap-[8px] rounded-[5px] bg-[#e9eaf4] px-[11px] pr-[17px] text-[13.5px] font-normal leading-none tracking-[0.1px] text-black max-[768px]:h-[36px] max-[768px]:text-[12.5px] max-[480px]:h-auto max-[480px]:min-h-[36px] max-[480px]:w-full max-[480px]:px-[12px] max-[480px]:py-[10px]"
+              className="flex min-h-[42px] items-center gap-[8px] rounded-[5px] bg-[#e9eaf4] px-[12px] pr-[17px] text-[16px] font-normal leading-[1.4] tracking-[0.1px] text-black max-[768px]:text-[14px] max-[480px]:w-full max-[480px]:py-[10px] max-[480px]:text-[13px]"
             >
               <span className="flex h-[8px] w-[8px] shrink-0 items-center justify-center rounded-full bg-[#030887] text-white">
                 <Check className="h-[5px] w-[5px]" strokeWidth={4} />

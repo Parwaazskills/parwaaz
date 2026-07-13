@@ -59,11 +59,11 @@ export default function CourseTrustSection() {
                   : ""
               }`}
             >
-              <h3 className="text-[15.5px] font-normal leading-none tracking-[0.1px] text-black">
+              <h3 className="text-[16px] font-medium leading-[1.3] tracking-[0.1px] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
                 {item.value}
               </h3>
 
-              <p className="mt-[11px] text-[9.5px] font-normal leading-none tracking-[0.1px] text-[#898989]">
+              <p className="mt-[8px] text-[14px] font-normal leading-[1.3] tracking-[0.1px] text-black max-[480px]:text-[13px]">
                 {item.label}
               </p>
             </div>

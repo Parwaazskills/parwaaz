@@ -8,13 +8,13 @@ export default function BlogsHero() {
           Thought Leadership
         </p>
 
-        <h1 className="mt-[28px] font-montserrat text-[72px] font-medium leading-[0.98] tracking-[-1.8px] text-white max-[1024px]:text-[60px] max-[768px]:text-[48px] max-[520px]:text-[38px] max-[390px]:text-[32px]">
+        <h1 className="mt-[28px] font-montserrat text-[80px] font-medium leading-[0.98] tracking-[-1.8px] text-white max-[1024px]:text-[66px] max-[768px]:text-[50px] max-[520px]:text-[38px] max-[390px]:text-[32px]">
           Parwaaz Insights
           <br className="hidden max-[520px]:block" />{" "}
           <span className="font-bold text-[#00FE4E]">Blog</span>
         </h1>
 
-        <p className="mt-[22px] max-w-[760px] font-montserrat text-[16px] font-normal leading-[1.55] tracking-[-0.2px] text-white max-[768px]:max-w-[620px] max-[768px]:text-[15px] max-[520px]:text-[13px]">
+        <p className="mt-[22px] max-w-[760px] font-montserrat text-[16px] font-normal leading-[1.55] tracking-[-0.2px] text-white max-[768px]:max-w-[620px] max-[768px]:text-[14px] max-[520px]:text-[13px]">
           Explore practical insights on AI, technology, leadership, workforce
           development, and the future of professional learning.
         </p>

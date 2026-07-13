@@ -104,7 +104,7 @@ export default function CaseStudyStats() {
             >
               <AnimatedCounter value={stat.value} />
 
-              <p className="mt-[14px] max-w-[340px] font-montserrat text-[22px] font-normal leading-[1.65] tracking-[-0.4px] text-[#001f4d] max-[1024px]:text-[18px] max-[480px]:text-[15px]">
+              <p className="mt-[14px] max-w-[340px] font-montserrat text-[18px] font-normal leading-[1.65] tracking-[-0.2px] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
                 {stat.description}
               </p>
             </div>

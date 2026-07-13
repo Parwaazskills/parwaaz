@@ -49,7 +49,7 @@ export default function CourseJobsSection() {
                   {item.value}
                 </h3>
 
-                <p className="mt-[11px] text-[14px] font-normal leading-none tracking-[0.1px] text-[#8a8a8a] max-[1024px]:text-[12.5px] max-[480px]:text-[13px]">
+                <p className="mt-[11px] text-[16px] font-normal leading-[1.45] tracking-[0.1px] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
                   {item.label}
                 </p>
               </div>

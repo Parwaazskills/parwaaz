@@ -180,7 +180,7 @@ export default function CourseProgramDetailsSection() {
         <div ref={leftContentRef} className="min-w-0">
           {/* Key Highlights */}
           <div className="max-w-[650px] max-[900px]:max-w-full">
-            <p className="text-[13px] font-normal uppercase leading-none tracking-[0.8px] text-black">
+            <p className="text-[14px] font-semibold uppercase leading-[1.3] tracking-[0.8px] text-black max-[480px]:text-[13px]">
               KEY PROGRAMS HIGHLIGHTS
             </p>
 
@@ -197,7 +197,7 @@ export default function CourseProgramDetailsSection() {
                 {activeProgram.name}
               </h3>
 
-              <p className="mt-[15px] max-w-[615px] text-[11.5px] font-normal uppercase leading-[1.42] tracking-[0.45px] text-black/90 max-[480px]:text-[10.8px] max-[480px]:leading-[1.55]">
+              <p className="mt-[15px] max-w-[615px] text-[16px] font-normal leading-[1.65] tracking-[0.2px] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
                 {activeProgram.description}
               </p>
 
@@ -205,7 +205,7 @@ export default function CourseProgramDetailsSection() {
                 {activeProgram.bullets.map((item) => (
                   <li
                     key={item}
-                    className="flex items-start gap-[11px] text-[15px] font-normal leading-[1.3] tracking-[0.1px] text-black max-[480px]:text-[13px]"
+                    className="flex items-start gap-[11px] text-[16px] font-normal leading-[1.6] tracking-[0.1px] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]"
                   >
                     <span className="mt-[6px] h-[3px] w-[3px] shrink-0 rounded-full bg-black" />
                     <span>{item}</span>
@@ -234,7 +234,7 @@ export default function CourseProgramDetailsSection() {
 
           {/* Outcomes */}
           <div className="mt-[111px] max-w-[625px] max-[900px]:mt-[70px] max-[900px]:max-w-full">
-            <p className="text-[13px] font-normal uppercase leading-none tracking-[0.8px] text-black">
+            <p className="text-[14px] font-semibold uppercase leading-[1.3] tracking-[0.8px] text-black max-[480px]:text-[13px]">
               PROGRAM OUTCOMES
             </p>
 
@@ -246,7 +246,7 @@ export default function CourseProgramDetailsSection() {
               </GradientTitle>
             </div>
 
-            <p className="mt-[13px] text-[11.5px] font-normal leading-none tracking-[0.2px] text-black/80 max-[480px]:leading-[1.45]">
+            <p className="mt-[13px] text-[16px] font-normal leading-[1.6] tracking-[0.2px] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
               Develop A Global Perspective And Build Future-Ready Capabilities
             </p>
 
@@ -254,7 +254,7 @@ export default function CourseProgramDetailsSection() {
               {outcomes.map((item) => (
                 <div
                   key={item}
-                  className="flex min-h-[49px] items-start gap-[10px] rounded-[5px] bg-[#f0f1f8] px-[13px] py-[12px] text-[12px] font-normal leading-[1.85] tracking-[0.05px] text-black max-[480px]:text-[11px] max-[480px]:leading-[1.6]"
+                  className="flex min-h-[49px] items-start gap-[10px] rounded-[5px] bg-[#f0f1f8] px-[13px] py-[12px] text-[16px] font-normal leading-[1.6] tracking-[0.05px] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]"
                 >
                   <span className="mt-[4px] flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-full bg-[#030887] text-white">
                     <Check className="h-[9px] w-[9px]" strokeWidth={3} />

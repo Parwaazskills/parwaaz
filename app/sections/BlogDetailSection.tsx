@@ -50,8 +50,8 @@ export default function BlogDetailSection() {
           {blog.title}
         </h1>
 
-        <div className="mt-[24px] flex flex-wrap items-center gap-[14px] border-b border-[#E6E6F1] pb-[28px] font-montserrat text-[14px] text-[#666]">
-          <span className="font-bold text-[#111]">{blog.author}</span>
+        <div className="mt-[24px] flex flex-wrap items-center gap-[14px] border-b border-[#E6E6F1] pb-[28px] font-montserrat text-[14px] text-black max-[480px]:text-[13px]">
+          <span className="font-bold text-black">{blog.author}</span>
           <span>•</span>
           <span>{blog.date}</span>
           <span>•</span>
@@ -69,7 +69,7 @@ export default function BlogDetailSection() {
             </p>
           </div>
 
-          <p className="font-montserrat text-[23px] font-medium italic leading-[1.65] text-[#111] max-[520px]:text-[18px]">
+          <p className="font-montserrat text-[23px] font-medium italic leading-[1.65] text-black max-[520px]:text-[18px]">
             Most enterprises already own Gemini — it arrived bundled inside
             their Google Workspace agreement. Almost none can name its return.
             This is Parwaaz&apos;s playbook for converting AI capability into
@@ -81,7 +81,7 @@ export default function BlogDetailSection() {
               The Short Answer
             </p>
 
-            <p className="font-montserrat text-[17px] leading-[1.75] text-white max-[520px]:text-[14px]">
+            <p className="font-montserrat text-[16px] leading-[1.75] text-white max-[520px]:text-[13px]">
               <span className="font-bold text-[#00FE4E]">Curriculum:</span>{" "}
               Design around Gemini&apos;s two surfaces — the standalone web app
               and Gemini embedded inside Gmail, Docs, Sheets, and Slides.
@@ -99,7 +99,7 @@ export default function BlogDetailSection() {
             </h2>
 
             <div className="mt-[22px] rounded-[18px] border-l-[5px] border-[#00FE4E] bg-[#E6E6F1] p-[26px]">
-              <p className="font-montserrat text-[16px] leading-[1.8] text-[#111] max-[520px]:text-[14px]">
+              <p className="font-montserrat text-[16px] leading-[1.8] text-black max-[768px]:text-[14px] max-[520px]:text-[13px]">
                 <span className="font-bold text-[#000572]">
                   An effective Gemini curriculum is organized around two
                   surfaces, not one tool.
@@ -109,7 +109,7 @@ export default function BlogDetailSection() {
               </p>
             </div>
 
-            <p className="mt-[26px] font-montserrat text-[16px] leading-[1.9] text-[#222] max-[520px]:text-[14px]">
+            <p className="mt-[26px] font-montserrat text-[16px] leading-[1.9] text-black max-[768px]:text-[14px] max-[520px]:text-[13px]">
               The framing we teach in every session: Gemini on the web is your
               blue-sky collaborator; Gemini in Workspace is your capable intern.
               The web app is where you think broadly, while Workspace
@@ -151,7 +151,7 @@ export default function BlogDetailSection() {
                       {title}
                     </h3>
 
-                    <p className="mt-[7px] font-montserrat text-[17px] leading-[1.65] text-[#111] max-[520px]:text-[14px]">
+                    <p className="mt-[7px] font-montserrat text-[16px] leading-[1.65] text-black max-[768px]:text-[14px] max-[520px]:text-[13px]">
                       {body}
                     </p>
                   </div>
@@ -169,7 +169,7 @@ export default function BlogDetailSection() {
               From AI investment to AI impact
             </h2>
 
-            <p className="mt-[16px] max-w-[680px] font-montserrat text-[16px] leading-[1.8] text-white/85 max-[520px]:text-[14px]">
+            <p className="mt-[16px] max-w-[680px] font-montserrat text-[16px] leading-[1.8] text-white max-[520px]:text-[13px]">
               If your organization has AI tools inside its workflow but no
               measured return, the gap is enablement.
             </p>
