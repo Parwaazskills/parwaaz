@@ -15,13 +15,13 @@ export default function CourseSkillsSection() {
   return (
     <section className="relative w-full bg-white pb-[48px] pt-[34px] max-[768px]:pb-[42px] max-[768px]:pt-[32px] max-[480px]:pb-[36px]">
       <div className="mx-auto w-full max-w-[1250px] px-[65px] max-[1024px]:px-[36px] max-[768px]:px-[24px] max-[480px]:px-[18px]">
-        <h2>
+        <h2 className="text-center">
           <span className="section-gradient-title inline-block">
             SKILLS YOU WILL LEARN
           </span>
         </h2>
 
-        <div className="mt-[19px] flex max-w-[1160px] flex-wrap gap-x-[19px] gap-y-[19px] max-[768px]:gap-x-[12px] max-[768px]:gap-y-[12px]">
+        <div className="mt-[19px] flex max-w-[1160px] flex-wrap justify-center gap-x-[19px] gap-y-[19px] max-[768px]:gap-x-[12px] max-[768px]:gap-y-[12px]">
           {skills.map((skill) => (
             <div
               key={skill}
