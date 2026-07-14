@@ -25,10 +25,8 @@ export default function CourseJobsSection() {
   return (
     <section className="relative w-full overflow-hidden bg-white pb-[42px] pt-[24px] max-[768px]:pb-[38px] max-[768px]:pt-[28px] max-[480px]:pb-[34px]">
       <div className="mx-auto w-full max-w-[1400px] px-[86px] max-[1200px]:px-[60px] max-[1024px]:px-[36px] max-[768px]:px-[24px] max-[480px]:px-[18px]">
-        <h2 className="text-center text-[31px] font-medium uppercase leading-none tracking-[1px] max-[768px]:text-[26px] max-[480px]:text-[22px] max-[480px]:leading-[1.25]">
-          <span className="bg-[linear-gradient(90deg,#00fe4e_0%,#00b961_34%,#006d78_63%,#07136f_100%)] bg-clip-text text-transparent">
-            SECURE TOP AI & MACHINE LEARNING JOBS
-          </span>
+        <h2 className="section-gradient-title text-center">
+          <span>SECURE TOP AI & MACHINE LEARNING JOBS</span>
         </h2>
 
         <div className="mx-auto mt-[45px] grid w-full max-w-[1064px] grid-cols-4 gap-[13px] max-[1024px]:gap-[12px] max-[768px]:mt-[34px] max-[768px]:grid-cols-2 max-[480px]:grid-cols-1 max-[480px]:gap-[14px]">

@@ -21,18 +21,7 @@ export default function NewsletterSection() {
         .newsletter-inner { max-width: 760px; margin: 0 auto; text-align: center; }
         .newsletter-title {
           margin: 0;
-          font-family: 'Inter', sans-serif;
-          font-size: clamp(22px, 3.4vw, 42px);
-          font-weight: 400;
-          letter-spacing: 0px;
-          text-transform: uppercase;
-          line-height: 1;
           white-space: nowrap;
-          background: linear-gradient(90deg, #00FE4E 0%, #000572 100%);
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          color: transparent;
         }
         @media (max-width: 640px) { .newsletter-title { white-space: normal; } }
         .newsletter-text {
@@ -143,7 +132,7 @@ export default function NewsletterSection() {
       <section className="newsletter-section">
         <div className="newsletter-divider" />
         <div className="newsletter-inner">
-          <h2 className="newsletter-title">
+          <h2 className="newsletter-title section-gradient-title">
             Join The Future Of Innovation
           </h2>
           <p className="newsletter-text">

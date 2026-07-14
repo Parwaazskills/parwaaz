@@ -107,10 +107,8 @@ export default function CoursesSection() {
   return (
     <section className="relative w-full bg-white px-[86px] pb-[70px] pt-[72px] max-[1200px]:px-[64px] max-[1024px]:px-[42px] max-[768px]:px-[24px] max-[480px]:px-[18px]">
       <div className="mx-auto w-full max-w-[1400px]">
-        <h2 className="text-center font-montserrat text-[48px] font-bold uppercase leading-[1.1] tracking-[2px] max-[768px]:text-[38px] max-[480px]:text-[30px]">
-          <span className="inline-block bg-gradient-to-r from-[#00FE4E] to-[#000572] bg-clip-text text-transparent">
-            Our Courses
-          </span>
+        <h2 className="text-center">
+          <span className="section-gradient-title inline-block">Our Courses</span>
         </h2>
 
         <div className="relative mt-[42px] border-b border-[#222] max-[640px]:mt-[32px]">

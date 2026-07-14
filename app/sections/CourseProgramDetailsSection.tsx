@@ -66,7 +66,10 @@ const outcomes = [
 
 function GradientTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="bg-[linear-gradient(90deg,#00fe4e_0%,#00b961_38%,#006d78_67%,#07136f_100%)] bg-clip-text text-[31px] font-medium uppercase leading-[1.28] tracking-[1px] text-transparent max-[900px]:text-[27px] max-[480px]:text-[24px] max-[480px]:leading-[1.22]">
+    <h2
+      className="section-gradient-title"
+      style={{ fontSize: "clamp(22px, 2.8vw, 34px)" }}
+    >
       {children}
     </h2>
   );
@@ -186,9 +189,7 @@ export default function CourseProgramDetailsSection() {
 
             <div className="mt-[18px]">
               <GradientTitle>
-                EXCLUSIVE PARTNERSHIPS WITH
-                <br />
-                LEADING LEARNING PLATFORMS
+                EXCLUSIVE PARTNERSHIPS WITH LEADING LEARNING PLATFORMS
               </GradientTitle>
             </div>
 
@@ -241,7 +242,6 @@ export default function CourseProgramDetailsSection() {
             <div className="mt-[12px]">
               <GradientTitle>
                 EMERGE AS A HIGH-PERFORMING
-                <br />
                 LEADER
               </GradientTitle>
             </div>

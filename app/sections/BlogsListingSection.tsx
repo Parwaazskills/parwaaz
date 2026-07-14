@@ -103,11 +103,11 @@ export default function BlogsListingSection() {
     <section className="w-full bg-white px-[86px] py-[80px] max-[1200px]:px-[64px] max-[1024px]:px-[42px] max-[768px]:px-[24px] max-[480px]:px-[18px]">
       <div className="mx-auto w-full max-w-[1400px]">
         <div className="mb-[44px]">
-          <p className="font-montserrat text-[12px] font-bold uppercase tracking-[4px] text-[#00FE4E]">
+          <p className="font-montserrat text-[12px] font-bold uppercase tracking-[4px] text-[#000572]">
             Blog
           </p>
 
-          <h2 className="mt-[8px] font-montserrat text-[46px] font-bold leading-[1.1] max-[768px]:text-[36px] max-[480px]:text-[28px]">
+          <h2 className="mt-[8px] font-montserrat text-[46px] font-regular leading-[1.1] max-[768px]:text-[36px] max-[480px]:text-[28px]">
             <span className="inline-block bg-gradient-to-r from-[#00FE4E] to-[#000572] bg-clip-text text-transparent">
               All Blog Posts
             </span>

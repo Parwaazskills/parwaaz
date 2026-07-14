@@ -71,10 +71,8 @@ export default function CourseTrustSection() {
         </div>
 
         {/* Heading */}
-        <h2 className="mt-[76px] text-center text-[34px] font-medium uppercase leading-none tracking-[1.1px] max-[768px]:mt-[56px] max-[768px]:text-[28px] max-[480px]:text-[24px] max-[480px]:leading-[1.2]">
-          <span className="bg-[linear-gradient(90deg,#00fe4e_0%,#00b961_38%,#006d78_68%,#07136f_100%)] bg-clip-text text-transparent">
-            TRUSTED BY MILLIONS OF LEARNERS
-          </span>
+        <h2 className="section-gradient-title mt-[76px] text-center max-[768px]:mt-[56px]">
+          <span>TRUSTED BY MILLIONS OF LEARNERS</span>
         </h2>
 
         {/* Rating Cards */}

@@ -23,7 +23,7 @@ export default function CourseCareerBannerSection() {
 
           {/* Left Content */}
           <div className="relative z-[3] flex h-full max-w-[590px] flex-col justify-center pl-[92px] pt-[4px] max-[1024px]:pl-[58px] max-[768px]:h-auto max-[768px]:max-w-full max-[768px]:justify-start max-[768px]:px-[34px] max-[768px]:pb-[230px] max-[768px]:pt-[52px] max-[480px]:px-[24px] max-[480px]:pb-[220px] max-[480px]:pt-[42px]">
-            <h2 className="bg-[linear-gradient(90deg,#00fe4e_0%,#00b961_35%,#006d78_68%,#07136f_100%)] bg-clip-text text-[37px] font-semibold uppercase leading-[1.18] tracking-[0.7px] text-transparent max-[1024px]:text-[34px] max-[768px]:text-[32px] max-[480px]:text-[27px] max-[390px]:text-[24px]">
+            <h2 className="section-gradient-title">
               START, SWITCH, OR
               <br />
               ADVANCE YOUR CAREER
@@ -35,7 +35,7 @@ export default function CourseCareerBannerSection() {
 
             <Link
               href="/courses"
-              className="hero-btn mt-[35px] inline-flex h-[44px] items-center justify-center rounded-[24px] px-7 text-[14px] font-medium no-underline sm:h-[48px] lg:px-9 max-[480px]:mt-[28px]"
+              className="hero-btn mt-[35px] inline-flex h-[44px] w-[190px] items-center justify-center rounded-[24px] px-7 text-[14px] font-medium no-underline sm:h-[48px] max-[480px]:mt-[28px] max-[480px]:w-full"
             >
               Join for free
             </Link>

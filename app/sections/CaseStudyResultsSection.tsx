@@ -18,10 +18,8 @@ export default function CaseStudyResultsSection() {
       <div className="mx-auto grid w-full max-w-[1400px] grid-cols-2 gap-[95px] rounded-[28px] border border-[#E6E6F1] bg-white p-[42px] shadow-[0_18px_55px_rgba(0,5,114,0.06)] max-[1100px]:gap-[55px] max-[900px]:grid-cols-1 max-[480px]:rounded-[20px] max-[480px]:p-[22px]">
         {/* Left */}
         <div>
-          <h2 className="font-montserrat text-[48px] font-bold leading-none max-[768px]:text-[38px] max-[480px]:text-[30px]">
-            <span className="inline-block bg-gradient-to-r from-[#00FE4E] to-[#000572] bg-clip-text text-transparent">
-              Results
-            </span>
+          <h2 className="section-gradient-title">
+            <span>Results</span>
           </h2>
 
           <p className="mt-[34px] max-w-[600px] font-montserrat text-[16px] font-normal leading-[1.75] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">

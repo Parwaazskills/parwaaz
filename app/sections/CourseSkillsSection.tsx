@@ -1,7 +1,4 @@
 "use client";
-
-// app/sections/CourseSkillsSection.tsx
-
 import { Check } from "lucide-react";
 
 const skills = [
@@ -17,9 +14,11 @@ const skills = [
 export default function CourseSkillsSection() {
   return (
     <section className="relative w-full bg-white pb-[48px] pt-[34px] max-[768px]:pb-[42px] max-[768px]:pt-[32px] max-[480px]:pb-[36px]">
-      <div className="mx-auto w-full max-w-[1400px] px-[65px] max-[1024px]:px-[36px] max-[768px]:px-[24px] max-[480px]:px-[18px]">
-        <h2 className="bg-[linear-gradient(90deg,#00fe4e_0%,#00b961_36%,#006d78_64%,#07136f_100%)] bg-clip-text text-[29px] font-semibold uppercase leading-none tracking-[1px] text-transparent max-[768px]:text-[25px] max-[480px]:text-[22px] max-[480px]:leading-[1.2]">
-          SKILLS YOU WILL LEARN
+      <div className="mx-auto w-full max-w-[1250px] px-[65px] max-[1024px]:px-[36px] max-[768px]:px-[24px] max-[480px]:px-[18px]">
+        <h2>
+          <span className="section-gradient-title inline-block">
+            SKILLS YOU WILL LEARN
+          </span>
         </h2>
 
         <div className="mt-[19px] flex max-w-[1160px] flex-wrap gap-x-[19px] gap-y-[19px] max-[768px]:gap-x-[12px] max-[768px]:gap-y-[12px]">

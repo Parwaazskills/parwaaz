@@ -82,10 +82,8 @@ export default function DefenseCompetitionsSection() {
     <section className="w-full bg-white px-[86px] py-[86px] max-[1200px]:px-[64px] max-[1024px]:px-[42px] max-[768px]:px-[24px] max-[480px]:px-[18px]">
       <div className="mx-auto w-full max-w-[1400px]">
         <div className="mx-auto max-w-[1120px] text-center">
-          <h2 className="font-montserrat text-[42px] font-bold leading-[1.15] tracking-[-0.8px] max-[1024px]:text-[36px] max-[768px]:text-[30px] max-[480px]:text-[25px]">
-            <span className="inline-block bg-gradient-to-r from-[#00FE4E] to-[#000572] bg-clip-text text-transparent">
-              Building The Future Of Defense
-            </span>
+          <h2 className="section-gradient-title">
+            <span>Building The Future Of Defense</span>
           </h2>
 
         <p className="mx-auto mt-[18px] max-w-[980px] font-montserrat text-[16px] font-normal leading-[1.75] text-black max-[768px]:text-[14px] max-[480px]:text-[13px]">
